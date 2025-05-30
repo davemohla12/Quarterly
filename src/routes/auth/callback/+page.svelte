@@ -61,7 +61,7 @@
   <Heading text={expiredText} desktopwidth="500px" mobilelarge={true}  />
   <Button text={expiredButtonText} dark={true} onclick={handleClick} />
 {:else}
-  <Header />
+  <Header hideIcons={true} hideBack={true} />
   <Avatar />
   <Loading />
 {/if}
