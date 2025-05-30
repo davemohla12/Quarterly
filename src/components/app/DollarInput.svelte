@@ -91,7 +91,7 @@
 </script>
 
 <div class="container">
-  <input class="input" class:shorter={helpText != ''} type="text" value={inputValue} onfocus={handleFocus} onblur={handleBlur} oninput={handleInput} />
+  <input class="input" type="text" inputmode="decimal" class:shorter={helpText != ''} value={inputValue} onfocus={handleFocus} onblur={handleBlur} oninput={handleInput} />
   {#if helpText != ''}
     <Clickable onclick={toggleHelp}>
       <img class="help" src="/images/help.png" alt="Help" />

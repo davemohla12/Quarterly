@@ -54,7 +54,7 @@
 </script>
 
 <div class="container">
-  <input class="input" type="text" inputmode="numeric" pattern="[1-9][0-9]*" value={inputValue} onfocus={handleFocus} onblur={handleBlur} oninput={handleInput} />
+  <input class="input" type="number" inputmode="numeric" pattern="[1-9][0-9]*" value={inputValue} onfocus={handleFocus} onblur={handleBlur} oninput={handleInput} />
   <div class="placeholder" class:active={isFocused || inputValue} >{placeholder}</div>
 </div>
 
