@@ -1,0 +1,39 @@
+<script>
+  import Header from '$src/components/app/Header.svelte'
+  import Avatar from '$src/components/app/Avatar.svelte'
+  import Heading from '$src/components/app/Heading.svelte'
+  import Subheading from '$src/components/app/Subheading.svelte'
+  import Button from '$src/components/app/Button.svelte'
+  import Later from '$src/components/app/Later.svelte'
+  import { goto } from '$app/navigation'
+  import { convertStateToUpperCase } from '$src/utilities/utilities'
+  import { store } from '$src/stores/store.svelte'
+
+  const headingText = `You don't need to pay any quarterly taxes this year`
+  const subheadingText = `You may still pay income tax at the end of the year but you don't need to worry about quarterly taxes`
+  const buttonText = 'DONE'
+  store.makeButtonActive = true
+  
+  const handleDone = () => {
+    goto('/')
+  }
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      if (store.makeButtonActive == true) {
+        handleDone()
+      }
+    }
+    if (event.key === 'ArrowLeft') {
+      history.back()
+    }
+  }
+</script>
+
+<svelte:window on:keydown={handleKeyDown} />
+
+<Header />
+<Avatar />
+<Heading text={headingText} desktopwidth="550px" mobilewidth="300px" />
+<Subheading text={subheadingText} desktopwidth="450px" mobilewidth="250px" />
+<Button text={buttonText} onclick={handleDone} />

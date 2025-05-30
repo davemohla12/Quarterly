@@ -1,0 +1,177 @@
+<script>
+  import Clickable from '$src/components/app/Clickable.svelte'
+  import { goto } from '$app/navigation'
+  import { store } from '$src/stores/store.svelte'
+  import { onMount } from 'svelte'
+
+  let buttonText = $state('GET STARTED')
+
+  $effect(() => {
+    if (store.loggedIn) {
+      if (store.currentPage == 'dashboard') {
+        buttonText = 'DASHBOARD'
+      }
+      else {
+        buttonText = 'RESUME'
+      }
+    }
+    else {
+      buttonText = 'GET STARTED'
+    }
+  })
+
+  onMount(() => {
+    if (store.showResumeBanner) {
+      setTimeout(() => {
+        store.showResumeBanner = false
+      }, 3000)
+    }
+  })
+
+  const handleCloseBanner = () => {
+    store.showResumeBanner = false
+  }
+
+  const handleGetStarted = () => {
+    goto('/0')
+  }
+</script>
+
+<div class="container">
+  {#if store.showResumeBanner}
+    <div class="banner">
+      <div class="bannertext">You can resume at anytime</div>
+      <Clickable onclick={handleCloseBanner}>
+        <img class="close" src="/images/close.png" alt="Close" />
+      </Clickable>
+      </div>
+  {/if}
+  <div class="left">
+    <div class="heading">
+      The stress-free way to estimate and pay your quarterly taxes
+    </div>
+    <div class="subheading">
+      Built for freelancers, creators, and small business owners who value clarity and simplicity
+    </div>
+    <Clickable onclick={handleGetStarted}>
+      <div class="button">
+        {buttonText}
+      </div>
+    </Clickable>
+  </div>
+  <div class="right">
+    <img class="stressfree" src="images/stressfree.png" alt="Stress-free" />
+  </div>
+</div>
+<style>
+  .banner {
+    position: absolute;
+    top: 70px;
+    left: 0px;
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--dark);
+    color: var(--white);
+  }
+  .bannertext {
+    font-family: 'Lato', sans-serif;
+    font-size: 16px;
+    font-weight: var(--regular);
+  }
+  .close {
+    width: 14px;
+    height: 14px;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+  }
+  .heading {
+    padding-top: 90px;
+    font-family: 'Merriweather', serif;
+    font-size: 24px;
+    font-weight: var(--regular);
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    width: 400px;
+    max-width: calc(100vw - 20px);
+  }
+  .subheading {
+    font-family: 'Lato', sans-serif;
+    font-size: 15px;
+    font-weight: var(--regular);
+    margin-left: auto;
+    margin-right: auto;
+    width: 350px;
+    text-align: center;
+    margin-top: 15px;
+  }
+  .button {
+    font-family: 'Lato', sans-serif;
+    font-size: 16px;
+    font-weight: var(--bold);
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    width: 225px;
+    height: 52px;
+    background-color: var(--green);
+    color: var(--white);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    margin-top: 25px;
+    cursor: pointer; 
+  }
+  .stressfree {
+    width: 276px;
+    height: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  @media (min-width: 1000px) {
+    .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+      height: 550px;
+      width: 1000px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: -30px;
+    }
+    .left {
+      margin-left: 0px;
+    }
+    .heading {
+      text-align: left;
+      font-size: 34px;
+      width: 500px;
+    }
+    .subheading {
+      text-align: left;
+      margin-left: 0px;
+      font-size: 16px;
+      width: 350px;
+    }
+    .button {
+      margin-left: 0px;
+      width: 180px;
+    }
+    .stressfree {
+      width: 377px;
+      height: 409px;
+      margin-top: 50px;
+      margin-left: 50px;
+    }
+  }
+</style>
