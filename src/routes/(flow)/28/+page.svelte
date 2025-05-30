@@ -45,6 +45,6 @@
   })
 </script>
 
-<Header />
+<Header hideIcons={true} hideBack={true} />
 <Avatar />
 <Loading text="CALCULATING..." />
