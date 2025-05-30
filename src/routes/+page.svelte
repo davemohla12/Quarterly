@@ -22,20 +22,29 @@
   
 </script>
 
-{#if store.showMenu}
-  <Menu />
-  <Overlay />
-{/if}
-<Header />
-<Stressfree />
-<Flow />
-<Penalties />
-<Reminders />
-<Both />
-{#if false}
-  <Guarantee />
-{/if}
-<Price />
-<Footer />
+<div class="page">
+  {#if store.showMenu}
+    <Menu />
+    <Overlay />
+  {/if}
+  <Header />
+  <Stressfree />
+  <Flow />
+  <Penalties />
+  <Reminders />
+  <Both />
+  {#if false}
+    <Guarantee />
+  {/if}
+  <Price />
+  <Footer />
+</div>
+
+<style>
+  .page {
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
+</style>
 
 
