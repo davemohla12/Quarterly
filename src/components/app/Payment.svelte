@@ -1,6 +1,7 @@
 <script>
   import { formatCurrency } from "$src/utilities/utilities"
-  import { onMount } from "svelte";
+  import { onMount } from "svelte"
+  import { convertStateToUpperCase } from "$src/utilities/utilities"
 
   let props = $props()
   let federalPayment1 = props.federalPayment1
@@ -13,6 +14,7 @@
   let statePayment2 = props.statePayment2 || 0
   let statePayment3 = props.statePayment3 || 0
   let statePayment4 = props.statePayment4 || 0
+
 </script>
 
 <div class="container">
@@ -32,7 +34,7 @@
   </div>
   {#if showState}
     <div class="column3">
-      <div class="header">{stateName.toUpperCase()}</div>
+      <div class="header">STATE</div>
       <div class="cell">{formatCurrency(statePayment1)}</div>
       <div class="cell">{formatCurrency(statePayment2)}</div>
       <div class="cell">{formatCurrency(statePayment3)}</div>
@@ -66,12 +68,13 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    min-width: 75px;
   }
   .column2 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-left: 30px;
+    margin-left: 20px;
   }
   .column3 {
     display: flex;

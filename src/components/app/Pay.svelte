@@ -71,7 +71,9 @@
     color: var(--white);
     background-color: var(--green);
     border-radius: 5px;
-    width: 200px;
+    min-width: 180px;
+    padding-left: 15px;
+    padding-right: 15px;
     height: 56px;
     margin-top: 18px;
     display: flex;

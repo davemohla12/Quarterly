@@ -9,7 +9,8 @@
   import { goto } from '$app/navigation'
   import { convertStateToUpperCase } from '$src/utilities/utilities'
   import { onMount } from 'svelte'
-  
+  import Spacer from '$src/components/app/Spacer.svelte'
+
   const headingText = `Your quarterly payments for 2025`
 
   let federalThisQuarterPayment = $state(0)
@@ -83,6 +84,7 @@
 {:else}
   <Pay quarter="June" federalQuarterAmount={federalThisQuarterPayment} showState={false} />
 {/if}
+<Spacer />
 
 
 
