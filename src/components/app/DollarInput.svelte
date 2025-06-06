@@ -98,7 +98,7 @@
     </Clickable>
   {/if}
   {#if showHelp}
-    <div class="helpText">{helpText}</div>
+    <div class="helptext">{helpText}</div>
   {/if}
   <div class="placeholder" class:active={isFocused || inputValue} >{placeholder}</div>
 </div>
@@ -137,7 +137,7 @@
     right: 10px;
     top: 20px;
   }
-  .helpText {
+  .helptext {
     position: absolute;
     left: 0px;
     top: 58px;

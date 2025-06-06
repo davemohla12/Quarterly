@@ -13,6 +13,10 @@
 
   const headingText = `How do you plan to file your taxes this year?`
   const radioButtons = ['Single', 'Married Filing Jointly', 'Married Filing Separately', 'Head of Household', 'Qualifying Widow(er)']
+  const radioHelpText = {
+    radioButton: `Qualifying Widow(er)`,
+    text: `Choose this if your spouse died in the last two years, you haven’t remarried, and you’re supporting a dependent child`
+  }
   const buttonText = 'NEXT'
   
   let selectedRadioButton = $state(null)
@@ -68,6 +72,6 @@
 <Header />
 <Avatar />
 <Heading text={headingText} desktopwidth="500px" mobilewidth="300px" />
-<RadioButtons buttons={radioButtons} onselect={handleSelect}/>
+<RadioButtons buttons={radioButtons} helptext={radioHelpText} onselect={handleSelect}/>
 <Button text={buttonText} onclick={handleNext} />
 <Later />

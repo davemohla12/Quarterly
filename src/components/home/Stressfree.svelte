@@ -58,6 +58,7 @@
         {buttonText}
       </div>
     </Clickable>
+    <div class="time">Takes 5-10 minutes</div>
   </div>
   <div class="right">
     <img class="stressfree" src="images/stressfree.png" alt="Stress-free" />
@@ -108,6 +109,15 @@
     width: 350px;
     text-align: center;
     margin-top: 15px;
+  }
+  .time {
+    margin-top: 7px;
+    margin-bottom: 5px;
+    color: var(--gray4);
+    font-size: 15px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
   }
   .button {
     font-family: 'Lato', sans-serif;
@@ -167,6 +177,15 @@
       margin-left: 0px;
       width: 180px;
     }
+    .time {
+    margin-top: 7px;
+    margin-bottom: 5px;
+    color: var(--gray4);
+    font-size: 15px;
+    text-align: center;
+    width: 180px;
+    margin-left: 0px;
+  }
     .stressfree {
       width: 377px;
       height: 409px;

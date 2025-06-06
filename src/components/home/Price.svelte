@@ -6,7 +6,7 @@
     Participate in our beta and we'll waive our yearly fee
   </div>
   <div class="price">$0</div>
-  <div class="strikethrough">$29 per year</div>
+  <div class="strikethrough">$39 per year</div>
 </div>
 
 <style>

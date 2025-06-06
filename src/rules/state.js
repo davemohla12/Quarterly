@@ -46,7 +46,8 @@ const stateRules = {
       Q3: 0.75,
       Q4: 1.00
     },
-    userNote: "Some Alabama cities charge local income taxes, though it’s rare. These are not included in our estimate. Check with your city to confirm if this applies to you."
+    payLink: 'https://myalabamataxes.alabama.gov/',
+    userNote: "Note that some Alabama cities charge local income taxes, though it’s rare. These are not included in our estimate. Check with your city to confirm if this applies to you."
   },
   alaska: {
     stateHasQuarterlyTaxes: false,
@@ -95,7 +96,8 @@ const stateRules = {
       Q2: 0.50,
       Q3: 0.75,
       Q4: 1.00
-    }
+    },
+    payLink: 'https://www.aztaxes.gov/'
   },  
   arkansas: {
     stateHasQuarterlyTaxes: true,
@@ -193,7 +195,8 @@ const stateRules = {
       Q2: 0.50,
       Q3: 0.75,
       Q4: 1.00
-    }
+    },
+    payLink: 'https://atap.arkansas.gov/'
   },  
   california: {
     stateHasQuarterlyTaxes: true,
@@ -281,6 +284,7 @@ const stateRules = {
       Q3: 0.70, 
       Q4: 1.00 
     },
+    payLink: 'https://www.ftb.ca.gov/pay/'
   },
   colorado: {
     stateHasQuarterlyTaxes: true,
@@ -326,7 +330,8 @@ const stateRules = {
       Q2: 0.50,
       Q3: 0.75,
       Q4: 1.00
-    }
+    },
+    payLink: 'https://www.colorado.gov/revenueonline/'
   },  
   connecticut: {
     stateHasQuarterlyTaxes: true,
@@ -351,7 +356,7 @@ const stateRules = {
         separate: 0,
         head: 0,
         widow: 0
-      }
+      },
     },
     incomeTaxRate: {
       single: [
@@ -405,7 +410,8 @@ const stateRules = {
       Q2: 0.50,
       Q3: 0.75,
       Q4: 1.00
-    }
+    },
+    payLink: 'https://portal.ct.gov/DRS'
   },  
   delaware: {
     stateHasQuarterlyTaxes: true,
@@ -475,7 +481,8 @@ const stateRules = {
       Q2: 0.50,
       Q3: 0.75,
       Q4: 1.00
-    }
+    },
+    payLink: 'https://tax.delaware.gov/'
   },  
  district_of_columbia: {
     stateHasQuarterlyTaxes: true,
@@ -545,7 +552,8 @@ const stateRules = {
       Q2: 0.50,
       Q3: 0.75,
       Q4: 1.00
-    }
+    },
+    payLink: 'https://mytax.dc.gov/'
   },
   florida: {
     stateHasQuarterlyTaxes: false,
@@ -614,7 +622,8 @@ const stateRules = {
       Q2: 0.50,
       Q3: 0.75,
       Q4: 1.00
-    }
+    },
+    payLink: 'https://dor.georgia.gov/make-quick-payment'
   },  
   hawaii: {
     stateHasQuarterlyTaxes: true,
@@ -710,7 +719,8 @@ const stateRules = {
       Q2: 0.50,
       Q3: 0.75,
       Q4: 1.00
-    }
+    },
+    payLink: 'https://tax.hawaii.gov/eservices/'
   },  
   idaho: {
     stateHasQuarterlyTaxes: true,
@@ -764,7 +774,8 @@ const stateRules = {
       Q2: 0.50,
       Q3: 0.75,
       Q4: 1.00
-    }
+    },
+    payLink: 'https://tax.idaho.gov/online-services/e-pay/'
   },  
   illinois: {
     stateHasQuarterlyTaxes: true,
@@ -807,7 +818,8 @@ const stateRules = {
       Q2: 0.50,
       Q3: 0.75,
       Q4: 1.00
-    }
+    },
+    payLink: 'https://tax.illinois.gov/individuals/pay.html'
   },  
   indiana: {
     stateHasQuarterlyTaxes: true,
@@ -851,7 +863,8 @@ const stateRules = {
       Q3: 0.75,
       Q4: 1.00
     },
-    userNote: "Indiana counties charge between 0.35% and 3.38% in local tax. We've used an average rate of 1.75% for simplicity."
+    payLink: 'https://www.in.gov/dor/',
+    userNote: "Note that some Indiana counties charge between 0.35% and 3.38% in local tax. We've used an average rate of 1.75% for simplicity."
   },  
   iowa: {
     stateHasQuarterlyTaxes: true,
@@ -900,7 +913,8 @@ const stateRules = {
       Q2: 0.50,
       Q3: 0.75,
       Q4: 1.00
-    }
+    },
+    payLink: 'https://revenue.iowa.gov/taxes/make-payment'
   },  
   kansas: {
     stateHasQuarterlyTaxes: true,
@@ -954,7 +968,8 @@ const stateRules = {
       Q2: 0.50,
       Q3: 0.75,
       Q4: 1.00
-    }
+    },
+    payLink: 'https://www.kansas.gov/payment-portal/'
   },  
   kentucky: {
     stateHasQuarterlyTaxes: true,
@@ -1008,7 +1023,8 @@ const stateRules = {
       Q3: 0.75,
       Q4: 1.00
     },
-    userNote: "Some Kentucky cities and counties charge separate local income taxes. These are not included in our estimate and may require their own quarterly payments."
+    payLink: 'https://epayment.ky.gov/',
+    userNote: "Note that some Kentucky cities and counties charge separate local income taxes. These are not included in our estimate and may require their own quarterly payments."
   },  
   louisiana: {
     stateHasQuarterlyTaxes: true,
@@ -1057,7 +1073,8 @@ const stateRules = {
       Q2: 0.50,
       Q3: 0.75,
       Q4: 1.00
-    }
+    },
+    payLink: 'https://latap.revenue.louisiana.gov/_/'
   },  
   maine: {
     stateHasQuarterlyTaxes: true,
@@ -1117,7 +1134,8 @@ const stateRules = {
       Q3: 0.75,
       Q4: 1.00
     },
-    userNote: "If your income increases by $500,000 or more compared to the same quarter last year, Maine requires you to pay estimated tax on that spike immediately. Our estimate assumes your income is steady and does not include this rule."
+    payLink: 'https://revenue.maine.gov/',
+    userNote: "Note that if your income increases by $500,000 or more compared to the same quarter last year, Maine requires you to pay estimated tax on that spike immediately. Our estimate assumes your income is steady and does not include this rule."
   },  
   maryland: {
     stateHasQuarterlyTaxes: true,
@@ -1201,7 +1219,8 @@ const stateRules = {
       Q3: 0.75,
       Q4: 1.00
     },
-    userNote: "Maryland counties charge between 2.25% and 3.2% in local tax. We've used an average rate of 3.0% for simplicity.",
+    payLink: 'https://interactive.marylandtaxes.gov/Individuals/Payment/',
+    userNote: "Note that Maryland counties charge between 2.25% and 3.2% in local tax. We've used an average rate of 3.0% for simplicity.",
   },  
   massachusetts: {
     stateHasQuarterlyTaxes: true,
@@ -1262,7 +1281,8 @@ const stateRules = {
       Q3: 0.75,
       Q4: 1.00
     },
-    userNote: "Massachusetts applies a 4% surtax on income over $1 million. Our estimate includes this surtax if your income is above that threshold."
+    payLink: 'https://mtc.dor.state.ma.us/mtc/',
+    userNote: "Note that Massachusetts applies a 4% surtax on income over $1 million. Our estimate includes this surtax if your income is above that threshold."
   },    
   michigan: {
     stateHasQuarterlyTaxes: true,
@@ -1306,7 +1326,8 @@ const stateRules = {
       Q3: 0.75,
       Q4: 1.00
     },
-    userNote: "Several Michigan cities (including Detroit) charge local income taxes. Our estimate does not include these. Check with your city to see if separate payments are required."
+    payLink: 'https://www.michigan.gov/taxes/0,4676,7-238-43513_43517-155058--,00.html',
+    userNote: "Note that several Michigan cities (including Detroit) charge local income taxes. Our estimate does not include these. Check with your city to see if separate payments are required."
   },  
   minnesota: {
     stateHasQuarterlyTaxes: true,
@@ -1370,7 +1391,8 @@ const stateRules = {
       Q2: 0.50,
       Q3: 0.75,
       Q4: 1.00
-    }
+    },
+    payLink: 'https://www.revenue.state.mn.us/make-payment'
   },  
   mississippi: {
     stateHasQuarterlyTaxes: true,
@@ -1424,7 +1446,8 @@ const stateRules = {
       Q2: 0.50,
       Q3: 0.75,
       Q4: 1.00
-    }
+    },
+    payLink: 'https://www.dor.ms.gov/individuals/pay-individual-income-tax'
   },  
   missouri: {
     stateHasQuarterlyTaxes: true,
@@ -1467,7 +1490,8 @@ const stateRules = {
       Q3: 0.75,
       Q4: 1.00
     },
-    userNote: "If you live or work in St. Louis or Kansas City, you may owe local income taxes. These are not included in your state return and may require separate estimated payments."
+    payLink: 'https://mytax.mo.gov/rptp/portal/home/indiv-income-tax',
+    userNote: "Note that if you live or work in St. Louis or Kansas City, you may owe local income taxes. These are not included in your state return and may require separate estimated payments."
   },  
   montana: {
     stateHasQuarterlyTaxes: true,
@@ -1521,7 +1545,8 @@ const stateRules = {
       Q2: 0.50,
       Q3: 0.75,
       Q4: 1.00
-    }
+    },
+    payLink: 'https://tap.dor.mt.gov/'
   },  
   nebraska: {
     stateHasQuarterlyTaxes: true,
@@ -1585,7 +1610,8 @@ const stateRules = {
       Q2: 0.50,
       Q3: 0.75,
       Q4: 1.00
-    }
+    },
+    payLink: 'https://revenue.nebraska.gov/individuals/electronic-payment-options-individual-income-tax'
   },  
   nevada: {
     stateHasQuarterlyTaxes: false
@@ -1675,7 +1701,8 @@ const stateRules = {
       Q3: 0.75,
       Q4: 1.00
     },
-    userNote: "New Jersey doesn’t allow many federal deductions like student loan interest or health insurance premiums. Our estimate assumes only deductions allowed under New Jersey law."
+    payLink: 'https://www.nj.gov/treasury/taxation/onlinepayment.shtml',
+    userNote: "Note that New Jersey doesn’t allow many federal deductions like student loan interest or health insurance premiums. Our estimate assumes only deductions allowed under New Jersey law."
   },  
   new_mexico: {
     stateHasQuarterlyTaxes: true,
@@ -1744,7 +1771,8 @@ const stateRules = {
       Q2: 0.50,
       Q3: 0.75,
       Q4: 1.00
-    }
+    },
+    payLink: 'https://tap.state.nm.us/'
   },  
   new_york: {
     stateHasQuarterlyTaxes: true,
@@ -1839,7 +1867,8 @@ const stateRules = {
       Q2: 0.50,
       Q3: 0.75,
       Q4: 1.00
-    }
+    },
+    payLink: 'https://www.tax.ny.gov/pay/'
   },  
   north_carolina: {
     stateHasQuarterlyTaxes: true,
@@ -1888,7 +1917,8 @@ const stateRules = {
       Q2: 0.50,
       Q3: 0.75,
       Q4: 1.00
-    }
+    },
+    payLink: 'https://www.ncdor.gov/file-pay'
   },  
   north_dakota: {
     stateHasQuarterlyTaxes: true,
@@ -1947,7 +1977,8 @@ const stateRules = {
       Q2: 0.50,
       Q3: 0.75,
       Q4: 1.00
-    }
+    },
+    payLink: 'https://apps.nd.gov/tax/tap/_/'
   },  
   ohio: {
     stateHasQuarterlyTaxes: true,
@@ -2017,7 +2048,8 @@ const stateRules = {
       Q3: 0.75,
       Q4: 1.00
     },
-    userNote: "Many cities in Ohio charge a separate local income tax. Our estimate does not include these local taxes. Check with your city or local tax office to see if you need to make separate quarterly payments."
+    payLink: 'https://tax.ohio.gov/individual/pay-now-landing',
+    userNote: "Note that many cities in Ohio charge a separate local income tax. Our estimate does not include these local taxes. Check with your city or local tax office to see if you need to make separate quarterly payments."
   },  
   oklahoma: {
     stateHasQuarterlyTaxes: true,
@@ -2091,7 +2123,8 @@ const stateRules = {
       Q2: 0.50,
       Q3: 0.75,
       Q4: 1.00
-    }
+    },
+    payLink: 'https://oklahoma.gov/tax/individuals/pay-taxes.html'
   },  
   oregon: {
     stateHasQuarterlyTaxes: true,
@@ -2161,7 +2194,8 @@ const stateRules = {
       Q2: 0.50,
       Q3: 0.75,
       Q4: 1.00
-    }
+    },
+    payLink: 'https://revenueonline.dor.oregon.gov/'
   },  
   pennsylvania: {
     stateHasQuarterlyTaxes: true,
@@ -2214,7 +2248,8 @@ const stateRules = {
       Q3: 0.75,
       Q4: 1.00
     },
-    userNote: "Pennsylvania taxes each type of income separately (e.g., wages, interest, business income). Losses in one category can’t offset gains in another. Our estimate assumes your income is all in one category. Most Pennsylvania municipalities charge a separate local income tax. Our estimate does not include these. Check with your local Earned Income Tax Office to see if payments are required."
+    payLink: 'https://www.pa.gov/services/revenue/make-a-personal-income-tax-payment.html',
+    userNote: "Note that Pennsylvania taxes each type of income separately (e.g., wages, interest, business income). Losses in one category can’t offset gains in another. Our estimate assumes your income is all in one category. Most Pennsylvania municipalities charge a separate local income tax. Our estimate does not include these. Check with your local Earned Income Tax Office to see if payments are required."
   },  
   rhode_island: {
     stateHasQuarterlyTaxes: true,
@@ -2273,7 +2308,8 @@ const stateRules = {
       Q2: 0.50,
       Q3: 0.75,
       Q4: 1.00
-    }
+    },
+    payLink: 'https://taxportal.ri.gov/'
   },  
   south_carolina: {
     stateHasQuarterlyTaxes: true,
@@ -2332,7 +2368,8 @@ const stateRules = {
       Q2: 0.50,
       Q3: 0.75,
       Q4: 1.00
-    }
+    },
+    payLink: 'https://dor.sc.gov/pay'
   },  
   south_dakota: {
     stateHasQuarterlyTaxes: false,
@@ -2381,7 +2418,8 @@ const stateRules = {
       Q2: 0.50,
       Q3: 0.75,
       Q4: 1.00
-    }
+    },
+    payLink: 'https://tap.utah.gov/'
   },
   vermont: {
     stateHasQuarterlyTaxes: true,
@@ -2445,7 +2483,8 @@ const stateRules = {
       Q2: 0.50,
       Q3: 0.75,
       Q4: 1.00
-    }
+    },
+    payLink: 'https://tax.vermont.gov/individuals/pay'
   },  
   virginia: {
     stateHasQuarterlyTaxes: true,
@@ -2509,7 +2548,8 @@ const stateRules = {
       Q2: 0.50,
       Q3: 0.75,
       Q4: 1.00
-    }
+    },
+    payLink: 'https://www.tax.virginia.gov/individual-income-tax-payment-options'
   },  
   washington: {
     stateHasQuarterlyTaxes: false,
@@ -2576,7 +2616,8 @@ const stateRules = {
       Q2: 0.50,
       Q3: 0.75,
       Q4: 1.00
-    }
+    },
+    payLink: 'https://mytaxes.wvtax.gov/'
   },  
   wisconsin: {
     stateHasQuarterlyTaxes: true,
@@ -2640,7 +2681,8 @@ const stateRules = {
       Q2: 0.50,
       Q3: 0.75,
       Q4: 1.00
-    }
+    },
+    payLink: 'https://www.revenue.wi.gov/Pages/OnlineServices/Pay.aspx'
   },  
   wyoming: {
     stateHasQuarterlyTaxes: false,

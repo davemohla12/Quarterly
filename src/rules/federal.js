@@ -71,7 +71,8 @@ const federalRules = {
     Q3: 0.75,
     Q4: 1.00
   },
-  userNote: "The federal quarterly payments assume you are not a farmer, fisherman, or subject to annualized income installment rules. Special payment schedules may apply in those cases."
+  payLink: 'https://www.irs.gov/payments',
+  userNote: "Note that the federal payments assume you are not a farmer, fisherman, or subject to annualized income installment rules. Special payment schedules may apply in those cases."
 }
 
 export { federalRules }

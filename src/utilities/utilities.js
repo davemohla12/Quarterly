@@ -15,6 +15,10 @@ const convertStateToUpperCase = (state) => {
   return capitalizedWords.join(' ')
 }
 
+const convertStateToAllUpperCase = (state) => {
+  return convertStateToUpperCase(state).toUpperCase()
+}
+
 const convertStatusToLowerCase = (status) => {
   const lowerCaseStatus = status.toLowerCase()
   return lowerCaseStatus.replace(/\s+/g, '_')
@@ -87,6 +91,7 @@ const getLocalStorage = (key) => {
 export { 
   convertStateToLowerCase, 
   convertStateToUpperCase, 
+  convertStateToAllUpperCase,
   convertStatusToLowerCase, 
   convertCurrencyToNumber, 
   convertNumberToCurrency, 

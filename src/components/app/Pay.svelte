@@ -2,6 +2,10 @@
   import { store } from '$src/stores/store.svelte'
   import { onMount } from 'svelte'
   import { formatCurrency } from '$src/utilities/utilities'
+  import Clickable from '$src/components/app/Clickable.svelte'
+  import { federalRules } from '$src/rules/federal'
+  import { stateRules } from '$src/rules/state'
+  import { convertStateToAllUpperCase } from '$src/utilities/utilities'
 
   let props = $props()
   let quarter = props.quarter
@@ -25,19 +29,31 @@
       quarterName = 'January'
     }
   })
+
+  const handleFederalClick = () => {
+    window.open(federalRules.payLink, '_blank')
+  }
+
+  const handleStateClick = () => {
+    window.open(stateRules[stateName].payLink, '_blank')
+  }
  
 </script>
 
 <div class="container">
   <div class="title">Pay your {quarterName} tax</div>
-  <div class="button">PAY FEDERAL</div>
+  <Clickable onclick={handleFederalClick}>
+    <div class="button">PAY FEDERAL</div>
+  </Clickable>
   {#if federalQuarterAmount > 0}
     <div class="description">Pay {formatCurrency(federalQuarterAmount)} to cover this quarter</div>
   {:else}
     <div class="description">No federal payment is needed this quarter</div>
   {/if} 
   {#if showState}
-    <div class="button">PAY {stateName.toUpperCase()}</div>
+    <Clickable onclick={handleStateClick}>
+      <div class="button">PAY {convertStateToAllUpperCase(stateName)}</div>
+    </Clickable>
     {#if stateQuarterAmount > 0}
       <div class="description">Pay {formatCurrency(stateQuarterAmount)} to cover this quarter</div>
     {:else}

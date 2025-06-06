@@ -1,6 +1,6 @@
 <div class="container">
   <div class="price">$0</div>
-  <div class="strikeprice">$29 per year</div>
+  <div class="strikeprice">$39 per year</div>
 </div>
 
 <style>

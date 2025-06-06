@@ -7,7 +7,6 @@
   import Pay from '$src/components/app/Pay.svelte'
   import { store } from '$src/stores/store.svelte'
   import { goto } from '$app/navigation'
-  import { convertStateToUpperCase } from '$src/utilities/utilities'
   import { onMount } from 'svelte'
   import Spacer from '$src/components/app/Spacer.svelte'
 
@@ -38,28 +37,28 @@
       federalThisQuarterPayment = store.q4federalQuarterlyPayment
       stateThisQuarterPayment = store.q4StateQuarterlyPayment
     }
-    console.log(`FEDERAL`)
-    console.log(`Adjusted Gross Income This Year:${store.adjustedGrossIncomeThisYear}`)
-    console.log(`Taxable Federal Income This Year:${store.taxableFederalIncomeThisYear}`)
-    console.log(`Safe Harbor Federal Taxes This Year E:${store.safeHarborFederalTaxesThisYear}`)
-    console.log(`Non Withheld Safe Harbor Federal Tax This Year:${store.nonWithheldSafeHarborFederalTaxThisYear}`)
-    console.log(`Safe To Skip Federal Payment:${store.safeToSkipFederalPayment}`)
-    console.log(`Federal Quarterly 1 Payment:${store.q1federalQuarterlyPayment}`)
-    console.log(`Federal Quarterly 2 Payment:${store.q2federalQuarterlyPayment}`)
-    console.log(`Federal Quarterly 3 Payment:${store.q3federalQuarterlyPayment}`)
-    console.log(`Federal Quarterly 4 Payment:${store.q4federalQuarterlyPayment}`)
-    console.log(``)
+    // console.log(`FEDERAL`)
+    // console.log(`Adjusted Gross Income This Year:${store.adjustedGrossIncomeThisYear}`)
+    // console.log(`Taxable Federal Income This Year:${store.taxableFederalIncomeThisYear}`)
+    // console.log(`Safe Harbor Federal Taxes This Year E:${store.safeHarborFederalTaxesThisYear}`)
+    // console.log(`Non Withheld Safe Harbor Federal Tax This Year:${store.nonWithheldSafeHarborFederalTaxThisYear}`)
+    // console.log(`Safe To Skip Federal Payment:${store.safeToSkipFederalPayment}`)
+    // console.log(`Federal Quarterly 1 Payment:${store.q1federalQuarterlyPayment}`)
+    // console.log(`Federal Quarterly 2 Payment:${store.q2federalQuarterlyPayment}`)
+    // console.log(`Federal Quarterly 3 Payment:${store.q3federalQuarterlyPayment}`)
+    // console.log(`Federal Quarterly 4 Payment:${store.q4federalQuarterlyPayment}`)
+    // console.log(``)
 
-    console.log(`STATE`)
-    console.log(`State Adjustable Gross Income This Year:${store.stateAdjustableGrossIncomeThisYear}`)
-    console.log(`Taxable State Income This Year:${store.taxableStateIncomeThisYear}`)
-    console.log(`Safe Harbor State Taxes This Year E:${store.safeHarborStateTaxesThisYear}`)
-    console.log(`Non Withheld Safe Harbor State Tax This Year:${store.nonWithheldSafeHarborStateTaxThisYear}`)
-    console.log(`Safe To Skip State Payment:${store.safeToSkipStatePayment}`)
-    console.log(`State Quarterly 1 Payment:${store.q1StateQuarterlyPayment}`)
-    console.log(`State Quarterly 2 Payment:${store.q2StateQuarterlyPayment}`)
-    console.log(`State Quarterly 3 Payment:${store.q3StateQuarterlyPayment}`)
-    console.log(`State Quarterly 4 Payment:${store.q4StateQuarterlyPayment}`)
+    // console.log(`STATE`)
+    // console.log(`State Adjustable Gross Income This Year:${store.stateAdjustableGrossIncomeThisYear}`)
+    // console.log(`Taxable State Income This Year:${store.taxableStateIncomeThisYear}`)
+    // console.log(`Safe Harbor State Taxes This Year E:${store.safeHarborStateTaxesThisYear}`)
+    // console.log(`Non Withheld Safe Harbor State Tax This Year:${store.nonWithheldSafeHarborStateTaxThisYear}`)
+    // console.log(`Safe To Skip State Payment:${store.safeToSkipStatePayment}`)
+    // console.log(`State Quarterly 1 Payment:${store.q1StateQuarterlyPayment}`)
+    // console.log(`State Quarterly 2 Payment:${store.q2StateQuarterlyPayment}`)
+    // console.log(`State Quarterly 3 Payment:${store.q3StateQuarterlyPayment}`)
+    // console.log(`State Quarterly 4 Payment:${store.q4StateQuarterlyPayment}`)
 
   })
 </script>
@@ -80,7 +79,7 @@
   statePayment4={store.q4StateQuarterlyPayment} 
 />
 {#if store.stateSupported && store.currentState}
-  <Pay quarter="June" federalQuarterAmount={federalThisQuarterPayment} showState={true} stateName={convertStateToUpperCase(store.currentState)} stateQuarterAmount={stateThisQuarterPayment} />
+  <Pay quarter="June" federalQuarterAmount={federalThisQuarterPayment} showState={true} stateName={store.currentState} stateQuarterAmount={stateThisQuarterPayment} />
 {:else}
   <Pay quarter="June" federalQuarterAmount={federalThisQuarterPayment} showState={false} />
 {/if}
