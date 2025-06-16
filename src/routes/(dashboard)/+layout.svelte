@@ -10,15 +10,12 @@
   onMount(async () => {
     loading = true
     if (!store.loggedIn) {
-      goto('/')
+      store.loginLocation = 'dashboard'
+      goto('/login')
     } 
     else { 
-      if (store.currentPage) {
-        goto(`/${store.currentPage}`)
-      }
-      else {
-        goto('/')
-      }
+      store.currentPage = 'dashboard'
+      goto(`/${store.currentPage}`)
     }
     loading = false
   })

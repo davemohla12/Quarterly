@@ -5,16 +5,21 @@
 
   let props = $props()
   let buttons = props.buttons
-  let helptext = props.helptext
+  let selected = $derived(props.selected || null)
+  let helptext = props.helptext || {}
   let onselect = props.onselect
   let selectedRadioButton = $state(null)
-
   let showHelp = $state(false)
+
+  $effect(() => {
+    if (selected) { 
+      selectedRadioButton = selected
+    }
+  })
 
   const handleClick = (button) => {
     selectedRadioButton = button
     onselect(button)
-    store.makeButtonActive = true
   }
 
   const handleHelp = (button) => {

@@ -12,7 +12,7 @@
   import Overlay from '$src/components/home/Overlay.svelte'
   import { store } from '$src/stores/store.svelte'
   import { onMount } from 'svelte'
-  
+
   onMount(() => {
     store.loginLocation = 'home'
     if (!store.loggedIn) {

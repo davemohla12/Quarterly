@@ -33,7 +33,21 @@ const convertCurrencyToNumber = (currency) => {
 }
 
 const convertNumberToCurrency = (number) => {
-  return number.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+  if (number == null) { 
+    return '$0'
+  }
+  else {
+    return number.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+  }
+}
+
+const convertNumberToRoundedCurrency = (number) => {
+  if (number == null) {
+    return '$0'
+  }
+  else { 
+    return number.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })
+  }
 }
 
 const doesStateHaveQuarterlyTaxes = (state) => {
@@ -63,7 +77,67 @@ const formatCurrency = (currency) => {
   return formattedCurrency
 }
 
-const updateLoginState = (session) => {
+const convertLongToShortFilingStatus = (filingStatus) => {
+  if (filingStatus == 'Single') {
+    return 'single'
+  }
+  else if (filingStatus == 'Married Filing Jointly') {
+    return 'married'
+  }
+  else if (filingStatus == 'Married Filing Separately') {
+    return 'separate'
+  }
+  else if (filingStatus == 'Head of Household') {
+    return 'head'
+  }
+  else if (filingStatus == 'Qualifying Widow(er)') {
+    return 'widow'
+  }
+}
+
+const convertShortToLongFilingStatus = (filingStatus) => {
+  if (filingStatus == 'single') {
+    return 'Single'
+  }
+  else if (filingStatus == 'married') {
+    return 'Married Filing Jointly'
+  }
+  else if (filingStatus == 'separate') {
+    return 'Married Filing Separately'
+  }
+  else if (filingStatus == 'head') {
+    return 'Head of Household'
+  }
+  else if (filingStatus == 'widow') {
+    return 'Qualifying Widow(er)'
+  }
+} 
+
+const convertLongToShortIncomeExpectation = (incomeExpectation) => {  
+  if (incomeExpectation == 'Increase') {
+    return 'increase'
+  }
+  else if (incomeExpectation == 'Stay about the same') {
+    return 'same'
+  }
+  else if (incomeExpectation == 'Decrease') {
+    return 'decrease'
+  }
+}
+
+const convertShortToLongIncomeExpectation = (incomeExpectation) => {
+  if (incomeExpectation == 'increase') {
+    return 'Increase'
+  }
+  else if (incomeExpectation == 'same') {
+    return 'Stay about the same'
+  }
+  else if (incomeExpectation == 'decrease') {
+    return 'Decrease'
+  }
+} 
+
+const updateLoginState = async (session) => {
   if (session) {
     store.loggedIn = true
     store.email = session.user.email
@@ -95,8 +169,13 @@ export {
   convertStatusToLowerCase, 
   convertCurrencyToNumber, 
   convertNumberToCurrency, 
+  convertNumberToRoundedCurrency,
   doesStateHaveQuarterlyTaxes,
   formatCurrency,
   updateLoginState,
-  getLocalStorage
+  getLocalStorage,
+  convertLongToShortFilingStatus,
+  convertShortToLongFilingStatus,
+  convertLongToShortIncomeExpectation,
+  convertShortToLongIncomeExpectation
 } 

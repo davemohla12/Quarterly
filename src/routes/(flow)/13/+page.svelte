@@ -7,14 +7,27 @@
   import Later from '$src/components/app/Later.svelte'
   import { store } from '$src/stores/store.svelte'
   import { goto } from '$app/navigation'
-
+  import { getBelowMinimumTaxText } from '$src/utilities/federaltax'
+  
   const headingText = `You don't need to pay any federal quarterly taxes this year`
   const subheadingText = `Since you're living in multiple states this year, I can't estimate your state taxes — but you're all set on the federal side`
   const buttonText = 'DONE'
   store.makeButtonActive = true
   
   const handleDone = () => {
-    goto('/')
+    if (store.loggedIn && store.active == true) {
+      store.stateSupported = false
+      store.q1federalQuarterlyPayment = 0
+      store.q2federalQuarterlyPayment = 0
+      store.q3federalQuarterlyPayment = 0
+      store.q4federalQuarterlyPayment = 0
+      store.explanation = getBelowMinimumTaxText()
+      store.currentPage = 'dashboard'
+      goto('/dashboard')
+    }
+    else {
+      goto('/')
+    }
   }
 
   const handleKeyDown = (event) => {

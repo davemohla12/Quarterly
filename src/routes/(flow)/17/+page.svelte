@@ -11,6 +11,7 @@
   import { goto } from '$app/navigation'
   import { convertCurrencyToNumber, convertStateToUpperCase } from '$src/utilities/utilities'
   import { stateRules } from '$src/rules/state'
+  import { onMount } from 'svelte'
 
   const headingText = `What was your federal adjusted gross income last year?`
   const subheadingText = `You can find this on form ${federalRules.adjustedGrossIncomeForm} line ${federalRules.adjustedGrossIncomeLine}`
@@ -19,13 +20,29 @@
   let inputValue = $state(null)
   store.makeButtonActive = false
 
+  onMount(() => {
+    if (store.loggedIn) {
+      if (store.adjustedGrossIncomeLastYear) {
+        inputValue = store.adjustedGrossIncomeLastYear
+        store.makeButtonActive = true
+      }
+    }
+  })
+
+
   const handleInput = (value) => {
     inputValue = value
+    if (inputValue == null || inputValue == '$' || inputValue == '') {
+      store.makeButtonActive = false
+    }
+    else {
+      store.makeButtonActive = true
+    }
   }
 
   const handleNext = () => {
     store.adjustedGrossIncomeLastYear = convertCurrencyToNumber(inputValue)
-    if (stateRules[store.currentState].thisYearIncomeCalculationType.type == 'federalAGI' || !stateRules[store.currentState].lastYearSafeHarborRule) {
+    if (stateRules[store.currentState]?.thisYearIncomeCalculationType?.type == 'federalAGI' || !stateRules[store.currentState]?.lastYearSafeHarborRule) {
       store.stateIncomeLastYear = store.adjustedGrossIncomeLastYear
       store.currentPage = '18'
       goto('/18')
@@ -54,6 +71,6 @@
 <Avatar />
 <Heading text={headingText} desktopwidth="550px" mobilewidth="300px" />
 <Subheading text={subheadingText} desktopwidth="400px" />
-<DollarInput placeholder={placholderText} onInput={handleInput} />
+<DollarInput placeholder={placholderText} value={inputValue} onInput={handleInput} />
 <Button text={buttonText} onclick={handleNext}/>
 <Later />

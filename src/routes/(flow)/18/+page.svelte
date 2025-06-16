@@ -9,7 +9,8 @@
   import { store } from '$src/stores/store.svelte'
   import { goto } from '$app/navigation'
   import { stateRules } from '$src/rules/state'
-  import { convertStateToUpperCase } from '$src/utilities/utilities'
+  import { convertLongToShortIncomeExpectation, convertShortToLongIncomeExpectation } from '$src/utilities/utilities'
+  import { onMount } from 'svelte'  
   
   const headingText = `What do you expect your income to do this year relative to last year?`
   const radioButtons = ['Increase', 'Stay about the same', 'Decrease']
@@ -18,20 +19,22 @@
   let selectedRadioButton = $state(null)
   store.makeButtonActive = false
   
+  onMount(() => {
+    if (store.loggedIn) {
+      if (store.incomeExpectationThisYear) {
+        selectedRadioButton = convertShortToLongIncomeExpectation(store.incomeExpectationThisYear)
+        store.makeButtonActive = true
+      }
+    }
+  })
+
   const handleSelect = (button) => {
     selectedRadioButton = button
+    store.makeButtonActive = true
   }
 
   const handleNext = () => {
-    if (selectedRadioButton == 'Increase') {
-      store.incomeExpectationThisYear = 'increase'
-    }
-    else if (selectedRadioButton == 'Stay about the same') {
-      store.incomeExpectationThisYear = 'same'
-    }
-    else {
-      store.incomeExpectationThisYear = 'decrease'
-    }
+    store.incomeExpectationThisYear = convertLongToShortIncomeExpectation(selectedRadioButton)
     if (store.incomeExpectationThisYear == 'decrease' || (stateRules[store.currentState].stateHasQuarterlyTaxes && !stateRules[store.currentState].lastYearSafeHarborRule)) {  
       store.currentPage = '19'
       goto('/19')
@@ -59,6 +62,6 @@
 <Header />
 <Avatar />
 <Heading text={headingText} desktopwidth="500px" mobilewidth="300px" />
-<RadioButtons buttons={radioButtons} onselect={handleSelect}/>
+<RadioButtons buttons={radioButtons} selected={selectedRadioButton} onselect={handleSelect}/>
 <Button text={buttonText} onclick={handleNext} />
 <Later />

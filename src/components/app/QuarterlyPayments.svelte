@@ -1,7 +1,7 @@
 <script>
   import { formatCurrency } from "$src/utilities/utilities"
   import { onMount } from "svelte"
-  import { convertStateToUpperCase } from "$src/utilities/utilities"
+  import { convertStateToAllUpperCase } from "$src/utilities/utilities"
 
   let props = $props()
   let federalPayment1 = props.federalPayment1
@@ -14,16 +14,15 @@
   let statePayment2 = props.statePayment2 || 0
   let statePayment3 = props.statePayment3 || 0
   let statePayment4 = props.statePayment4 || 0
-
 </script>
 
 <div class="container">
   <div class="column1">
     <div class="header">DATE</div>
-    <div class="cell">4-15-25</div>
-    <div class="cell">6-16-25</div>
-    <div class="cell">9-15-25</div>
-    <div class="cell">1-15-26</div>
+    <div class="cell">Apr 15</div>
+    <div class="cell">Jun 16</div>
+    <div class="cell">Sep 15</div>
+    <div class="cell">Jan 15</div>
   </div>
   <div class="column2">
     <div class="header">FEDERAL</div>
@@ -34,7 +33,7 @@
   </div>
   {#if showState}
     <div class="column3">
-      <div class="header">STATE</div>
+      <div class="header">{convertStateToAllUpperCase(stateName)}</div>
       <div class="cell">{formatCurrency(statePayment1)}</div>
       <div class="cell">{formatCurrency(statePayment2)}</div>
       <div class="cell">{formatCurrency(statePayment3)}</div>
@@ -57,7 +56,6 @@
     font-size: 15px;
     font-weight: var(--bold);
     margin-bottom: 10px;
-
   }
   .cell {
     font-size: 16px;
@@ -68,7 +66,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    min-width: 75px;
+    min-width: 60px;
   }
   .column2 {
     display: flex;
@@ -80,7 +78,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-left: 30px;
+    margin-left: 20px;
   }
 
   @media (min-width: 768px) {

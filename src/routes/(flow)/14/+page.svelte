@@ -21,8 +21,14 @@
   let inputValue = $state(null)
   store.makeButtonActive = false
 
-  onMount(async() => {
+  onMount(() => {
     subheadingText = determineSubheadingText()
+    if (store.loggedIn) {
+      if (store.stateTaxPaidLastYear) {
+        inputValue = store.stateTaxPaidLastYear
+        store.makeButtonActive = true
+      }
+    }
   })
 
   const determineSubheadingText = () => {
@@ -39,6 +45,12 @@
 
   const handleInput = (value) => {
     inputValue = value
+    if (inputValue == null || inputValue == '$' || inputValue == '') {
+      store.makeButtonActive = false
+    }
+    else {
+      store.makeButtonActive = true
+    }
   }
 
   const handleNext = () => {
@@ -73,6 +85,6 @@
 <Avatar />
 <Heading text={headingText} desktopwidth="550px" mobilewidth="290px" />
 <Subheading text={subheadingText} desktopwidth="400px" />
-<DollarInput placeholder={placholderText} onInput={handleInput} />
+<DollarInput placeholder={placholderText} value={inputValue} onInput={handleInput} />
 <Button text={buttonText} onclick={handleNext} />
 <Later />

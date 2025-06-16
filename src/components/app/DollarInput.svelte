@@ -6,10 +6,26 @@
   let props = $props()
   let onInput = props.onInput
   let placeholder = props.placeholder || ''
+  let value = $derived(props.value || '')
   let helpText = props.helpText || ''
   let isFocused = $state(false)
-  let inputValue = $state('')
+  let inputValue = $derived(formatCurrency(value))
   let showHelp = $state(false)
+  let showReset = $derived(props.showReset || false)
+  let onreset = props.onreset
+
+  onMount(() => {
+    document.addEventListener('click', handleClickOutside)
+    return () => {
+      document.removeEventListener('click', handleClickOutside)
+    }
+  })
+
+  $effect(() => {
+    if (value) {
+      inputValue = formatCurrency(value)
+    }
+  })
 
   const formatCurrency = (value) => {
     if (!value) return ''
@@ -22,22 +38,12 @@
     })
     return `$${formattedNumber}`
   }
-  
-  const enableButton = () => {
-    if (inputValue == null || inputValue == '$' || inputValue == '') {
-      store.makeButtonActive = false
-    }
-    else {
-      store.makeButtonActive = true
-    }
-  }
 
   const handleInput = (event) => {
     const value = event.target.value
     const cleanValue = value.replace(/[$,]/g, '')
     if (cleanValue === '') {
       inputValue = ''
-      enableButton()
       onInput('')
       return
     }
@@ -51,7 +57,6 @@
     }
     const formattedValue = formatCurrency(cleanValue)
     inputValue = formattedValue
-    enableButton()
     onInput(inputValue)
   }
   
@@ -64,7 +69,6 @@
     if (inputValue) {
       const formattedValue = formatCurrency(inputValue)
       inputValue = formattedValue
-      enableButton()
       onInput(inputValue)
       event.target.value = formattedValue
     }
@@ -79,15 +83,10 @@
       showHelp = false
     }
   }
-  
-  onMount(() => {
-    document.addEventListener('click', handleClickOutside)
-    return () => {
-      document.removeEventListener('click', handleClickOutside)
-    }
-  })
 
-
+  const handleReset = () => {
+    onreset()
+  }
 </script>
 
 <div class="container">
@@ -101,6 +100,11 @@
     <div class="helptext">{helpText}</div>
   {/if}
   <div class="placeholder" class:active={isFocused || inputValue} >{placeholder}</div>
+  {#if showReset}
+    <Clickable onclick={() => handleReset()}>   
+      <img class="reset" src="/images/resetfield.png" alt="Reset"/>
+    </Clickable>
+  {/if}
 </div>
 
 <style>
@@ -109,8 +113,7 @@
     margin-left: auto;
     margin-right: auto;
     margin-top: 20px;
-    width: calc(100% - 40px);
-    width: 320px;
+    max-width: 320px;
   }
   .input {
     border: 1px solid var(--gray2);
@@ -168,6 +171,13 @@
     top: -7px;
     left: 16px;
     font-size: 12px;
+  }
+  .reset {
+    position: absolute;
+    right: -45px;
+    top: 17px;
+    width: 18px;
+    height: 21px;
   }
   @media (min-width: 768px) { 
     .container {

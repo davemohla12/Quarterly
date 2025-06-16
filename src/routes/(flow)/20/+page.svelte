@@ -10,6 +10,7 @@
   import { goto } from '$app/navigation'
   import { store } from '$src/stores/store.svelte'
   import { convertStateToUpperCase } from '$src/utilities/utilities'
+  import { onMount } from 'svelte'
   
   const headingText = `What are your expected deductible expenses this year?`
   const buttonText = 'NEXT'
@@ -32,24 +33,72 @@
   let inputValue5 = $state(null)
   store.makeButtonActive = false
 
+  onMount(() => {
+    if (store.loggedIn) {
+      if (store.businessExpensesThisYear) {
+        inputValue1 = store.businessExpensesThisYear
+        store.makeButtonActive = true
+      }
+      if (store.retirementContributionsThisYear) {
+        inputValue2 = store.retirementContributionsThisYear
+        store.makeButtonActive = true
+      }
+      if (store.studentLoanInterestThisYear) {
+        inputValue3 = store.studentLoanInterestThisYear
+        store.makeButtonActive = true
+      }
+      if (store.healthInsuranceThisYear) {
+        inputValue4 = store.healthInsuranceThisYear
+        store.makeButtonActive = true
+        }
+      if (store.otherDeductionsThisYear) {
+        inputValue5 = store.otherDeductionsThisYear
+        store.makeButtonActive = true
+      }
+    }
+  })
+
   const handleInput1 = (value) => {
-    inputValue1 = value
+    inputValue1 = value 
+    enableButton()
   }
 
   const handleInput2 = (value) => {
     inputValue2 = value
+    enableButton()
   }
 
   const handleInput3 = (value) => {
-    inputValue3 = value
+    inputValue3 = value 
+    enableButton()
   }
       
   const handleInput4 = (value) => {
     inputValue4 = value
+    enableButton()
   }
 
   const handleInput5 = (value) => {
     inputValue5 = value
+    enableButton()
+  }   
+
+  const validValue = (value) => {
+    if (value == null || value == '$' || value == '') {
+      return false
+    }
+    else {
+      return true
+    }
+  }
+
+  const enableButton = () => {
+    if (validValue(inputValue1) || validValue(inputValue2) || validValue(inputValue3) || validValue(inputValue4) || validValue(inputValue5)) {
+      store.makeButtonActive = true
+    }
+    else {
+      store.makeButtonActive = false
+    }
   }
 
   const handleNext = () => {
@@ -78,10 +127,10 @@
 <Header />
 <Avatar />
 <Heading text={headingText} desktopwidth="500px"  mobilewidth="280px"/>
-<DollarInput placeholder={placholderText1} onInput={handleInput1} helpText={helpText1} />
-<DollarInput placeholder={placholderText2} onInput={handleInput2} helpText={helpText2} />
-<DollarInput placeholder={placholderText3} onInput={handleInput3} helpText={helpText3} />
-<DollarInput placeholder={placholderText4} onInput={handleInput4} helpText={helpText4} />
-<DollarInput placeholder={placholderText5} onInput={handleInput5} helpText={helpText5} />
+<DollarInput placeholder={placholderText1} value={inputValue1} onInput={handleInput1} helpText={helpText1} />
+<DollarInput placeholder={placholderText2} value={inputValue2} onInput={handleInput2} helpText={helpText2} />
+<DollarInput placeholder={placholderText3} value={inputValue3} onInput={handleInput3} helpText={helpText3} />
+<DollarInput placeholder={placholderText4} value={inputValue4} onInput={handleInput4} helpText={helpText4} />
+<DollarInput placeholder={placholderText5} value={inputValue5} onInput={handleInput5} helpText={helpText5} />
 <Button text={buttonText} onclick={handleNext} />
 <Later />

@@ -8,7 +8,8 @@
   import { convertStateToUpperCase } from '$src/utilities/utilities' 
   import { store } from '$src/stores/store.svelte'  
   import { goto } from '$app/navigation'
-  import { stateRules } from '$src/rules/state'
+  import { stateRules } from '$src/rules/state' 
+  import { onMount } from 'svelte'
 
   const headingText = `Do you plan to live in ${convertStateToUpperCase(store.currentState)} all of this year?`
   const radioButtons = ['Yes', 'No']
@@ -17,8 +18,22 @@
   let selectedRadioButton = $state(null)
   store.makeButtonActive = false
 
+  onMount(() => {
+    if (store.loggedIn) {
+      if (store.livingInCurrentStateAllThisYear == true) {
+        selectedRadioButton = 'Yes'
+        store.makeButtonActive = true
+      }
+      else if (store.livingInCurrentStateAllThisYear == false) {
+        selectedRadioButton = 'No'
+        store.makeButtonActive = true
+      }
+    }
+  })
+
   const handleSelect = (button) => {
     selectedRadioButton = button
+    store.makeButtonActive = true
   }
 
   const handleNext = () => {
@@ -61,6 +76,6 @@
 <Header />
 <Avatar />
 <Heading text={headingText} desktopwidth="500px" mobilewidth="300px" />
-<RadioButtons buttons={radioButtons} onselect={handleSelect}/>
+<RadioButtons buttons={radioButtons} selected={selectedRadioButton} onselect={handleSelect}/>
 <Button text={buttonText} onclick={handleNext} />
 <Later />

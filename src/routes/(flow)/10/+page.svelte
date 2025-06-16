@@ -8,8 +8,9 @@
   import Later from '$src/components/app/Later.svelte'
   import { store } from '$src/stores/store.svelte'
   import { goto } from '$app/navigation'  
-  import { convertStatusToLowerCase } from '$src/utilities/utilities'
+  import { convertLongToShortFilingStatus, convertShortToLongFilingStatus } from '$src/utilities/utilities'
   import { stateRules } from '$src/rules/state.js'
+  import { onMount } from 'svelte'  
 
   const headingText = `How do you plan to file your taxes this year?`
   const radioButtons = ['Single', 'Married Filing Jointly', 'Married Filing Separately', 'Head of Household', 'Qualifying Widow(er)']
@@ -18,30 +19,25 @@
     text: `Choose this if your spouse died in the last two years, you haven’t remarried, and you’re supporting a dependent child`
   }
   const buttonText = 'NEXT'
-  
   let selectedRadioButton = $state(null)
   store.makeButtonActive = false
 
+  onMount(() => {
+    if (store.loggedIn) {
+      if (store.filingStatus) {
+        selectedRadioButton = convertShortToLongFilingStatus(store.filingStatus)
+        store.makeButtonActive = true
+      }
+    }
+  })
+
   const handleSelect = (button) => {
-    selectedRadioButton = button
+    selectedRadioButton = button  
+    store.makeButtonActive = true
   }
 
   const handleNext = () => {
-    if (selectedRadioButton == 'Single') {
-      store.filingStatus = 'single'
-    }
-    else if (selectedRadioButton == 'Married Filing Jointly') {
-      store.filingStatus = 'married'
-    }
-    else if (selectedRadioButton == 'Married Filing Separately') {
-      store.filingStatus = 'separate'
-    }
-    else if (selectedRadioButton == 'Head of Household') {
-      store.filingStatus = 'head'
-    } 
-    else {
-      store.filingStatus = 'widow'
-    }
+    store.filingStatus = convertLongToShortFilingStatus(selectedRadioButton)
     if (store.stateSupported && stateRules[store.currentState].standardDeductionMethod.type == 'exemptions') {
       store.currentPage = '10.5'
       goto('/10.5')
@@ -63,15 +59,12 @@
     }
   }
 
-  const handleSelection = (selection) => {
-    store.filingStatus = convertStatusToLowerCase(selection)
-  }
 </script>
 
 <svelte:window on:keydown={handleKeyDown} />
 <Header />
 <Avatar />
 <Heading text={headingText} desktopwidth="500px" mobilewidth="300px" />
-<RadioButtons buttons={radioButtons} helptext={radioHelpText} onselect={handleSelect}/>
+<RadioButtons buttons={radioButtons} helptext={radioHelpText} selected={selectedRadioButton} onselect={handleSelect}/>
 <Button text={buttonText} onclick={handleNext} />
 <Later />

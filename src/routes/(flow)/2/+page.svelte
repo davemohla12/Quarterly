@@ -7,14 +7,32 @@
   import Later from '$src/components/app/Later.svelte'
   import { goto } from '$app/navigation'
   import { store } from '$src/stores/store.svelte'
-
+  import { getNoIncomeText } from '$src/utilities/federaltax'
+  
   const headingText = `You don't need to pay any quarterly taxes this year`
-  const subheadingText = `Since all your income has taxes automatically withheld, the IRS doesn't require you to make separate quarterly payments`
+  const subheadingText = `Since all your income has taxes automatically withheld, the IRS doesn't require you to make separate quarterly payments.`
   const buttonText = 'DONE' 
   store.makeButtonActive = true
 
   const handleDone = () => {
-    goto('/')
+    if (store.loggedIn && store.active == true) {
+      store.stateSupported = true
+      store.currentState = 'State'
+      store.q1federalQuarterlyPayment = 0
+      store.q2federalQuarterlyPayment = 0
+      store.q3federalQuarterlyPayment = 0
+      store.q4federalQuarterlyPayment = 0
+      store.q1StateQuarterlyPayment = 0
+      store.q2StateQuarterlyPayment = 0
+      store.q3StateQuarterlyPayment = 0
+      store.q4StateQuarterlyPayment = 0
+      store.explanation = getNoIncomeText()
+      store.currentPage = 'dashboard'
+      goto('/dashboard')
+    }
+    else {
+      goto('/')
+    }
   }
 
   const handleKeyDown = (event) => {

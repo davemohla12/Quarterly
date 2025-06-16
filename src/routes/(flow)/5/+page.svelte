@@ -10,6 +10,7 @@
   import { goto } from '$app/navigation'
   import { doesStateHaveQuarterlyTaxes } from '$src/utilities/utilities'
   import { stateRules } from '$src/rules/state'
+  import { onMount } from 'svelte'
 
   const headingText = `Did you live in ${convertStateToUpperCase(store.currentState)} all of last year?`
   const radioButtons = ['Yes', 'No']
@@ -17,8 +18,23 @@
   let selectedRadioButton = $state(null)  
   store.makeButtonActive = false
 
+  
+  onMount(() => {
+    if (store.loggedIn) {
+      if (store.livedInCurrentStateAllLastYear == true) {
+        selectedRadioButton = 'Yes'
+        store.makeButtonActive = true
+      }
+      else if (store.livedInCurrentStateAllLastYear == false) {
+        selectedRadioButton = 'No'
+        store.makeButtonActive = true
+      }
+    }
+  })
+
   const handleSelect = (button) => {
     selectedRadioButton = button
+    store.makeButtonActive = true
   }
 
   const handleNext = () => {
@@ -57,6 +73,6 @@
 <Header />
 <Avatar />
 <Heading text={headingText} desktopwidth="450px" mobilewidth="300px" />
-<RadioButtons buttons={radioButtons} onselect={handleSelect} />
+<RadioButtons buttons={radioButtons} selected={selectedRadioButton} onselect={handleSelect} />
 <Button text={buttonText} onclick={handleNext} />
 <Later />

@@ -10,17 +10,32 @@
   import { goto } from '$app/navigation'
   import { convertCurrencyToNumber } from '$src/utilities/utilities'
   import { convertStateToUpperCase } from '$src/utilities/utilities'
-    
+  import { onMount } from 'svelte'
+  
   const headingText = `What are your expected federal W2 witholdings for this year?`
   const subheadingText = `To determine this, find the number in box 2 of each W2 paycheck and then multiply by the number of W2s you plan to get this year`
   const buttonText = 'NEXT'
   const placeholderText = 'Withholdings'
-  
   store.makeButtonActive = false
   let inputValue = $state(null)
 
+  onMount(() => {
+    if (store.loggedIn) {
+      if (store.federalWithholdingsThisYear) {
+        inputValue = store.federalWithholdingsThisYear
+        store.makeButtonActive = true
+      }
+    }
+  })
+
   const handleInput = (value) => {
     inputValue = value
+    if (inputValue == null || inputValue == '$' || inputValue == '') {
+      store.makeButtonActive = false
+    }
+    else {
+      store.makeButtonActive = true
+    }
   }
   
   const handleNext = () => {
@@ -60,6 +75,6 @@
 <Avatar />
 <Heading text={headingText} desktopwidth="500px" mobilewidth="300px" />
 <Subheading text={subheadingText} desktopwidth="500px" mobilewidth="300px" />
-<DollarInput placeholder={placeholderText} onInput={handleInput} />
+<DollarInput placeholder={placeholderText} value={inputValue} onInput={handleInput} />
 <Button text={buttonText} onclick={handleNext} />
 <Later />

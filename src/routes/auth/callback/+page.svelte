@@ -30,18 +30,23 @@
       if (session) {
         await updateLoginState(session)
         if (store.loginLocation == 'home') {
-          await saveDatabaseToLocalStorage()
           store.currentPage = await getCurrentPageFromDatabase()
+          await saveDatabaseToLocalStorage()
           goto('/')
         }
         else if (store.loginLocation == 'later') {
-          await saveLocalStorageToDatabase()
           goto('/')
           store.showResumeBanner = true
+          await saveLocalStorageToDatabase()
         }
         else if (store.loginLocation == 'flow') {
           store.currentPage = 'dashboard'
+          goto(`/${store.currentPage}`)
           await saveLocalStorageToDatabase()
+        }
+        else if (store.loginLocation == 'dashboard') {
+          store.currentPage = 'dashboard'
+          await saveDatabaseToLocalStorage()
           goto(`/${store.currentPage}`)
         }
       }

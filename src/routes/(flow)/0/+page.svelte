@@ -7,9 +7,8 @@
   import Later from '$src/components/app/Later.svelte'
   import { store } from '$src/stores/store.svelte'  
   import { goto } from '$app/navigation'
-  import { convertStateToUpperCase } from '$src/utilities/utilities'
   import { onMount } from 'svelte'
-  
+
   const headingText = `Hi! I'm Zenguider`
   const subheadingText = `I'll help you estimate and pay your quarterly taxes`
   const buttonText = 'NEXT'

@@ -1,25 +1,26 @@
 <script>
-  import { getFederalTaxes, getFederalQuarterlyPayment } from '$src/utilities/federaltax'
+  import { getFederalTaxes, getFederalQuarterlyPayment, getFederalSinglePayment } from '$src/utilities/federaltax'
   import { formatCurrency } from '$src/utilities/utilities'
 
   let currentQuarter = 'Q2'
-  let filingStatus = 'separate'
-  let federalTaxPaidLastYear = 8500
-  let adjustedGrossIncomeLastYear = 95000
-  let incomeExpectationThisYear = 'increase'
-  let expectedTotalIncomeThisYear = 99750
-  let businessExpensesThisYear = 15000
-  let retirementContributionsThisYear = 6000
-  let studentLoanInterestThisYear = 2500
-  let healthInsuranceThisYear = 4000
-  let otherDeductionsThisYear = 1000
-  let withholdings = 2500
+  let filingStatus = 'married'
+  let federalTaxPaidLastYear = 20000
+  let adjustedGrossIncomeLastYear = 180000
+  let incomeExpectationThisYear = 'decrease'
+  let expectedTotalIncomeThisYear = 100000
+  let businessExpensesThisYear = 10000
+  let retirementContributionsThisYear = 8000
+  let studentLoanInterestThisYear = 500
+  let healthInsuranceThisYear = 5000
+  let otherDeductionsThisYear = 1500
+  let withholdings = 10000
   let q1PaymentMade = 0
-  let q2PaymentMade = null
-  let q3PaymentMade = null
+  let q2PaymentMade = 0
+  let q3PaymentMade = 0
 
   let taxes = getFederalTaxes(incomeExpectationThisYear, federalTaxPaidLastYear, adjustedGrossIncomeLastYear, filingStatus, expectedTotalIncomeThisYear, businessExpensesThisYear, retirementContributionsThisYear, studentLoanInterestThisYear, healthInsuranceThisYear, otherDeductionsThisYear)
-  let payment = getFederalQuarterlyPayment(currentQuarter, taxes.safeHarborFederalTaxesThisYear, withholdings, q1PaymentMade, q2PaymentMade, q3PaymentMade)
+  let payment = getFederalQuarterlyPayment(currentQuarter, taxes.safeHarborFederalTaxesThisYear, withholdings, q1PaymentMade, q2PaymentMade, q3PaymentMade, taxes.initialExplanation)
+  let singlePayment = getFederalSinglePayment(taxes.safeHarborFederalTaxesThisYear, withholdings, q1PaymentMade, q2PaymentMade, q3PaymentMade, taxes.initialExplanation)
 
 </script> 
 
@@ -53,7 +54,16 @@
     <div>q2federalQuarterlyPayment = {formatCurrency(payment.q2federalQuarterlyPayment)}</div>
     <div>q3federalQuarterlyPayment = {formatCurrency(payment.q3federalQuarterlyPayment)}</div>
     <div>q4federalQuarterlyPayment = {formatCurrency(payment.q4federalQuarterlyPayment)}</div>
+    <div>explanation = {payment.explanation}</div>
   </div>
+  <div class="section">
+    <div>SINGLE PAYMENT</div>
+    <div>due = {formatCurrency(singlePayment.due)}</div>
+    <div>paid = {formatCurrency(singlePayment.paid)}</div>
+    <div>remaining = {formatCurrency(singlePayment.remaining)}</div>
+    <div>explanation = {singlePayment.explanation}</div>
+  </div>
+  
 </div>
 
 <style>

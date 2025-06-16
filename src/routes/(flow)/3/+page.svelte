@@ -7,15 +7,31 @@
   import Dropdown from '$src/components/app/Dropdown.svelte'
   import { store } from '$src/stores/store.svelte'    
   import { goto } from '$app/navigation'
-  import { doesStateHaveQuarterlyTaxes, convertStateToLowerCase } from '$src/utilities/utilities'
+  import { doesStateHaveQuarterlyTaxes, convertStateToLowerCase, convertStateToUpperCase } from '$src/utilities/utilities'
+  import { onMount } from 'svelte'
   
   const headingText = `What state do you reside in?`
   const buttonText = 'NEXT'
-
   store.makeButtonActive = false
+  let currentState = $state(null)
+
+  onMount(() => {
+    if (store.loggedIn) {
+      if (store.currentState) {
+        currentState = convertStateToUpperCase(store.currentState)
+        store.makeButtonActive = true
+      }
+    }
+  })
 
   const handleSelection = (selection) => {
     store.currentState = convertStateToLowerCase(selection)
+    if (store.currentState != '') {
+      store.makeButtonActive = true
+    }
+    else { 
+      store.makeButtonActive = false
+    }
   }
 
   const handleNext = () => {
@@ -50,6 +66,6 @@
 <Header />
 <Avatar />
 <Heading text={headingText} />
-<Dropdown text="State" values={store.states} onselection={handleSelection}/>
+<Dropdown text="State" values={store.states} selected={currentState} onselection={handleSelection}/>
 <Button text={buttonText} onclick={handleNext} />
 <Later />

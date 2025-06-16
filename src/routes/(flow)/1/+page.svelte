@@ -8,13 +8,28 @@
   import Later from '$src/components/app/Later.svelte'
   import { goto } from '$app/navigation'
   import { store } from '$src/stores/store.svelte'
+  import { onMount } from 'svelte'
 
   const headingText = `Will you earn any income this year that isn't from a regular paycheck?`
   const subheadingText = `This includes freelance income, self-employment income, investment income, rental income, retirement withdrawals, alimony, or anything that doesn't have taxes withheld automatically`
   const radioButtons = ['Yes', 'No']
   const buttonText = 'NEXT'
+
   let selectedRadioButton = $state(null)
   store.makeButtonActive = false
+
+  onMount(() => {
+    if (store.loggedIn) {
+      if (store.earnNonPaycheckIncomeThisYear == true) {
+        selectedRadioButton = 'Yes'
+        store.makeButtonActive = true
+      }
+      else if (store.earnNonPaycheckIncomeThisYear == false) {
+        selectedRadioButton = 'No'
+        store.makeButtonActive = true
+      }
+    }
+  })
 
   const handleSelect = (button) => {
     selectedRadioButton = button
@@ -52,6 +67,6 @@
 <Avatar />
 <Heading text={headingText} />
 <Subheading text={subheadingText} mobilewidth="320px"/>
-<RadioButtons buttons={radioButtons} onselect={handleSelect}/>
+<RadioButtons buttons={radioButtons} selected={selectedRadioButton} onselect={handleSelect}/>
 <Button text={buttonText} onclick={handleNext}/>
 <Later />

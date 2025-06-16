@@ -11,6 +11,7 @@
   let hideBack = props.hideBack || false
   let hideIcons = props.hideIcons || false
   let hideReset = props.hideReset || false
+  let onBack = props.onBack || (() => {})
   let showAccountMenu = $state(false)
 
   onMount(() => {
@@ -22,6 +23,7 @@
 
   const goBack = () => {
     history.back()
+    onBack()
   }
 
   const handleLogoClick = () => {
@@ -67,7 +69,7 @@
   </Clickable>
   {#if !hideIcons}
     <div class="right">
-      {#if !hideReset}
+      {#if !hideReset && !(store.loggedIn && store.active)}
         <Clickable onclick={handleReset}>
           <img class="reset" src="/images/reset.png" alt="Reset" />
         </Clickable>

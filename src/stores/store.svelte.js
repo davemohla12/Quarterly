@@ -21,6 +21,13 @@ const store = $state( {
     localStorage.setItem('loginLocation', value)
   },
 
+  get sendDashboardEmail() {
+    return getLocalStorage('sendDashboardEmail')
+  },
+  set sendDashboardEmail(value) {
+    localStorage.setItem('sendDashboardEmail', value)
+  },
+
   get currentPage() {
     return getLocalStorage('currentPage') || '0'
   },
@@ -271,6 +278,16 @@ const store = $state( {
     }
   },
 
+  get payPreference() {
+    return getLocalStorage('payPreference')
+  },
+  set payPreference(value) {
+    localStorage.setItem('payPreference', value)
+    if (store.loggedIn) {
+      setValueInDatabase('payPreference', value)
+    }
+  },
+
   get q1FederalPaymentMade() {
     return getLocalStorage('q1FederalPaymentMade')
   },
@@ -382,6 +399,36 @@ const store = $state( {
     }
   },
 
+  get singleFederalDue() {
+    return getLocalStorage('singleFederalDue')
+  },
+  set singleFederalDue(value) {
+    localStorage.setItem('singleFederalDue', value)
+    if (store.loggedIn) {
+      setValueInDatabase('singleFederalDue', value)
+    }
+  },
+
+  get singleFederalPaid() {
+    return getLocalStorage('singleFederalPaid')
+  },
+  set singleFederalPaid(value) {
+    localStorage.setItem('singleFederalPaid', value)
+    if (store.loggedIn) {
+      setValueInDatabase('singleFederalPaid', value)
+    }
+  },
+
+  get singleFederalRemaining() {
+    return getLocalStorage('singleFederalRemaining')
+  },
+  set singleFederalRemaining(value) {
+    localStorage.setItem('singleFederalRemaining', value)
+    if (store.loggedIn) {
+      setValueInDatabase('singleFederalRemaining', value)
+    }
+  },
+
   get q1federalQuarterlyPayment() {
     return getLocalStorage('q1federalQuarterlyPayment')
   },
@@ -472,6 +519,36 @@ const store = $state( {
     }
   },
 
+  get singleStateDue() {
+    return getLocalStorage('singleStateDue')
+  },
+  set singleStateDue(value) {
+    localStorage.setItem('singleStateDue', value)
+    if (store.loggedIn) {
+      setValueInDatabase('singleStateDue', value)
+    }
+  },
+
+  get singleStatePaid() {
+    return getLocalStorage('singleStatePaid')
+  },
+  set singleStatePaid(value) {
+    localStorage.setItem('singleStatePaid', value)
+    if (store.loggedIn) {
+      setValueInDatabase('singleStatePaid', value)
+    }
+  },
+
+  get singleStateRemaining() {
+    return getLocalStorage('singleStateRemaining')
+  },
+  set singleStateRemaining(value) {
+    localStorage.setItem('singleStateRemaining', value)
+    if (store.loggedIn) {
+      setValueInDatabase('singleStateRemaining', value)
+    }
+  },
+
   get q1StateQuarterlyPayment() {
     return getLocalStorage('q1StateQuarterlyPayment')
   },
@@ -512,6 +589,126 @@ const store = $state( {
     }
   },
 
+  get singleFederalMarkPaid() {
+    return getLocalStorage('singleFederalMarkPaid')
+  },
+  set singleFederalMarkPaid(value) {
+    localStorage.setItem('singleFederalMarkPaid', value)
+    if (store.loggedIn) {
+      setValueInDatabase('singleFederalMarkPaid', value)
+    }
+  },
+
+  get q1FederalPaid() {
+    return getLocalStorage('q1FederalPaid')
+  },
+  set q1FederalPaid(value) {
+    localStorage.setItem('q1FederalPaid', value)
+    if (store.loggedIn) {
+      setValueInDatabase('q1FederalPaid', value)
+    }
+  },
+
+  get q2FederalPaid() {
+    return getLocalStorage('q2FederalPaid')
+  },
+  set q2FederalPaid(value) {
+    localStorage.setItem('q2FederalPaid', value)
+    if (store.loggedIn) {
+      setValueInDatabase('q2FederalPaid', value)
+    }
+  },
+
+  get q3FederalPaid() {
+    return getLocalStorage('q3FederalPaid')
+  },
+  set q3FederalPaid(value) {
+    localStorage.setItem('q3FederalPaid', value)
+    if (store.loggedIn) {
+      setValueInDatabase('q3FederalPaid', value)
+    }
+  },
+
+  get q4FederalPaid() {
+    return getLocalStorage('q4FederalPaid')
+  },
+  set q4FederalPaid(value) {
+    localStorage.setItem('q4FederalPaid', value)
+    if (store.loggedIn) {
+      setValueInDatabase('q4FederalPaid', value)
+    }
+  },
+
+  get singleStateMarkPaid() {     
+    return getLocalStorage('singleStateMarkPaid')
+  },
+  set singleStateMarkPaid(value) {
+    localStorage.setItem('singleStateMarkPaid', value)
+    if (store.loggedIn) {
+      setValueInDatabase('singleStateMarkPaid', value)
+    }
+  },
+
+  get q1StatePaid() {
+    return getLocalStorage('q1StatePaid')
+  },
+  set q1StatePaid(value) {
+    localStorage.setItem('q1StatePaid', value)
+    if (store.loggedIn) {
+      setValueInDatabase('q1StatePaid', value)
+    }
+  },
+
+  get q2StatePaid() {
+    return getLocalStorage('q2StatePaid')
+  },
+  set q2StatePaid(value) {
+    localStorage.setItem('q2StatePaid', value)
+    if (store.loggedIn) {
+      setValueInDatabase('q2StatePaid', value)
+    }
+  },  
+
+  get q3StatePaid() {     
+    return getLocalStorage('q3StatePaid')
+  },
+  set q3StatePaid(value) {
+    localStorage.setItem('q3StatePaid', value)
+    if (store.loggedIn) {
+      setValueInDatabase('q3StatePaid', value)
+    }
+  },
+
+  get q4StatePaid() {
+    return getLocalStorage('q4StatePaid')
+  },
+  set q4StatePaid(value) {
+    localStorage.setItem('q4StatePaid', value)
+    if (store.loggedIn) {
+      setValueInDatabase('q4StatePaid', value)
+    }
+  },
+  
+  get explanation() {
+    return getLocalStorage('explanation')
+  },
+  set explanation(value) {
+    localStorage.setItem('explanation', value)
+    if (store.loggedIn) {
+      setValueInDatabase('explanation', value)
+    }
+  },
+
+  get active() {
+    return getLocalStorage('active')
+  },
+  set active(value) {
+    localStorage.setItem('active', value)
+    if (store.loggedIn) {
+      setValueInDatabase('active', value)
+    }
+  },
+
   fields: [
     'currentPage',
     'earnNonPaycheckIncomeThisYear',
@@ -538,6 +735,7 @@ const store = $state( {
     'hasW2',
     'federalWithholdingsThisYear',
     'stateWithholdingsThisYear',
+    'payPreference',
     'q1FederalPaymentMade',
     'q2FederalPaymentMade',
     'q3FederalPaymentMade',
@@ -549,6 +747,9 @@ const store = $state( {
     'safeHarborFederalTaxesThisYear',
     'nonWithheldSafeHarborFederalTaxThisYear',
     'safeToSkipFederalPayment',
+    'singleFederalDue',
+    'singleFederalPaid',
+    'singleFederalRemaining',
     'q1federalQuarterlyPayment',
     'q2federalQuarterlyPayment',
     'q3federalQuarterlyPayment',
@@ -558,10 +759,25 @@ const store = $state( {
     'safeHarborStateTaxesThisYear',
     'nonWithheldSafeHarborStateTaxThisYear',
     'safeToSkipStatePayment',
+    'singleStateDue',
+    'singleStatePaid',
+    'singleStateRemaining',
     'q1StateQuarterlyPayment',
     'q2StateQuarterlyPayment',
     'q3StateQuarterlyPayment',
     'q4StateQuarterlyPayment',
+    'singleFederalMarkPaid',
+    'q1FederalPaid',
+    'q2FederalPaid',
+    'q3FederalPaid',
+    'q4FederalPaid',
+    'singleStateMarkPaid',
+    'q1StatePaid',
+    'q2StatePaid',
+    'q3StatePaid',
+    'q4StatePaid',
+    'explanation',
+    'active',
   ]
 })
 

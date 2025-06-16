@@ -10,7 +10,7 @@
   import { convertCurrencyToNumber } from '$src/utilities/utilities'
   import { onMount } from 'svelte'
   import { convertStateToUpperCase } from '$src/utilities/utilities'
-  
+    
   const headingText = `What did you pay in federal quarterly payments this year?`
   const subheadingText = `To determine this, find the number in box 17 of each W2 paycheck and then multiply by the number of W2s you plan to get this year`
   const buttonText = 'NEXT'
@@ -35,18 +35,53 @@
       placeholderText2 = 'June Payment'
       placeholderText3 = 'September Payment'
     }
+    if (store.loggedIn) {
+      if (store.q1FederalPaymentMade) {
+        inputValue1 = store.q1FederalPaymentMade
+        store.makeButtonActive = true
+      }
+      if (store.q2FederalPaymentMade) {
+        inputValue2 = store.q2FederalPaymentMade
+        store.makeButtonActive = true
+      }
+      if (store.q3FederalPaymentMade) {
+        inputValue3 = store.q3FederalPaymentMade
+        store.makeButtonActive = true
+      }
+    }
   })  
 
   const handleInput1 = (value) => {
     inputValue1 = value
+    enableButton()
   } 
 
   const handleInput2 = (value) => {
     inputValue2 = value
+    enableButton()
   }
 
   const handleInput3 = (value) => {
     inputValue3 = value
+    enableButton()
+  } 
+
+  const validValue = (value) => {
+    if (value == null || value == '$' || value == '') {
+      return false
+    }
+    else {
+      return true
+    }
+  }
+
+  const enableButton = () => {
+    if (validValue(inputValue1) || validValue(inputValue2) || validValue(inputValue3)) {
+      store.makeButtonActive = true
+    }
+    else {
+      store.makeButtonActive = false
+    }
   }
 
   const handleNext = () => {
@@ -58,8 +93,8 @@
       goto('/26')
     }
     else {
-      store.currentPage = '28'
-      goto('/28')
+      store.currentPage = '27'
+      goto('/27')
     }
   }
 
@@ -81,13 +116,13 @@
 <Avatar />
 <Heading text={headingText} desktopwidth="550px" mobilewidth="320px" />
 {#if placeholderText1 != ''}
-  <DollarInput placeholder={placeholderText1} onInput={handleInput1} />
+  <DollarInput placeholder={placeholderText1} value={inputValue1} onInput={handleInput1} />
 {/if}
 {#if placeholderText2 != ''}
-  <DollarInput placeholder={placeholderText2} onInput={handleInput2} />
+  <DollarInput placeholder={placeholderText2} value={inputValue2} onInput={handleInput2} />
 {/if}
 {#if placeholderText3 != ''}
-  <DollarInput placeholder={placeholderText3} onInput={handleInput3} />
+  <DollarInput placeholder={placeholderText3} value={inputValue3} onInput={handleInput3} />
 {/if}
 <Button text={buttonText} onclick={handleNext} />
 <Later />

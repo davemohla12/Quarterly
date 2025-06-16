@@ -25,10 +25,21 @@
     else {
       subheadingText = ``
     } 
+    if (store.loggedIn) {
+      if (store.salaryOrWagesThisYear == true) {
+        selectedRadioButton = 'Yes'
+        store.makeButtonActive = true
+      }
+      else if (store.salaryOrWagesThisYear == false) {
+        selectedRadioButton = 'No'
+        store.makeButtonActive = true
+      }
+    }
   })
 
   const handleSelect = (button) => {
     selectedRadioButton = button
+    store.makeButtonActive = true
   }
 
   const handleNext = () => {
@@ -68,6 +79,6 @@
 <Avatar />
 <Heading text={headingText} mobilewidth="280px" />
 <Subheading text={subheadingText} desktopwidth="450px" mobilewidth="300px" />
-<RadioButtons buttons={radioButtons} onselect={handleSelect}/>
+<RadioButtons buttons={radioButtons} selected={selectedRadioButton} onselect={handleSelect}/>
 <Button text={buttonText} onclick={handleNext} />
 <Later />

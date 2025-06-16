@@ -1,6 +1,6 @@
 <script>
   let props = $props()
-  let text = props.text
+  let text = $derived(props.text)
   let mobilewidth = props.mobilewidth || '400px'
   let desktopwidth = props.desktopwidth || '600px'
   let mobilelarge = props.mobilelarge || false

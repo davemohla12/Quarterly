@@ -1,3 +1,7 @@
+<script>
+  import { store } from '$src/stores/store.svelte'
+</script>
+
 <div class="footer">
   <div class="legal">
     <a class="terms" href="/terms" target="_blank">Terms of Service</a>
@@ -5,7 +9,7 @@
     <a class="privacy" href="/privacy" target="_blank">Privacy Policy</a>
   </div>
   <div class="copyright">
-    Copyright © 2025 Zenguider
+    Copyright © {store.currentYear} Zenguider
   </div>
 </div>
 

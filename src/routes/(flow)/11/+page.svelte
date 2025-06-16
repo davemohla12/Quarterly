@@ -17,12 +17,26 @@
   const subheadingText = `You can find this on form ${federalRules.incomeTaxPaidForm  } line ${federalRules.incomeTaxPaidLine}`
   const buttonText = 'NEXT'
   const placeholderText = 'Total Tax Due'
-  
   let inputValue = $state(null)
   store.makeButtonActive = false
 
+  onMount(() => {
+    if (store.loggedIn) {
+      if (store.federalTaxPaidLastYear) {
+        inputValue = store.federalTaxPaidLastYear
+        store.makeButtonActive = true
+      }
+    }
+  })
+
   const handleInput = (value) => {
     inputValue = value
+    if (inputValue == null || inputValue == '$' || inputValue == '') {
+      store.makeButtonActive = false
+    }
+    else {
+      store.makeButtonActive = true
+    }
   }
 
   const handleNext = () => {
@@ -69,6 +83,6 @@
 <Avatar />
 <Heading text={headingText} desktopwidth="500px" mobilewidth="350px" />
 <Subheading text={subheadingText} desktopwidth="400px" />
-<DollarInput placeholder={placeholderText} onInput={handleInput} />
+<DollarInput placeholder={placeholderText} value={inputValue} onInput={handleInput} />
 <Button text={buttonText} enabled={false} onclick={handleNext}/>
 <Later />

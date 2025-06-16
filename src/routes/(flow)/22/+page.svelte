@@ -9,7 +9,8 @@
   import { goto } from '$app/navigation'
   import { store } from '$src/stores/store.svelte'
   import { convertStateToUpperCase } from '$src/utilities/utilities'
-
+  import { onMount } from 'svelte'
+  
   const headingText = `Do you have W2 paychecks for your salaries and wages?`
   const subheadingText = `If so, we can lower your quarterly payment. If not, we'll keep your payments higher and you'll get refunded when you file your annual taxes`
   const radioButtons = ['Yes', 'No']
@@ -17,8 +18,22 @@
   let selectedRadioButton = $state(null)
   store.makeButtonActive = false
 
+  onMount(() => {
+    if (store.loggedIn) {
+      if (store.hasW2 == true) {
+        selectedRadioButton = 'Yes'
+        store.makeButtonActive = true
+      }
+      else if (store.hasW2 == false) {
+        selectedRadioButton = 'No'
+        store.makeButtonActive = true
+      }
+    }
+  })
+
   const handleSelect = (button) => {
-    selectedRadioButton = button
+    selectedRadioButton = button  
+    store.makeButtonActive = true
   }
 
   const handleNext = () => {
@@ -58,6 +73,6 @@
 <Avatar />
 <Heading text={headingText} mobilewidth="320px" />
 <Subheading text={subheadingText} desktopwidth="550px" mobilewidth="300px" />
-<RadioButtons buttons={radioButtons} onselect={handleSelect} />
+<RadioButtons buttons={radioButtons} selected={selectedRadioButton} onselect={handleSelect} />   
 <Button text={buttonText} onclick={handleNext} />
 <Later />

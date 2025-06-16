@@ -1,8 +1,9 @@
 <script>
   import { onMount } from 'svelte'
   import { supabase } from '$src/utilities/supabase'
-  import { saveLocalStorageToDatabase, saveDatabaseToLocalStorage } from '$src/utilities/database'
   import { updateLoginState } from '$src/utilities/utilities'
+  import * as Sentry from '@sentry/browser'
+  import { PUBLIC_ENVIRONMENT } from '$env/static/public' 
   import { store } from '$src/stores/store.svelte'
   
   let props = $props()
@@ -14,10 +15,16 @@
     const response = await supabase.auth.getSession()
     const session = response.data.session
     updateLoginState(session)
+    Sentry.setUser({ email: store.email })
     supabase.auth.onAuthStateChange((event, session) => {
       updateLoginState(session)
     })
     loading = false
+  })
+
+  Sentry.init({
+    dsn: 'https://becf5f803df68fae670aabf0b72357e3@o4509491485016064.ingest.us.sentry.io/4509491487768576',
+    environment: PUBLIC_ENVIRONMENT
   })
   </script>
   

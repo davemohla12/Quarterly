@@ -1,4 +1,5 @@
 import { federalRules } from '$src/rules/federal'
+import { convertNumberToRoundedCurrency } from '$src/utilities/utilities'
 
 const getStandardDeduction = (status) => {
   if (status == 'single') { 
@@ -32,12 +33,36 @@ const calculateTax = (income, filingStatus) => {
   return tax
 }
 
+const getIncomeExpectationText = (incomeExpectationThisYear) => { 
+  if (incomeExpectationThisYear == 'increase') {
+    return 'increase'
+  }
+  else if (incomeExpectationThisYear == 'same') {
+    return 'stay the same'
+  }
+  else if (incomeExpectationThisYear == 'decrease') {
+    return 'decrease'
+  }
+}
+
+const getNoIncomeText = () => {
+  let explanation = `Since you don't plan to earn any income this year outside of paychecks, you aren't required to pay any quarterly payments.`
+  return explanation
+}
+
+const getBelowMinimumTaxText = () => {
+  let explanation = `Because you are below the minimum tax thresholds, you aren't required you to make any quarterly payments.`
+  return explanation
+}
+
 const getFederalTaxes = (incomeExpectationThisYear, federalTaxPaidLastYear, adjustedGrossIncomeLastYear, filingStatus, expectedTotalIncomeThisYear, businessExpensesThisYear, retirementContributionsThisYear, studentLoanInterestThisYear, healthInsuranceThisYear, otherDeductionsThisYear) => {
   let safeHarborFederalTaxesThisYear 
   let adjustedGrossIncomeThisYear 
   let taxableFederalIncomeThisYear
+  let initialExplanation = ``
   if (incomeExpectationThisYear == 'increase' || incomeExpectationThisYear == 'same') {
     let safeHarborHighIncome 
+    let safeHarborPercentage
     if (filingStatus == 'separate') {
       safeHarborHighIncome = federalRules.lastYearSafeHarborHighIncome / 2
     }
@@ -45,65 +70,127 @@ const getFederalTaxes = (incomeExpectationThisYear, federalTaxPaidLastYear, adju
       safeHarborHighIncome = federalRules.lastYearSafeHarborHighIncome
     }
     if (adjustedGrossIncomeLastYear > safeHarborHighIncome) {
-      safeHarborFederalTaxesThisYear = federalRules.lastYearSafeHarborHighPercentage * federalTaxPaidLastYear
+      safeHarborPercentage = federalRules.lastYearSafeHarborHighPercentage
+      safeHarborFederalTaxesThisYear = safeHarborPercentage * federalTaxPaidLastYear
     }
     else {
-      safeHarborFederalTaxesThisYear = federalRules.lastYearSafeHarborLowPercentage * federalTaxPaidLastYear
+      safeHarborPercentage = federalRules.lastYearSafeHarborLowPercentage
+      safeHarborFederalTaxesThisYear = safeHarborPercentage * federalTaxPaidLastYear
     }
+    initialExplanation = `For your federal payments, since your income is expected to ${getIncomeExpectationText(incomeExpectationThisYear)} this year, we can use the amount you paid in taxes last year to determine your quarterly payments this year.  `
+    initialExplanation += `This minimizes the quarterly taxes you pay while preventing penalties.  `
+    initialExplanation += `Per federal tax rules, given your income, you can pay ${convertNumberToRoundedCurrency(safeHarborFederalTaxesThisYear)} in total quarterly payments with no penalty, which is ${Math.round(safeHarborPercentage * 100)}% of ${convertNumberToRoundedCurrency(federalTaxPaidLastYear)}, which is what you paid last year in taxes.  `
   } 
   else {
     adjustedGrossIncomeThisYear = expectedTotalIncomeThisYear - businessExpensesThisYear - retirementContributionsThisYear - studentLoanInterestThisYear - healthInsuranceThisYear - otherDeductionsThisYear
     taxableFederalIncomeThisYear = Math.max(0, adjustedGrossIncomeThisYear - getStandardDeduction(filingStatus))
     safeHarborFederalTaxesThisYear = calculateTax(taxableFederalIncomeThisYear, filingStatus)
     safeHarborFederalTaxesThisYear = federalRules.thisYearSafeHarborUsedPercentage * safeHarborFederalTaxesThisYear
+    initialExplanation = `For your federal payments, since your income is expected to ${getIncomeExpectationText(incomeExpectationThisYear)} this year, we need to estimate your annual taxes this year and then use that to determine your quarterly payments.  `
+    initialExplanation += `This minimizes the quarterly taxes you pay while preventing penalties.  `
+    initialExplanation += `To estimate your annual federal taxes this year, we take your expected total income this year of ${convertNumberToRoundedCurrency(expectedTotalIncomeThisYear)} and subtract out your business deductions including your busines expenses, retirement contributions, student loan interest, health insurance, and other qualified deductions to get an adjusted gross income of ${convertNumberToRoundedCurrency(adjustedGrossIncomeThisYear)}.  `
+    initialExplanation += `We then subtract out your standard deduction of ${convertNumberToRoundedCurrency(getStandardDeduction(filingStatus))} to get a taxable federal income of ${convertNumberToRoundedCurrency(taxableFederalIncomeThisYear)}.  `
+    initialExplanation += `We use that to calculate an annual federal tax of ${convertNumberToRoundedCurrency(safeHarborFederalTaxesThisYear)} this year which is what you need to pay in total this year through quarterly payments.  `
   }
   const taxes = {
     adjustedGrossIncomeThisYear: Math.round(adjustedGrossIncomeThisYear),
     taxableFederalIncomeThisYear: Math.round(taxableFederalIncomeThisYear), 
     safeHarborFederalTaxesThisYear: Math.round(safeHarborFederalTaxesThisYear),
+    initialExplanation: initialExplanation
   }
   return taxes
 }
 
-const getFederalQuarterlyPayment = (currentQuarter, yearlyTaxes, withholdings, payment1, payment2, payment3) => {
+const getFederalSinglePayment = (yearlyTaxes, withholdings, payment1, payment2, payment3, initialExplanation) => {
+  let due = 0
+  let paid = 0
+  let remaining = 0
+  const nonWithheldSafeHarborFederalTaxThisYear = yearlyTaxes - withholdings 
+  let explanation = initialExplanation
+  const safeToSkipFederalPayment = nonWithheldSafeHarborFederalTaxThisYear < federalRules.minimumTaxForQuarterlyPayments
+  if (safeToSkipFederalPayment) {
+    due = 0
+    paid = Math.round(Number(payment1) + Number(payment2) + Number(payment3))
+    remaining = 0
+    explanation += `You've paid ${convertNumberToRoundedCurrency(withholdings)} this year in federal taxes through your paycheck witholdings, so you need need to pay the remaining ${convertNumberToRoundedCurrency(nonWithheldSafeHarborFederalTaxThisYear)}. `
+    explanation += `Since this amount is less than ${convertNumberToRoundedCurrency(federalRules.minimumTaxForQuarterlyPayments)}, which is the minimum amount of that the federal rules requires for paying quarterly taxes, you are not due to pay any quarterly payments.  `
+  }
+  else {
+    due = Math.round(Number(nonWithheldSafeHarborFederalTaxThisYear))
+    paid = Math.round(Number(payment1) + Number(payment2) + Number(payment3))
+    remaining = Math.max(0, (nonWithheldSafeHarborFederalTaxThisYear - payment1 - payment2 - payment3))
+    explanation += `You've paid ${convertNumberToRoundedCurrency(withholdings)} in federal paycheck witholdings so you are due to pay the remaining ${convertNumberToRoundedCurrency(due)} in quarterly payments. `
+    explanation += `You've paid ${convertNumberToRoundedCurrency(paid)} in quarterly payments so far so you need need to pay the remaining ${convertNumberToRoundedCurrency(remaining)} to cover all your quarterly pyaments.  `
+  }
+  explanation += `${federalRules.userNote}`
+  const payment = {
+    safeToSkipFederalPayment: safeToSkipFederalPayment,
+    due: due,
+    paid: paid,
+    remaining: remaining,
+    explanation: explanation
+  }
+  return payment
+}
+
+const getFederalQuarterlyPayment = (currentQuarter, yearlyTaxes, withholdings, payment1, payment2, payment3, initialExplanation) => {
   let q1federalQuarterlyPayment = 0
   let q2federalQuarterlyPayment = 0
   let q3federalQuarterlyPayment = 0
-  let q4federalQuarterlyPayment = 0
+  let q4federalQuarterlyPayment = 0 
   const nonWithheldSafeHarborFederalTaxThisYear = yearlyTaxes - withholdings 
+  let explanation = initialExplanation
+  if (withholdings > 0) {
+    explanation += `You've paid ${convertNumberToRoundedCurrency(withholdings)} this year in federal taxes through your paycheck witholdings, so you need need to pay the remaining ${convertNumberToRoundedCurrency(nonWithheldSafeHarborFederalTaxThisYear)} as total payment this year through quarterly installments. `
+  }
   const safeToSkipFederalPayment = nonWithheldSafeHarborFederalTaxThisYear < federalRules.minimumTaxForQuarterlyPayments
   if (safeToSkipFederalPayment) {
     q1federalQuarterlyPayment = 0
     q2federalQuarterlyPayment = 0
     q3federalQuarterlyPayment = 0
     q4federalQuarterlyPayment = 0
+    explanation += `Since this amount is less than ${convertNumberToRoundedCurrency(federalRules.minimumTaxForQuarterlyPayments)}, which is the minimum amount of that the federal rules requires for paying quarterly taxes, you have no quarterly payments this year.  `
   }
   else {
     if (currentQuarter == 'Q1') {
-      q1federalQuarterlyPayment = Math.max(0, (yearlyTaxes - withholdings) * federalRules.quarterlyCumulativeSchedule.Q1)
-      q2federalQuarterlyPayment = Math.max(0, (yearlyTaxes - withholdings) * federalRules.quarterlyCumulativeSchedule.Q2 - q1federalQuarterlyPayment)
-      q3federalQuarterlyPayment = Math.max(0, (yearlyTaxes - withholdings) * federalRules.quarterlyCumulativeSchedule.Q3 - q1federalQuarterlyPayment - q2federalQuarterlyPayment)
-      q4federalQuarterlyPayment = Math.max(0, (yearlyTaxes - withholdings) * federalRules.quarterlyCumulativeSchedule.Q4 - q1federalQuarterlyPayment - q2federalQuarterlyPayment - q3federalQuarterlyPayment)
+      q1federalQuarterlyPayment = Math.max(0, (nonWithheldSafeHarborFederalTaxThisYear) * federalRules.quarterlyCumulativeSchedule.Q1)
+      q2federalQuarterlyPayment = Math.max(0, (nonWithheldSafeHarborFederalTaxThisYear) * federalRules.quarterlyCumulativeSchedule.Q2 - q1federalQuarterlyPayment)
+      q3federalQuarterlyPayment = Math.max(0, (nonWithheldSafeHarborFederalTaxThisYear) * federalRules.quarterlyCumulativeSchedule.Q3 - q1federalQuarterlyPayment - q2federalQuarterlyPayment)
+      q4federalQuarterlyPayment = Math.max(0, (nonWithheldSafeHarborFederalTaxThisYear) * federalRules.quarterlyCumulativeSchedule.Q4 - q1federalQuarterlyPayment - q2federalQuarterlyPayment - q3federalQuarterlyPayment)
+      explanation += `For your April payment, federal tax rules require you to have paid ${federalRules.quarterlyCumulativeSchedule.Q1 * 100}% of your total payment which comes to a April payment of ${convertNumberToRoundedCurrency(q1federalQuarterlyPayment)}.  `
+      explanation += `For your June payment, federal tax rules require you to have paid ${federalRules.quarterlyCumulativeSchedule.Q2 * 100}% of your total payment and if we subtract your April payment, we get a June payment of ${convertNumberToRoundedCurrency(q2federalQuarterlyPayment)}.  `
+      explanation += `For your September payment, federal tax rules require you to have paid ${federalRules.quarterlyCumulativeSchedule.Q3 * 100}% of your total payment and if we subtract your April and June payments, we get a September payment of ${convertNumberToRoundedCurrency(q3federalQuarterlyPayment)}.  `
+      explanation += `For your January payment, federal tax rules require you to have paid ${federalRules.quarterlyCumulativeSchedule.Q4 * 100}% of your total payment and if we subtract your April, June, and September payments, we get a January payment of ${convertNumberToRoundedCurrency(q4federalQuarterlyPayment)}.  `
     }
     else if (currentQuarter == 'Q2') {
       q1federalQuarterlyPayment = payment1
-      q2federalQuarterlyPayment = Math.max(0, (yearlyTaxes - withholdings) * federalRules.quarterlyCumulativeSchedule.Q2 - q1federalQuarterlyPayment)
-      q3federalQuarterlyPayment = Math.max(0, (yearlyTaxes - withholdings) * federalRules.quarterlyCumulativeSchedule.Q3 - q1federalQuarterlyPayment - q2federalQuarterlyPayment)
-      q4federalQuarterlyPayment = Math.max(0, (yearlyTaxes - withholdings) * federalRules.quarterlyCumulativeSchedule.Q4 - q1federalQuarterlyPayment - q2federalQuarterlyPayment - q3federalQuarterlyPayment)
+      q2federalQuarterlyPayment = Math.max(0, (nonWithheldSafeHarborFederalTaxThisYear) * federalRules.quarterlyCumulativeSchedule.Q2 - q1federalQuarterlyPayment)
+      q3federalQuarterlyPayment = Math.max(0, (nonWithheldSafeHarborFederalTaxThisYear) * federalRules.quarterlyCumulativeSchedule.Q3 - q1federalQuarterlyPayment - q2federalQuarterlyPayment)
+      q4federalQuarterlyPayment = Math.max(0, (nonWithheldSafeHarborFederalTaxThisYear) * federalRules.quarterlyCumulativeSchedule.Q4 - q1federalQuarterlyPayment - q2federalQuarterlyPayment - q3federalQuarterlyPayment)
+      explanation += `You've paid ${convertNumberToRoundedCurrency(payment1)} in April.  `
+      explanation += `For June, federal tax rules require you to have paid ${federalRules.quarterlyCumulativeSchedule.Q2 * 100}% of your total payment and if we subtract your April payment, we get a June payment of ${convertNumberToRoundedCurrency(q2federalQuarterlyPayment)}.  `
+      explanation += `For September, federal tax rules require you to have paid ${federalRules.quarterlyCumulativeSchedule.Q3 * 100}% of your total payment and if we subtract your April and June payments, we get a September payment of ${convertNumberToRoundedCurrency(q3federalQuarterlyPayment)}.  `
+      explanation += `For January, federal tax rules require you to have paid ${federalRules.quarterlyCumulativeSchedule.Q4 * 100}% of your total payment and if we subtract your April, June, and September payments, we get a January payment of ${convertNumberToRoundedCurrency(q4federalQuarterlyPayment)}.  `
     }
     else if (currentQuarter == 'Q3') {
       q1federalQuarterlyPayment = payment1
       q2federalQuarterlyPayment = payment2
-      q3federalQuarterlyPayment = Math.max(0, (yearlyTaxes - withholdings) * federalRules.quarterlyCumulativeSchedule.Q3 - q1federalQuarterlyPayment - q2federalQuarterlyPayment)
-      q4federalQuarterlyPayment = Math.max(0, (yearlyTaxes - withholdings) * federalRules.quarterlyCumulativeSchedule.Q4 - q1federalQuarterlyPayment - q2federalQuarterlyPayment - q3federalQuarterlyPayment)
+      q3federalQuarterlyPayment = Math.max(0, (nonWithheldSafeHarborFederalTaxThisYear) * federalRules.quarterlyCumulativeSchedule.Q3 - q1federalQuarterlyPayment - q2federalQuarterlyPayment)
+      q4federalQuarterlyPayment = Math.max(0, (nonWithheldSafeHarborFederalTaxThisYear) * federalRules.quarterlyCumulativeSchedule.Q4 - q1federalQuarterlyPayment - q2federalQuarterlyPayment - q3federalQuarterlyPayment)
+      explanation += `You've paid ${convertNumberToRoundedCurrency(payment1)} in April and ${convertNumberToRoundedCurrency(payment2)} in June.  `
+      explanation += `For September, federal tax rules require you to have paid ${federalRules.quarterlyCumulativeSchedule.Q3 * 100}% of your total payment and if we subtract your April and June payments, we get a September payment of ${convertNumberToRoundedCurrency(q3federalQuarterlyPayment)}.  `
+      explanation += `For January, federal tax rules require you to have paid ${federalRules.quarterlyCumulativeSchedule.Q4 * 100}% of your total payment and if we subtract your April, June, and September payments, we get a January payment of ${convertNumberToRoundedCurrency(q4federalQuarterlyPayment)}.  `
     } 
     else if (currentQuarter == 'Q4') {
       q1federalQuarterlyPayment = payment1
       q2federalQuarterlyPayment = payment2
       q3federalQuarterlyPayment = payment3
-      q4federalQuarterlyPayment = Math.max(0, (yearlyTaxes - withholdings) * federalRules.quarterlyCumulativeSchedule.Q4 - q1federalQuarterlyPayment - q2federalQuarterlyPayment - q3federalQuarterlyPayment)
+      q4federalQuarterlyPayment = Math.max(0, (nonWithheldSafeHarborFederalTaxThisYear) * federalRules.quarterlyCumulativeSchedule.Q4 - q1federalQuarterlyPayment - q2federalQuarterlyPayment - q3federalQuarterlyPayment)
+      explanation += `You've paid ${convertNumberToRoundedCurrency(payment1)} in April, ${convertNumberToRoundedCurrency(payment2)} in June, and ${convertNumberToRoundedCurrency(payment3)} in September. `
+      explanation += `For January, federal tax rules require you to have paid ${federalRules.quarterlyCumulativeSchedule.Q4 * 100}% of your total payment and if we subtract your April, June, and September payments, we get a January payment of ${convertNumberToRoundedCurrency(q4federalQuarterlyPayment)}.  `  
     }
   }
+  explanation += `${federalRules.userNote}`
   const payment = {
     nonWithheldSafeHarborFederalTaxThisYear: Math.round(Number(nonWithheldSafeHarborFederalTaxThisYear)),
     safeToSkipFederalPayment: safeToSkipFederalPayment,
@@ -111,8 +198,9 @@ const getFederalQuarterlyPayment = (currentQuarter, yearlyTaxes, withholdings, p
     q2federalQuarterlyPayment: Math.round(Number(q2federalQuarterlyPayment)),
     q3federalQuarterlyPayment: Math.round(Number(q3federalQuarterlyPayment)),
     q4federalQuarterlyPayment: Math.round(Number(q4federalQuarterlyPayment)),
+    explanation: explanation
   }
   return payment
 }
 
-export { getFederalTaxes, getFederalQuarterlyPayment, calculateTax }
+export { getFederalTaxes, getFederalSinglePayment, getFederalQuarterlyPayment, calculateTax, getNoIncomeText, getBelowMinimumTaxText }

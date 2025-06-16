@@ -36,26 +36,61 @@
       placeholderText2 = 'June Payment'
       placeholderText3 = 'September Payment'
     }
+    if (store.loggedIn) {
+      if (store.q1StatePaymentMade) {
+        inputValue1 = store.q1StatePaymentMade
+        store.makeButtonActive = true
+      }
+      if (store.q2StatePaymentMade) {
+        inputValue2 = store.q2StatePaymentMade
+        store.makeButtonActive = true
+      }
+      if (store.q3StatePaymentMade) {
+        inputValue3 = store.q3StatePaymentMade
+        store.makeButtonActive = true
+      }
+    }
   })
 
   const handleInput1 = (value) => {
     inputValue1 = value
+    enableButton()
   }   
 
   const handleInput2 = (value) => {
     inputValue2 = value
+    enableButton()
   }
   
   const handleInput3 = (value) => {  
     inputValue3 = value
+    enableButton()
+  }
+
+  const validValue = (value) => {
+    if (value == null || value == '$' || value == '') {
+      return false
+    }
+    else {
+      return true
+    }
+  }
+
+  const enableButton = () => {
+    if (validValue(inputValue1) || validValue(inputValue2) || validValue(inputValue3)) {
+      store.makeButtonActive = true
+    }
+    else {
+      store.makeButtonActive = false
+    }
   }
   
   const handleNext = () => {
     store.q1StatePaymentMade = convertCurrencyToNumber(inputValue1)
     store.q2StatePaymentMade = convertCurrencyToNumber(inputValue2)
     store.q3StatePaymentMade = convertCurrencyToNumber(inputValue3) 
-    store.currentPage = '28'
-    goto('/28')
+    store.currentPage = '27'
+    goto('/27')
   }
 
   const handleKeyDown = (event) => {
@@ -76,13 +111,13 @@
 <Avatar />
 <Heading text={headingText} desktopwidth="550px" mobilewidth="300px" />
 {#if placeholderText1 != ''}
-  <DollarInput placeholder={placeholderText1} onInput={handleInput1} />
+  <DollarInput placeholder={placeholderText1} value={inputValue1} onInput={handleInput1} />
 {/if}
 {#if placeholderText2 != ''}
-  <DollarInput placeholder={placeholderText2} onInput={handleInput2} />
+  <DollarInput placeholder={placeholderText2} value={inputValue2} onInput={handleInput2} />
 {/if}
 {#if placeholderText3 != ''}
-  <DollarInput placeholder={placeholderText3} onInput={handleInput3} />
+  <DollarInput placeholder={placeholderText3} value={inputValue3} onInput={handleInput3} />
 {/if}
 <Button text={buttonText} onclick={handleNext} />
 <Later />

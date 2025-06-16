@@ -5,8 +5,17 @@
   let props = $props()
   let onInput = props.onInput
   let placeholder = props.placeholder || ''
+  let value = $derived(props.value || '')
   let isFocused = $state(false)
   let inputValue = $state('')
+  let showReset = $derived(props.showReset || false)
+  let onreset = props.onreset
+
+  $effect(() => {
+    if (value) {
+      inputValue = value
+    }
+  })
 
   const formatNumber = (value) => {
     const num = parseInt(value)
@@ -22,7 +31,6 @@
     const value = event.target.value
     if (value === '') {
       inputValue = ''
-      store.makeButtonActive = false
       onInput('')
       return
     }
@@ -36,7 +44,6 @@
       return
     }
     inputValue = num.toString()
-    store.makeButtonActive = true
     onInput(inputValue)
   }
   
@@ -51,11 +58,20 @@
     }
   }
 
+  const handleReset = () => {
+    onreset()
+  }
+
 </script>
 
 <div class="container">
   <input class="input" type="number" inputmode="numeric" pattern="[1-9][0-9]*" value={inputValue} onfocus={handleFocus} onblur={handleBlur} oninput={handleInput} />
   <div class="placeholder" class:active={isFocused || inputValue} >{placeholder}</div>
+  {#if showReset}
+    <Clickable onclick={() => handleReset()}>   
+      <img class="reset" src="/images/resetfield.png" alt="Reset"/>
+    </Clickable>
+  {/if}
 </div>
 
 <style>
@@ -64,8 +80,8 @@
     margin-left: auto;
     margin-right: auto;
     margin-top: 20px;
-    width: calc(100% - 40px);
-    width: 320px;
+    width: 100%;
+    max-width: 320px;
   }
   .input {
     border: 1px solid var(--gray2);
@@ -99,6 +115,13 @@
     top: -7px;
     left: 16px;
     font-size: 12px;
+  }
+  .reset {
+    position: absolute;
+    right: -45px;
+    top: 17px;
+    width: 18px;
+    height: 21px;
   }
   @media (min-width: 768px) { 
     .container {

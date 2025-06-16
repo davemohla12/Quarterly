@@ -10,6 +10,7 @@
   import { goto } from '$app/navigation'
   import { convertCurrencyToNumber, convertStateToUpperCase } from '$src/utilities/utilities'
   import { stateRules } from '$src/rules/state'
+  import { onMount } from 'svelte'  
 
   const headingText = `What was your taxable income in ${convertStateToUpperCase(store.currentState)} last year?`
   const subheadingText = `You can find this on form ${stateRules[store.currentState].thisYearIncomeCalculationType.stateIncomeForm} line ${stateRules[store.currentState].thisYearIncomeCalculationType.stateIncomeLine}`
@@ -18,8 +19,23 @@
   let inputValue = $state(null)
   store.makeButtonActive = false
 
+  onMount(() => {
+    if (store.loggedIn) {
+      if (store.stateIncomeLastYear) {
+        inputValue = store.stateIncomeLastYear
+        store.makeButtonActive = true
+      }
+    }
+  })
+
   const handleInput = (value) => {
     inputValue = value
+    if (inputValue == null || inputValue == '$' || inputValue == '') {
+      store.makeButtonActive = false
+    }
+    else {
+      store.makeButtonActive = true
+    }
   }
 
   const handleNext = () => {
@@ -46,6 +62,6 @@
 <Avatar />
 <Heading text={headingText} desktopwidth="550px" mobilewidth="300px" />
 <Subheading text={subheadingText} desktopwidth="400px" />
-<DollarInput placeholder={placholderText} onInput={handleInput} />
+<DollarInput placeholder={placholderText} value={inputValue} onInput={handleInput} />
 <Button text={buttonText} onclick={handleNext}/>
 <Later />

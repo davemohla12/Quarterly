@@ -10,6 +10,7 @@
   import { goto } from '$app/navigation'
   import { convertCurrencyToNumber } from '$src/utilities/utilities'
   import { convertStateToUpperCase } from '$src/utilities/utilities'
+  import { onMount } from 'svelte'
   
   const headingText = `What are your expected ${convertStateToUpperCase(store.currentState)} W2 witholdings for this year?`
   const subheadingText = `To determine this, find the number in box 17 of each W2 paycheck and then multiply by the number of W2s you plan to get this year`
@@ -18,15 +19,30 @@
   let inputValue = $state(null)
   store.makeButtonActive = false
 
+  onMount(() => {
+    if (store.loggedIn) {
+      if (store.stateWithholdingsThisYear) {
+        inputValue = store.stateWithholdingsThisYear
+        store.makeButtonActive = true
+      }
+    }
+  })
+
   const handleInput = (value) => {
     inputValue = value
-  }
+    if (inputValue == null || inputValue == '$' || inputValue == '') {
+      store.makeButtonActive = false
+    }
+    else {
+      store.makeButtonActive = true
+    }
+  }   
 
   const handleNext = () => {
     store.stateWithholdingsThisYear = convertCurrencyToNumber(inputValue)
     if (store.currentQuarter == 'Q1') {
-      store.currentPage = '28'
-      goto('/28')
+      store.currentPage = '27'
+      goto('/27')
     }
     else {
       store.currentPage = '25'
@@ -52,6 +68,6 @@
 <Avatar />
 <Heading text={headingText} desktopwidth="550px" mobilewidth="300px" />
 <Subheading text={subheadingText} desktopwidth="500px" mobilewidth="300px" />
-<DollarInput placeholder={placeholderText} onInput={handleInput} />
+<DollarInput placeholder={placeholderText} value={inputValue} onInput={handleInput} />
 <Button text={buttonText} onclick={handleNext} />
 <Later />

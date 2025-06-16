@@ -7,6 +7,7 @@
   let text = props.text
   let values = props.values
   let onselection = props.onselection
+  let selected = $derived(props.selected || null)
   let inputValue = $state('')
   let filteredValues = $derived(values.filter(value => value.toLowerCase().includes(inputValue.toLowerCase())))
   let container
@@ -24,11 +25,8 @@
   })
 
   $effect(() => {
-    if (inputValue != '') {
-      store.makeButtonActive = true
-    }
-    else { 
-      store.makeButtonActive = false
+    if (selected) { 
+      inputValue = selected
     }
   })
 

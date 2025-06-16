@@ -1,27 +1,28 @@
 <script>
-  import { getStateQuarterlyPayment, getStateTaxes } from '$src/utilities/statetax'
+  import { getStateQuarterlyPayment, getStateSinglePayment, getStateTaxes } from '$src/utilities/statetax'
   import { formatCurrency } from '$src/utilities/utilities'
 
-  const state = 'indiana'
-  const currentQuarter = 'Q2'
-  const filingStatus = 'married'
-  const stateTaxPaidLastYear = 6000
-  const incomeExpectationThisYear = 'increase'
-  const stateIncomeLastYear = 95000
-  const expectedTotalIncomeThisYear = 110000
-  const businessExpensesThisYear = 12000
-  const retirementContributionsThisYear = 5000
-  const studentLoanInterestThisYear = 1000
-  const healthInsuranceThisYear = 2000
-  const otherDeductionsThisYear = 1000
+  const state = 'pennsylvania'
+  const currentQuarter = 'Q3'
+  const filingStatus = 'head'
+  const stateTaxPaidLastYear = 7000
+  const incomeExpectationThisYear = 'decrease'
+  const stateIncomeLastYear = 60000
+  const expectedTotalIncomeThisYear = 55000
+  const businessExpensesThisYear = 8000
+  const retirementContributionsThisYear = 3000
+  const studentLoanInterestThisYear = 500
+  const healthInsuranceThisYear = 600
+  const otherDeductionsThisYear = 900
   const exemptions = 2
-  let stateWithholdings = 3000
-  let q1PaymentMade = 1000
-  let q2PaymentMade = null
+  let stateWithholdings = 1500
+  let q1PaymentMade = 500
+  let q2PaymentMade = 0
   let q3PaymentMade = null
-
+  
   let stateTaxes = getStateTaxes(state, incomeExpectationThisYear, stateTaxPaidLastYear, stateIncomeLastYear, filingStatus, expectedTotalIncomeThisYear, businessExpensesThisYear, retirementContributionsThisYear, studentLoanInterestThisYear, healthInsuranceThisYear, otherDeductionsThisYear, exemptions)
-  let quarterlyPayment = getStateQuarterlyPayment(state, currentQuarter, stateTaxes.safeHarborStateTaxesThisYear, stateWithholdings, q1PaymentMade, q2PaymentMade, q3PaymentMade)
+  let quarterlyPayment = getStateQuarterlyPayment(state, currentQuarter, stateTaxes.safeHarborStateTaxesThisYear, stateWithholdings, q1PaymentMade, q2PaymentMade, q3PaymentMade, stateTaxes.initialExplanation)
+  let singlePayment = getStateSinglePayment(state, stateTaxes.safeHarborStateTaxesThisYear, stateWithholdings, q1PaymentMade, q2PaymentMade, q3PaymentMade, stateTaxes.initialExplanation)
 
 </script> 
 
@@ -57,6 +58,14 @@
     <div>q2StateQuarterlyPayment = {formatCurrency(quarterlyPayment.q2StateQuarterlyPayment)}</div>
     <div>q3StateQuarterlyPayment = {formatCurrency(quarterlyPayment.q3StateQuarterlyPayment)}</div>
     <div>q4StateQuarterlyPayment = {formatCurrency(quarterlyPayment.q4StateQuarterlyPayment)}</div>
+    <div>explanation = {quarterlyPayment.explanation}</div>
+  </div>
+  <div class="section">
+    <div>SINGLE PAYMENT</div>
+    <div>due = {formatCurrency(singlePayment.due)}</div>
+    <div>paid = {formatCurrency(singlePayment.paid)}</div>
+    <div>remaining = {formatCurrency(singlePayment.remaining)}</div>
+    <div>explanation = {singlePayment.explanation}</div>
   </div>
 </div>
 

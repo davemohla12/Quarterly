@@ -8,17 +8,32 @@
   import { store } from '$src/stores/store.svelte'
   import { goto } from '$app/navigation'  
   import NumberInput from '$src/components/app/NumberInput.svelte'
+  import { onMount } from 'svelte'  
 
   const headingText = `How many exemptions do you have?`
   const subheadingText = `This usually includes you, your spouse, and any dependents`
   const buttonText = 'NEXT'
   const placeholderText = 'Number of Exemptions'
-
   let inputValue = $state(null)
   store.makeButtonActive = false
 
+  onMount(() => {
+    if (store.loggedIn) {
+      if (store.exemptions) {
+        inputValue = store.exemptions
+        store.makeButtonActive = true
+      }
+    }
+  })
+
   const handleInput = (value) => {
     inputValue = value
+    if (inputValue != '') {
+      store.makeButtonActive = true
+    }
+    else { 
+      store.makeButtonActive = false
+    }
   }
 
   const handleNext = () => {
@@ -44,6 +59,6 @@
 <Avatar />
 <Heading text={headingText} desktopwidth="600px" mobilewidth="275px" />
 <Subheading text={subheadingText} desktopwidth="500px" mobilewidth="275px" />
-<NumberInput placeholder={placeholderText} onInput={handleInput} />
+<NumberInput placeholder={placeholderText} value={inputValue} onInput={handleInput} />
 <Button text={buttonText} onclick={handleNext} />
 <Later />
