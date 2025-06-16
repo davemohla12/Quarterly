@@ -2,15 +2,51 @@ import { supabase } from '$src/utilities/supabase.js'
 import { store } from '$src/stores/store.svelte'
 import { getLocalStorage } from '$src/utilities/utilities.js'
 
+// const getValueInDatabase = async (field) => {
+//   if (store.loggedIn || store.justSignedUp) {
+//     const response = await supabase
+//       .from('Users')
+//       .select('*')
+//       .eq('email', store.email)
+//       .eq('year', store.currentYear)
+//       .single()
+//     return response.data?.[field]
+//   }
+// }
+
 const getValueInDatabase = async (field) => {
+  console.log('Auth state:', {
+    loggedIn: store.loggedIn,
+    justSignedUp: store.justSignedUp,
+    email: store.email
+  })
   if (store.loggedIn || store.justSignedUp) {
-    const response = await supabase
-      .from('Users')
-      .select('*')
-      .eq('email', store.email)
-      .eq('year', store.currentYear)
-      .single()
-    return response.data?.[field]
+    try {
+      console.log('Making Supabase request with:', {
+        email: store.email,
+        year: store.currentYear,
+        field: field
+      })
+      
+      const response = await supabase
+        .from('Users')
+        .select('*')
+        .eq('email', store.email)
+        .eq('year', store.currentYear)
+        .single()
+      
+      console.log('Supabase response:', response)
+      
+      if (response.error) {
+        console.error('Supabase error:', response.error)
+      }
+      
+      return response.data?.[field]
+    }
+    catch (error) {
+      console.error('Error in getValueInDatabase:', error)
+      throw error
+    }
   }
 }
 
