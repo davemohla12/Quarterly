@@ -38,7 +38,6 @@ const saveDatabaseToLocalStorage = async () => {
     if (response.data) {
       for (const field of store.fields) {
         const value = await getValueInDatabase(field)
-        localStorage.setItem(field, value)
         store[field] = value
       }
     }
