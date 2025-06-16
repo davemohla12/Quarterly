@@ -56,7 +56,7 @@
   }
 
   const handleGoogle = async () => {
-    const { data, error } = await supabase.auth.signInWithOAuth({
+    await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
         redirectTo: `${window.location.origin}/auth/callback`
@@ -116,7 +116,7 @@
       }
     }
     else {
-      const signUpResult = await supabase.auth.signUp({ 
+       await supabase.auth.signUp({ 
         email, 
         password, 
         options: {

@@ -46,7 +46,7 @@
 
 <div class="radiobuttons">
   {#each buttons as button}
-  <Clickable onclick={() => handleClick(button)} >
+  <Clickable onclick={() => handleClick(button)} noHighlight={true}>
     <div class="radiocontainer">
       {#if selectedRadioButton === button}
         <img class="radiobutton" src="/images/radiochecked.png" alt="Radio button" />

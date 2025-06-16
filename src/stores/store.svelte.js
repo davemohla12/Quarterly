@@ -1,4 +1,3 @@
-import { supabase } from '$src/utilities/supabase'
 import { setValueInDatabase } from '$src/utilities/database'
 import { getLocalStorage } from '$src/utilities/utilities'
 

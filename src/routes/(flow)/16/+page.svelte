@@ -4,9 +4,7 @@
   import Heading from '$src/components/app/Heading.svelte'
   import Subheading from '$src/components/app/Subheading.svelte'
   import Button from '$src/components/app/Button.svelte'
-  import Later from '$src/components/app/Later.svelte'
   import { goto } from '$app/navigation'
-  import { convertStateToUpperCase } from '$src/utilities/utilities'
   import { store } from '$src/stores/store.svelte'
   import { getBelowMinimumTaxText } from '$src/utilities/federaltax'
   import { stateRules } from '$src/rules/state'
@@ -28,6 +26,12 @@
         store.q2StateQuarterlyPayment = 0
         store.q3StateQuarterlyPayment = 0
         store.q4StateQuarterlyPayment = 0
+        store.singleFederalDue = 0
+        store.singleFederalPaid = 0
+        store.singleFederalRemaining = 0
+        store.singleStateDue = 0
+        store.singleStatePaid = 0
+        store.singleStateRemaining = 0
         store.explanation = getBelowMinimumTaxText()
       }
       else {
@@ -35,6 +39,9 @@
         store.q2federalQuarterlyPayment = 0
         store.q3federalQuarterlyPayment = 0
         store.q4federalQuarterlyPayment = 0
+        store.singleFederalDue = 0
+        store.singleFederalPaid = 0
+        store.singleFederalRemaining = 0
         store.explanation = getBelowMinimumTaxText()
         store.currentPage = 'dashboard'
         goto('/dashboard')

@@ -13,16 +13,26 @@
   let statePaid = props.statePaid || 0
   let stateRemaining = props.stateRemaining || 0
 
-  let column2Width = 0
-  let column3Width = 0
+  let column2Width = $state(0)
+  let column3Width = $state(0)
   let longLineWidth = $state(200)
+  let pageWidth = $state(0)
 
-  onMount(() => {
-    column2Width = document.querySelector('.column2')?.offsetWidth
-    column3Width = document.querySelector('.column3')?.offsetWidth
-    longLineWidth = column2Width + column3Width + 75
+  $effect(() => {
+    if (pageWidth < 768) {
+      column2Width = document.querySelector('.column2')?.offsetWidth
+      column3Width = document.querySelector('.column3')?.offsetWidth
+      longLineWidth = column2Width + column3Width + 15
+    } 
+    else {
+      column2Width = document.querySelector('.column2')?.offsetWidth
+      column3Width = document.querySelector('.column3')?.offsetWidth
+      longLineWidth = column2Width + column3Width + 75
+    }
   })
 </script>
+
+<svelte:window bind:innerWidth={pageWidth} />
 
 <div class="container">
   <div class="column1">
@@ -74,13 +84,13 @@
   }
   .longline {
     position: absolute;
-    top: 120px;
+    top: 90px;
     left: 0px; 
     border-bottom: 1px solid var(--dark);
   }
   .shortline {
     position: absolute;
-    top: 120px;
+    top: 90px;
     left: 0; 
     width: 100%;
     border-bottom: 1px solid var(--dark);
@@ -116,6 +126,19 @@
     .cell {
       font-size: 18px;
       margin-bottom: 25px;
+    }
+    .longline {
+      position: absolute;
+      top: 120px;
+      left: 0px; 
+      border-bottom: 1px solid var(--dark);
+    }
+    .shortline {
+      position: absolute;
+      top: 120px;
+      left: 0; 
+      width: 100%;
+      border-bottom: 1px solid var(--dark);
     }
     .column2 {
       margin-left: 70px;
