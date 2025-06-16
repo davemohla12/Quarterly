@@ -3,16 +3,16 @@
   import { convertStateToAllUpperCase } from "$src/utilities/utilities"
 
   let props = $props()
-  let federalPayment1 = $derived(() => props.federalPayment1 || 0)
-  let federalPayment2 = $derived(() => props.federalPayment2 || 0)
-  let federalPayment3 = $derived(() => props.federalPayment3 || 0)
-  let federalPayment4 = $derived(() => props.federalPayment4 || 0)
-  let showState = $derived(() => props.showState || false)
-  let stateName = $derived(() => props.stateName || '')
-  let statePayment1 = $derived(() => props.statePayment1 || 0)
-  let statePayment2 = $derived(() => props.statePayment2 || 0)
-  let statePayment3 = $derived(() => props.statePayment3 || 0)
-  let statePayment4 = $derived(() => props.statePayment4 || 0)
+  let federalPayment1 = $derived(props.federalPayment1 || 0)
+  let federalPayment2 = $derived(props.federalPayment2 || 0)
+  let federalPayment3 = $derived(props.federalPayment3 || 0)
+  let federalPayment4 = $derived(props.federalPayment4 || 0)
+  let showState = $derived(props.showState || false)
+  let stateName = $derived(props.stateName || '')
+  let statePayment1 = $derived(props.statePayment1 || 0)
+  let statePayment2 = $derived(props.statePayment2 || 0)
+  let statePayment3 = $derived(props.statePayment3 || 0)
+  let statePayment4 = $derived(props.statePayment4 || 0)
 </script>
 
 <div class="container">

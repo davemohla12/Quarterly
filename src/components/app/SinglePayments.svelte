@@ -3,14 +3,14 @@
   import { convertStateToAllUpperCase } from "$src/utilities/utilities"
 
   let props = $props()
-  let federalDue = $derived(() => props.federalDue || 0)
-  let federalPaid = $derived(() => props.federalPaid || 0)
-  let federalRemaining = $derived(() => props.federalRemaining || 0)
-  let showState = $derived(() => props.showState || false)
-  let stateName = $derived(() => props.stateName || '')
-  let stateDue = $derived(() => props.stateDue || 0)
-  let statePaid = $derived(() => props.statePaid || 0)
-  let stateRemaining = $derived(() => props.stateRemaining || 0)
+  let federalDue = $derived(props.federalDue || 0)
+  let federalPaid = $derived(props.federalPaid || 0)
+  let federalRemaining = $derived(props.federalRemaining || 0)
+  let showState = $derived(props.showState || false)
+  let stateName = $derived(props.stateName || '')
+  let stateDue = $derived(props.stateDue || 0)
+  let statePaid = $derived(props.statePaid || 0)
+  let stateRemaining = $derived(props.stateRemaining || 0)
 
   let column2Width = $state(0)
   let column3Width = $state(0)

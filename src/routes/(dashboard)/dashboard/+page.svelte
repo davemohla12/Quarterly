@@ -29,29 +29,25 @@
   let federalThisQuarterPayment = $state(0)
   let stateThisQuarterPayment = $state(0)
 
-  let reactiveFederalDue = $derived(() => store.singleFederalDue) 
-  let reactiveFederalPaid = $derived(() => store.singleFederalPaid) 
-  let reactiveFederalRemaining = $derived(() => store.singleFederalRemaining) 
-  let reactiveShowState = $derived(() => store.stateSupported) 
-  let reactiveStateName = $derived(() => store.currentState) 
-  let reactiveStateDue = $derived(() => store.singleStateDue) 
-  let reactiveStatePaid = $derived(() => store.singleStatePaid) 
-  let reactiveStateRemaining = $derived(() => store.singleStateRemaining) 
+  let singleFederalDue = $state(store.singleFederalDue)
+  let singleFederalPaid = $state(store.singleFederalPaid)
+  let singleFederalRemaining = $state(store.singleFederalRemaining)
+  let showState = $state(store.stateSupported)
+  let stateName = $state(store.currentState)
+  let singleStateDue = $state(store.singleStateDue)
+  let singleStatePaid = $state(store.singleStatePaid)
+  let singleStateRemaining = $state(store.singleStateRemaining) 
+  let q1federalQuarterlyPayment = $state(store.q1federalQuarterlyPayment)
+  let q2federalQuarterlyPayment = $state(store.q2federalQuarterlyPayment)
+  let q3federalQuarterlyPayment = $state(store.q3federalQuarterlyPayment)
+  let q4federalQuarterlyPayment = $state(store.q4federalQuarterlyPayment)
+  let q1StateQuarterlyPayment = $state(store.q1StateQuarterlyPayment)
+  let q2StateQuarterlyPayment = $state(store.q2StateQuarterlyPayment)
+  let q3StateQuarterlyPayment = $state(store.q3StateQuarterlyPayment)
+  let q4StateQuarterlyPayment = $state(store.q4StateQuarterlyPayment)
 
-  let reactiveFederalPayment1 = $derived(() => store.q1federalQuarterlyPayment) 
-  let reactiveFederalPayment2 = $derived(() => store.q2federalQuarterlyPayment) 
-  let reactiveFederalPayment3 = $derived(() => store.q3federalQuarterlyPayment) 
-  let reactiveFederalPayment4 = $derived(() => store.q4federalQuarterlyPayment)  
-  let reactiveStatePayment1 = $derived(() => store.q1StateQuarterlyPayment) 
-  let reactiveStatePayment2 = $derived(() => store.q2StateQuarterlyPayment) 
-  let reactiveStatePayment3 = $derived(() => store.q3StateQuarterlyPayment) 
-  let reactiveStatePayment4 = $derived(() => store.q4StateQuarterlyPayment) 
-
-  let reactiveFederalSingleAmount = $derived(() => store.singleFederalRemaining) 
-  let reactiveStateSingleAmount = $derived(() => store.singleStateRemaining) 
 
   onMount(async () => {
-    saveDatabaseToLocalStorage()
     store.active = true
     if (store.payPreference == 'single') {
       headingText = `Your remaining payment for ${store.currentYear}`
@@ -79,6 +75,24 @@
       store.sendDashboardEmail = false
       sendDashboardEmail()
     }
+    await saveDatabaseToLocalStorage()
+    singleFederalDue = store.singleFederalDue
+    singleFederalPaid = store.singleFederalPaid
+    singleFederalRemaining = store.singleFederalRemaining
+    showState = store.stateSupported
+    stateName = store.currentState
+    console.log(stateName)
+    singleStateDue = store.singleStateDue
+    singleStatePaid = store.singleStatePaid
+    singleStateRemaining = store.singleStateRemaining
+    q1federalQuarterlyPayment = store.q1federalQuarterlyPayment
+    q2federalQuarterlyPayment = store.q2federalQuarterlyPayment
+    q3federalQuarterlyPayment = store.q3federalQuarterlyPayment
+    q4federalQuarterlyPayment = store.q4federalQuarterlyPayment
+    q1StateQuarterlyPayment = store.q1StateQuarterlyPayment
+    q2StateQuarterlyPayment = store.q2StateQuarterlyPayment
+    q3StateQuarterlyPayment = store.q3StateQuarterlyPayment
+    q4StateQuarterlyPayment = store.q4StateQuarterlyPayment
   })
 
   const sendDashboardEmail = async () => {
@@ -128,27 +142,27 @@
 <Heading text={headingText} desktopwidth="550px" mobilewidth="275px" />
 {#if store.payPreference == 'single'}
   <SinglePayments 
-    federalDue={reactiveFederalDue} 
-    federalPaid={reactiveFederalPaid} 
-    federalRemaining={reactiveFederalRemaining} 
-    showState={reactiveShowState} 
-    stateName={reactiveStateName} 
-    stateDue={reactiveStateDue} 
-    statePaid={reactiveStatePaid} 
-    stateRemaining={reactiveStateRemaining} 
+    federalDue={singleFederalDue} 
+    federalPaid={singleFederalPaid} 
+    federalRemaining={singleFederalRemaining} 
+    showState={showState} 
+    stateName={stateName} 
+    stateDue={singleStateDue} 
+    statePaid={singleStatePaid} 
+    stateRemaining={singleStateRemaining} 
   />
 {:else}
   <QuarterlyPayments 
-    federalPayment1={reactiveFederalPayment1} 
-    federalPayment2={reactiveFederalPayment2} 
-    federalPayment3={reactiveFederalPayment3} 
-    federalPayment4={reactiveFederalPayment4} 
-    showState={reactiveShowState} 
-    stateName={reactiveStateName} 
-    statePayment1={reactiveStatePayment1} 
-    statePayment2={reactiveStatePayment2} 
-    statePayment3={reactiveStatePayment3} 
-    statePayment4={reactiveStatePayment4} 
+    federalPayment1={q1federalQuarterlyPayment} 
+    federalPayment2={q2federalQuarterlyPayment} 
+    federalPayment3={q3federalQuarterlyPayment} 
+    federalPayment4={q4federalQuarterlyPayment} 
+    showState={showState} 
+    stateName={stateName} 
+    statePayment1={q1StateQuarterlyPayment} 
+    statePayment2={q2StateQuarterlyPayment} 
+    statePayment3={q3StateQuarterlyPayment} 
+    statePayment4={q4StateQuarterlyPayment} 
   />
 {/if}
 <Options onEditClick={handleEditClick} onDownloadClick={handleDownloadClick} onViewClick={handleViewClick} viewText={viewText} />
@@ -160,16 +174,16 @@
 
 {#if store.payPreference == 'single'}
   {#if store.stateSupported && store.currentState}
-    <SinglePay federalSingleAmount={reactiveFederalSingleAmount} showState={true} stateName={reactiveStateName} stateSingleAmount={reactiveStateSingleAmount} />
+    <SinglePay federalSingleAmount={singleFederalRemaining} showState={true} stateName={stateName} stateSingleAmount={singleStateRemaining} />
   {:else}
-    <SinglePay federalSingleAmount={reactiveFederalSingleAmount} showState={false} />
+    <SinglePay federalSingleAmount={singleFederalRemaining} showState={false} />
   {/if}
   <Spacer />
 {:else}
   {#if store.stateSupported && store.currentState}
-    <QuarterlyPay federalQuarterAmount={reactiveFederalPayment1} showState={true} stateName={reactiveStateName} stateQuarterAmount={reactiveStatePayment1} />
+    <QuarterlyPay federalQuarterAmount={q1federalQuarterlyPayment} showState={true} stateName={stateName} stateQuarterAmount={q1StateQuarterlyPayment} />
   {:else}
-    <QuarterlyPay federalQuarterAmount={reactiveFederalPayment1} showState={false} />
+    <QuarterlyPay federalQuarterAmount={q1federalQuarterlyPayment} showState={false} />
   {/if}     
   <Spacer />
 {/if}
