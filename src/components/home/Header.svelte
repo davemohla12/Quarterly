@@ -121,8 +121,14 @@
     height: 27px;
   }
   .buttons {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 15px;
+    right: 20px;
+  }
+  .get {
     display: none;
-    position: relative;
   }
   .account {
     width: 31px;
@@ -164,14 +170,8 @@
       width: 138px;
       height: 34px;
     }
-    .buttons {
-      display: flex;
-      align-items: center;
-      position: absolute;
-      top: 15px;
-      right: 20px;
-    }
     .get {
+      display: block;
       font-family: 'Lato', sans-serif;
       font-size: 16px;
       font-weight: var(--regular);
