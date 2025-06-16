@@ -10,8 +10,8 @@
 
   let props = $props()
   let federalQuarterAmount = $derived(props.federalQuarterAmount)
-  let showState = props.showState
-  let stateName = props.stateName
+  let showState = $derived(props.showState)
+  let stateName = $derived(props.stateName)
   let stateQuarterAmount = $derived(props.stateQuarterAmount)
   let quarterName = $state(null)
   let isFederalPaid = $state(false)

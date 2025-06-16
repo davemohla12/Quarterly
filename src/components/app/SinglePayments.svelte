@@ -1,17 +1,16 @@
 <script>
   import { formatCurrency } from "$src/utilities/utilities"
   import { convertStateToAllUpperCase } from "$src/utilities/utilities"
-  import { onMount } from "svelte"
 
   let props = $props()
-  let federalDue = props.federalDue
-  let federalPaid = props.federalPaid
-  let federalRemaining = props.federalRemaining
-  let showState = props.showState
-  let stateName = props.stateName
-  let stateDue = props.stateDue || 0
-  let statePaid = props.statePaid || 0
-  let stateRemaining = props.stateRemaining || 0
+  let federalDue = $derived(props.federalDue)
+  let federalPaid = $derived(props.federalPaid)
+  let federalRemaining = $derived(props.federalRemaining)
+  let showState = $derived(props.showState)
+  let stateName = $derived(props.stateName)
+  let stateDue = $derived(props.stateDue || 0)
+  let statePaid = $derived(props.statePaid || 0)
+  let stateRemaining = $derived(props.stateRemaining || 0)
 
   let column2Width = $state(0)
   let column3Width = $state(0)
