@@ -63,23 +63,66 @@ const setValueInDatabase = async (field, value) => {
   }
 }
 
+// const saveDatabaseToLocalStorage = async () => {
+//   if (store.loggedIn || store.justSignedUp) {
+//     const response = await supabase
+//       .from('Users')
+//       .select('*')
+//       .eq('email', store.email)
+//       .eq('year', store.currentYear)
+//       .single()
+//     if (response.data) {
+//       for (const field of store.fields) {
+//         const value = await getValueInDatabase(field)
+//         localStorage.setItem(field, value)
+//         store[field] = value
+//       }
+//     }
+//   }
+// }
+
 const saveDatabaseToLocalStorage = async () => {
+  console.log('Starting saveDatabaseToLocalStorage')
+  console.log('Auth state:', {
+    loggedIn: store.loggedIn,
+    justSignedUp: store.justSignedUp,
+    email: store.email
+  })
+  
   if (store.loggedIn || store.justSignedUp) {
-    const response = await supabase
-      .from('Users')
-      .select('*')
-      .eq('email', store.email)
-      .eq('year', store.currentYear)
-      .single()
-    if (response.data) {
-      for (const field of store.fields) {
-        const value = await getValueInDatabase(field)
-        localStorage.setItem(field, value)
-        store[field] = value
+    try {
+      console.log('Making initial Supabase request')
+      const response = await supabase
+        .from('Users')
+        .select('*')
+        .eq('email', store.email)
+        .eq('year', store.currentYear)
+        .single()
+      
+      console.log('Initial Supabase response:', response)
+      
+      if (response.data) {
+        console.log('Found data, processing fields:', store.fields)
+        for (const field of store.fields) {
+          const value = await getValueInDatabase(field)
+          console.log(`Setting ${field} to:`, value)
+          localStorage.setItem(field, value)
+          store[field] = value
+        }
+      }
+      else {
+        console.log('No data found in response')
       }
     }
+    catch (error) {
+      console.error('Error in saveDatabaseToLocalStorage:', error)
+    }
+  }
+  else {
+    console.log('Not logged in or just signed up in saveDatabaseToLocalStorage')
   }
 }
+
 
 const saveLocalStorageToDatabase = async () => {
   if (store.loggedIn || store.justSignedUp) {
