@@ -135,6 +135,9 @@
     height: 31px;
     margin-left: 35px;
   }
+  .login {
+    display: none;
+  }
   .accountmenu {
     position: absolute;
     right: 0px;
@@ -186,6 +189,7 @@
       cursor: pointer;
     }
     .login {
+      display: block;
       margin-right: 15px;
       margin-left: 40px;
       font-family: 'Lato', sans-serif;
