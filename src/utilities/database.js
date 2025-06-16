@@ -39,7 +39,6 @@ const saveDatabaseToLocalStorage = async () => {
       for (const field of store.fields) {
         const value = await getValueInDatabase(field)
         store[field] = value
-        store[field] = store[field]
       }
     }
   }

@@ -9,10 +9,10 @@
   import { fade } from 'svelte/transition'
 
   let props = $props()
-  let federalSingleAmount = $derived(props.federalSingleAmount)
-  let showState = $derived(props.showState)
-  let stateName = $derived(props.stateName)
-  let stateSingleAmount = $derived(props.stateSingleAmount)
+  let federalSingleAmount = $derived(() => props.federalSingleAmount || 0)
+  let showState = $derived(() => props.showState || false)
+  let stateName = $derived(() => props.stateName || '')
+  let stateSingleAmount = $derived(() => props.stateSingleAmount || 0)
   let isFederalPaid = $state(false)
   let isStatePaid = $state(false)
 
