@@ -4,6 +4,25 @@
   import { store } from '$src/stores/store.svelte'
   import SinglePayments from '$src/components/app/SinglePayments.svelte'
 
+  let props = $props()
+  let federalDue = $derived(props.federalDue)
+  let federalPaid = $derived(props.federalPaid)
+  let federalRemaining = $derived(props.federalRemaining)
+  let showState = $derived(props.showState)
+  let stateName = $derived(props.stateName)
+  let stateDue = $derived(props.stateDue)
+  let statePaid = $derived(props.statePaid)
+  let stateRemaining = $derived(props.stateRemaining)
+  let federalPayment1 = $derived(props.federalPayment1)
+  let federalPayment2 = $derived(props.federalPayment2)
+  let federalPayment3 = $derived(props.federalPayment3)
+  let federalPayment4 = $derived(props.federalPayment4)
+  let statePayment1 = $derived(props.statePayment1)
+  let statePayment2 = $derived(props.statePayment2)
+  let statePayment3 = $derived(props.statePayment3)
+  let statePayment4 = $derived(props.statePayment4)
+  let explanation = $derived(props.explanation)
+
 </script>
 
 <div class="center">
@@ -16,33 +35,32 @@
 </div>
 {#if store.payPreference == 'single'}
   <SinglePayments 
-    federalDue={store.singleFederalDue} 
-    federalPaid={store.singleFederalPaid} 
-    federalRemaining={store.singleFederalRemaining} 
+    federalDue={federalDue} 
+    federalPaid={federalPaid} 
+    federalRemaining={federalRemaining} 
     showState={store.stateSupported} 
     stateName={store.currentState} 
-    stateDue={store.singleStateDue} 
-    statePaid={store.singleStatePaid} 
-    stateRemaining={store.singleStateRemaining} 
+    stateDue={stateDue} 
+    statePaid={statePaid} 
+    stateRemaining={stateRemaining} 
   />
 {:else} 
   <QuarterlyPayments 
-    federalPayment1={store.q1federalQuarterlyPayment} 
-    federalPayment2={store.q2federalQuarterlyPayment} 
-    federalPayment3={store.q3federalQuarterlyPayment} 
-    federalPayment4={store.q4federalQuarterlyPayment} 
-    showState={store.stateSupported} 
-    stateName={store.currentState} 
-    statePayment1={store.q1StateQuarterlyPayment} 
-    statePayment2={store.q2StateQuarterlyPayment} 
-    statePayment3={store.q3StateQuarterlyPayment} 
-    statePayment4={store.q4StateQuarterlyPayment} 
+    federalPayment1={federalPayment1} 
+    federalPayment2={federalPayment2} 
+    federalPayment3={federalPayment3} 
+    federalPayment4={federalPayment4} 
+    showState={showState} 
+    stateName={stateName} 
+    statePayment1={statePayment1} 
+    statePayment2={statePayment2} 
+    statePayment3={statePayment3} 
+    statePayment4={statePayment4} 
   />
 {/if}
 <div class="center">
-  <div class="explanation">Explanation</div>
+  <Explanation explanation={explanation} showHide={false} />
 </div>
-<Explanation showHide={false} />
 
 <style>
   .center {
@@ -60,11 +78,5 @@
     font-size: 24px;
     font-weight: var(--regular);
     margin-top: 20px;
-  }
-  .explanation {
-    font-family: 'Merriweather', serif;
-    font-size: 24px;
-    font-weight: var(--regular);
-    margin-top: 10px;
   }
 </style>

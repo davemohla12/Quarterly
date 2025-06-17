@@ -4,6 +4,7 @@
   import { fade } from 'svelte/transition'
 
   let props = $props()
+  let explanation = $derived(props.explanation || '')
   let onCloseClick = props.onCloseClick || (() => {})
   let showHide = props.showHide !== undefined ? props.showHide : true
 
@@ -13,7 +14,7 @@
 </script>
 
   <div class="explanation" in:fade={{ duration: 200 }} out:fade={{ duration: 200 }}>
-    {store.explanation}
+    {explanation}
   </div>
   {#if showHide}
     <Clickable onclick={handleCloseClick}>

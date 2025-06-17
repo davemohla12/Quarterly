@@ -45,6 +45,7 @@
   let q2StateQuarterlyPayment = $state(store.q2StateQuarterlyPayment)
   let q3StateQuarterlyPayment = $state(store.q3StateQuarterlyPayment)
   let q4StateQuarterlyPayment = $state(store.q4StateQuarterlyPayment)
+  let explanation = $state(store.explanation)
 
 
   onMount(async () => {
@@ -93,6 +94,7 @@
     q2StateQuarterlyPayment = store.q2StateQuarterlyPayment
     q3StateQuarterlyPayment = store.q3StateQuarterlyPayment
     q4StateQuarterlyPayment = store.q4StateQuarterlyPayment
+    explanation = store.explanation
   })
 
   const sendDashboardEmail = async () => {
@@ -168,7 +170,7 @@
 <Options onEditClick={handleEditClick} onDownloadClick={handleDownloadClick} onViewClick={handleViewClick} viewText={viewText} />
 {#if showExplanation}
   <div transition:fade={{ duration: 300 }}>
-    <Explanation onCloseClick={handleCloseClick} />
+    <Explanation explanation={explanation} onCloseClick={handleCloseClick}  />
   </div>
 {/if}
 
@@ -190,7 +192,25 @@
 
 {#if showPdf}
 <div class="pdfcontainer" bind:this={pdfContainer}>
-  <Pdf /> 
+  <Pdf 
+    federalDue={singleFederalDue} 
+    federalPaid={singleFederalPaid} 
+    federalRemaining={singleFederalRemaining} 
+    showState={showState} 
+    stateName={stateName} 
+    stateDue={singleStateDue} 
+    statePaid={singleStatePaid} 
+    stateRemaining={singleStateRemaining} 
+    federalPayment1={q1federalQuarterlyPayment} 
+    federalPayment2={q2federalQuarterlyPayment} 
+    federalPayment3={q3federalQuarterlyPayment} 
+    federalPayment4={q4federalQuarterlyPayment} 
+    statePayment1={q1StateQuarterlyPayment} 
+    statePayment2={q2StateQuarterlyPayment} 
+    statePayment3={q3StateQuarterlyPayment} 
+    statePayment4={q4StateQuarterlyPayment} 
+    explanation={explanation}
+  /> 
 </div>
 {/if}
 
