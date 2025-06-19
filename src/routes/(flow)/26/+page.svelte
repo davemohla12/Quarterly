@@ -10,9 +10,9 @@
   import { convertCurrencyToNumber } from '$src/utilities/utilities'
   import { convertStateToUpperCase } from '$src/utilities/utilities'
   import { onMount } from 'svelte'
+  import { currentQuarter } from '$src/settings/settings'
 
   const headingText = `What did you pay in ${convertStateToUpperCase(store.currentState)} quarterly payments this year?`
-  const subheadingText = `To determine this, find the number in box 17 of each W2 paycheck and then multiply by the number of W2s you plan to get this year`
   const buttonText = 'NEXT'
   let placeholderText1 = $state('')
   let placeholderText2 = $state('')
@@ -24,14 +24,14 @@
 
 
   onMount(() => {
-    if (store.currentQuarter == 'Q2') {
+    if (currentQuarter == 'Q2') {
       placeholderText1 = 'April Payment'
     }
-    else if (store.currentQuarter == 'Q3') {
+    else if (currentQuarter == 'Q3') {
       placeholderText1 = 'April Payment'
       placeholderText2 = 'June Payment'
     }
-    else if (store.currentQuarter == 'Q4') {
+    else if (currentQuarter == 'Q4') {
       placeholderText1 = 'April Payment'
       placeholderText2 = 'June Payment'
       placeholderText3 = 'September Payment'

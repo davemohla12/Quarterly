@@ -22,10 +22,12 @@
     loading = false
   })
 
-  Sentry.init({
-    dsn: 'https://becf5f803df68fae670aabf0b72357e3@o4509491485016064.ingest.us.sentry.io/4509491487768576',
-    environment: PUBLIC_ENVIRONMENT
-  })
+  if (PUBLIC_ENVIRONMENT === 'production') {
+    Sentry.init({
+      dsn: 'https://becf5f803df68fae670aabf0b72357e3@o4509491485016064.ingest.us.sentry.io/4509491487768576',
+      environment: PUBLIC_ENVIRONMENT
+    })
+  }
   </script>
   
   {#if loading}

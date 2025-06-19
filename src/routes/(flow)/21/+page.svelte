@@ -8,8 +8,8 @@
   import Later from '$src/components/app/Later.svelte'
   import { goto } from '$app/navigation'
   import { store } from '$src/stores/store.svelte'
-  import { convertStateToUpperCase } from '$src/utilities/utilities'  
   import { onMount } from 'svelte'
+  import { currentQuarter } from '$src/settings/settings'
 
   const headingText = `Will you earn any salary or wages from a job this year?`
   let subheadingText = $state('')
@@ -50,7 +50,7 @@
     }
     else {
       store.salaryOrWagesThisYear = false
-      if (store.currentQuarter == 'Q1') {
+      if (currentQuarter == 'Q1') {
         store.currentPage = '27'
         goto('/27')
       }

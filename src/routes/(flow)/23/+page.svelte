@@ -9,8 +9,8 @@
   import { store } from '$src/stores/store.svelte'
   import { goto } from '$app/navigation'
   import { convertCurrencyToNumber } from '$src/utilities/utilities'
-  import { convertStateToUpperCase } from '$src/utilities/utilities'
   import { onMount } from 'svelte'
+  import { currentQuarter } from '$src/settings/settings'
   
   const headingText = `What are your expected federal W2 witholdings for this year?`
   const subheadingText = `To determine this, find the number in box 2 of each W2 paycheck and then multiply by the number of W2s you plan to get this year`
@@ -45,7 +45,7 @@
       goto('/24')
     }
     else {
-      if (store.currentQuarter == 'Q1') {
+      if (currentQuarter == 'Q1') {
         store.currentPage = '27'
         goto('/27')
       }

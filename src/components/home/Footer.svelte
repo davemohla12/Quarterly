@@ -1,5 +1,5 @@
 <script>
-  import { store } from '$src/stores/store.svelte'
+  import { currentYear } from '$src/settings/settings'
 </script>
 
 <div class="footer">
@@ -9,7 +9,7 @@
     <a class="privacy" href="/privacy" target="_blank">Privacy Policy</a>
   </div>
   <div class="copyright">
-    Copyright © {store.currentYear} Zenguider
+    Copyright © {currentYear} Zenguider
   </div>
 </div>
 

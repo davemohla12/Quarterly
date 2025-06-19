@@ -3,6 +3,7 @@
   import Explanation from '$src/components/app/Explanation.svelte'
   import { store } from '$src/stores/store.svelte'
   import SinglePayments from '$src/components/app/SinglePayments.svelte'
+  import { currentYear } from '$src/settings/settings'
 
   let props = $props()
   let federalDue = $derived(props.federalDue)
@@ -28,9 +29,9 @@
 <div class="center">
   <img class="logo" src="/images/logo.png" alt="Logo"/>
   {#if store.payPreference == 'single'}
-    <div class="headline">Your remaining payment for {store.currentYear}</div>
+    <div class="headline">Your remaining payment for {currentYear}</div>
   {:else}
-    <div class="headline">Your quarterly payments for {store.currentYear}</div>
+    <div class="headline">Your quarterly payments for {currentYear}</div>
   {/if}
 </div>
 {#if store.payPreference == 'single'}

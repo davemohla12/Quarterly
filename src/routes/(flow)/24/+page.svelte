@@ -11,6 +11,7 @@
   import { convertCurrencyToNumber } from '$src/utilities/utilities'
   import { convertStateToUpperCase } from '$src/utilities/utilities'
   import { onMount } from 'svelte'
+  import { currentQuarter } from '$src/settings/settings'
   
   const headingText = `What are your expected ${convertStateToUpperCase(store.currentState)} W2 witholdings for this year?`
   const subheadingText = `To determine this, find the number in box 17 of each W2 paycheck and then multiply by the number of W2s you plan to get this year`
@@ -40,7 +41,7 @@
 
   const handleNext = () => {
     store.stateWithholdingsThisYear = convertCurrencyToNumber(inputValue)
-    if (store.currentQuarter == 'Q1') {
+    if (currentQuarter == 'Q1') {
       store.currentPage = '27'
       goto('/27')
     }

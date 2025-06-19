@@ -6,6 +6,9 @@
   import { updateLoginState } from '$src/utilities/utilities'
   import { supabase } from '$src/utilities/supabase'
   
+  let props = $props()
+  let showDashboardOption = props.showDashboardOption || false
+
   let showAccountMenu = $state(false)
   let buttonText = $state('GET STARTED')
 
@@ -56,6 +59,26 @@
     }
   }
 
+  const handleDashboard = () => {
+    goto('/dashboard')
+    store.currentPage = 'dashboard'
+    showAccountMenu = false
+  }
+
+  const handleReminders = () => {
+    goto('/reminders')
+    showAccountMenu = false
+  }
+
+  const handleSubscription = () => {
+    showAccountMenu = false
+  }
+
+  const handleSupport = () => {
+    showAccountMenu = false
+  }
+
+
   const handleLogout = async () => {
     await supabase.auth.signOut()
     updateLoginState(false)
@@ -87,11 +110,26 @@
       </Clickable>
     {/if}
     {#if showAccountMenu}
-      <div class="accountmenu">
-        <Clickable onclick={handleLogout}>
-          <div class="item">Logout</div>
-        </Clickable>
-      </div>
+        <div class="accountmenu">
+          {#if showDashboardOption}
+            <Clickable onclick={handleDashboard}>
+              <div class="item">Dashboard</div>
+            </Clickable>
+          {/if}
+          <Clickable onclick={handleReminders}>
+            <div class="item">Reminders</div>
+          </Clickable>
+          <Clickable onclick={handleSubscription}>
+            <div class="item">Subscription</div>
+          </Clickable>
+          <div class="divider"></div>
+          <Clickable onclick={handleSupport}>
+            <div class="item">Support</div>
+          </Clickable>
+          <Clickable onclick={handleLogout}>
+            <div class="item">Logout</div>
+          </Clickable>
+          </div>
       {/if}
   </div>
   <div class="line"></div>
@@ -148,15 +186,21 @@
     padding-bottom: 0px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    width: 100px;
+    align-items: flex-start;
+    width: 110px;
     z-index: 100;
+    padding-left: 10px;
   }
   .item {
     color: var(--white);
     font-size: 16px;
     font-family: 'Lato', sans-serif;
     font-weight: var(--regular);
+    margin-bottom: 20px;
+  }
+  .divider {
+    width: calc(100% - 10px);
+    border-bottom: 1px solid var(--white);  
     margin-bottom: 20px;
   }
   .line {

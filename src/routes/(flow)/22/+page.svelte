@@ -8,8 +8,8 @@
   import Later from '$src/components/app/Later.svelte'
   import { goto } from '$app/navigation'
   import { store } from '$src/stores/store.svelte'
-  import { convertStateToUpperCase } from '$src/utilities/utilities'
   import { onMount } from 'svelte'
+  import { currentQuarter } from '$src/settings/settings'
   
   const headingText = `Do you have W2 paychecks for your salaries and wages?`
   const subheadingText = `If so, we can lower your quarterly payment. If not, we'll keep your payments higher and you'll get refunded when you file your annual taxes`
@@ -44,7 +44,7 @@
     }
     else {
       store.hasW2 = false
-      if (store.currentQuarter == 'Q1') {
+      if (currentQuarter == 'Q1') {
         store.currentPage = '27'
         goto('/27')
       }

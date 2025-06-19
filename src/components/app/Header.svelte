@@ -13,6 +13,7 @@
   let hideReset = props.hideReset || false
   let onBack = props.onBack || (() => {})
   let showAccountMenu = $state(false)
+  let showDashboardOption = props.showDashboardOption || false
 
   onMount(() => {
       document.addEventListener('click', handleClickOutside)
@@ -35,7 +36,7 @@
   }
 
   const handleClickOutside = (event) => {
-    if (!event.target.closest('.menu') && !event.target.closest('.account')) {
+    if (!event.target.closest('.accountmenu') && !event.target.closest('.account')) {
       showAccountMenu = false
     }
   }
@@ -45,6 +46,25 @@
     updateLoginState(false)
     localStorage.clear()
     goto('/')
+    showAccountMenu = false
+  }
+
+  const handleDashboard = () => {
+    goto('/dashboard')
+    store.currentPage = 'dashboard'
+    showAccountMenu = false
+  }
+
+  const handleReminders = () => {
+    goto('/reminders')
+    showAccountMenu = false
+  }
+
+  const handleSubscription = () => {
+    showAccountMenu = false
+  }
+
+  const handleSupport = () => {
     showAccountMenu = false
   }
 
@@ -80,7 +100,22 @@
         </Clickable>
       {/if}
       {#if showAccountMenu}
-        <div class="menu">
+        <div class="accountmenu">
+          {#if showDashboardOption}
+            <Clickable onclick={handleDashboard}>
+              <div class="item">Dashboard</div>
+            </Clickable>
+          {/if}
+          <Clickable onclick={handleReminders}>
+            <div class="item">Reminders</div>
+          </Clickable>
+          <Clickable onclick={handleSubscription}>
+            <div class="item">Subscription</div>
+          </Clickable>
+          <div class="divider"></div>
+          <Clickable onclick={handleSupport}>
+            <div class="item">Support</div>
+          </Clickable>
           <Clickable onclick={handleLogout}>
             <div class="item">Logout</div>
           </Clickable>
@@ -125,7 +160,7 @@
     margin-left: 15px;  
     margin-right: 10px;
   }
-  .menu {
+  .accountmenu {
     position: absolute;
     right: 15px;
     top: 30px;
@@ -135,15 +170,21 @@
     padding-bottom: 0px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    width: 100px;
+    align-items: flex-start;
+    width: 110px;
     z-index: 100;
+    padding-left: 10px;
   }
   .item {
     color: var(--white);
     font-size: 16px;
     font-family: 'Lato', sans-serif;
     font-weight: var(--regular);
+    margin-bottom: 20px;
+  }
+  .divider {
+    width: calc(100% - 10px);
+    border-bottom: 1px solid var(--white);  
     margin-bottom: 20px;
   }
   @media (min-width: 768px) { 

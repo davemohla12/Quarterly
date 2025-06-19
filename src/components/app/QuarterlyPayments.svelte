@@ -1,6 +1,7 @@
 <script>
   import { formatCurrency } from "$src/utilities/utilities"
   import { convertStateToAllUpperCase } from "$src/utilities/utilities"
+  import { q1DueDate, q2DueDate, q3DueDate, q4DueDate } from '$src/settings/settings'
 
   let props = $props()
   let federalPayment1 = $derived(props.federalPayment1 || 0)
@@ -18,10 +19,10 @@
 <div class="container">
   <div class="column1">
     <div class="header">DATE</div>
-    <div class="cell">Apr 15</div>
-    <div class="cell">Jun 16</div>
-    <div class="cell">Sep 15</div>
-    <div class="cell">Jan 15</div>
+    <div class="cell">{q1DueDate.format('MMM D')}</div>
+    <div class="cell">{q2DueDate.format('MMM D')}</div>
+    <div class="cell">{q3DueDate.format('MMM D')}</div>
+    <div class="cell">{q4DueDate.format('MMM D')}</div>
   </div>
   <div class="column2">
     <div class="header">FEDERAL</div>

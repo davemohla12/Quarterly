@@ -5,9 +5,9 @@
   import { goto } from '$app/navigation'
   import { onMount } from 'svelte'
   import { store } from '$src/stores/store.svelte'
-  import { convertStateToUpperCase } from '$src/utilities/utilities'
   import { getFederalTaxes, getFederalQuarterlyPayment, getFederalSinglePayment } from '$src/utilities/federaltax'
   import { getStateTaxes, getStateQuarterlyPayment, getStateSinglePayment } from '$src/utilities/statetax'
+  import { currentQuarter } from '$src/settings/settings'
 
   onMount(() => {
     if (store.payPreference == 'single') {
@@ -40,7 +40,7 @@
     }
     else {
       let federalTaxes = getFederalTaxes(store.incomeExpectationThisYear, store.federalTaxPaidLastYear, store.adjustedGrossIncomeLastYear, store.filingStatus, store.expectedTotalIncomeThisYear, store.businessExpensesThisYear, store.retirementContributionsThisYear, store.studentLoanInterestThisYear, store.healthInsuranceThisYear, store.otherDeductionsThisYear)
-      let federalQuarterlyPayments = getFederalQuarterlyPayment(store.currentQuarter, federalTaxes.safeHarborFederalTaxesThisYear, store.federalWithholdingsThisYear, store.q1FederalPaymentMade, store.q2FederalPaymentMade, store.q3FederalPaymentMade, federalTaxes.initialExplanation)
+      let federalQuarterlyPayments = getFederalQuarterlyPayment(currentQuarter, federalTaxes.safeHarborFederalTaxesThisYear, store.federalWithholdingsThisYear, store.q1FederalPaymentMade, store.q2FederalPaymentMade, store.q3FederalPaymentMade, federalTaxes.initialExplanation)
 
       store.adjustedGrossIncomeThisYear = federalTaxes.adjustedGrossIncomeThisYear
       store.taxableFederalIncomeThisYear = federalTaxes.taxableFederalIncomeThisYear
@@ -56,7 +56,7 @@
 
       if (store.stateSupported) {
         let stateTaxes = getStateTaxes(store.currentState, store.incomeExpectationThisYear, store.stateTaxPaidLastYear, store.stateIncomeLastYear, store.filingStatus, store.expectedTotalIncomeThisYear, store.businessExpensesThisYear, store.retirementContributionsThisYear, store.studentLoanInterestThisYear, store.healthInsuranceThisYear, store.otherDeductionsThisYear, store.exemptions)
-        let stateQuarterlyPayments = getStateQuarterlyPayment(store.currentState, store.currentQuarter, stateTaxes.safeHarborStateTaxesThisYear, store.stateWithholdingsThisYear, store.q1StatePaymentMade, store.q2StatePaymentMade, store.q3StatePaymentMade, stateTaxes.initialExplanation)
+        let stateQuarterlyPayments = getStateQuarterlyPayment(store.currentState, currentQuarter, stateTaxes.safeHarborStateTaxesThisYear, store.stateWithholdingsThisYear, store.q1StatePaymentMade, store.q2StatePaymentMade, store.q3StatePaymentMade, stateTaxes.initialExplanation)
 
         store.stateAdjustableGrossIncomeThisYear = stateTaxes.stateAdjustableGrossIncomeThisYear
         store.taxableStateIncomeThisYear = stateTaxes.taxableStateIncomeThisYear

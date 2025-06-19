@@ -19,6 +19,7 @@
   import SinglePay from '$src/components/app/SinglePay.svelte'
   import axios from 'axios'
   import { saveDatabaseToLocalStorage } from '$src/utilities/database'
+  import { currentYear } from '$src/settings/settings'
 
   let headingText = $state()
   let showExplanation = $state(false)
@@ -46,24 +47,24 @@
   let q3StateQuarterlyPayment = $state(store.q3StateQuarterlyPayment)
   let q4StateQuarterlyPayment = $state(store.q4StateQuarterlyPayment)
   let explanation = $state(store.explanation)
-
+  import { currentQuarter } from '$src/settings/settings'
 
   onMount(async () => {
     store.active = true
     if (store.payPreference == 'single') {
-      headingText = `Your remaining payment for ${store.currentYear}`
+      headingText = `Your remaining payment for ${currentYear}`
     }
     else {
-      headingText = `Your quarterly payments for ${store.currentYear}`
-      if (store.currentQuarter == 'Q1') {
+      headingText = `Your quarterly payments for ${currentYear}`
+      if (currentQuarter == 'Q1') {
         federalThisQuarterPayment = store.q1federalQuarterlyPayment
         stateThisQuarterPayment = store.q1StateQuarterlyPayment
       }
-      else if (store.currentQuarter == 'Q2') {
+      else if (currentQuarter == 'Q2') {
         federalThisQuarterPayment = store.q2federalQuarterlyPayment
         stateThisQuarterPayment = store.q2StateQuarterlyPayment
       } 
-      else if (store.currentQuarter == 'Q3') {
+      else if (currentQuarter == 'Q3') {
         federalThisQuarterPayment = store.q3federalQuarterlyPayment
         stateThisQuarterPayment = store.q3StateQuarterlyPayment
           }
@@ -82,7 +83,6 @@
     singleFederalRemaining = store.singleFederalRemaining
     showState = store.stateSupported
     stateName = store.currentState
-    console.log(stateName)
     singleStateDue = store.singleStateDue
     singleStatePaid = store.singleStatePaid
     singleStateRemaining = store.singleStateRemaining
@@ -100,7 +100,7 @@
   const sendDashboardEmail = async () => {
       await axios.post('/api/email', {
         to: store.email,
-        year: store.currentYear,
+        subject: `Your ${currentYear} quarterly taxes are ready`,
         template: 'dashboard'
       })
   }
@@ -119,7 +119,7 @@
     const pdfWidth = pdf.internal.pageSize.getWidth()
     const pdfHeight = (canvas.height * pdfWidth) / canvas.width
     pdf.addImage(imageData, 'PNG', 0, 0, pdfWidth, pdfHeight)
-    pdf.save(`Quarterly Payments for ${store.currentYear}.pdf`)
+    pdf.save(`Quarterly Payments for ${currentYear}.pdf`)
     showPdf = false
   }
 
@@ -139,7 +139,7 @@
   }
 </script>
 
-<Header hideBack={true} hideReset={true} />
+<Header hideBack={true} hideReset={true} showDashboardOption={true} />
 <Avatar />
 <Heading text={headingText} desktopwidth="550px" mobilewidth="275px" />
 {#if store.payPreference == 'single'}

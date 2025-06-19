@@ -7,6 +7,7 @@
   import { stateRules } from '$src/rules/state'
   import { convertStateToAllUpperCase } from '$src/utilities/utilities'
   import { fade } from 'svelte/transition'
+  import { currentQuarter } from '$src/settings/settings'
 
   let props = $props()
   let federalQuarterAmount = $derived(props.federalQuarterAmount || 0)
@@ -18,22 +19,22 @@
   let isStatePaid = $state(false)
 
   onMount(() => {
-    if (store.currentQuarter == 'Q1') {
+    if (currentQuarter == 'Q1') {
       quarterName = 'April' 
       isFederalPaid = store.q1FederalPaid
       isStatePaid = store.q1StatePaid
-    }
-    else if (store.currentQuarter == 'Q2') {
+    } 
+    else if (currentQuarter == 'Q2') {
       quarterName = 'June'
       isFederalPaid = store.q2FederalPaid
       isStatePaid = store.q2StatePaid
     } 
-    else if (store.currentQuarter == 'Q3') {    
+    else if (currentQuarter == 'Q3') {    
       quarterName = 'September'
       isFederalPaid = store.q3FederalPaid
       isStatePaid = store.q3StatePaid
     }
-    else if (store.currentQuarter == 'Q4') {
+    else if (currentQuarter == 'Q4') {
       quarterName = 'January'
       isFederalPaid = store.q4FederalPaid
       isStatePaid = store.q4StatePaid
@@ -50,64 +51,64 @@
 
   const handleMarkPaidFederal = () => {
     isFederalPaid = true
-    if (store.currentQuarter == 'Q1') {
+    if (currentQuarter == 'Q1') {
       store.q1FederalPaid = true
     }
-    else if (store.currentQuarter == 'Q2') {
+    else if (currentQuarter == 'Q2') {
       store.q2FederalPaid = true
     }
-    else if (store.currentQuarter == 'Q3') {
+    else if (currentQuarter == 'Q3') {
       store.q3FederalPaid = true
     }
-    else if (store.currentQuarter == 'Q4') {
+    else if (currentQuarter == 'Q4') {
       store.q4FederalPaid = true
     }
   }
 
   const handleMarkPaidState = () => {
     isStatePaid = true
-    if (store.currentQuarter == 'Q1') {
+    if (currentQuarter == 'Q1') {
       store.q1StatePaid = true
     }
-    else if (store.currentQuarter == 'Q2') {
+    else if (currentQuarter == 'Q2') {
       store.q2StatePaid = true
     }
-    else if (store.currentQuarter == 'Q3') {
+    else if (currentQuarter == 'Q3') {
       store.q3StatePaid = true
     }
-    else if (store.currentQuarter == 'Q4') {
+    else if (currentQuarter == 'Q4') {
       store.q4StatePaid = true
     }
   }
 
   const handleMarkNotPaidFederal = () => {
     isFederalPaid = false
-    if (store.currentQuarter == 'Q1') {
+    if (currentQuarter == 'Q1') {
       store.q1FederalPaid = false
     }
-    else if (store.currentQuarter == 'Q2') {
+    else if (currentQuarter == 'Q2') {
       store.q2FederalPaid = false
     } 
-    else if (store.currentQuarter == 'Q3') {
+    else if (currentQuarter == 'Q3') {
       store.q3FederalPaid = false
     }
-    else if (store.currentQuarter == 'Q4') {
+    else if (currentQuarter == 'Q4') {
       store.q4FederalPaid = false
     } 
   }
 
   const handleMarkNotPaidState = () => {
     isStatePaid = false
-    if (store.currentQuarter == 'Q1') {
+    if (currentQuarter == 'Q1') {
       store.q1StatePaid = false
     }
-    else if (store.currentQuarter == 'Q2') {
+    else if (currentQuarter == 'Q2') {
       store.q2StatePaid = false
     } 
-    else if (store.currentQuarter == 'Q3') {
+    else if (currentQuarter == 'Q3') {
       store.q3StatePaid = false
     }
-    else if (store.currentQuarter == 'Q4') {
+    else if (currentQuarter == 'Q4') {
       store.q4StatePaid = false
     }
   }   

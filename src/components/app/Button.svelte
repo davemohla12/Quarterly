@@ -1,7 +1,6 @@
 <script>
   import { store } from '$src/stores/store.svelte'
   import Clickable from '$src/components/app/Clickable.svelte'
-  import { onMount } from 'svelte'
 
   let props = $props()
   let text = props.text

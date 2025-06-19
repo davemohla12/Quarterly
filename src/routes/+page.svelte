@@ -27,7 +27,7 @@
     <Menu />
     <Overlay />
   {/if}
-  <Header />
+  <Header showDashboardOption={true} />
   <Stressfree />
   <Flow />
   <Penalties />

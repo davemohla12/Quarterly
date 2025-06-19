@@ -1,6 +1,7 @@
 import { supabase } from '$src/utilities/supabase.js'
 import { store } from '$src/stores/store.svelte'
 import { getLocalStorage } from '$src/utilities/utilities.js'
+import { currentYear } from '$src/settings/settings'
 
 const getValueInDatabase = async (field) => {
   if (store.loggedIn || store.justSignedUp) {
@@ -8,7 +9,7 @@ const getValueInDatabase = async (field) => {
       .from('Users')
       .select('*')
       .eq('email', store.email)
-      .eq('year', store.currentYear)
+      .eq('year', currentYear)
       .single()
     return response.data?.[field]
   }
@@ -23,7 +24,7 @@ const setValueInDatabase = async (field, value) => {
       .from('Users')
       .update({ [field]: value })
       .eq('email', store.email)
-      .eq('year', store.currentYear)
+      .eq('year', currentYear)
   }
 }
 
@@ -33,7 +34,7 @@ const saveDatabaseToLocalStorage = async () => {
       .from('Users')
       .select('*')
       .eq('email', store.email)
-      .eq('year', store.currentYear)
+      .eq('year', currentYear)
       .single()
     if (response.data) {
       for (const field of store.fields) {
@@ -50,14 +51,14 @@ const saveLocalStorageToDatabase = async () => {
     .from('Users')
     .select('*')
     .eq('email', store.email)
-    .eq('year', store.currentYear)
+    .eq('year', currentYear)
     .single()
     if (!response.data) {
       await supabase
         .from('Users')
         .insert({
           email: store.email,
-          year: store.currentYear,
+          year: currentYear,
         })
     }
     for (const field of store.fields) {
@@ -83,7 +84,7 @@ const getCurrentPageFromDatabase = async () => {
       .from('Users')
       .select('currentPage')
       .eq('email', store.email)
-      .eq('year', store.currentYear)
+      .eq('year', currentYear)
       .single()
     return response.data?.currentPage || '0'
   }
@@ -92,11 +93,33 @@ const getCurrentPageFromDatabase = async () => {
   }
 }
 
+const getEmailsFromDatabase = async () => {
+  const response = await supabase
+    .from('Users')
+    .select('email')
+  if (response.data) {
+    const emails = response.data.map(row => row.email)
+    const uniqueEmails = []
+    for (const email of emails) {
+      if (!uniqueEmails.includes(email)) {
+        uniqueEmails.push(email)
+      }
+    }
+    return uniqueEmails
+  }
+  else { 
+    return []
+  }
+}
+
+
+
 export { 
   getValueInDatabase,
   setValueInDatabase,
   saveDatabaseToLocalStorage,
   saveLocalStorageToDatabase,
   clearDatabase,
-  getCurrentPageFromDatabase
+  getCurrentPageFromDatabase,
+  getEmailsFromDatabase
 } 

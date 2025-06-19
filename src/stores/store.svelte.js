@@ -8,10 +8,7 @@ const store = $state( {
   email: null,
   showResumeBanner: false,
   justSignedUp : false,
-  
   states: ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'District of Columbia', 'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'],
-  currentYear: '2025',
-  currentQuarter: 'Q2',
 
   get loginLocation() {
     return getLocalStorage('loginLocation') || 'home'
@@ -708,7 +705,37 @@ const store = $state( {
     }
   },
 
-  fields: [
+  get sendReminders() {
+    return getLocalStorage('sendReminders')
+  },
+  set sendReminders(value) {
+    localStorage.setItem('sendReminders', value)
+    if (store.loggedIn) {
+      setValueInDatabase('sendReminders', value)
+    }
+  },
+  
+  get fiveDaysBefore() {
+    return getLocalStorage('fiveDaysBefore')
+  },
+  set fiveDaysBefore(value) {
+    localStorage.setItem('fiveDaysBefore', value)
+    if (store.loggedIn) {
+      setValueInDatabase('fiveDaysBefore', value)
+    }
+  },
+
+  get oneDayBefore() {
+    return getLocalStorage('oneDayBefore')
+  },
+  set oneDayBefore(value) {
+    localStorage.setItem('oneDayBefore', value)
+    if (store.loggedIn) {
+      setValueInDatabase('oneDayBefore', value)
+    }
+  },
+
+    fields: [
     'currentPage',
     'earnNonPaycheckIncomeThisYear',
     'currentState',
@@ -777,6 +804,9 @@ const store = $state( {
     'q4StatePaid',
     'explanation',
     'active',
+    'sendReminders',
+    'fiveDaysBefore',
+    'oneDayBefore',
   ]
 })
 
