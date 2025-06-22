@@ -29,25 +29,6 @@ const getValueFromDatabase = async (table, email, field) => {
   }
 }
 
-const getEmails = async () => {
-  const response = await supabase
-    .from('Users')
-    .select('email')
-  if (response.data) {
-    const emails = response.data.map(row => row.email)
-    const uniqueEmails = []
-    for (const email of emails) {
-      if (!uniqueEmails.includes(email)) {
-        uniqueEmails.push(email)
-      }
-    }
-    return uniqueEmails
-  }
-  else { 
-    return []
-  } 
-}
-
 const sendFiveDayEmail = async () => {
   await axios.post(`${PUBLIC_DOMAIN}/api/email`, {
     to: 'davemohla@gmail.com',
