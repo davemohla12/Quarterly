@@ -62,7 +62,6 @@
   
   onMount(async () => {
     loading = true
-    clearLocalStorage()
     user.setValue('currentPage', 'dashboard')
     global.makeButtonActive = true
 
