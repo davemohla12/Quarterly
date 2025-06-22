@@ -1,5 +1,6 @@
 <script>
   import axios from 'axios'
+  import { global } from '$src/data/global.svelte'
 
   const cronKey = 'N1X5XMej7ievRFDLNEBh2Qt6u8azajjp'
 

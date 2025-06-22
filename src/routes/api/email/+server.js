@@ -38,7 +38,6 @@ const POST = async ({ request }) => {
     return json({ success: true, data: response.data })
   }
   catch (error) {
-    console.log(error)
     return json({ success: false, error: error.message })
   }
 }

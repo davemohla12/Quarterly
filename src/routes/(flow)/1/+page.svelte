@@ -7,7 +7,9 @@
   import Button from '$src/components/app/Button.svelte'
   import Later from '$src/components/app/Later.svelte'
   import { goto } from '$app/navigation'
-  import { store } from '$src/stores/store.svelte'
+  import { global } from '$src/data/global.svelte'
+  import { payment } from '$src/data/payment.svelte'
+  import { user } from '$src/data/user.svelte'
   import { onMount } from 'svelte'
 
   const headingText = `Will you earn any income this year that isn't from a regular paycheck?`
@@ -16,42 +18,42 @@
   const buttonText = 'NEXT'
 
   let selectedRadioButton = $state(null)
-  store.makeButtonActive = false
+  global.makeButtonActive = false
 
-  onMount(() => {
-    if (store.loggedIn) {
-      if (store.earnNonPaycheckIncomeThisYear == true) {
+  onMount(async () => {
+    if (global.loggedIn) {
+      if (await payment.getValue('earnNonPaycheckIncomeThisYear') == true) {
         selectedRadioButton = 'Yes'
-        store.makeButtonActive = true
+        global.makeButtonActive = true
       }
-      else if (store.earnNonPaycheckIncomeThisYear == false) {
+      else if (await payment.getValue('earnNonPaycheckIncomeThisYear') == false) {
         selectedRadioButton = 'No'
-        store.makeButtonActive = true
+        global.makeButtonActive = true
       }
     }
   })
 
   const handleSelect = (button) => {
     selectedRadioButton = button
-    store.makeButtonActive = true
+    global.makeButtonActive = true
   }
 
   const handleNext = () => {
     if (selectedRadioButton === 'Yes') {
-      store.earnNonPaycheckIncomeThisYear = true
-      store.currentPage = '3'
+      payment.setValue('earnNonPaycheckIncomeThisYear', true)
+      user.setValue('currentPage', '3')
       goto('/3')
     }
     else {
-      store.earnNonPaycheckIncomeThisYear = false
-      store.currentPage = '2'
+      payment.setValue('earnNonPaycheckIncomeThisYear', false)
+      user.setValue('currentPage', '2')
       goto('/2')
     }
   }
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
-      if (store.makeButtonActive == true) {
+      if (global.makeButtonActive == true) {
         handleNext()
       }
     }

@@ -3,7 +3,7 @@
   import { formatCurrency } from '$src/utilities/utilities'
 
   const state = 'pennsylvania'
-  const currentQuarter = 'Q3'
+  const currentTaxQuarter = 'Q3'
   const filingStatus = 'head'
   const stateTaxPaidLastYear = 7000
   const incomeExpectationThisYear = 'decrease'
@@ -21,7 +21,7 @@
   let q3PaymentMade = null
   
   let stateTaxes = getStateTaxes(state, incomeExpectationThisYear, stateTaxPaidLastYear, stateIncomeLastYear, filingStatus, expectedTotalIncomeThisYear, businessExpensesThisYear, retirementContributionsThisYear, studentLoanInterestThisYear, healthInsuranceThisYear, otherDeductionsThisYear, exemptions)
-  let quarterlyPayment = getStateQuarterlyPayment(state, currentQuarter, stateTaxes.safeHarborStateTaxesThisYear, stateWithholdings, q1PaymentMade, q2PaymentMade, q3PaymentMade, stateTaxes.initialExplanation)
+  let quarterlyPayment = getStateQuarterlyPayment(state, currentTaxQuarter, stateTaxes.safeHarborStateTaxesThisYear, stateWithholdings, q1PaymentMade, q2PaymentMade, q3PaymentMade, stateTaxes.initialExplanation)
   let singlePayment = getStateSinglePayment(state, stateTaxes.safeHarborStateTaxesThisYear, stateWithholdings, q1PaymentMade, q2PaymentMade, q3PaymentMade, stateTaxes.initialExplanation)
 
 </script> 
@@ -30,7 +30,7 @@
   <div class="section">
     <div>INPUTS</div>
     <div>state = {state}</div>
-    <div>currentQuarter = {currentQuarter}</div>
+    <div>currentTaxQuarter = {currentTaxQuarter}</div>
     <div>filingStatus = {filingStatus}</div>
     <div>stateTaxPaidLastYear = {stateTaxPaidLastYear}</div>
     <div>stateIncomeLastYear = {stateIncomeLastYear}</div>

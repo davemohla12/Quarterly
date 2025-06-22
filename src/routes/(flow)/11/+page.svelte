@@ -6,25 +6,29 @@
   import Button from '$src/components/app/Button.svelte'
   import Later from '$src/components/app/Later.svelte'
   import DollarInput from '$src/components/app/DollarInput.svelte'
-  import { store } from '$src/stores/store.svelte'
+  import { global } from '$src/data/global.svelte'
   import { onMount } from 'svelte'
   import { goto } from '$app/navigation'
   import { federalRules } from '$src/rules/federal'
   import { stateRules } from '$src/rules/state'
   import { convertCurrencyToNumber } from '$src/utilities/utilities'
+  import { payment } from '$src/data/payment.svelte'
+  import { user } from '$src/data/user.svelte'
+  import { getBelowMinimumTaxText } from '$src/utilities/federaltax'
 
   const headingText = `How much did you pay in federal income tax last year?`
   const subheadingText = `You can find this on form ${federalRules.incomeTaxPaidForm  } line ${federalRules.incomeTaxPaidLine}`
   const buttonText = 'NEXT'
   const placeholderText = 'Total Tax Due'
   let inputValue = $state(null)
-  store.makeButtonActive = false
+  global.makeButtonActive = false
 
-  onMount(() => {
-    if (store.loggedIn) {
-      if (store.federalTaxPaidLastYear) {
-        inputValue = store.federalTaxPaidLastYear
-        store.makeButtonActive = true
+  onMount(async () => {
+    if (global.loggedIn) {
+      if (await payment.getValue('federalTaxPaidLastYear')) {
+        const federalTaxPaidLastYear = await payment.getValue('federalTaxPaidLastYear')
+        inputValue = federalTaxPaidLastYear.toString()
+        global.makeButtonActive = true
       }
     }
   })
@@ -32,33 +36,40 @@
   const handleInput = (value) => {
     inputValue = value
     if (inputValue == null || inputValue == '$' || inputValue == '') {
-      store.makeButtonActive = false
+      global.makeButtonActive = false
     }
     else {
-      store.makeButtonActive = true
+      global.makeButtonActive = true
     }
   }
 
-  const handleNext = () => {
-    store.federalTaxPaidLastYear = convertCurrencyToNumber(inputValue)
-    if (store.federalTaxPaidLastYear < federalRules.minimumTaxForQuarterlyPayments) {
-      store.federalQuarterlyPayment = 0
-      if (store.inMultipleStates) {
-        store.currentPage = '13'
+  const handleNext = async () => {
+    payment.setValue('federalTaxPaidLastYear', convertCurrencyToNumber(inputValue))
+    if (await payment.getValue('federalTaxPaidLastYear') < federalRules.minimumTaxForQuarterlyPayments) {
+      payment.setValue('q1federalQuarterlyPayment', 0)
+      payment.setValue('q2federalQuarterlyPayment', 0)
+      payment.setValue('q3federalQuarterlyPayment', 0)
+      payment.setValue('q4federalQuarterlyPayment', 0)
+      payment.setValue('singleFederalDue', 0)
+      payment.setValue('singleFederalPaid', 0)
+      payment.setValue('singleFederalRemaining', 0)
+      payment.setValue('explanation', getBelowMinimumTaxText())
+      if (await payment.getValue('inMultipleStates')) {
+        user.setValue('currentPage', '13')
         goto(13)
       }
       else {
-        store.currentPage = '12'
+        user.setValue('currentPage', '12')
         goto(12)
       }
     }
     else {
-      if (store.stateSupported && stateRules[store.currentState].lastYearSafeHarborRule) {
-        store.currentPage = '14'
+      if (await payment.getValue('stateSupported') && stateRules[await payment.getValue('currentState')].lastYearSafeHarborRule) {
+        user.setValue('currentPage', '14')
         goto(14)
       }
       else {
-        store.currentPage = '17'
+        user.setValue('currentPage', '17')
         goto(17)
       }
     }
@@ -66,7 +77,7 @@
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
-      if (store.makeButtonActive == true) {
+      if (global.makeButtonActive == true) {
         handleNext()
       }
     }

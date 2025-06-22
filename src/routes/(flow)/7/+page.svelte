@@ -3,25 +3,25 @@
   import Avatar from '$src/components/app/Avatar.svelte'
   import Heading from '$src/components/app/Heading.svelte'
   import Subheading from '$src/components/app/Subheading.svelte'
-  import RadioButtons from '$src/components/app/RadioButtons.svelte'
   import Button from '$src/components/app/Button.svelte'
   import Later from '$src/components/app/Later.svelte'
   import { goto } from '$app/navigation'
-  import { store } from '$src/stores/store.svelte'
-
+  import { global } from '$src/data/global.svelte'
+  import { user } from '$src/data/user.svelte'
+  
   const headingText = `I can help you with just your federal quarterly taxes`
   const subheadingText = `Multi-state taxes are a bit more complicated so you'll need to estimate and pay your state taxes on your own`
   const buttonText = 'NEXT'
-  store.makeButtonActive = true
+  global.makeButtonActive = true
   
   const handleNext = () => {
-    store.currentPage = '9'
+    user.setValue('currentPage', '9')
     goto('/9')
   }
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
-      if (store.makeButtonActive == true) {
+      if (global.makeButtonActive == true) {
         handleNext()
       }
     }

@@ -6,59 +6,60 @@
   import Button from '$src/components/app/Button.svelte'
   import Later from '$src/components/app/Later.svelte'
   import { convertStateToUpperCase } from '$src/utilities/utilities'
-  import { store } from '$src/stores/store.svelte'
+  import { global } from '$src/data/global.svelte'
+  import { payment } from '$src/data/payment.svelte'
   import { goto } from '$app/navigation'
-  import { doesStateHaveQuarterlyTaxes } from '$src/utilities/utilities'
   import { stateRules } from '$src/rules/state'
   import { onMount } from 'svelte'
-
-  const headingText = `Did you live in ${convertStateToUpperCase(store.currentState)} all of last year?`
+  import { user } from '$src/data/user.svelte'
+  
+  let headingText = $state('')
   const radioButtons = ['Yes', 'No']
   const buttonText = 'NEXT'
   let selectedRadioButton = $state(null)  
-  store.makeButtonActive = false
-
+  global.makeButtonActive = false
   
-  onMount(() => {
-    if (store.loggedIn) {
-      if (store.livedInCurrentStateAllLastYear == true) {
+  onMount(async () => {
+    headingText = `Did you live in ${convertStateToUpperCase(await payment.getValue('currentState'))} all of last year?`
+    if (global.loggedIn) {
+      if (await payment.getValue('livedInCurrentStateAllLastYear') == true) {
         selectedRadioButton = 'Yes'
-        store.makeButtonActive = true
+        global.makeButtonActive = true
       }
-      else if (store.livedInCurrentStateAllLastYear == false) {
+      else if (await payment.getValue('livedInCurrentStateAllLastYear') == false) {
         selectedRadioButton = 'No'
-        store.makeButtonActive = true
+        global.makeButtonActive = true
       }
     }
   })
 
   const handleSelect = (button) => {
     selectedRadioButton = button
-    store.makeButtonActive = true
+    global.makeButtonActive = true
   }
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (selectedRadioButton == 'Yes') {
-      store.livedInCurrentStateAllLastYear = true
+      payment.setValue('livedInCurrentStateAllLastYear', true)
     }
     else {
-      store.livedInCurrentStateAllLastYear = false
+      payment.setValue('livedInCurrentStateAllLastYear', false)
     }
-    if (selectedRadioButton === 'No' && stateRules[store.currentState].stateHasQuarterlyTaxes) {
-      store.inMultipleStates = true
-      store.stateSupported = false
-      store.currentPage = '7'
+    if (selectedRadioButton === 'No' && stateRules[await payment.getValue('currentState')].stateHasQuarterlyTaxes) {
+      payment.setValue('inMultipleStates', true)
+      payment.setValue('stateSupported', false)
+      user.setValue('currentPage', '7')
       goto('/7')
     }
     else {
-      store.currentPage = '6'
+      user.setValue('currentPage', '6')
       goto('/6')
     }
   }
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
-      if (store.makeButtonActive == true) {
+      if (global.makeButtonActive == true) {
         handleNext()
       }
     }

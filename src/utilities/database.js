@@ -1,102 +1,181 @@
-import { supabase } from '$src/utilities/supabase.js'
-import { store } from '$src/stores/store.svelte'
-import { getLocalStorage } from '$src/utilities/utilities.js'
-import { currentYear } from '$src/settings/settings'
+import { supabase } from '$src/utilities/supabase'
+import { global } from '$src/data/global.svelte'
+import { currentTaxYear } from '$src/settings/settings'
+import { getLocalStorage } from '$src/utilities/utilities'
 
-const getValueInDatabase = async (field) => {
-  if (store.loggedIn || store.justSignedUp) {
-    const response = await supabase
-      .from('Users')
-      .select('*')
-      .eq('email', store.email)
-      .eq('year', currentYear)
-      .single()
-    return response.data?.[field]
+const getFromPayments = async (field) => {
+  const response = await supabase
+    .from('Payments')
+    .select('*')
+    .eq('email', global.email)
+    .eq('taxYear', currentTaxYear)
+    .maybeSingle()
+  if (response.error) {
+    console.log(response.error)
+  }
+  return response.data?.[field]
+}
+
+const setInPayments = async (field, value) => {
+  const response =await supabase
+    .from('Payments')
+    .update({ [field]: value })
+    .eq('email', global.email)
+    .eq('taxYear', currentTaxYear)
+  if (response.error) {
+    console.log(response.error)
   }
 }
 
-const setValueInDatabase = async (field, value) => {
-  if (store.loggedIn || store.justSignedUp) {
-    if (value == "undefined") {
-      value = null
-    }
+const saveToPayments = async () => {
+  let response = await supabase
+      .from('Payments')
+      .select('*')
+      .eq('email', global.email)
+      .eq('taxYear', currentTaxYear)
+      .maybeSingle()
+  if (response.error) {
+    console.log(response.error)
+  }
+  if (!response.data) {
     await supabase
-      .from('Users')
-      .update({ [field]: value })
-      .eq('email', store.email)
-      .eq('year', currentYear)
-  }
-}
-
-const saveDatabaseToLocalStorage = async () => {
-  if (store.loggedIn || store.justSignedUp) {
-    const response = await supabase
-      .from('Users')
+      .from('Payments')
+      .insert({
+        email: global.email,
+        taxYear: currentTaxYear,
+      })
+    response = await supabase
+      .from('Payments')
       .select('*')
-      .eq('email', store.email)
-      .eq('year', currentYear)
-      .single()
-    if (response.data) {
-      for (const field of store.fields) {
-        const value = await getValueInDatabase(field)
-        store[field] = value
-      }
+      .eq('email', global.email)
+      .eq('taxYear', currentTaxYear)
+      .maybeSingle()
+    if (response.error) {
+      console.log(response.error)
     }
   }
+  const updateData = {}
+  for (const field of Object.keys(response.data)) {
+    if (field != 'id' && field != 'created_at' && field != 'email' && field != 'taxYear') {
+      updateData[field] = getLocalStorage(field) 
+    }
+  }
+  await supabase
+    .from('Payments')
+    .update(updateData)
+    .eq('email', global.email)
+    .eq('taxYear', currentTaxYear)
+  if (response.error) {
+    console.log(response.error)
+  }
 }
 
-const saveLocalStorageToDatabase = async () => {
-  if (store.loggedIn || store.justSignedUp) {
-    const response = await supabase
+const createBlankPayment = async () => {
+  const response = await supabase
+    .from('Payments')
+    .insert({
+      email: global.email,
+      taxYear: currentTaxYear,
+    })
+  if (response.error) {
+    console.log(response.error)
+  }
+}
+
+const getFromUsers = async (field) => {
+  const response = await supabase
+  .from('Users')
+  .select('*')
+  .eq('email', global.email)
+  .maybeSingle()
+  if (response.error) {
+    console.log(response.error)
+  }
+  return response.data?.[field]
+}
+
+const setInUsers = async (field, value) => {
+  const response =await supabase
+    .from('Users')
+    .update({ [field]: value })
+    .eq('email', global.email)
+  if (response.error) {
+    console.log(response.error)
+  }
+}
+
+const saveToUsers = async () => {
+  let response = await supabase
     .from('Users')
     .select('*')
-    .eq('email', store.email)
-    .eq('year', currentYear)
-    .single()
-    if (!response.data) {
-      await supabase
-        .from('Users')
-        .insert({
-          email: store.email,
-          year: currentYear,
-        })
-    }
-    for (const field of store.fields) {
-      const value = getLocalStorage(field)
-      await setValueInDatabase(field, value)
-    }
+    .eq('email', global.email)
+    .maybeSingle()
+  if (response.error) {
+    console.log(response.error)
   }
-}
-
-
-const clearDatabase = async () => {
-  if (store.loggedIn || store.justSignedUp) {
-    localStorage.clear()
-    for (const field of store.fields) {
-      const value = await setValueInDatabase(field, getLocalStorage(field))
-    }
-  }
-}
-
-const getCurrentPageFromDatabase = async () => {
-  if (store.loggedIn || store.justSignedUp) {
-    const response = await supabase
+  if (!response.data) {
+    await supabase
       .from('Users')
-      .select('currentPage')
-      .eq('email', store.email)
-      .eq('year', currentYear)
-      .single()
-    return response.data?.currentPage || '0'
+      .insert({
+        email: global.email,
+        sendReminders: true,
+        sendFiveDayReminder: true,
+        sendOneDayReminder: true,
+      })
+    response = await supabase
+      .from('Users')
+      .select('*')
+      .eq('email', global.email)
+      .maybeSingle()
+    if (response.error) {
+      console.log(response.error)
+    }
   }
-  else {
-    return '0'
+  const updateData = {}
+  for (const field of Object.keys(response.data)) {
+    if (field != 'id' && field != 'created_at' && field != 'email') {
+      updateData[field] = getLocalStorage(field) 
+    }
+  }
+  await supabase
+    .from('Users')
+    .update(updateData)
+    .eq('email', global.email)
+  if (response.error) {
+    console.log(response.error)
   }
 }
 
-const getEmailsFromDatabase = async () => {
+const addToUsers = async (field, value) => {
+  const response = await supabase
+    .from('Users')
+    .select(field)
+    .eq('email', global.email)
+    .maybeSingle()  
+  if (response.error) {
+    console.log(response.error)
+    return
+  }
+  let currentArray = response.data?.[field] || []
+  if (!currentArray.includes(value)) {
+    currentArray.push(value)
+  }
+  const updateResponse = await supabase
+    .from('Users')
+    .update({ [field]: currentArray })
+    .eq('email', global.email)
+  if (updateResponse.error) {
+    console.log(updateResponse.error)
+  }
+}
+
+const getEmails = async () => {
   const response = await supabase
     .from('Users')
     .select('email')
+  if (response.error) {
+    console.log(response.error)
+  }
   if (response.data) {
     const emails = response.data.map(row => row.email)
     const uniqueEmails = []
@@ -109,17 +188,7 @@ const getEmailsFromDatabase = async () => {
   }
   else { 
     return []
-  }
+  } 
 }
 
-
-
-export { 
-  getValueInDatabase,
-  setValueInDatabase,
-  saveDatabaseToLocalStorage,
-  saveLocalStorageToDatabase,
-  clearDatabase,
-  getCurrentPageFromDatabase,
-  getEmailsFromDatabase
-} 
+export { getFromPayments, setInPayments, saveToPayments, getFromUsers, setInUsers, saveToUsers, addToUsers, getEmails, createBlankPayment }

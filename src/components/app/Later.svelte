@@ -1,15 +1,16 @@
 <script>
-  import { store } from '$src/stores/store.svelte'
+  import { global } from '$src/data/global.svelte'
   import Clickable from '$src/components/app/Clickable.svelte'
   import { goto } from '$app/navigation'
+  import { setLocalStorage } from '$src/utilities/utilities'
 
-  const handleLater = () => {
-    store.loginLocation = 'later'
+  const handleLater = async () => {
+    setLocalStorage('loginLocation', 'later')
     goto('/signup')
   }
 </script>
 
-{#if !store.loggedIn}
+{#if !global.loggedIn}
   <Clickable onclick={handleLater}>
     <div class="later">CONTINUE LATER</div>
   </Clickable>

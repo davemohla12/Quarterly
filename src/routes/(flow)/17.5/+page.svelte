@@ -6,24 +6,29 @@
   import Button from '$src/components/app/Button.svelte'
   import Later from '$src/components/app/Later.svelte'
   import DollarInput from '$src/components/app/DollarInput.svelte'
-  import { store } from '$src/stores/store.svelte'
+  import { global } from '$src/data/global.svelte'
+  import { payment } from '$src/data/payment.svelte'
   import { goto } from '$app/navigation'
   import { convertCurrencyToNumber, convertStateToUpperCase } from '$src/utilities/utilities'
   import { stateRules } from '$src/rules/state'
   import { onMount } from 'svelte'  
+  import { user } from '$src/data/user.svelte'
 
-  const headingText = `What was your taxable income in ${convertStateToUpperCase(store.currentState)} last year?`
-  const subheadingText = `You can find this on form ${stateRules[store.currentState].thisYearIncomeCalculationType.stateIncomeForm} line ${stateRules[store.currentState].thisYearIncomeCalculationType.stateIncomeLine}`
+  let headingText = $state('')
+  let subheadingText = $state('')
   const buttonText = 'NEXT'
   const placholderText = `Taxable State Income`
   let inputValue = $state(null)
-  store.makeButtonActive = false
+  global.makeButtonActive = false
 
-  onMount(() => {
-    if (store.loggedIn) {
-      if (store.stateIncomeLastYear) {
-        inputValue = store.stateIncomeLastYear
-        store.makeButtonActive = true
+  onMount(async () => {
+    headingText = `What was your taxable income in ${convertStateToUpperCase(await payment.getValue('currentState'))} last year?`
+    subheadingText = `You can find this on form ${stateRules[await payment.getValue('currentState')].thisYearIncomeCalculationType.stateIncomeForm} line ${stateRules[await payment.getValue('currentState')].thisYearIncomeCalculationType.stateIncomeLine}`
+    if (global.loggedIn) {
+      if (await payment.getValue('stateIncomeLastYear')) {
+        const stateIncomeLastYear = await payment.getValue('stateIncomeLastYear')
+        inputValue = stateIncomeLastYear.toString()
+        global.makeButtonActive = true
       }
     }
   })
@@ -31,22 +36,22 @@
   const handleInput = (value) => {
     inputValue = value
     if (inputValue == null || inputValue == '$' || inputValue == '') {
-      store.makeButtonActive = false
+      global.makeButtonActive = false
     }
     else {
-      store.makeButtonActive = true
+      global.makeButtonActive = true
     }
   }
 
-  const handleNext = () => {
-    store.stateIncomeLastYear = convertCurrencyToNumber(inputValue)
-    store.currentPage = '18'
+  const handleNext = async () => {
+    payment.setValue('stateIncomeLastYear', convertCurrencyToNumber(inputValue))
+    user.setValue('currentPage', '18')
     goto('/18')
   }
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
-      if (store.makeButtonActive == true) {
+      if (global.makeButtonActive == true) {
         handleNext()
       }
     }

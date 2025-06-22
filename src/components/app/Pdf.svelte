@@ -1,9 +1,9 @@
 <script>
   import QuarterlyPayments from '$src/components/app/QuarterlyPayments.svelte'
   import Explanation from '$src/components/app/Explanation.svelte'
-  import { store } from '$src/stores/store.svelte'
+  import { payment } from '$src/data/payment.svelte'
   import SinglePayments from '$src/components/app/SinglePayments.svelte'
-  import { currentYear } from '$src/settings/settings'
+  import { currentTaxYear } from '$src/settings/settings'
 
   let props = $props()
   let federalDue = $derived(props.federalDue)
@@ -28,19 +28,19 @@
 
 <div class="center">
   <img class="logo" src="/images/logo.png" alt="Logo"/>
-  {#if store.payPreference == 'single'}
-    <div class="headline">Your remaining payment for {currentYear}</div>
+  {#if payment.payPreference == 'single'}
+    <div class="headline">Your remaining payment for {currentTaxYear}</div>
   {:else}
-    <div class="headline">Your quarterly payments for {currentYear}</div>
+    <div class="headline">Your quarterly payments for {currentTaxYear}</div>
   {/if}
 </div>
-{#if store.payPreference == 'single'}
+{#if payment.payPreference == 'single'}
   <SinglePayments 
     federalDue={federalDue} 
     federalPaid={federalPaid} 
     federalRemaining={federalRemaining} 
-    showState={store.stateSupported} 
-    stateName={store.currentState} 
+    showState={payment.stateSupported} 
+    stateName={payment.currentState} 
     stateDue={stateDue} 
     statePaid={statePaid} 
     stateRemaining={stateRemaining} 

@@ -5,13 +5,13 @@
   import Subheading from '$src/components/app/Subheading.svelte'
   import Button from '$src/components/app/Button.svelte'
   import { goto } from '$app/navigation'
-  import { store } from '$src/stores/store.svelte';
+  import { global } from '$src/data/global.svelte';
 
   const headingText = `Page not found`
   const subheadingText = `The page you are looking for cannot be found`
   const buttonText = 'BACK TO HOME'
   
-  store.makeButtonActive = true
+  global.makeButtonActive = true
 
   const handleClick = () => {
     goto('/')

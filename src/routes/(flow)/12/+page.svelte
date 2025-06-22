@@ -7,28 +7,30 @@
   import Later from '$src/components/app/Later.svelte'
   import { federalRules } from '$src/rules/federal'
   import { goto } from '$app/navigation'
-  import { store } from '$src/stores/store.svelte'  
+  import { global } from '$src/data/global.svelte'
+  import { payment } from '$src/data/payment.svelte'
+  import { user } from '$src/data/user.svelte'
 
   const headingText = `You don't need to pay any federal quarterly taxes this year`
   const subheadingText = `Because you owed less than $${federalRules.minimumTaxForQuarterlyPayments} in federal tax last year, the IRS doesn't require you to make estimated payments this year`
   const buttonText = 'NEXT'
   
-  store.makeButtonActive = true
+  global.makeButtonActive = true
 
-  const handleNext = () => {
-    if (store.stateHasQuarterlyTaxes) {
-      store.currentPage = '14'
+  const handleNext = async () => {
+    if (await payment.getValue('stateHasQuarterlyTaxes')) {
+      user.setValue('currentPage', '14')
       goto('/14')
     }
     else {
-      store.currentPage = '16'
+      user.setValue('currentPage', '16')
       goto('/16')
     }
   }
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
-      if (store.makeButtonActive == true) {
+      if (global.makeButtonActive == true) {
         handleNext()
       }
     }

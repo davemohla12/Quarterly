@@ -1,21 +1,50 @@
 <script>
-  import { store } from '$src/stores/store.svelte'
+  import { global } from '$src/data/global.svelte'
   import Clickable from '$src/components/app/Clickable.svelte'
   import { fly } from 'svelte/transition'
   import { goto } from '$app/navigation'
+  import { onMount } from 'svelte'
+  import { supabase } from '$src/utilities/supabase'
+  import { updateLoginState } from '$src/utilities/utilities'
+  import { clearLocalStorage, setLocalStorage } from '$src/utilities/utilities'
+
+  let logInText = $state('')
+
+  onMount(() => {
+    if (global.loggedIn) {
+      logInText = 'Logout'
+    }
+    else { 
+      logInText = 'Login'
+    }
+  })
 
   const handleClose = () => {
-    store.showMenu = false
+    global.showMenu = false
   }
 
   const handleGetStarted = () => {
-    store.showMenu = false
+    global.showMenu = false
     goto('/0')
   }
 
-  const handleLogin = () => {
-    store.showMenu = false
-    goto('/login')
+  const handleFaq = () => {
+    global.showMenu = false
+    goto('/faq')
+  }
+
+  const handleLogin = async () => {
+    if (logInText == 'Login') {
+      global.showMenu = false
+      setLocalStorage('loginLocation', 'home')
+      goto('/login')
+    }
+    else {
+      await supabase.auth.signOut()
+      updateLoginState(false)
+      clearLocalStorage()
+      global.showMenu = false
+    }
   }
 </script>
 
@@ -27,8 +56,11 @@
     <Clickable onclick={handleGetStarted}>
       <div class="item">Get Started</div>
     </Clickable>
+    <Clickable onclick={handleFaq}>
+      <div class="item">FAQ</div>
+    </Clickable>
     <Clickable onclick={handleLogin}>
-      <div class="item">Login</div>
+      <div class="item">{logInText}</div>
     </Clickable>
   </div>
 </div>

@@ -1,7 +1,7 @@
 <script>
   import Clickable from '$src/components/app/Clickable.svelte'
   import { onMount } from 'svelte'
-  import { store } from '$src/stores/store.svelte'
+  import { global } from '$src/data/global.svelte'
 
   let props = $props()
   let text = props.text
@@ -54,7 +54,7 @@
   
   const handleKeydown = async (event) => {
     if (event.key === 'Escape') {
-      store.dropdownisOpen = false
+      global.dropdownisOpen = false
       selectedIndex = -1
     }
     else if (event.key === 'ArrowDown') {
@@ -76,7 +76,7 @@
     }
   }
 
-  const handleClear = () => {
+  const handleClear = (event) => {
     event.stopPropagation()
     inputValue = ""
     onselection(inputValue)

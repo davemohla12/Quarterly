@@ -6,24 +6,26 @@
   import Button from '$src/components/app/Button.svelte'
   import Later from '$src/components/app/Later.svelte'
   import DollarInput from '$src/components/app/DollarInput.svelte'
-  import { store } from '$src/stores/store.svelte'
+  import { global } from '$src/data/global.svelte'
+  import { payment } from '$src/data/payment.svelte'
   import { goto } from '$app/navigation'
   import { convertCurrencyToNumber } from '$src/utilities/utilities'
-  import { convertStateToUpperCase } from '$src/utilities/utilities'
   import { onMount } from 'svelte'
+  import { user } from '$src/data/user.svelte'
 
   const headingText = `What is your expected total income this year?`
   const subheadingText = `Total income includes income from freelance work, your own business, wages & salaries, investments, rentals, retirement withdrawals, and alimony`
   const buttonText = 'NEXT'
   const placholderText = 'Total Income'
   let inputValue = $state(null) 
-  store.makeButtonActive = false
+  global.makeButtonActive = false
 
-  onMount(() => {
-    if (store.loggedIn) {
-      if (store.expectedTotalIncomeThisYear) {
-        inputValue = store.expectedTotalIncomeThisYear
-        store.makeButtonActive = true
+  onMount(async () => {
+    if (global.loggedIn) {
+      if (await payment.getValue('expectedTotalIncomeThisYear')) {
+        const expectedTotalIncomeThisYear = await payment.getValue('expectedTotalIncomeThisYear')
+        inputValue = expectedTotalIncomeThisYear.toString()
+        global.makeButtonActive = true
       }
     }
   })
@@ -31,28 +33,28 @@
   const handleInput = (value) => {
     inputValue = value
     if (inputValue == null || inputValue == '$' || inputValue == '') {
-      store.makeButtonActive = false
+      global.makeButtonActive = false
     }
     else {
-      store.makeButtonActive = true
+      global.makeButtonActive = true
     }
   }
 
-  const handleNext = () => {
-    store.expectedTotalIncomeThisYear = convertCurrencyToNumber(inputValue)
-    if (store.expectedTotalIncomeThisYear == 0) {
-      store.currentPage = '30'
-      goto('/30')
+  const handleNext = async () => {
+    payment.setValue('expectedTotalIncomeThisYear', convertCurrencyToNumber(inputValue))
+    if (await payment.getValue('expectedTotalIncomeThisYear') == 0) {
+      user.setValue('currentPage', '30')
+      goto('/19.5')
     }
     else {
-      store.currentPage = '20'
+      user.setValue('currentPage', '20')
       goto('/20')
     }
   }
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
-      if (store.makeButtonActive == true) {
+      if (global.makeButtonActive == true) {
         handleNext()
       }
     }

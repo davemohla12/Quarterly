@@ -1,20 +1,20 @@
 import { PUBLIC_DOMAIN } from '$env/static/public' 
 import { PUBLIC_EMAIL_DOMAIN } from '$env/static/public' 
-import { currentQuarter } from '$src/settings/settings'
+import { currentTaxQuarter } from '$src/settings/settings'
 import { q1DueDate, q2DueDate, q3DueDate, q4DueDate } from '$src/settings/settings'
 
 const getOneDayEmail = () => {
   let dueDate
-  if (currentQuarter == 'Q1') {
+  if (currentTaxQuarter == 'Q1') {
     dueDate = q1DueDate.format('MMMM D, YYYY')
   }
-  else if (currentQuarter == 'Q2') {
+  else if (currentTaxQuarter == 'Q2') {
     dueDate = q2DueDate.format('MMMM D, YYYY')
   }
-  else if (currentQuarter == 'Q3') {  
+  else if (currentTaxQuarter == 'Q3') {  
     dueDate = q3DueDate.format('MMMM D, YYYY')
   }
-  else if (currentQuarter == 'Q4') {
+  else if (currentTaxQuarter == 'Q4') {
     dueDate = q4DueDate.format('MMMM D, YYYY')
   }
 

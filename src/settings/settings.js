@@ -1,16 +1,17 @@
 import dayjs from 'dayjs'
 
-const getCurrentYear = () => {
+const getCurrentTaxYear = () => {
   const currentMonth = dayjs().format('MMMM')
-  const currentYear = dayjs().year()
+  const currentTaxYear = dayjs().year()
   if (currentMonth == 'January' || currentMonth == 'February') {
-    return currentYear - 1
+    return currentTaxYear - 1
     } else {
-      return currentYear
+      return currentTaxYear
   }
+  // return 2026
 }
 
-const getCurrentQuarter = () => {
+const getCurrentTaxQuarter = () => {
   const currentMonth = dayjs().format('MMMM')
   if (currentMonth == 'February' || currentMonth == 'March' || currentMonth == 'April') {
     return 'Q1'
@@ -23,11 +24,11 @@ const getCurrentQuarter = () => {
   }
 }
 
-const currentYear = getCurrentYear()
-const currentQuarter = getCurrentQuarter()
+const currentTaxYear = getCurrentTaxYear()
+const currentTaxQuarter = getCurrentTaxQuarter()
 const q1DueDate = dayjs('2025-04-15')
 const q2DueDate = dayjs('2025-06-15')
 const q3DueDate = dayjs('2025-09-15')
 const q4DueDate = dayjs('2025-01-15')
 
-export { currentYear, currentQuarter, q1DueDate, q2DueDate, q3DueDate, q4DueDate }
+export { currentTaxYear, currentTaxQuarter, q1DueDate, q2DueDate, q3DueDate, q4DueDate }

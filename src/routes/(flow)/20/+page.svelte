@@ -2,15 +2,15 @@
   import Header from '$src/components/app/Header.svelte'
   import Avatar from '$src/components/app/Avatar.svelte'
   import Heading from '$src/components/app/Heading.svelte'
-  import Subheading from '$src/components/app/Subheading.svelte'
   import Button from '$src/components/app/Button.svelte'
   import Later from '$src/components/app/Later.svelte'
   import DollarInput from '$src/components/app/DollarInput.svelte'
   import { convertCurrencyToNumber } from '$src/utilities/utilities'
   import { goto } from '$app/navigation'
-  import { store } from '$src/stores/store.svelte'
-  import { convertStateToUpperCase } from '$src/utilities/utilities'
+  import { global } from '$src/data/global.svelte'
+  import { payment } from '$src/data/payment.svelte'
   import { onMount } from 'svelte'
+  import { user } from '$src/data/user.svelte'
   
   const headingText = `What are your expected deductible expenses this year?`
   const buttonText = 'NEXT'
@@ -31,29 +31,34 @@
   let inputValue3 = $state(null)
   let inputValue4 = $state(null)
   let inputValue5 = $state(null)
-  store.makeButtonActive = false
+  global.makeButtonActive = false
 
-  onMount(() => {
-    if (store.loggedIn) {
-      if (store.businessExpensesThisYear) {
-        inputValue1 = store.businessExpensesThisYear
-        store.makeButtonActive = true
+  onMount(async () => {
+    if (global.loggedIn) {
+      if (await payment.getValue('businessExpensesThisYear')) {
+        const businessExpensesThisYear = await payment.getValue('businessExpensesThisYear')
+        inputValue1 = businessExpensesThisYear.toString()
+        global.makeButtonActive = true
       }
-      if (store.retirementContributionsThisYear) {
-        inputValue2 = store.retirementContributionsThisYear
-        store.makeButtonActive = true
+      if (await payment.getValue('retirementContributionsThisYear')) {
+        const retirementContributionsThisYear = await payment.getValue('retirementContributionsThisYear')
+        inputValue2 = retirementContributionsThisYear.toString()
+        global.makeButtonActive = true
       }
-      if (store.studentLoanInterestThisYear) {
-        inputValue3 = store.studentLoanInterestThisYear
-        store.makeButtonActive = true
+      if (await payment.getValue('studentLoanInterestThisYear')) {
+        const studentLoanInterestThisYear = await payment.getValue('studentLoanInterestThisYear')
+        inputValue3 = studentLoanInterestThisYear.toString()
+        global.makeButtonActive = true
       }
-      if (store.healthInsuranceThisYear) {
-        inputValue4 = store.healthInsuranceThisYear
-        store.makeButtonActive = true
+      if (await payment.getValue('healthInsuranceThisYear')) {
+        const healthInsuranceThisYear = await payment.getValue('healthInsuranceThisYear')
+        inputValue4 = healthInsuranceThisYear.toString()
+        global.makeButtonActive = true
         }
-      if (store.otherDeductionsThisYear) {
-        inputValue5 = store.otherDeductionsThisYear
-        store.makeButtonActive = true
+      if (await payment.getValue('otherDeductionsThisYear')) {  
+        const otherDeductionsThisYear = await payment.getValue('otherDeductionsThisYear')
+        inputValue5 = otherDeductionsThisYear.toString()
+        global.makeButtonActive = true
       }
     }
   })
@@ -94,25 +99,26 @@
 
   const enableButton = () => {
     if (validValue(inputValue1) || validValue(inputValue2) || validValue(inputValue3) || validValue(inputValue4) || validValue(inputValue5)) {
-      store.makeButtonActive = true
+      global.makeButtonActive = true
     }
     else {
-      store.makeButtonActive = false
+      global.makeButtonActive = false
     }
   }
 
   const handleNext = () => {
-    store.businessExpensesThisYear = convertCurrencyToNumber(inputValue1)
-    store.retirementContributionsThisYear = convertCurrencyToNumber(inputValue2)
-    store.studentLoanInterestThisYear = convertCurrencyToNumber(inputValue3)
-    store.healthInsuranceThisYear = convertCurrencyToNumber(inputValue4)
-    store.otherDeductionsThisYear = convertCurrencyToNumber(inputValue5)
+    payment.setValue('businessExpensesThisYear', convertCurrencyToNumber(inputValue1))
+    payment.setValue('retirementContributionsThisYear', convertCurrencyToNumber(inputValue2))
+    payment.setValue('studentLoanInterestThisYear', convertCurrencyToNumber(inputValue3))
+    payment.setValue('healthInsuranceThisYear', convertCurrencyToNumber(inputValue4))
+    payment.otherDeductionsThisYear = convertCurrencyToNumber(inputValue5)
+    user.setValue('currentPage', '21')
     goto('/21')
   }
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
-      if (store.makeButtonActive == true) {
+      if (global.makeButtonActive == true) {
         handleNext()
       }
     }

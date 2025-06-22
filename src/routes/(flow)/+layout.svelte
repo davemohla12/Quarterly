@@ -1,7 +1,7 @@
 <script>
-  import { store } from '$src/stores/store.svelte'
   import { onMount } from 'svelte'
   import { goto } from '$app/navigation'
+  import { user } from '$src/data/user.svelte'
   
   let props = $props()
   let children = props.children
@@ -9,12 +9,12 @@
   
   onMount(async () => {
     loading = true
-    if (store.currentPage) {
-      goto(`/${store.currentPage}`)
-    }
-    else {
-      goto('/')
-    }
+    // if (user.currentPage) {
+    //   goto(`/${user.currentPage}`)
+    // }
+    // else {
+    //   goto('/')
+    // }
     loading = false
   })
   </script>

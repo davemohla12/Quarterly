@@ -5,34 +5,36 @@
   import Subheading from '$src/components/app/Subheading.svelte'
   import Button from '$src/components/app/Button.svelte'
   import { goto } from '$app/navigation'
-  import { store } from '$src/stores/store.svelte'
+  import { global } from '$src/data/global.svelte'
+  import { payment } from '$src/data/payment.svelte'
   import { getNoIncomeText } from '$src/utilities/federaltax'
+  import { user } from '$src/data/user.svelte'
   
   const headingText = `You don't need to pay any quarterly taxes this year`
   const subheadingText = `Since all your income has taxes automatically withheld, the IRS doesn't require you to make separate quarterly payments.`
   const buttonText = 'DONE' 
-  store.makeButtonActive = true
+  global.makeButtonActive = true
 
-  const handleDone = () => {
-    if (store.loggedIn && store.active == true) {
-      store.stateSupported = true
-      store.currentState = 'State'
-      store.q1federalQuarterlyPayment = 0
-      store.q2federalQuarterlyPayment = 0
-      store.q3federalQuarterlyPayment = 0
-      store.q4federalQuarterlyPayment = 0
-      store.q1StateQuarterlyPayment = 0
-      store.q2StateQuarterlyPayment = 0
-      store.q3StateQuarterlyPayment = 0
-      store.q4StateQuarterlyPayment = 0
-      store.singleFederalDue = 0
-      store.singleFederalPaid = 0
-      store.singleFederalRemaining = 0
-      store.singleStateDue = 0
-      store.singleStatePaid = 0
-      store.singleStateRemaining = 0
-      store.explanation = getNoIncomeText()
-      store.currentPage = 'dashboard'
+  const handleDone = async () => {
+    if (global.loggedIn && await user.getValue('lastTaxYearPaid') == currentTaxYear) {
+      payment.setValue('stateSupported', true)
+      payment.setValue('currentState', 'State')
+      payment.setValue('q1federalQuarterlyPayment', 0)
+      payment.setValue('q2federalQuarterlyPayment', 0)
+      payment.setValue('q3federalQuarterlyPayment', 0)
+      payment.setValue('q4federalQuarterlyPayment', 0)
+      payment.setValue('q1StateQuarterlyPayment', 0)
+      payment.setValue('q2StateQuarterlyPayment', 0)
+      payment.setValue('q3StateQuarterlyPayment', 0)
+      payment.setValue('q4StateQuarterlyPayment', 0)
+      payment.setValue('singleFederalDue', 0)
+      payment.setValue('singleFederalPaid', 0)
+      payment.setValue('singleFederalRemaining', 0)
+      payment.setValue('singleStateDue', 0)
+      payment.setValue('singleStatePaid', 0)
+      payment.setValue('singleStateRemaining', 0)
+      payment.setValue('explanation', getNoIncomeText())
+      user.setValue('currentPage', 'dashboard')
       goto('/dashboard')
     }
     else {
@@ -42,7 +44,7 @@
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
-      if (store.makeButtonActive == true) {
+      if (global.makeButtonActive == true) {
         handleDone()
       }
     }

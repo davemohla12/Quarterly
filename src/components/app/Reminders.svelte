@@ -1,34 +1,32 @@
 <script>
-    import Clickable from '$src/components/app/Clickable.svelte'
-    import { store } from '$src/stores/store.svelte'
-    
-    let props = $props()
-    let onselect = props.onselect
-
-    let sendReminders= $state(store.sendReminders)
-    let fiveDaysBefore= $state(store.fiveDaysBefore)
-    let oneDayBefore= $state(store.oneDayBefore)
+  import Clickable from '$src/components/app/Clickable.svelte'
+  
+  let props = $props()
+  let sendReminders = $derived(props.sendReminders)
+  let sendFiveDayReminder = $derived(props.sendFiveDayReminder)
+  let sendOneDayReminder = $derived(props.sendOneDayReminder)
+  let onselect = props.onselect
 
   const handlesendReminder = () => {
     sendReminders = true
-    fiveDaysBefore = true
-    oneDayBefore = true
-    onselect(sendReminders, fiveDaysBefore, oneDayBefore)
+    sendFiveDayReminder = true
+    sendOneDayReminder = true
+    onselect(sendReminders, sendFiveDayReminder, sendOneDayReminder)
    }
 
    const handledontSendReminder = () => {
     sendReminders = false
-    onselect(sendReminders, fiveDaysBefore, oneDayBefore)
+    onselect(sendReminders, sendFiveDayReminder, sendOneDayReminder)
    }
 
-   const handlefiveDaysBefore = () => {
-    fiveDaysBefore = !fiveDaysBefore
-    onselect(sendReminders, fiveDaysBefore, oneDayBefore)
+   const handlesendFiveDayReminder = () => {
+    sendFiveDayReminder = !sendFiveDayReminder
+    onselect(sendReminders, sendFiveDayReminder, sendOneDayReminder)
    }  
 
-   const handleoneDayBefore = () => {
-    oneDayBefore = !oneDayBefore
-    onselect(sendReminders, fiveDaysBefore, oneDayBefore)
+   const handlesendOneDayReminder = () => {
+    sendOneDayReminder = !sendOneDayReminder
+    onselect(sendReminders, sendFiveDayReminder, sendOneDayReminder)
    }
 </script>
 
@@ -45,9 +43,9 @@
     </div>
     </Clickable>
     {#if sendReminders}
-    <Clickable onclick={handlefiveDaysBefore}>
+    <Clickable onclick={handlesendFiveDayReminder}>
       <div class="checkboxcontainer">   
-        {#if fiveDaysBefore}
+        {#if sendFiveDayReminder}
           <img class="checkbox" src="/images/checkboxchecked.png" alt="Checkbox checked" />
         {:else}
           <img class="checkbox" src="/images/checkboxunchecked.png" alt="Checkbox unchecked" />
@@ -55,9 +53,9 @@
         <div class="label">5 days before due date</div>
       </div>
       </Clickable>
-      <Clickable onclick={handleoneDayBefore}>
+      <Clickable onclick={handlesendOneDayReminder}>
       <div class="checkboxcontainer">
-        {#if oneDayBefore}
+        {#if sendOneDayReminder}
           <img class="checkbox" src="/images/checkboxchecked.png" alt="Checkbox checked" />
         {:else}
           <img class="checkbox" src="/images/checkboxunchecked.png" alt="Checkbox unchecked" />
@@ -80,6 +78,7 @@
     </Clickable>
   </div>
 </div>
+
 
 <style>
   .container {

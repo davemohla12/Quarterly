@@ -3,10 +3,9 @@
   import Avatar from '$src/components/app/Avatar.svelte'
   import Heading from '$src/components/app/Heading.svelte'
   import Subheading from '$src/components/app/Subheading.svelte'
-  import DollarInput from '$src/components/app/DollarInput.svelte'
   import Button from '$src/components/app/Button.svelte'
   import { goto } from '$app/navigation'
-  import { store } from '$src/stores/store.svelte'
+  import { global } from '$src/data/global.svelte'
   import EmailInput from '$src/components/app/EmailInput.svelte'  
   import { supabase } from '$src/utilities/supabase'
 
@@ -20,16 +19,16 @@
   let errorMessage = $state('') 
   let email = $state(null)
   let validEmail = $state(false)
-  store.makeButtonActive = false
+  global.makeButtonActive = false
 
   const handleInput = (value, isValidEmail) => {
     email = value
     validEmail = isValidEmail
     if (email && email != '') {
-      store.makeButtonActive = true
+      global.makeButtonActive = true
     } 
     else {
-      store.makeButtonActive = false
+      global.makeButtonActive = false
     }
   }
 
@@ -50,7 +49,7 @@
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
-      if (store.makeButtonActive == true) {
+      if (global.makeButtonActive == true) {
         handleReset()
       }
     }

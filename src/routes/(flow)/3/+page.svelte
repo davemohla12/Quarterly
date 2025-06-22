@@ -5,53 +5,55 @@
   import Button from '$src/components/app/Button.svelte'
   import Later from '$src/components/app/Later.svelte'
   import Dropdown from '$src/components/app/Dropdown.svelte'
-  import { store } from '$src/stores/store.svelte'    
+  import { global } from '$src/data/global.svelte'
+  import { payment } from '$src/data/payment.svelte'
   import { goto } from '$app/navigation'
   import { doesStateHaveQuarterlyTaxes, convertStateToLowerCase, convertStateToUpperCase } from '$src/utilities/utilities'
   import { onMount } from 'svelte'
+  import { user } from '$src/data/user.svelte'
   
   const headingText = `What state do you reside in?`
   const buttonText = 'NEXT'
-  store.makeButtonActive = false
+  global.makeButtonActive = false
   let currentState = $state(null)
 
-  onMount(() => {
-    if (store.loggedIn) {
-      if (store.currentState) {
-        currentState = convertStateToUpperCase(store.currentState)
-        store.makeButtonActive = true
+  onMount(async () => {
+    if (global.loggedIn) {
+      if (await payment.getValue('currentState')) {
+        currentState = convertStateToUpperCase(await payment.getValue('currentState'))
+        global.makeButtonActive = true
       }
     }
   })
 
-  const handleSelection = (selection) => {
-    store.currentState = convertStateToLowerCase(selection)
-    if (store.currentState != '') {
-      store.makeButtonActive = true
+  const handleSelection = async (selection) => {
+    payment.setValue('currentState', convertStateToLowerCase(selection))
+    if (await payment.getValue('currentState') != '') {
+      global.makeButtonActive = true
     }
     else { 
-      store.makeButtonActive = false
+      global.makeButtonActive = false
     }
   }
 
-  const handleNext = () => {
-    if (doesStateHaveQuarterlyTaxes(store.currentState)) {
-      store.stateHasQuarterlyTaxes = true
-      store.stateSupported = true
-      store.currentPage = '5'
+  const handleNext = async () => {
+    if (doesStateHaveQuarterlyTaxes(await payment.getValue('currentState'))) {
+      payment.setValue('stateHasQuarterlyTaxes', true)
+      payment.setValue('stateSupported', true)
+      user.setValue('currentPage', '5')
       goto('/5')
     }
     else {
-      store.stateHasQuarterlyTaxes = false
-      store.stateSupported = false
-      store.currentPage = '4'
+      payment.setValue('stateHasQuarterlyTaxes', false)
+      payment.setValue('stateSupported', false)
+      user.setValue('currentPage', '4')
       goto('/4')
     }
   }
 
   const handleKeyDown = async (event) => {
     if (event.key === 'Enter') {
-      if (store.makeButtonActive == true) {
+      if (global.makeButtonActive == true) {
         handleNext()
       }
     }
@@ -66,6 +68,6 @@
 <Header />
 <Avatar />
 <Heading text={headingText} />
-<Dropdown text="State" values={store.states} selected={currentState} onselection={handleSelection}/>
+<Dropdown text="State" values={global.states} selected={currentState} onselection={handleSelection}/>
 <Button text={buttonText} onclick={handleNext} />
 <Later />

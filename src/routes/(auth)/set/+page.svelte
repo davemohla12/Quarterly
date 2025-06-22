@@ -2,15 +2,16 @@
   import Header from '$src/components/app/Header.svelte'
   import Avatar from '$src/components/app/Avatar.svelte'
   import Heading from '$src/components/app/Heading.svelte'
-  import DollarInput from '$src/components/app/DollarInput.svelte'
   import Button from '$src/components/app/Button.svelte'
   import { goto } from '$app/navigation'
-  import { store } from '$src/stores/store.svelte'
+  import { global } from '$src/data/global.svelte'
   import PasswordInput from '$src/components/app/PasswordInput.svelte'
   import { supabase } from '$src/utilities/supabase' 
   import { onMount } from 'svelte'
-  import { saveDatabaseToLocalStorage, saveLocalStorageToDatabase, getCurrentPageFromDatabase } from '$src/utilities/database'
-
+  import { saveToUsers, saveToPayments } from '$src/utilities/database'
+  import { user } from '$src/data/user.svelte'
+  import { getLocalStorage } from '$src/utilities/utilities'  
+  
   const expiredText = `This link has expired`
   const expiredButtonText = 'RESET PASSWORD'
   const headingText = `Set your password`
@@ -20,7 +21,7 @@
   let disableButton = $state(false)
   let password = $state(null)
   let validPassword = $state(false)
-  store.makeButtonActive = false
+  global.makeButtonActive = false
   let errorMessage = $state('')
   let pageExpired = $state(false) 
 
@@ -29,7 +30,7 @@
     const error = hashParams.get('error')
     if (error) {
       pageExpired = true
-      store.makeButtonActive = true
+      global.makeButtonActive = true
     }
   })
 
@@ -37,10 +38,10 @@
     password = value
     validPassword = isValidPassword
     if (password && password != '') {
-      store.makeButtonActive = true
+      global.makeButtonActive = true
     }
     else {
-      store.makeButtonActive = false
+      global.makeButtonActive = false
     }
   }
 
@@ -51,30 +52,32 @@
     else { 
       errorMessage = ''
       disableButton = true
-      const { error } = await supabase.auth.updateUser({
+      await supabase.auth.updateUser({
         password: password
       })
-      if (store.loginLocation == 'home') {
-        saveDatabaseToLocalStorage()
-        store.currentPage = await getCurrentPageFromDatabase()
+      if (getLocalStorage('loginLocation') == 'home') {
         goto('/')
       }
-      else if (store.loginLocation == 'later') {
-        saveDatabaseToLocalStorage()
+      else if (getLocalStorage('loginLocation') == 'later') {
         goto('/')
-        store.showResumeBanner = true
+        global.showResumeBanner = true
       }
-      else if (store.loginLocation == 'flow') {
-        store.currentPage = 'dashboard'
-        saveDatabaseToLocalStorage()
-        goto(`/${store.currentPage}`)
+      else if (getLocalStorage('loginLocation') == 'flow') {
+        user.setValue('currentPage', 'dashboard')
+        goto(`/dashboard`)
+        await saveToUsers()
+        await saveToPayments()
+      }
+      else if (getLocalStorage('loginLocation') == 'dashboard') {
+        user.setValue('currentPage', 'dashboard')
+        goto(`/dashboard`)
       }
     }
   }
   
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
-      if (store.makeButtonActive == true) {
+      if (global.makeButtonActive == true) {
         handleSave()
       }
     }

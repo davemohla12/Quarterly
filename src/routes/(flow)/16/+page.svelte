@@ -5,48 +5,54 @@
   import Subheading from '$src/components/app/Subheading.svelte'
   import Button from '$src/components/app/Button.svelte'
   import { goto } from '$app/navigation'
-  import { store } from '$src/stores/store.svelte'
+  import { global } from '$src/data/global.svelte'
+  import { payment } from '$src/data/payment.svelte'
   import { getBelowMinimumTaxText } from '$src/utilities/federaltax'
   import { stateRules } from '$src/rules/state'
+  import { user } from '$src/data/user.svelte'
+  import { onMount } from 'svelte'
 
-  const headingText = `You don't need to pay any quarterly taxes this year`
-  const subheadingText = `You may still pay income tax at the end of the year but you don't need to worry about quarterly taxes`
+  let headingText = $state('')
+  let subheadingText = $state('')
   const buttonText = 'DONE'
-  store.makeButtonActive = true
+  global.makeButtonActive = true
   
-  const handleDone = () => {
-    if (store.loggedIn && store.active == true) {
-      if (stateRules[store.currentState].stateHasQuarterlyTaxes == true) { 
-        store.stateSupported = true
-        store.q1federalQuarterlyPayment = 0
-        store.q2federalQuarterlyPayment = 0
-        store.q3federalQuarterlyPayment = 0
-        store.q4federalQuarterlyPayment = 0  
-        store.q1StateQuarterlyPayment = 0
-        store.q2StateQuarterlyPayment = 0
-        store.q3StateQuarterlyPayment = 0
-        store.q4StateQuarterlyPayment = 0
-        store.singleFederalDue = 0
-        store.singleFederalPaid = 0
-        store.singleFederalRemaining = 0
-        store.singleStateDue = 0
-        store.singleStatePaid = 0
-        store.singleStateRemaining = 0
-        store.explanation = getBelowMinimumTaxText()
+  onMount(async () => {
+    headingText = `You don't need to pay any quarterly taxes this year`
+    subheadingText = `You may still pay income tax at the end of the year but you don't need to worry about quarterly taxes`
+  })
+
+  const handleDone = async () => {
+    if (global.loggedIn && await user.getValue('lastTaxYearPaid') == currentTaxYear) {
+      if (stateRules[await payment.getValue('currentState')].stateHasQuarterlyTaxes == true) { 
+        payment.setValue('stateSupported', true)
+        payment.setValue('q1federalQuarterlyPayment', 0)
+        payment.setValue('q2federalQuarterlyPayment', 0)
+        payment.setValue('q3federalQuarterlyPayment', 0)
+        payment.setValue('q4federalQuarterlyPayment', 0)  
+        payment.setValue('q1StateQuarterlyPayment', 0)
+        payment.setValue('q2StateQuarterlyPayment', 0)
+        payment.setValue('q3StateQuarterlyPayment', 0)
+        payment.setValue('q4StateQuarterlyPayment', 0)
+        payment.setValue('singleFederalDue', 0)
+        payment.setValue('singleFederalPaid', 0)
+        payment.setValue('singleFederalRemaining', 0)
+        payment.setValue('singleStateDue', 0)
+        payment.setValue('singleStatePaid', 0)
+        payment.setValue('singleStateRemaining', 0)
+        payment.setValue('explanation', getBelowMinimumTaxText())
       }
       else {
-        store.q1federalQuarterlyPayment = 0
-        store.q2federalQuarterlyPayment = 0
-        store.q3federalQuarterlyPayment = 0
-        store.q4federalQuarterlyPayment = 0
-        store.singleFederalDue = 0
-        store.singleFederalPaid = 0
-        store.singleFederalRemaining = 0
-        store.explanation = getBelowMinimumTaxText()
-        store.currentPage = 'dashboard'
-        goto('/dashboard')
+        payment.setValue('q1federalQuarterlyPayment', 0)
+        payment.setValue('q2federalQuarterlyPayment', 0)
+        payment.setValue('q3federalQuarterlyPayment', 0)
+        payment.setValue('q4federalQuarterlyPayment', 0)
+        payment.setValue('singleFederalDue', 0)
+        payment.setValue('singleFederalPaid', 0)
+        payment.setValue('singleFederalRemaining', 0)
+        payment.setValue('explanation', getBelowMinimumTaxText())
       }
-      store.currentPage = 'dashboard'
+      user.setValue('currentPage', 'dashboard')
       goto('/dashboard')
     }
     else {
@@ -56,7 +62,7 @@
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
-      if (store.makeButtonActive == true) {
+      if (global.makeButtonActive == true) {
         handleDone()
       }
     }

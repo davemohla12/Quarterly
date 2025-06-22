@@ -1,5 +1,5 @@
 <script>
-  import { store } from '$src/stores/store.svelte'
+  import { payment } from '$src/data/payment.svelte'
   import { onMount } from 'svelte'
   import { formatCurrency } from '$src/utilities/utilities'
   import Clickable from '$src/components/app/Clickable.svelte'
@@ -13,13 +13,8 @@
   let showState = $derived(props.showState || false)
   let stateName = $derived(props.stateName || '')
   let stateSingleAmount = $derived(props.stateSingleAmount || 0)
-  let isFederalPaid = $state(false)
-  let isStatePaid = $state(false)
-
-  onMount(() => {
-    isFederalPaid = store.singleFederalMarkPaid
-    isStatePaid = store.singleStateMarkPaid
-  })
+  let isFederalPaid = $derived(props.isFederalPaid || false)
+  let isStatePaid = $derived(props.isStatePaid || false)
 
   const handleFederalClick = () => {
     window.open(federalRules.payLink, '_blank')
@@ -31,22 +26,22 @@
 
   const handleMarkPaidFederal = () => {
     isFederalPaid = true
-    store.singleFederalMarkPaid = true
+    payment.setValue('singleFederalMarkPaid', true)
   }
 
   const handleMarkPaidState = () => {
     isStatePaid = true  
-    store.singleStateMarkPaid = true
+    payment.setValue('singleStateMarkPaid', true)
   }
 
   const handleMarkNotPaidFederal = () => {
     isFederalPaid = false
-    store.singleFederalMarkPaid = false
+    payment.setValue('singleFederalMarkPaid', false)
   }
 
   const handleMarkNotPaidState = () => {
     isStatePaid = false
-    store.singleStateMarkPaid = false
+    payment.setValue('singleStateMarkPaid', false)
   }   
 
 </script>

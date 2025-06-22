@@ -6,25 +6,29 @@
   import Button from '$src/components/app/Button.svelte'
   import Later from '$src/components/app/Later.svelte'
   import DollarInput from '$src/components/app/DollarInput.svelte'
-  import { store } from '$src/stores/store.svelte'
+  import { global } from '$src/data/global.svelte'
+  import { payment } from '$src/data/payment.svelte'
   import { goto } from '$app/navigation'
   import { convertCurrencyToNumber } from '$src/utilities/utilities'
   import { convertStateToUpperCase } from '$src/utilities/utilities'
   import { onMount } from 'svelte'
-  import { currentQuarter } from '$src/settings/settings'
+  import { currentTaxQuarter } from '$src/settings/settings'
+  import { user } from '$src/data/user.svelte'
   
-  const headingText = `What are your expected ${convertStateToUpperCase(store.currentState)} W2 witholdings for this year?`
+  let headingText = $state('')
   const subheadingText = `To determine this, find the number in box 17 of each W2 paycheck and then multiply by the number of W2s you plan to get this year`
   const buttonText = 'NEXT'
   const placeholderText = 'Withholdings'
   let inputValue = $state(null)
-  store.makeButtonActive = false
+  global.makeButtonActive = false
 
-  onMount(() => {
-    if (store.loggedIn) {
-      if (store.stateWithholdingsThisYear) {
-        inputValue = store.stateWithholdingsThisYear
-        store.makeButtonActive = true
+  onMount(async () => {
+    headingText = `What are your expected ${convertStateToUpperCase(await payment.getValue('currentState'))} W2 witholdings for this year?`
+    if (global.loggedIn) {
+      if (await payment.getValue('stateWithholdingsThisYear')) {
+        const stateWithholdingsThisYear = await payment.getValue('stateWithholdingsThisYear')
+        inputValue = stateWithholdingsThisYear.toString()
+        global.makeButtonActive = true
       }
     }
   })
@@ -32,28 +36,28 @@
   const handleInput = (value) => {
     inputValue = value
     if (inputValue == null || inputValue == '$' || inputValue == '') {
-      store.makeButtonActive = false
+      global.makeButtonActive = false
     }
     else {
-      store.makeButtonActive = true
+      global.makeButtonActive = true
     }
   }   
 
-  const handleNext = () => {
-    store.stateWithholdingsThisYear = convertCurrencyToNumber(inputValue)
-    if (currentQuarter == 'Q1') {
-      store.currentPage = '27'
+  const handleNext = async () => {
+    payment.setValue('stateWithholdingsThisYear', convertCurrencyToNumber(inputValue))
+    if (currentTaxQuarter == 'Q1') {
+      user.setValue('currentPage', '27')
       goto('/27')
     }
     else {
-      store.currentPage = '25'
+      user.setValue('currentPage', '25')
       goto('/25')
     }
   }
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
-      if (store.makeButtonActive == true) {
+      if (global.makeButtonActive == true) {
         handleNext()
       }
     }

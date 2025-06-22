@@ -1,5 +1,5 @@
 <script>
-  import { store } from '$src/stores/store.svelte'
+  import { payment } from '$src/data/payment.svelte'
   import { onMount } from 'svelte'
   import { formatCurrency } from '$src/utilities/utilities'
   import Clickable from '$src/components/app/Clickable.svelte'
@@ -7,39 +7,17 @@
   import { stateRules } from '$src/rules/state'
   import { convertStateToAllUpperCase } from '$src/utilities/utilities'
   import { fade } from 'svelte/transition'
-  import { currentQuarter } from '$src/settings/settings'
+  import { currentTaxQuarter } from '$src/settings/settings'
 
   let props = $props()
   let federalQuarterAmount = $derived(props.federalQuarterAmount || 0)
   let showState = $derived(props.showState || false)
   let stateName = $derived(props.stateName || '')
   let stateQuarterAmount = $derived(props.stateQuarterAmount || 0)
-  let quarterName = $state(null)
-  let isFederalPaid = $state(false)
-  let isStatePaid = $state(false)
 
-  onMount(() => {
-    if (currentQuarter == 'Q1') {
-      quarterName = 'April' 
-      isFederalPaid = store.q1FederalPaid
-      isStatePaid = store.q1StatePaid
-    } 
-    else if (currentQuarter == 'Q2') {
-      quarterName = 'June'
-      isFederalPaid = store.q2FederalPaid
-      isStatePaid = store.q2StatePaid
-    } 
-    else if (currentQuarter == 'Q3') {    
-      quarterName = 'September'
-      isFederalPaid = store.q3FederalPaid
-      isStatePaid = store.q3StatePaid
-    }
-    else if (currentQuarter == 'Q4') {
-      quarterName = 'January'
-      isFederalPaid = store.q4FederalPaid
-      isStatePaid = store.q4StatePaid
-    }
-  })
+  let quarterName = $derived(props.quarterName || '')
+  let isFederalPaid = $derived(props.isFederalPaid || false)
+  let isStatePaid = $derived(props.isStatePaid || false)
 
   const handleFederalClick = () => {
     window.open(federalRules.payLink, '_blank')
@@ -49,67 +27,67 @@
     window.open(stateRules[stateName].payLink, '_blank')
   }
 
-  const handleMarkPaidFederal = () => {
+  const handleMarkPaidFederal = async () => {
     isFederalPaid = true
-    if (currentQuarter == 'Q1') {
-      store.q1FederalPaid = true
+    if (currentTaxQuarter == 'Q1') {
+      await payment.setValue('q1FederalMarkPaid', true)
     }
-    else if (currentQuarter == 'Q2') {
-      store.q2FederalPaid = true
+    else if (currentTaxQuarter == 'Q2') {
+      await payment.setValue('q2FederalMarkPaid', true)
     }
-    else if (currentQuarter == 'Q3') {
-      store.q3FederalPaid = true
+    else if (currentTaxQuarter == 'Q3') {
+      await payment.setValue('q3FederalMarkPaid', true)
     }
-    else if (currentQuarter == 'Q4') {
-      store.q4FederalPaid = true
+    else if (currentTaxQuarter == 'Q4') {
+      await payment.setValue('q4FederalMarkPaid', true)
     }
   }
 
-  const handleMarkPaidState = () => {
+  const handleMarkPaidState = async () => {
     isStatePaid = true
-    if (currentQuarter == 'Q1') {
-      store.q1StatePaid = true
+    if (currentTaxQuarter == 'Q1') {
+      await payment.setValue('q1StateMarkPaid', true)
     }
-    else if (currentQuarter == 'Q2') {
-      store.q2StatePaid = true
+    else if (currentTaxQuarter == 'Q2') {
+      await payment.setValue('q2StateMarkPaid', true)
     }
-    else if (currentQuarter == 'Q3') {
-      store.q3StatePaid = true
+    else if (currentTaxQuarter == 'Q3') {
+      await payment.setValue('q3StateMarkPaid', true)
     }
-    else if (currentQuarter == 'Q4') {
-      store.q4StatePaid = true
+    else if (currentTaxQuarter == 'Q4') {
+      await payment.setValue('q4StateMarkPaid', true)
     }
   }
 
-  const handleMarkNotPaidFederal = () => {
+  const handleMarkNotPaidFederal = async () => {
     isFederalPaid = false
-    if (currentQuarter == 'Q1') {
-      store.q1FederalPaid = false
+    if (currentTaxQuarter == 'Q1') {
+      await payment.setValue('q1FederalMarkPaid', false)
     }
-    else if (currentQuarter == 'Q2') {
-      store.q2FederalPaid = false
+    else if (currentTaxQuarter == 'Q2') {
+      await payment.setValue('q2FederalMarkPaid', false)
     } 
-    else if (currentQuarter == 'Q3') {
-      store.q3FederalPaid = false
+    else if (currentTaxQuarter == 'Q3') {
+      await payment.setValue('q3FederalMarkPaid', false)
     }
-    else if (currentQuarter == 'Q4') {
-      store.q4FederalPaid = false
+    else if (currentTaxQuarter == 'Q4') {
+      await payment.setValue('q4FederalMarkPaid', false)
     } 
   }
 
-  const handleMarkNotPaidState = () => {
+  const handleMarkNotPaidState = async () => {
     isStatePaid = false
-    if (currentQuarter == 'Q1') {
-      store.q1StatePaid = false
+    if (currentTaxQuarter == 'Q1') {
+      await payment.setValue('q1StateMarkPaid', false)
     }
-    else if (currentQuarter == 'Q2') {
-      store.q2StatePaid = false
+    else if (currentTaxQuarter == 'Q2') {
+      await payment.setValue('q2StateMarkPaid', false)
     } 
-    else if (currentQuarter == 'Q3') {
-      store.q3StatePaid = false
+    else if (currentTaxQuarter == 'Q3') {
+      await payment.setValue('q3StateMarkPaid', false)
     }
-    else if (currentQuarter == 'Q4') {
-      store.q4StatePaid = false
+    else if (currentTaxQuarter == 'Q4') {
+      await payment.setValue('q4StateMarkPaid', false)
     }
   }   
 

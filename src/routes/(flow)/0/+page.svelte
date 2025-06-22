@@ -5,22 +5,23 @@
   import Subheading from '$src/components/app/Subheading.svelte'
   import Button from '$src/components/app/Button.svelte'
   import Later from '$src/components/app/Later.svelte'
-  import { store } from '$src/stores/store.svelte'  
+  import { global } from '$src/data/global.svelte'
   import { goto } from '$app/navigation'
+  import { user } from '$src/data/user.svelte'
 
   const headingText = `Hi! I'm Zenguider`
   const subheadingText = `I'll help you estimate and pay your quarterly taxes`
   const buttonText = 'NEXT'
-  store.makeButtonActive = true
+  global.makeButtonActive = true
 
   const handleNext = () => {
-    store.currentPage = '1'
+    user.setValue('currentPage', '1')
     goto('/1')
   }
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
-      if (store.makeButtonActive == true) {
+      if (global.makeButtonActive == true) {
         handleNext()
       }
     }

@@ -1,5 +1,4 @@
 <script>
-  import { store } from '$src/stores/store.svelte'
   import validator from 'validator'
 
   let props = $props()
@@ -34,7 +33,7 @@
     isFocused = true
   }
 
-  const handleBlur = (event) => {
+  const handleBlur = () => {
     isFocused = false
     hasBlurred = true
     validateEmail(inputValue)

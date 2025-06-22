@@ -2,15 +2,16 @@
   import Header from '$src/components/app/Header.svelte'
   import Avatar from '$src/components/app/Avatar.svelte'
   import Heading from '$src/components/app/Heading.svelte'
-  import Subheading from '$src/components/app/Subheading.svelte'
   import RadioButtons from '$src/components/app/RadioButtons.svelte'
   import Button from '$src/components/app/Button.svelte'
   import Later from '$src/components/app/Later.svelte'
-  import { store } from '$src/stores/store.svelte'
+  import { global } from '$src/data/global.svelte'
   import { goto } from '$app/navigation'  
   import { convertLongToShortFilingStatus, convertShortToLongFilingStatus } from '$src/utilities/utilities'
   import { stateRules } from '$src/rules/state.js'
   import { onMount } from 'svelte'  
+  import { payment } from '$src/data/payment.svelte'
+  import { user } from '$src/data/user.svelte'
 
   const headingText = `How do you plan to file your taxes this year?`
   const radioButtons = ['Single', 'Married Filing Jointly', 'Married Filing Separately', 'Head of Household', 'Qualifying Widow(er)']
@@ -20,37 +21,37 @@
   }
   const buttonText = 'NEXT'
   let selectedRadioButton = $state(null)
-  store.makeButtonActive = false
+  global.makeButtonActive = false
 
-  onMount(() => {
-    if (store.loggedIn) {
-      if (store.filingStatus) {
-        selectedRadioButton = convertShortToLongFilingStatus(store.filingStatus)
-        store.makeButtonActive = true
+  onMount(async () => {
+    if (global.loggedIn) {
+      if (await payment.getValue('filingStatus')) {
+        selectedRadioButton = convertShortToLongFilingStatus(await payment.getValue('filingStatus'))
+        global.makeButtonActive = true
       }
     }
   })
 
   const handleSelect = (button) => {
     selectedRadioButton = button  
-    store.makeButtonActive = true
+    global.makeButtonActive = true
   }
 
-  const handleNext = () => {
-    store.filingStatus = convertLongToShortFilingStatus(selectedRadioButton)
-    if (store.stateSupported && stateRules[store.currentState].standardDeductionMethod.type == 'exemptions') {
-      store.currentPage = '10.5'
+  const handleNext = async () => {
+    payment.setValue('filingStatus', convertLongToShortFilingStatus(selectedRadioButton))
+    if (await payment.getValue('stateSupported') && stateRules[await payment.getValue('currentState')].standardDeductionMethod.type == 'exemptions') {
+      user.setValue('currentPage', '10.5')
       goto('/10.5')
     }
     else { 
-      store.currentPage = '11'
+      user.setValue('currentPage', '11')
       goto('/11')
     }
   }
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
-      if (store.makeButtonActive == true) {
+      if (global.makeButtonActive == true) {
         handleNext()
       }
     }

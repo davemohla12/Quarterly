@@ -6,61 +6,64 @@
   import Button from '$src/components/app/Button.svelte'
   import Later from '$src/components/app/Later.svelte'
   import { convertStateToUpperCase } from '$src/utilities/utilities' 
-  import { store } from '$src/stores/store.svelte'  
+  import { global } from '$src/data/global.svelte'
+  import { payment } from '$src/data/payment.svelte'
   import { goto } from '$app/navigation'
   import { stateRules } from '$src/rules/state' 
   import { onMount } from 'svelte'
+  import { user } from '$src/data/user.svelte'
 
-  const headingText = `Do you plan to live in ${convertStateToUpperCase(store.currentState)} all of this year?`
+  let headingText = $state('')
   const radioButtons = ['Yes', 'No']
   const buttonText = 'NEXT'
   
   let selectedRadioButton = $state(null)
-  store.makeButtonActive = false
+  global.makeButtonActive = false
 
-  onMount(() => {
-    if (store.loggedIn) {
-      if (store.livingInCurrentStateAllThisYear == true) {
+  onMount(async () => {
+    headingText = `Do you plan to live in ${convertStateToUpperCase(await payment.getValue('currentState'))} all of this year?`
+    if (global.loggedIn) {
+      if (await payment.getValue('livingInCurrentStateAllThisYear') == true) {
         selectedRadioButton = 'Yes'
-        store.makeButtonActive = true
+        global.makeButtonActive = true
       }
-      else if (store.livingInCurrentStateAllThisYear == false) {
+      else if (await payment.getValue('livingInCurrentStateAllThisYear') == false) {
         selectedRadioButton = 'No'
-        store.makeButtonActive = true
+        global.makeButtonActive = true
       }
     }
   })
 
   const handleSelect = (button) => {
     selectedRadioButton = button
-    store.makeButtonActive = true
+    global.makeButtonActive = true
   }
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (selectedRadioButton == 'Yes') {
-      store.livingInCurrentStateAllThisYear = true
-      store.inMultipleStates = false
-      if (stateRules[store.currentState].lastYearSafeHarborRule) {
-        store.currentPage = '8'
+      payment.setValue('livingInCurrentStateAllThisYear', true)
+      payment.setValue('inMultipleStates', false)
+      if (stateRules[await payment.getValue('currentState')].lastYearSafeHarborRule) {
+        user.setValue('currentPage', '8')
         goto('/8')
       }
       else {
-        store.currentPage = '9'
+        user.setValue('currentPage', '9')
         goto('/9')
       }
     }
     else {
-      store.livingInCurrentStateAllThisYear = false
-      store.inMultipleStates = true
-      store.stateSupported = false
-      store.currentPage = '7'
+      payment.setValue('livingInCurrentStateAllThisYear', false)
+      payment.setValue('inMultipleStates', true)
+      payment.setValue('stateSupported', false)
+      user.setValue('currentPage', '7')
       goto('/7')
     }
   }
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
-      if (store.makeButtonActive == true) {
+      if (global.makeButtonActive == true) {
         handleNext()
       }
     }

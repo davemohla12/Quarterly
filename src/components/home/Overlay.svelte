@@ -1,9 +1,9 @@
 <script>
-  import { store } from '$src/stores/store.svelte'
+  import { global } from '$src/data/global.svelte'
   import Clickable from '$src/components/app/Clickable.svelte'
   
   const handleClick = () => {
-    store.showMenu = false
+    global.showMenu = false
   }
 </script>
 

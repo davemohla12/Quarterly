@@ -1,7 +1,9 @@
 <script>
-  import { store } from '$src/stores/store.svelte'
+  import { global } from '$src/data/global.svelte'
   import { onMount } from 'svelte'
   import { goto } from '$app/navigation'
+  import { user } from '$src/data/user.svelte'
+  import { setLocalStorage } from '$src/utilities/utilities'
   
   let props = $props()
   let children = props.children
@@ -9,13 +11,13 @@
   
   onMount(async () => {
     loading = true
-    if (!store.loggedIn) {
-      store.loginLocation = 'dashboard'
+    if (!global.loggedIn) {
+      setLocalStorage('loginLocation', 'dashboard')
       goto('/login')
     } 
     else { 
-      store.currentPage = 'dashboard'
-      goto(`/${store.currentPage}`)
+      user.currentPage = 'dashboard'
+      goto(`/${user.currentPage}`)
     }
     loading = false
   })

@@ -1,5 +1,5 @@
 <script>
-  import { store } from '$src/stores/store.svelte'
+  import { global } from '$src/data/global.svelte'
   import Clickable from '$src/components/app/Clickable.svelte'
 
   let props = $props()
@@ -10,7 +10,7 @@
   let showSpinner = props.showSpinner || false
 
   $effect(() => {
-    if (store.makeButtonActive) {
+    if (global.makeButtonActive) {
       enabled = true
     }
     else {

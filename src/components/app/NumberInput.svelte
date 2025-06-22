@@ -1,5 +1,4 @@
 <script>
-  import { store } from '$src/stores/store.svelte'
   import Clickable from '$src/components/app/Clickable.svelte'
 
   let props = $props()

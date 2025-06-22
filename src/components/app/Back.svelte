@@ -1,7 +1,5 @@
 <script>
-  import { store } from '$src/stores/store.svelte'
   import Clickable from '$src/components/app/Clickable.svelte'
-  import { goto } from '$app/navigation'
 
   let props = $props()
   let onBack = props.onBack || null

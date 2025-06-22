@@ -1,20 +1,17 @@
 <script>
-  import { store } from '$src/stores/store.svelte'
+  import { global } from '$src/data/global.svelte'
   import Clickable from '$src/components/app/Clickable.svelte'
   import { goto } from '$app/navigation'
-  import { onMount } from 'svelte'
   import { updateLoginState } from '$src/utilities/utilities'
   import { supabase } from '$src/utilities/supabase'
-  
-  let props = $props()
-  let showDashboardOption = props.showDashboardOption || false
+  import { user } from '$src/data/user.svelte'
+  import { clearLocalStorage, setLocalStorage } from '$src/utilities/utilities'
 
-  let showAccountMenu = $state(false)
-  let buttonText = $state('GET STARTED')
+  let buttonText = $state('')
 
-  $effect(() => {
-    if (store.loggedIn) {
-      if (store.currentPage == 'dashboard') {
+  $effect(async () => {
+    if (global.loggedIn) {
+      if (await user.getValue('currentPage') == 'dashboard') {
         buttonText = 'DASHBOARD'
       }
       else {
@@ -26,22 +23,22 @@
     }
   })
 
-  onMount(() => {
-    document.addEventListener('click', handleClickOutside)
-    return () => {
-    document.removeEventListener('click', handleClickOutside)
-  }
-  })
-
   const handleMenuClick = () => {
-    store.showMenu = true
+    global.showMenu = true
   }
 
-  const handleGetStarted = () => {
-    goto('/0')
+  const handleButtonClick = async () => {
+    const currentPage = await user.getValue('currentPage')
+    if (buttonText == 'GET STARTED') {
+      goto('/0')
+    }
+    else {
+      goto(`/${currentPage}`)
+    }
   }
 
   const handleLogin = () => {
+    setLocalStorage('loginLocation', 'home')
     goto('/login')
   }
 
@@ -49,42 +46,15 @@
     goto('/')
   }
 
-  const handleAccountClick = () => {
-    showAccountMenu = !showAccountMenu
+  const handleFaq = () => {
+    goto('/faq')
   }
-
-  const handleClickOutside = (event) => {
-    if (!event.target.closest('.menu') && !event.target.closest('.account')) {
-      showAccountMenu = false
-    }
-  }
-
-  const handleDashboard = () => {
-    goto('/dashboard')
-    store.currentPage = 'dashboard'
-    showAccountMenu = false
-  }
-
-  const handleReminders = () => {
-    goto('/reminders')
-    showAccountMenu = false
-  }
-
-  const handleSubscription = () => {
-    showAccountMenu = false
-  }
-
-  const handleSupport = () => {
-    showAccountMenu = false
-  }
-
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
     updateLoginState(false)
-    localStorage.clear()
+    clearLocalStorage()
     goto('/')
-    showAccountMenu = false
   }
   
 </script>
@@ -97,40 +67,21 @@
     <img class="logo" src="images/logo.png" alt="Logo" />
   </Clickable>
   <div class="buttons">
-    <Clickable onclick={handleGetStarted}>
-      <div class="get">{buttonText}</div>
+    <Clickable onclick={handleFaq}>
+      <div class="faq">FAQ</div>
     </Clickable>
-    {#if store.loggedIn}
-      <Clickable onclick={handleAccountClick}>
-        <img class="account" src="/images/account.png" alt="Account" />
+    {#if global.loggedIn}
+      <Clickable onclick={handleLogout}>
+        <div class="login">LOGOUT</div>
       </Clickable>
     {:else}
       <Clickable onclick={handleLogin}>
         <div class="login">LOGIN</div>
       </Clickable>
     {/if}
-    {#if showAccountMenu}
-        <div class="accountmenu">
-          {#if showDashboardOption}
-            <Clickable onclick={handleDashboard}>
-              <div class="item">Dashboard</div>
-            </Clickable>
-          {/if}
-          <Clickable onclick={handleReminders}>
-            <div class="item">Reminders</div>
-          </Clickable>
-          <Clickable onclick={handleSubscription}>
-            <div class="item">Subscription</div>
-          </Clickable>
-          <div class="divider"></div>
-          <Clickable onclick={handleSupport}>
-            <div class="item">Support</div>
-          </Clickable>
-          <Clickable onclick={handleLogout}>
-            <div class="item">Logout</div>
-          </Clickable>
-          </div>
-      {/if}
+    <Clickable onclick={handleButtonClick}>
+      <div class="get">{buttonText}</div>
+    </Clickable>
   </div>
   <div class="line"></div>
 </div>
@@ -165,43 +116,14 @@
     top: 15px;
     right: 20px;
   }
+  .faq {
+    display: none;
+  }
   .get {
     display: none;
   }
-  .account {
-    width: 31px;
-    height: 31px;
-    margin-left: 35px;
-  }
   .login {
     display: none;
-  }
-  .accountmenu {
-    position: absolute;
-    right: 0px;
-    top: 50px;
-    background: var(--dark);
-    color: var(--white);
-    padding-top: 15px;
-    padding-bottom: 0px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    width: 110px;
-    z-index: 100;
-    padding-left: 10px;
-  }
-  .item {
-    color: var(--white);
-    font-size: 16px;
-    font-family: 'Lato', sans-serif;
-    font-weight: var(--regular);
-    margin-bottom: 20px;
-  }
-  .divider {
-    width: calc(100% - 10px);
-    border-bottom: 1px solid var(--white);  
-    margin-bottom: 20px;
   }
   .line {
     width: 100%;
@@ -216,6 +138,13 @@
       margin-top: 22px;
       width: 138px;
       height: 34px;
+    }
+    .faq {
+      display: block;
+      margin-right: 50px;
+      font-family: 'Lato', sans-serif;
+      font-size: 16px;
+      cursor: pointer;
     }
     .get {
       display: block;
@@ -235,7 +164,7 @@
     .login {
       display: block;
       margin-right: 15px;
-      margin-left: 40px;
+      margin-right: 50px;
       font-family: 'Lato', sans-serif;
       font-size: 16px;
       font-weight: var(--regular);

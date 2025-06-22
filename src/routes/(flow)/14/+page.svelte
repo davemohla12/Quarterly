@@ -8,68 +8,79 @@
   import DollarInput from '$src/components/app/DollarInput.svelte'
   import { convertStateToUpperCase } from '$src/utilities/utilities'
   import { stateRules } from '$src/rules/state'
-  import { store } from '$src/stores/store.svelte'  
-  import { onMount, tick } from 'svelte'
+  import { global } from '$src/data/global.svelte'
+  import { payment } from '$src/data/payment.svelte'
+  import { onMount } from 'svelte'
   import { goto } from '$app/navigation'
   import { convertCurrencyToNumber } from '$src/utilities/utilities'
+  import { user } from '$src/data/user.svelte'
 
-  const headingText = `How much did you pay in ${convertStateToUpperCase(store.currentState)} income tax last year?`
+  let headingText = $state('')
   const buttonText = 'NEXT'
   const placholderText = 'Total Tax Due'
   
   let subheadingText = $state('')
   let inputValue = $state(null)
-  store.makeButtonActive = false
+  global.makeButtonActive = false
 
-  onMount(() => {
-    subheadingText = determineSubheadingText()
-    if (store.loggedIn) {
-      if (store.stateTaxPaidLastYear) {
-        inputValue = store.stateTaxPaidLastYear
-        store.makeButtonActive = true
+  onMount(async () => {
+    headingText = `How much did you pay in ${convertStateToUpperCase(await payment.getValue('currentState'))} income tax last year?`
+    subheadingText = await determineSubheadingText()
+    if (global.loggedIn) {
+      if (await payment.getValue('stateTaxPaidLastYear')) { 
+        const stateTaxPaidLastYear = await payment.getValue('stateTaxPaidLastYear')
+        inputValue = stateTaxPaidLastYear.toString()
+        global.makeButtonActive = true
       }
     }
   })
 
-  const determineSubheadingText = () => {
-    if (stateRules[store.currentState].incomeTaxPaidForm != null && stateRules[store.currentState].incomeTaxPaidLine != null) {
-      return `You can find this on ${convertStateToUpperCase(store.currentState)} form ${stateRules[store.currentState].incomeTaxPaidForm} line ${stateRules[store.currentState].incomeTaxPaidLine}`
+  const determineSubheadingText = async () => {
+    if (stateRules[await payment.getValue('currentState')].incomeTaxPaidForm != null && stateRules[await payment.getValue('currentState')].incomeTaxPaidLine != null) {
+      return `You can find this on ${convertStateToUpperCase(await payment.getValue('currentState'))} form ${stateRules[await payment.getValue('currentState')].incomeTaxPaidForm} line ${stateRules[await payment.getValue('currentState')].incomeTaxPaidLine}`
     }
-    else if (stateRules[store.currentState].incomeTaxPaidForm != null) {
-      return `You can find this on ${convertStateToUpperCase(store.currentState)} form ${stateRules[store.currentState].incomeTaxPaidForm}`
+    else if (stateRules[await payment.getValue('currentState')].incomeTaxPaidForm != null) {
+      return `You can find this on ${convertStateToUpperCase(await payment.getValue('currentState'))} form ${stateRules[await payment.getValue('currentState')].incomeTaxPaidForm}`
     }
     else {
-      return `You can find this on your ${convertStateToUpperCase(store.currentState)} tax return`
+      return `You can find this on your ${convertStateToUpperCase(await payment.getValue('currentState'))} tax return`
     }      
   }
 
   const handleInput = (value) => {
     inputValue = value
     if (inputValue == null || inputValue == '$' || inputValue == '') {
-      store.makeButtonActive = false
+      global.makeButtonActive = false
     }
     else {
-      store.makeButtonActive = true
+      global.makeButtonActive = true
     }
   }
 
-  const handleNext = () => {
-    store.stateTaxPaidLastYear = convertCurrencyToNumber(inputValue)
-    if (store.stateTaxPaidLastYear < stateRules[store.currentState].minimumTaxForQuarterlyPayments) {
-      store.stateQuarterlyPayment = 0
-      store.stateSupported = false
-      store.currentPage = '15'
+  const handleNext = async () => {
+    payment.setValue('stateTaxPaidLastYear', convertCurrencyToNumber(inputValue))
+    if (await payment.getValue('stateTaxPaidLastYear') < stateRules[await payment.getValue('currentState')].minimumTaxForQuarterlyPayments) {
+      payment.setValue('stateSupported', true)
+      payment.setValue('q1StateQuarterlyPayment', 0)
+      payment.setValue('q2StateQuarterlyPayment', 0)
+      payment.setValue('q3StateQuarterlyPayment', 0)
+      payment.setValue('q4StateQuarterlyPayment', 0)
+      payment.setValue('singleStateDue', 0)
+      payment.setValue('singleStatePaid', 0)
+      payment.setValue('singleStateRemaining', 0)
+      payment.setValue('explanation', getBelowMinimumTaxText())
+      user.setValue('currentPage', '15')
       goto('/15')
     }
     else {
-      store.currentPage = '17'
+      user.setValue('currentPage', '17')
       goto('/17')
     }
   }
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
-      if (store.makeButtonActive == true) {
+      if (global.makeButtonActive == true) {
         handleNext()
       }
     }

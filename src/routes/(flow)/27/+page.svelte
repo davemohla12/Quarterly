@@ -5,48 +5,50 @@
   import RadioButtons from '$src/components/app/RadioButtons.svelte'
   import Button from '$src/components/app/Button.svelte'
   import Later from '$src/components/app/Later.svelte'
-  import { store } from '$src/stores/store.svelte'
+  import { global } from '$src/data/global.svelte'
+  import { payment } from '$src/data/payment.svelte'
   import { goto } from '$app/navigation'
   import { onMount } from 'svelte'
+  import { user } from '$src/data/user.svelte'
 
   const headingText = `Would you like to pay your taxes each quarter or in one single payment?`
   const radioButtons = ['Pay each quarter', 'Pay in single payment']
   const buttonText = 'NEXT'
   let selectedRadioButton = $state(null)
-  store.makeButtonActive = false
+  global.makeButtonActive = false
 
-  onMount(() => {
-    if (store.loggedIn) {
-      if (store.payPreference == 'quarter') {
+  onMount(async () => {
+    if (global.loggedIn) {
+      if (await payment.getValue('payPreference') == 'quarter') {
         selectedRadioButton = radioButtons[0]
-        store.makeButtonActive = true
+        global.makeButtonActive = true
       }
-      else if (store.payPreference == 'single') {
+      else if (await payment.getValue('payPreference') == 'single') {
         selectedRadioButton = radioButtons[1]
-        store.makeButtonActive = true
+        global.makeButtonActive = true
       }
     }
   })
   
   const handleSelect = (button) => {
     selectedRadioButton = button
-    store.makeButtonActive = true
+    global.makeButtonActive = true
   }
 
   const handleNext = () => {
     if (selectedRadioButton== radioButtons[0]) {
-      store.payPreference = 'quarter'
+      payment.setValue('payPreference', 'quarter')
     }
     else {
-      store.payPreference = 'single'
+      payment.setValue('payPreference', 'single')
     }
-    store.currentPage = '28'
+    user.setValue('currentPage', '28')
     goto('/28')
   }
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
-      if (store.makeButtonActive == true) {
+      if (global.makeButtonActive == true) {
         handleNext()
       }
     }

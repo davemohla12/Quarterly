@@ -2,15 +2,16 @@
   import { onMount } from 'svelte'
   import { goto } from '$app/navigation'
   import { supabase } from '$src/utilities/supabase'
-  import { store } from '$src/stores/store.svelte'
-  import { saveDatabaseToLocalStorage, saveLocalStorageToDatabase } from '$src/utilities/database'
+  import { global } from '$src/data/global.svelte'
+  import { saveToUsers, saveToPayments } from '$src/utilities/database'
   import { updateLoginState } from '$src/utilities/utilities'
-  import { getCurrentPageFromDatabase } from '$src/utilities/database'
   import Header from '$src/components/app/Header.svelte'
   import Avatar from '$src/components/app/Avatar.svelte'
   import Heading from '$src/components/app/Heading.svelte'
   import Button from '$src/components/app/Button.svelte'  
   import Loading from '$src/components/app/Loading.svelte'
+  import { user } from '$src/data/user.svelte'
+  import { getLocalStorage } from '$src/utilities/utilities'
   
   const expiredText = `This link has expired`
   const expiredButtonText = 'BACK TO HOME'
@@ -22,39 +23,36 @@
     const error = hashParams.get('error')
     if (error) {
       pageExpired = true
-      store.makeButtonActive = true
+      global.makeButtonActive = true
     }
     else {
       const response = await supabase.auth.getSession()
       const session = response.data.session
       if (session) {
         await updateLoginState(session)
-        if (store.loginLocation == 'home') {
-          store.currentPage = await getCurrentPageFromDatabase()
-          await saveDatabaseToLocalStorage()
+        if (getLocalStorage('loginLocation') == 'home') {
           goto('/')
         }
-        else if (store.loginLocation == 'later') {
+        else if (getLocalStorage('loginLocation') == 'later') {
           goto('/')
-          store.showResumeBanner = true
-          await saveLocalStorageToDatabase()
+          global.showResumeBanner = true
         }
-        else if (store.loginLocation == 'flow') {
-          store.currentPage = 'dashboard'
-          goto(`/${store.currentPage}`)
-          await saveLocalStorageToDatabase()
+        else if (getLocalStorage('loginLocation') == 'flow') {
+          user.setValue('currentPage', 'dashboard')
+          await saveToUsers()
+          await saveToPayments()
+          goto(`/dashboard`)
         }
-        else if (store.loginLocation == 'dashboard') {
-          store.currentPage = 'dashboard'
-          await saveDatabaseToLocalStorage()
-          goto(`/${store.currentPage}`)
+        else if (getLocalStorage('loginLocation') == 'dashboard') {
+          user.setValue('currentPage', 'dashboard')
+          goto(`/dashboard`)
         }
       }
     }
   })
 
   const handleClick = () => {
-    store.currentPage = '0'
+    user.setValue('currentPage', '0')
     goto('/')
   }
 
@@ -66,7 +64,7 @@
   <Heading text={expiredText} desktopwidth="500px" mobilelarge={true}  />
   <Button text={expiredButtonText} dark={true} onclick={handleClick} />
 {:else}
-  <Header hideIcons={true} hideBack={true} />
+  <Header hideBack={true} />
   <Avatar />
   <Loading />
 {/if}

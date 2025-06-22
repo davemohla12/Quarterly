@@ -10,24 +10,23 @@
   import Footer from '$src/components/home/Footer.svelte'
   import Menu from '$src/components/home/Menu.svelte'
   import Overlay from '$src/components/home/Overlay.svelte'
-  import { store } from '$src/stores/store.svelte'
+  import { global } from '$src/data/global.svelte'
   import { onMount } from 'svelte'
+  import { clearLocalStorage, setLocalStorage } from '$src/utilities/utilities'
 
-  onMount(() => {
-    store.loginLocation = 'home'
-    if (!store.loggedIn) {
-      localStorage.clear()
-    }
+  onMount(async () => {
+    clearLocalStorage()
+    setLocalStorage('loginLocation', 'home')
   })
   
 </script>
 
 <div class="page">
-  {#if store.showMenu}
+  {#if global.showMenu}
     <Menu />
     <Overlay />
   {/if}
-  <Header showDashboardOption={true} />
+  <Header />
   <Stressfree />
   <Flow />
   <Penalties />

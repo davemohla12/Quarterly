@@ -1,5 +1,4 @@
 <script>
-  import { store } from '$src/stores/store.svelte'
   import Clickable from '$src/components/app/Clickable.svelte'
   import { onMount } from 'svelte'
 
@@ -31,7 +30,6 @@
     if (!value) return ''
     const number = parseFloat(value.replace(/[$,]/g, ''))
     if (isNaN(number)) return ''
-    const hasDecimal = value.includes('.')
     const formattedNumber = number.toLocaleString('en-US', {
       minimumFractionDigits: 0,
       maximumFractionDigits: 2

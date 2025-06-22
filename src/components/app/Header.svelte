@@ -2,10 +2,11 @@
   import Clickable from '$src/components/app/Clickable.svelte'
   import { goto } from '$app/navigation'
   import { onMount } from 'svelte'
-  import { store } from '$src/stores/store.svelte'
+  import { global } from '$src/data/global.svelte'
   import { updateLoginState } from '$src/utilities/utilities'
   import { supabase } from '$src/utilities/supabase'
-  import { clearDatabase } from '$src/utilities/database'
+  import { user } from '$src/data/user.svelte'
+  import { clearLocalStorage, setLocalStorage } from '$src/utilities/utilities'
 
   let props = $props()
   let hideBack = props.hideBack || false
@@ -13,7 +14,7 @@
   let hideReset = props.hideReset || false
   let onBack = props.onBack || (() => {})
   let showAccountMenu = $state(false)
-  let showDashboardOption = props.showDashboardOption || false
+  let showAccountIcon = props.showAccountIcon || false
 
   onMount(() => {
       document.addEventListener('click', handleClickOutside)
@@ -44,14 +45,15 @@
   const handleLogout = async () => {
     await supabase.auth.signOut()
     updateLoginState(false)
-    localStorage.clear()
+    clearLocalStorage()
+    setLocalStorage('loginLocation', 'home')
     goto('/')
     showAccountMenu = false
   }
 
   const handleDashboard = () => {
     goto('/dashboard')
-    store.currentPage = 'dashboard'
+    user.setValue('currentPage', 'dashboard')
     showAccountMenu = false
   }
 
@@ -69,11 +71,10 @@
   }
 
   const handleReset = () => {
-    localStorage.clear()
-    clearDatabase()
-    store.currentPage = '0'
+    clearLocalStorage()
+    user.setValue('currentPage', '0')
     goto('/0')
-    store.makeButtonActive = true
+    global.makeButtonActive = true
   }
 
 </script>
@@ -89,23 +90,25 @@
   </Clickable>
   {#if !hideIcons}
     <div class="right">
-      {#if !hideReset && !(store.loggedIn && store.active)}
+      {#if !hideReset && !(global.loggedIn)}
         <Clickable onclick={handleReset}>
           <img class="reset" src="/images/reset.png" alt="Reset" />
         </Clickable>
       {/if}
-      {#if store.loggedIn}
+      {#if global.loggedIn && showAccountIcon}
         <Clickable onclick={handleAccountClick}>
           <img class="account" src="/images/account.png" alt="Account" />
+        </Clickable>
+      {:else if global.loggedIn}
+        <Clickable onclick={handleLogout}>
+          <img class="logout" src="/images/logout.png" alt="Logout" />
         </Clickable>
       {/if}
       {#if showAccountMenu}
         <div class="accountmenu">
-          {#if showDashboardOption}
-            <Clickable onclick={handleDashboard}>
-              <div class="item">Dashboard</div>
-            </Clickable>
-          {/if}
+          <Clickable onclick={handleDashboard}>
+            <div class="item">Dashboard</div>
+          </Clickable>
           <Clickable onclick={handleReminders}>
             <div class="item">Reminders</div>
           </Clickable>
@@ -154,26 +157,31 @@
     height: 21px;
     margin-right: 10px;
   }
-  .account {
+  .logout {
     width: 21px;
     height: 21px;
+    margin-left: 15px;  
+    margin-right: 5px;
+  }
+  .account {
+    width: 28px;
+    height: 28px;
     margin-left: 15px;  
     margin-right: 10px;
   }
   .accountmenu {
     position: absolute;
     right: 15px;
-    top: 30px;
+    top: 35px;
     background: var(--dark);
     color: var(--white);
     padding-top: 15px;
-    padding-bottom: 0px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     width: 110px;
     z-index: 100;
-    padding-left: 10px;
+    padding-left: 17px;
   }
   .item {
     color: var(--white);
@@ -200,6 +208,9 @@
       margin-left: 20px;
       width: 134px;
       height: 33px;
+    }
+    .logout {
+      margin-right: 10px;
     }
     .account {
       margin-right: 20px;

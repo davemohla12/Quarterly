@@ -4,7 +4,7 @@
   import { updateLoginState } from '$src/utilities/utilities'
   import * as Sentry from '@sentry/browser'
   import { PUBLIC_ENVIRONMENT } from '$env/static/public' 
-  import { store } from '$src/stores/store.svelte'
+  import { global } from '$src/data/global.svelte'
   
   let props = $props()
   let children = props.children
@@ -14,8 +14,8 @@
     loading = true
     const response = await supabase.auth.getSession()
     const session = response.data.session
-    updateLoginState(session)
-    Sentry.setUser({ email: store.email })
+    await updateLoginState(session)
+    Sentry.setUser({ email: global.email })
     supabase.auth.onAuthStateChange((event, session) => {
       updateLoginState(session)
     })

@@ -6,19 +6,21 @@
   import Later from '$src/components/app/Later.svelte'
   import Image from '$src/components/app/Image.svelte'
   import { goto } from '$app/navigation'
-  import { store } from '$src/stores/store.svelte'
+  import { global } from '$src/data/global.svelte'
+  import { user } from '$src/data/user.svelte'
+
   const headingText = `You'll need your federal tax return from last year`
   const buttonText = 'NEXT'
-  store.makeButtonActive = true
+  global.makeButtonActive = true
   
   const handleNext = () => {
-    store.currentPage = '10'
+    user.setValue('currentPage', '10')
     goto('/10')
   }
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
-      if (store.makeButtonActive == true) {
+      if (global.makeButtonActive == true) {
         handleNext()
       }
     }

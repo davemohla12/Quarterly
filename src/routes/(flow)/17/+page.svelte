@@ -7,55 +7,57 @@
   import Later from '$src/components/app/Later.svelte'
   import DollarInput from '$src/components/app/DollarInput.svelte'
   import { federalRules } from '$src/rules/federal'
-  import { store } from '$src/stores/store.svelte'
+  import { global } from '$src/data/global.svelte'
+  import { payment } from '$src/data/payment.svelte'
   import { goto } from '$app/navigation'
-  import { convertCurrencyToNumber, convertStateToUpperCase } from '$src/utilities/utilities'
+  import { convertCurrencyToNumber } from '$src/utilities/utilities'
   import { stateRules } from '$src/rules/state'
   import { onMount } from 'svelte'
+  import { user } from '$src/data/user.svelte'
 
   const headingText = `What was your federal adjusted gross income last year?`
   const subheadingText = `You can find this on form ${federalRules.adjustedGrossIncomeForm} line ${federalRules.adjustedGrossIncomeLine}`
   const buttonText = 'NEXT'
   const placholderText = 'Adjusted Gross Income'
   let inputValue = $state(null)
-  store.makeButtonActive = false
+  global.makeButtonActive = false
 
-  onMount(() => {
-    if (store.loggedIn) {
-      if (store.adjustedGrossIncomeLastYear) {
-        inputValue = store.adjustedGrossIncomeLastYear
-        store.makeButtonActive = true
+  onMount(async () => {
+    if (global.loggedIn) {
+      if (await payment.getValue('adjustedGrossIncomeLastYear')) {
+        const adjustedGrossIncomeLastYear = await payment.getValue('adjustedGrossIncomeLastYear')
+        inputValue = adjustedGrossIncomeLastYear.toString()
+        global.makeButtonActive = true
       }
     }
   })
 
-
   const handleInput = (value) => {
     inputValue = value
     if (inputValue == null || inputValue == '$' || inputValue == '') {
-      store.makeButtonActive = false
+      global.makeButtonActive = false
     }
     else {
-      store.makeButtonActive = true
+      global.makeButtonActive = true
     }
   }
 
-  const handleNext = () => {
-    store.adjustedGrossIncomeLastYear = convertCurrencyToNumber(inputValue)
-    if (stateRules[store.currentState]?.thisYearIncomeCalculationType?.type == 'federalAGI' || !stateRules[store.currentState]?.lastYearSafeHarborRule) {
-      store.stateIncomeLastYear = store.adjustedGrossIncomeLastYear
-      store.currentPage = '18'
+  const handleNext = async () => {
+    payment.setValue('adjustedGrossIncomeLastYear', convertCurrencyToNumber(inputValue))
+    if (stateRules[await payment.getValue('currentState')].thisYearIncomeCalculationType?.type == 'federalAGI' || !stateRules[await payment.getValue('currentState')].lastYearSafeHarborRule) {
+      payment.setValue('stateIncomeLastYear', await payment.getValue('adjustedGrossIncomeLastYear'))
+      user.setValue('currentPage', '18')
       goto('/18')
     }
     else { 
-      store.currentPage = '17.5'
+      user.setValue('currentPage', '17.5')
       goto('/17.5')
     }
   }
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
-      if (store.makeButtonActive == true) {
+      if (global.makeButtonActive == true) {
         handleNext()
       }
     }

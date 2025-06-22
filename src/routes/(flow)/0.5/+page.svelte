@@ -5,15 +5,15 @@
   import Subheading from '$src/components/app/Subheading.svelte'
   import Button from '$src/components/app/Button.svelte'
   import Back from '$src/components/app/Back.svelte'
-  import { store } from '$src/stores/store.svelte'  
+  import { global } from '$src/data/global.svelte'
   import { goto } from '$app/navigation'
   import { onMount } from 'svelte'
+  import { user } from '$src/data/user.svelte'
 
-  
   const headingText = `Let's walk through your inputs`
   const subheadingText = `It'll take less than 5 minutes and you'll need to complete it to the end`
   const buttonText = 'NEXT'
-  store.makeButtonActive = true
+  global.makeButtonActive = true
 
   onMount(() => {
     window.addEventListener('popstate', handleBack)
@@ -23,25 +23,25 @@
   })
 
   const handleNext = () => {
-    store.currentPage = '1'
+    user.setValue('currentPage', '1')
     goto('/1')
   }
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
-      if (store.makeButtonActive == true) {
+      if (global.makeButtonActive == true) {
         handleNext()
       }
     }
     if (event.key === 'ArrowLeft') {
-      store.currentPage = 'dashboard'
+      user.setValue('currentPage', 'dashboard')
       goto('/dashboard')
     }
   }
 
-  const handleBack = () => {
+  const handleBack = (event) => {
     event.preventDefault()
-    store.currentPage = 'dashboard'
+    user.setValue('currentPage', 'dashboard')
     goto('/dashboard')
   }
 
@@ -54,4 +54,4 @@
 <Heading text={headingText} onBack={handleBack} desktopwidth="500px" mobilewidth="250px" />
 <Subheading text={subheadingText} desktopwidth="500px" mobilewidth="250px" />
 <Button text={buttonText} onclick={handleNext} />
-<Back onBack={handleBack}/>
+<Back onBack={() =>handleBack(event)}/>

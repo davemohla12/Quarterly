@@ -1,6 +1,5 @@
-import { store } from '$src/stores/store.svelte'
+import { global } from '$src/data/global.svelte'
 import { stateRules } from '$src/rules/state.js'
-import { supabase } from '$src/utilities/supabase'
 
 const convertStateToLowerCase = (state) => {
   const lowerCaseState = state.toLowerCase()
@@ -46,7 +45,7 @@ const convertNumberToRoundedCurrency = (number) => {
     return '$0'
   }
   else { 
-    return number.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })
+    return Number(number).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })
   }
 }
 
@@ -139,12 +138,12 @@ const convertShortToLongIncomeExpectation = (incomeExpectation) => {
 
 const updateLoginState = async (session) => {
   if (session) {
-    store.loggedIn = true
-    store.email = session.user.email
+    global.loggedIn = true
+    global.email = session.user.email
   }
   else {
-    store.loggedIn = false
-    store.email = null
+    global.loggedIn = false
+    global.email = null
   }
 }
 
@@ -162,6 +161,19 @@ const getLocalStorage = (key) => {
   return value
 }
 
+const setLocalStorage = (key, value) => {
+  localStorage.setItem(key, value)
+}
+
+const clearLocalStorage = () => {
+  const allKeys = Object.keys(localStorage)
+  for (const key of allKeys) {
+    if (!key.startsWith('sb-') || !key.includes('auth-token')) {
+      localStorage.removeItem(key)
+    }
+  }
+}
+
 export { 
   convertStateToLowerCase, 
   convertStateToUpperCase, 
@@ -173,9 +185,11 @@ export {
   doesStateHaveQuarterlyTaxes,
   formatCurrency,
   updateLoginState,
-  getLocalStorage,
   convertLongToShortFilingStatus,
   convertShortToLongFilingStatus,
   convertLongToShortIncomeExpectation,
-  convertShortToLongIncomeExpectation
+  convertShortToLongIncomeExpectation,
+  getLocalStorage,
+  setLocalStorage,
+  clearLocalStorage 
 } 

@@ -1,14 +1,15 @@
 <script>
   import Clickable from '$src/components/app/Clickable.svelte'
   import { goto } from '$app/navigation'
-  import { store } from '$src/stores/store.svelte'
+  import { global } from '$src/data/global.svelte'
+  import { user } from '$src/data/user.svelte'
   import { onMount } from 'svelte'
 
   let buttonText = $state('GET STARTED')
 
-  $effect(() => {
-    if (store.loggedIn) {
-      if (store.currentPage == 'dashboard') {
+  $effect(async () => {
+    if (global.loggedIn) {
+      if (await user.getValue('currentPage') == 'dashboard') {
         buttonText = 'DASHBOARD'
       }
       else {
@@ -21,24 +22,30 @@
   })
 
   onMount(() => {
-    if (store.showResumeBanner) {
+    if (global.showResumeBanner) {
       setTimeout(() => {
-        store.showResumeBanner = false
+        global.showResumeBanner = false
       }, 3000)
     }
   })
 
   const handleCloseBanner = () => {
-    store.showResumeBanner = false
+    global.showResumeBanner = false
   }
 
-  const handleGetStarted = () => {
-    goto('/0')
+  const handleButtonClick = async () => {
+    const currentPage = await user.getValue('currentPage')
+    if (buttonText == 'GET STARTED') {
+      goto('/0')
+    }
+    else {
+      goto(`/${currentPage}`)
+    }
   }
 </script>
 
 <div class="container">
-  {#if store.showResumeBanner}
+  {#if global.showResumeBanner}
     <div class="banner">
       <div class="bannertext">You can resume at anytime</div>
       <Clickable onclick={handleCloseBanner}>
@@ -53,7 +60,7 @@
     <div class="subheading">
       Built for freelancers, creators, and small business owners who value clarity and simplicity
     </div>
-    <Clickable onclick={handleGetStarted}>
+    <Clickable onclick={handleButtonClick}>
       <div class="button">
         {buttonText}
       </div>

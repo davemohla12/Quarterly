@@ -5,12 +5,12 @@
   import Subheading from '$src/components/app/Subheading.svelte'
   import Button from '$src/components/app/Button.svelte'
   import { goto } from '$app/navigation'
-  import { store } from '$src/stores/store.svelte'
+  import { global } from '$src/data/global.svelte'
 
   const headingText = `Email sent`
   const subheadingText = `If you have an account, I've emailed you instructions to rest your password`
   const buttonText = 'BACK TO HOME'
-  store.makeButtonActive = true
+  global.makeButtonActive = true
 
   const handleClick = () => {
     goto('/')
@@ -18,7 +18,7 @@
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
-      if (store.makeButtonActive == true) {
+      if (global.makeButtonActive == true) {
         handleClick()
       }
     }

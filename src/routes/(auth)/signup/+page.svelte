@@ -4,17 +4,18 @@
   import Heading from '$src/components/app/Heading.svelte'
   import Subheading from '$src/components/app/Subheading.svelte'
   import Button from '$src/components/app/Button.svelte'
-  import Later from '$src/components/app/Later.svelte'
   import GoogleButton from '$src/components/app/GoogleButton.svelte'
   import Or from '$src/components/app/Or.svelte'
   import BottomText from '$src/components/app/BottomText.svelte'
   import { goto } from '$app/navigation'
   import EmailInput from '$src/components/app/EmailInput.svelte'
   import PasswordInput from '$src/components/app/PasswordInput.svelte'
-  import { store } from '$src/stores/store.svelte'
+  import { global } from '$src/data/global.svelte'
   import { supabase } from '$src/utilities/supabase'
   import ErrorText from '$src/components/app/ErrorText.svelte'
-  import { saveDatabaseToLocalStorage, saveLocalStorageToDatabase, getCurrentPageFromDatabase } from '$src/utilities/database'
+  import { saveToUsers, saveToPayments } from '$src/utilities/database'
+  import { user } from '$src/data/user.svelte'
+  import { getLocalStorage } from '$src/utilities/utilities'
 
   const headingText = `Let's create your  account`
   const subheadingText = `By continuing, you agree with our <a href="/terms" target="_blank">terms</a> and <a href="/privacy" target="_blank">privacy policy</a>`
@@ -23,7 +24,7 @@
   const placeholderText2 = 'PASSWORD'
   const bottomtextText = 'Already have an account?&nbsp;&nbsp;<a href="/login">Login</a>'
   
-  store.makeButtonActive = false
+  global.makeButtonActive = false
   let email = $state(null)
   let password = $state(null)
   let validEmail = $state(false)
@@ -37,10 +38,10 @@
     email = value
     validEmail = isValidEmail
     if (email && password && email != '' && password != '') {
-      store.makeButtonActive = true
+      global.makeButtonActive = true
     } 
     else {
-      store.makeButtonActive = false
+      global.makeButtonActive = false
     }
   }
   
@@ -48,10 +49,10 @@
     password = value 
     validPassword = isValidPassword
     if (email && password && email != '' && password != '') {
-      store.makeButtonActive = true
+      global.makeButtonActive = true
     }
     else {
-      store.makeButtonActive = false
+      global.makeButtonActive = false
     }
   }
 
@@ -78,7 +79,7 @@
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
-      if (store.makeButtonActive == true) {
+      if (global.makeButtonActive == true) {
         handleNext()
       }
     }
@@ -94,25 +95,22 @@
     let loginUser = loginResult.data?.user
     let loginError = loginResult.error?.message?.toLowerCase()
     if (loginUser) {
-      if (store.loginLocation == 'home') {
-        await saveDatabaseToLocalStorage()
-        store.currentPage = await getCurrentPageFromDatabase()
+      if (getLocalStorage('loginLocation') == 'home') {
         goto('/')
       }
-      else if (store.loginLocation == 'later') {
+      else if (getLocalStorage('loginLocation') == 'later') {
         goto('/')
-        store.showResumeBanner = true
-        await saveLocalStorageToDatabase()
+        global.showResumeBanner = true
       }
-      else if (store.loginLocation == 'flow') {
-        store.currentPage = 'dashboard'
-        goto(`/${store.currentPage}`)
-        await saveLocalStorageToDatabase()
+      else if (getLocalStorage('loginLocation') == 'flow') {
+        user.setValue('currentPage', 'dashboard')
+        goto(`/dashboard`)
+        await saveToUsers()
+        await saveToPayments()
       }
-      else if (store.loginLocation == 'dashboard') {
-        store.currentPage = 'dashboard'
-        await saveDatabaseToLocalStorage()
-        goto(`/${store.currentPage}`)
+      else if (getLocalStorage('loginLocation') == 'dashboard') {
+        user.setValue('currentPage', 'dashboard')
+        goto(`/dashboard`)
       }
     }
     else {
@@ -134,21 +132,15 @@
         errorMessage = "Your login is invalid or you may have signed up using another method. Please try again."
       }
       else if (loginError.includes('email not confirmed')) {
-        store.justSignedUp = true
-        store.email = email
-        if (store.loginLocation == 'home') {
-          await saveDatabaseToLocalStorage()
+        global.justSignedUp = true
+        global.email = email
+        if (getLocalStorage('loginLocation') == 'flow') {
+          user.setValue('currentPage', 'dashboard')
+          await saveToUsers()
+          await saveToPayments()
         }
-        else if (store.loginLocation == 'later') {
-          await saveLocalStorageToDatabase()
-        }
-        else if (store.loginLocation == 'flow') {
-          store.currentPage = 'dashboard'
-          await saveLocalStorageToDatabase()
-        }
-        else if (store.loginLocation == 'dashboard') {
-          store.currentPage = 'dashboard'
-          await saveDatabaseToLocalStorage()
+        else if (getLocalStorage('loginLocation') == 'dashboard') {
+          user.setValue('currentPage', 'dashboard')
         }
         goto('/confirm')
       }

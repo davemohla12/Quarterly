@@ -1,22 +1,51 @@
 import { json } from '@sveltejs/kit'
 import axios from 'axios'
 import { supabase } from '$src/utilities/supabase'
-import { currentQuarter } from '$src/settings/settings'
-import { currentYear } from '$src/settings/settings'
+import { currentTaxQuarter } from '$src/settings/settings'
+import { currentTaxYear } from '$src/settings/settings'
 import { q1DueDate, q2DueDate, q3DueDate, q4DueDate } from '$src/settings/settings'
 import dayjs from 'dayjs'
 import { PUBLIC_DOMAIN } from '$env/static/public' 
 import { CRON_KEY } from '$env/static/private'
-import { getEmailsFromDatabase } from '$src/utilities/database'
+import { getEmails } from '$src/utilities/database'
 
-const getValueInDatabase = async (email, field) => {
+const getValueFromDatabase = async (table, email, field) => {
+  if (table == 'Payments') {
+    const response = await supabase
+      .from(table)
+      .select('*')
+        .eq('email', email)
+        .eq('taxYear', currentTaxYear)
+        .single()
+    return response.data?.[field]
+  }
+  else if (table == 'Users') {
+    const response = await supabase
+      .from(table)
+      .select('*')
+      .eq('email', email)
+      .single()
+    return response.data?.[field]
+  }
+}
+
+const getEmails = async () => {
   const response = await supabase
     .from('Users')
-    .select('*')
-    .eq('email', email)
-    .eq('year', currentYear)
-    .single()
-  return response.data?.[field]
+    .select('email')
+  if (response.data) {
+    const emails = response.data.map(row => row.email)
+    const uniqueEmails = []
+    for (const email of emails) {
+      if (!uniqueEmails.includes(email)) {
+        uniqueEmails.push(email)
+      }
+    }
+    return uniqueEmails
+  }
+  else { 
+    return []
+  } 
 }
 
 const sendFiveDayEmail = async () => {
@@ -40,62 +69,68 @@ const GET = async ({ url }) => {
     const token = url.searchParams.get('cron_secret')
 
     if (token == CRON_KEY) {
-      const emails = await getEmailsFromDatabase()
+      const emails = await getEmails()
       const message = []
       for (const email of emails) {
-        const payPreference = await getValueInDatabase(email,'payPreference')
-        const sendReminders = await getValueInDatabase(email, 'sendReminders')
-        const fiveDaysBefore = await getValueInDatabase(email,'fiveDaysBefore')
-        const oneDayBefore = await getValueInDatabase(email, 'oneDayBefore')
+        const payPreference = await getValueFromDatabase('Payments', email, 'payPreference')
+        const sendReminders = await getValueFromDatabase('Users', email, 'sendReminders')
+        const sendFiveDayReminder = await getValueFromDatabase('Users', email, 'sendFiveDayReminder')
+        const sendOneDayReminder = await getValueFromDatabase('Users', email, 'sendOneDayReminder')
+
+        console.log(`Email: ${email}`)
+        console.log(`Pay Preference: ${payPreference}`)
+        console.log(`Send Reminders: ${sendReminders}`)
+        console.log(`Send Five Day Reminder: ${sendFiveDayReminder}`)
+        console.log(`Send One Day Reminder: ${sendOneDayReminder}`)
 
         if (payPreference == 'quarter') {
           if (sendReminders) {
-            if (fiveDaysBefore) {
-              if (currentQuarter == 'Q1') {
+            if (sendFiveDayReminder) {
+              if (currentTaxQuarter == 'Q1') {
                 if (dayjs().isSame(q1DueDate.subtract(5, 'days'), 'day')) {
                   await sendFiveDayEmail()
                   message.push(`Sent 5 day reminder email to ${email}`)
                 }
               }
-              else if (currentQuarter == 'Q2') {
+              else if (currentTaxQuarter == 'Q2') {
                 if (dayjs().isSame(q2DueDate.subtract(5, 'days'), 'day')) {
                   await sendFiveDayEmail()
                   message.push(`Sent 5 day reminder email to ${email}`)
                 }
               }
-              else if (currentQuarter == 'Q3') {
+              else if (currentTaxQuarter == 'Q3') {
                 if (dayjs().isSame(q3DueDate.subtract(5, 'days'), 'day')) {
                   await sendFiveDayEmail()  
                   message.push(`Sent 5 day reminder email to ${email}`)
                 }
               } 
-              else if (currentQuarter == 'Q4') {
+              else if (currentTaxQuarter == 'Q4') {
                 if (dayjs().isSame(q4DueDate.subtract(5, 'days'), 'day')) {
                   await sendFiveDayEmail()  
                   message.push(`Sent 5 day reminder email to ${email}`)
                 }
               }
             }
-            if (oneDayBefore) {
-              if (currentQuarter == 'Q1') {
+            if (sendOneDayReminder) {
+              if (currentTaxQuarter == 'Q1') {
                 if (dayjs().isSame(q1DueDate.subtract(1, 'day'), 'day')) {
                   await sendOneDayEmail()   
                   message.push(`Sent 1 day reminder email to ${email}`)
                 }
               }
-              else if (currentQuarter == 'Q2') {
+              else if (currentTaxQuarter == 'Q2') {
                 if (dayjs().isSame(q2DueDate.subtract(1, 'day'), 'day')) {
                   await sendOneDayEmail()   
                   message.push(`Sent 1 day reminder email to ${email}`)
                 } 
               }
-              else if (currentQuarter == 'Q3') {
+              else if (currentTaxQuarter == 'Q3') {
                 if (dayjs().isSame(q3DueDate.subtract(1, 'day'), 'day')) {
                   await sendOneDayEmail()   
                   message.push(`Sent 1 day reminder email to ${email}`)
                 }
               }
-              else if (currentQuarter == 'Q4') {
+              else if (currentTaxQuarter == 'Q4') {
                 if (dayjs().isSame(q4DueDate.subtract(1, 'day'), 'day')) {
                   await sendOneDayEmail()
                   message.push(`Sent 1 day reminder email to ${email}`)
@@ -117,7 +152,6 @@ const GET = async ({ url }) => {
     }
   }
   catch (error) {
-    console.log(error)
     return json({ message: 'Error sending reminder emails' }, { status: 500 })
   }
 }

@@ -1,5 +1,7 @@
 <script>
-  import { currentYear } from '$src/settings/settings'
+  import dayjs from 'dayjs'
+
+  const currentYear = dayjs().year()
 </script>
 
 <div class="footer">

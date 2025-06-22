@@ -5,23 +5,25 @@
   import Subheading from '$src/components/app/Subheading.svelte'
   import Button from '$src/components/app/Button.svelte'
   import Later from '$src/components/app/Later.svelte'
-  import { store } from '$src/stores/store.svelte'
+  import { global } from '$src/data/global.svelte'
   import { goto } from '$app/navigation'  
   import NumberInput from '$src/components/app/NumberInput.svelte'
   import { onMount } from 'svelte'  
+  import { payment } from '$src/data/payment.svelte'
+  import { user } from '$src/data/user.svelte'
 
   const headingText = `How many exemptions do you have?`
   const subheadingText = `This usually includes you, your spouse, and any dependents`
   const buttonText = 'NEXT'
   const placeholderText = 'Number of Exemptions'
   let inputValue = $state(null)
-  store.makeButtonActive = false
+  global.makeButtonActive = false
 
-  onMount(() => {
-    if (store.loggedIn) {
-      if (store.exemptions) {
-        inputValue = store.exemptions
-        store.makeButtonActive = true
+  onMount(async () => {
+    if (global.loggedIn) {
+      if (await payment.getValue('exemptions')) {
+        inputValue = await payment.getValue('exemptions')
+        global.makeButtonActive = true
       }
     }
   })
@@ -29,22 +31,22 @@
   const handleInput = (value) => {
     inputValue = value
     if (inputValue != '') {
-      store.makeButtonActive = true
+      global.makeButtonActive = true
     }
     else { 
-      store.makeButtonActive = false
+      global.makeButtonActive = false
     }
   }
 
   const handleNext = () => {
-    store.exemptions = inputValue
-    store.currentPage = '11'
+    payment.setValue('exemptions', inputValue)
+    user.setValue('currentPage', '11')
     goto('/11')
   }
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
-      if (store.makeButtonActive == true) {
+      if (global.makeButtonActive == true) {
         handleNext()
       }
     }

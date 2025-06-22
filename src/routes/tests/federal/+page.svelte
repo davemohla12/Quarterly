@@ -2,7 +2,7 @@
   import { getFederalTaxes, getFederalQuarterlyPayment, getFederalSinglePayment } from '$src/utilities/federaltax'
   import { formatCurrency } from '$src/utilities/utilities'
 
-  let currentQuarter = 'Q2'
+  let currentTaxQuarter = 'Q2'
   let filingStatus = 'married'
   let federalTaxPaidLastYear = 20000
   let adjustedGrossIncomeLastYear = 180000
@@ -19,7 +19,7 @@
   let q3PaymentMade = 0
 
   let taxes = getFederalTaxes(incomeExpectationThisYear, federalTaxPaidLastYear, adjustedGrossIncomeLastYear, filingStatus, expectedTotalIncomeThisYear, businessExpensesThisYear, retirementContributionsThisYear, studentLoanInterestThisYear, healthInsuranceThisYear, otherDeductionsThisYear)
-  let payment = getFederalQuarterlyPayment(currentQuarter, taxes.safeHarborFederalTaxesThisYear, withholdings, q1PaymentMade, q2PaymentMade, q3PaymentMade, taxes.initialExplanation)
+  let payment = getFederalQuarterlyPayment(currentTaxQuarter, taxes.safeHarborFederalTaxesThisYear, withholdings, q1PaymentMade, q2PaymentMade, q3PaymentMade, taxes.initialExplanation)
   let singlePayment = getFederalSinglePayment(taxes.safeHarborFederalTaxesThisYear, withholdings, q1PaymentMade, q2PaymentMade, q3PaymentMade, taxes.initialExplanation)
 
 </script> 
@@ -27,7 +27,7 @@
 <div class="page">
   <div class="section">
     <div>INPUTS</div>
-    <div>currentQuarter = {currentQuarter}</div>
+    <div>currentTaxQuarter = {currentTaxQuarter}</div>
     <div>filingStatus = {filingStatus}</div>
     <div>federalTaxPaidLastYear = {federalTaxPaidLastYear}</div>
     <div>adjustedGrossIncomeLastYear = {adjustedGrossIncomeLastYear}</div>  

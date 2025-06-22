@@ -7,27 +7,41 @@
   import Price from '$src/components/app/Price.svelte'
   import Bullets from '$src/components/app/Bullets.svelte'
   import { goto } from '$app/navigation'
-  import { store } from '$src/stores/store.svelte'
-  import { convertStateToUpperCase } from '$src/utilities/utilities'
+  import { global } from '$src/data/global.svelte'
+  import { user } from '$src/data/user.svelte'
+  import { setLocalStorage } from '$src/utilities/utilities'
+  import { currentTaxYear } from '$src/settings/settings'
+  import { onMount } from 'svelte'
 
   const headingText = `View your quarterly taxes for FREE for a limited time`
   const buttonText = 'NEXT'
-  store.makeButtonActive = true
-  
-  const handleNext = () => {
-    if (store.loggedIn) {
-      store.currentPage = 'dashboard' 
+  global.makeButtonActive = true
+
+  onMount(async () => {
+    if (global.loggedIn && await user.getValue('lastTaxYearPaid') == currentTaxYear) {
+      user.setValue('currentPage', 'dashboard') 
+      goto('/dashboard')
+    }
+  })
+
+  const handleNext = async () => {
+    // Move this to after user has successfully subscribed to paddle and uncomment addValue if they are logged in when subscribing
+    user.setValue('latestTaxYearPaid', currentTaxYear)
+    // user.addValue('taxYearsPaid', currentTaxYear)
+
+    if (global.loggedIn) {
+      user.setValue('currentPage', 'dashboard') 
       goto('/dashboard')
     }
     else {
-      store.loginLocation = 'flow'
+      setLocalStorage('loginLocation', 'flow')
       goto('/signup')
     }
   }
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
-      if (store.makeButtonActive == true) {
+        if (global.makeButtonActive == true) {
         handleNext()
       }
     }

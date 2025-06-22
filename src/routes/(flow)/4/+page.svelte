@@ -5,25 +5,34 @@
   import Subheading from '$src/components/app/Subheading.svelte'
   import Button from '$src/components/app/Button.svelte'
   import Later from '$src/components/app/Later.svelte'
-  import { store } from '$src/stores/store.svelte'  
+  import { global } from '$src/data/global.svelte'
   import { goto } from '$app/navigation'
   import { convertStateToUpperCase } from '$src/utilities/utilities'
   import { stateRules } from '$src/rules/state'
   import Note from '$src/components/app/Note.svelte'
-  
+  import { payment } from '$src/data/payment.svelte'
+  import { user } from '$src/data/user.svelte'
+  import { onMount } from 'svelte'
+
   const headingText = `You'll just pay federal quarterly taxes`
-  const subheadingText = `${convertStateToUpperCase(store.currentState)} doesn't require quarterly taxes`
+  const subheadingText = `${convertStateToUpperCase(payment.currentState)} doesn't require quarterly taxes`
   const buttonText = 'NEXT'
-  store.makeButtonActive = true
+  let showNote = $state(false)
+  global.makeButtonActive = true
+
+  onMount(async () => {
+    const currentState = await payment.getValue('currentState')
+    showNote = stateRules[currentState]?.note
+  })
 
   const handleNext = () => {
-    store.currentPage = '9'
+    user.setValue('currentPage', '9')
     goto('/9')
   }
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
-      if (store.makeButtonActive == true) {
+      if (global.makeButtonActive == true) {
         handleNext()
       }
     }
@@ -38,8 +47,8 @@
 <Header />
 <Avatar />
 <Heading text={headingText} desktopwidth="450px" mobilewidth="300px" />
-{#if stateRules[store.currentState].note}
-  <Note text={stateRules[store.currentState].note} desktopwidth="450px" mobilewidth="300px" />
+{#if showNote}
+  <Note text={showNote} desktopwidth="450px" mobilewidth="300px" />
 {:else}
   <Subheading text={subheadingText} />
 {/if}

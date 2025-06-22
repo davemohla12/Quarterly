@@ -7,7 +7,6 @@
   let onViewClick = props.onViewClick
   let viewText = $derived(props.viewText)
   
-
   const handleEditClick = () => {
     onEditClick()
   }

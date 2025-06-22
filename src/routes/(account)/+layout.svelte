@@ -1,5 +1,5 @@
 <script>
-  import { store } from '$src/stores/store.svelte'
+  import { global } from '$src/data/global.svelte'
   import { onMount } from 'svelte'
   import { goto } from '$app/navigation'
   
@@ -9,7 +9,7 @@
   
   onMount(async () => {
     loading = true
-    if (!store.loggedIn) {
+    if (!global.loggedIn) {
       goto('/')
     } 
     loading = false
