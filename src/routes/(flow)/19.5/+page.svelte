@@ -8,7 +8,7 @@
   import { global } from '$src/data/global.svelte'
   import { user } from '$src/data/user.svelte'
   import { payment } from '$src/data/payment.svelte'
-  import { stateRules } from '$src/data/stateRules.svelte'
+  import { stateRules } from '$src/rules/state'
   import { getNoExpectedIncomeText } from '$src/utilities/federaltax'
 
   const headingText = `You don't need to pay any quarterly taxes this year`
