@@ -46,7 +46,6 @@
     await supabase.auth.signOut()
     updateLoginState(false)
     clearLocalStorage()
-    setLocalStorage('loginLocation', 'home')
     goto('/')
     showAccountMenu = false
   }
