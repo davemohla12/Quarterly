@@ -99,6 +99,8 @@
         goto('/')
       }
       else if (getLocalStorage('loginLocation') == 'later') {
+        await saveToUsers()
+        await saveToPayments()
         goto('/')
         global.showResumeBanner = true
       }
@@ -134,6 +136,10 @@
         global.justSignedUp = true
         global.email = email
         if (getLocalStorage('loginLocation') == 'flow') {
+          await saveToUsers()
+          await saveToPayments()
+        }
+        else if (getLocalStorage('loginLocation') == 'later') {
           await saveToUsers()
           await saveToPayments()
         }

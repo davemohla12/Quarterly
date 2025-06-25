@@ -10,8 +10,6 @@
   import { global } from '$src/data/global.svelte'
   import { user } from '$src/data/user.svelte'
   import { setLocalStorage } from '$src/utilities/utilities'
-  import { currentTaxYear } from '$src/settings/settings'
-  import { onMount } from 'svelte'
 
   const headingText = `View your quarterly taxes for FREE for a limited time`
   const buttonText = 'NEXT'
@@ -20,6 +18,7 @@
   const handleNext = async () => {
     if (global.loggedIn) {
       goto('/checkout')
+      await user.setValue('currentPage', 'checkout')
     }
     else {
       setLocalStorage('loginLocation', 'flow')

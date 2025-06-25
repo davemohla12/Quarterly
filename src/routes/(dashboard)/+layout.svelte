@@ -16,8 +16,8 @@
       goto('/login')
     } 
     else { 
-      user.currentPage = 'dashboard'
-      goto(`/${user.currentPage}`)
+      await user.setValue('currentPage', 'dashboard')
+      goto(`/${await user.getValue('currentPage')}`)
     }
     loading = false
   })

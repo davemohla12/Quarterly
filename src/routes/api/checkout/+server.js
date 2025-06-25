@@ -7,7 +7,7 @@ const stripe = new Stripe(STRIPE_KEY)
 
 const POST = async ({ request }) => {
   try {
-    const { email, oneTimePriceId, recurringPriceId } = await request.json()
+    const { email, priceId } = await request.json()
 
     let customer
     const existingCustomers = await stripe.customers.list({
@@ -24,28 +24,30 @@ const POST = async ({ request }) => {
       })
     }
 
+    const price = await stripe.prices.retrieve(priceId)
+
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       customer: customer.id,
       line_items: [{
-        price: oneTimePriceId,
+        price: priceId,
         quantity: 1,
       }],
-      success_url: `${PUBLIC_DOMAIN}/subscribed`,
+      success_url: `${PUBLIC_DOMAIN}/paid`,
       cancel_url: `${PUBLIC_DOMAIN}/29`,
       automatic_tax: { enabled: true },
       billing_address_collection: 'auto',
       customer_update: {
         address: 'auto',
       },
-      payment_method_types: ['card'],
-      metadata: {
-        create_subscription: 'true',
-        recurring_price_id: recurringPriceId
-      }
+      payment_method_types: ['card', 'link']
     })
 
-    return json({ url: session.url })
+    return json({ 
+      url: session.url, 
+      customer_id: customer.id,
+      price: price.unit_amount / 100
+    })
   }
   catch (error) {
     console.error('Checkout error:', error)

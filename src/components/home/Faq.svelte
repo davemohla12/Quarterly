@@ -16,25 +16,29 @@
   <div class="answer">
     You'll answer a few short questions about your income and state. Zenguider then calculates your payments for the full tax year, breaks them down by quarter or gives you a single amount to pay if you'd prefer to pay it all at once, and sends you email reminders before each deadline.
   </div>
-  <div class="question"><span class="number">4.</span>How do you calculate the payments?</div>
+  <div class="question"><span class="number">4.</span>How does it calculate payments?</div>
   <div class="answer">
-    We use the latest federal and state tax rules to determine your quarterly payments. We base them on your income and filing status, and follow IRS “safe harbor” guidelines to help you avoid penalties while keeping your payments as low as possible.
-  </div>P
-  <div class="question"><span class="number">5.</span>How much does it cost?</div>
-  <div class="answer">
-    Zenguider is just ${price} per tax year. This includes quarterly tax estimates for the full tax year and all the associated reminders. You can cancel any time. 
+    Zenguider uses the latest federal and state tax rules to determine your quarterly payments. It selects the correct ones based on your income and filing status, and follows IRS “safe harbor” guidelines to help you avoid penalties while keeping your payments as low as possible.
   </div>
-  <div class="question"><span class="number">6.</span>How long does it take to use?</div>
+  <div class="question"><span class="number">5.</span>What if I missed a past payment?</div>
+  <div class="answer">
+    No problem. Zenguider automatically adjusts your future payments to make up for it. The most important thing is to start now — paying sooner reduces any potential penalties.
+  </div>
+  <div class="question"><span class="number">6.</span>How much does it cost?</div>
+  <div class="answer">
+    Zenguider is ${price} for the full tax year. You get personalized quarterly payment estimates and helpful reminders, all for a single flat fee.
+  </div>
+  <div class="question"><span class="number">7.</span>How long does it take to use?</div>
   <div class="answer">
     Most users get their quarterly payments in under 10 minutes from start to finish. If you have your documents ready, you’ll be done even faster.
   </div>
-  <div class="question"><span class="number">7.</span>How do I get started?</div>
+  <div class="question"><span class="number">8.</span>How do I get started?</div>
   <div class="answer">
     Just click "Get Started" on the homepage, answer a few questions, and Zenguider will walk you through everything step by step. It’s fast, easy, and designed to help you feel in control of your taxes.
   </div>
-  <div class="question"><span class="number">8.</span>What if I'm not satisfied?</div>
+  <div class="question"><span class="number">9.</span>What if I'm not satisfied?</div>
   <div class="answer">
-    If you are not 100% satisfied with our service, just reach out to us at support@zenguider.com within 60 days of purchase and we'll gladly refund your subscription fee.  
+    If you are not 100% satisfied with our service, just reach out to us at support@zenguider.com within 60 days of purchase and we'll gladly refund the ${price} fee.  
   </div>
   <div class="spacer"></div>
 </div>

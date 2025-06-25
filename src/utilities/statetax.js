@@ -84,8 +84,8 @@ const getStateTaxes = (state, incomeExpectationThisYear, stateTaxPaidLastYear, s
       safeHarborPercentage = stateRules[state].lastYearSafeHarborLowPercentage
       safeHarborStateTaxesThisYear = safeHarborPercentage * stateTaxPaidLastYear
     }
-    initialExplanation = `For your ${convertStateToUpperCase(state)} payments, since your income is expected to ${getIncomeExpectationText(incomeExpectationThisYear)} this year and ${convertStateToUpperCase(state)} supports it, we can use the amount you paid in taxes last year to determine your quarterly payments this year. `
-    initialExplanation += `This minimizes the quarterly taxes you pay while preventing penalties. `
+    initialExplanation = `For your ${convertStateToUpperCase(state)} payments, we can use ${convertStateToUpperCase(state)} safe harbor rules to minimize the quarterly taxes you pay while preventing penalties. `
+    initialExplanation += `Since your income is expected to ${getIncomeExpectationText(incomeExpectationThisYear)} this year and ${convertStateToUpperCase(state)} supports it, we can use the amount you paid in taxes last year to determine your quarterly payments this year. `
     initialExplanation += `Per ${convertStateToUpperCase(state)} tax rules, given your income, you can pay ${convertNumberToRoundedCurrency(safeHarborStateTaxesThisYear)} in total quarterly payments with no penalty, which is ${Math.round(safeHarborPercentage * 100)}% of ${convertNumberToRoundedCurrency(stateTaxPaidLastYear)}, which is what you paid last year in ${convertStateToUpperCase(state)} taxes. `
 
   } 
@@ -104,12 +104,12 @@ const getStateTaxes = (state, incomeExpectationThisYear, stateTaxPaidLastYear, s
     safeHarborStateTaxesThisYear = calculateTax(state, taxableStateIncomeThisYear, filingStatus)
     const multiplier = stateRules[state].thisYearSafeHarborUsedPercentage || 1
     safeHarborStateTaxesThisYear = multiplier * safeHarborStateTaxesThisYear
+    initialExplanation = `For your ${convertStateToUpperCase(state)} payments, we can use ${convertStateToUpperCase(state)} safe harbor rules to minimize the quarterly taxes you pay while preventing penalties. `
     if (!stateRules[state].lastYearSafeHarborRule) {
-      initialExplanation = `For your ${convertStateToUpperCase(state)} payments, ${convertStateToUpperCase(state)} requires that you estimate your annual state taxes this year and use that to determine your quarterly paments. `
+      initialExplanation += `Since your income is expected to ${getIncomeExpectationText(incomeExpectationThisYear)} this year and ${convertStateToUpperCase(state)} supports it, we can use the amount you paid in taxes last year to determine your quarterly payments this year. `
     }
     else { 
-      initialExplanation = `For your ${convertStateToUpperCase(state)} payments, since your income is expected to ${getIncomeExpectationText(incomeExpectationThisYear)} this year, we need to estimate your annual ${convertStateToUpperCase(state)} taxes this year and then use that to determine your quarterly payments. `
-      initialExplanation += `This minimizes the quarterly taxes you pay while preventing penalties. `
+      initialExplanation += `Since your income is expected to ${getIncomeExpectationText(incomeExpectationThisYear)} this year, we need to estimate your annual ${convertStateToUpperCase(state)} taxes this year and then use that to determine your quarterly payments. `
     }
     initialExplanation += `To estimate your annual ${convertStateToUpperCase(state)} taxes this year, we take your expected total income this year of ${convertNumberToRoundedCurrency(expectedTotalIncomeThisYear)} and subtract out the business deductions and exemptions that ${convertStateToUpperCase(state)} allows to get an adjusted state income of ${convertNumberToRoundedCurrency(stateAdjustableGrossIncomeThisYear)}. `
     initialExplanation += `We then subtract out your standard deduction of ${convertNumberToRoundedCurrency(standardDeduction)} to get a taxable state income of ${convertNumberToRoundedCurrency(taxableStateIncomeThisYear)}. `

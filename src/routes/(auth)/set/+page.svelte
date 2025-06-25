@@ -59,6 +59,8 @@
         goto('/')
       }
       else if (getLocalStorage('loginLocation') == 'later') {
+        await saveToUsers()
+        await saveToPayments()
         goto('/')
         global.showResumeBanner = true
       }

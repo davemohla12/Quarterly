@@ -83,8 +83,8 @@ const getFederalTaxes = (incomeExpectationThisYear, federalTaxPaidLastYear, adju
       safeHarborPercentage = federalRules.lastYearSafeHarborLowPercentage
       safeHarborFederalTaxesThisYear = safeHarborPercentage * federalTaxPaidLastYear
     }
-    initialExplanation = `For your federal payments, since your income is expected to ${getIncomeExpectationText(incomeExpectationThisYear)} this year, we can use the amount you paid in taxes last year to determine your quarterly payments this year. `
-    initialExplanation += `This minimizes the quarterly taxes you pay while preventing penalties. `
+    initialExplanation = `For your federal payments, we can use federal safe harbor rules to minimize the quarterly taxes you pay while preventing penalties. `
+    initialExplanation += `Since your income is expected to ${getIncomeExpectationText(incomeExpectationThisYear)} this year, we can use the amount you paid in taxes last year to determine your quarterly payments this year. `
     initialExplanation += `Per federal tax rules, given your income, you can pay ${convertNumberToRoundedCurrency(safeHarborFederalTaxesThisYear)} in total quarterly payments with no penalty, which is ${Math.round(safeHarborPercentage * 100)}% of ${convertNumberToRoundedCurrency(federalTaxPaidLastYear)}, which is what you paid last year in taxes. `
   } 
   else {
@@ -92,8 +92,8 @@ const getFederalTaxes = (incomeExpectationThisYear, federalTaxPaidLastYear, adju
     taxableFederalIncomeThisYear = Math.max(0, adjustedGrossIncomeThisYear - getStandardDeduction(filingStatus))
     safeHarborFederalTaxesThisYear = calculateTax(taxableFederalIncomeThisYear, filingStatus)
     safeHarborFederalTaxesThisYear = federalRules.thisYearSafeHarborUsedPercentage * safeHarborFederalTaxesThisYear
-    initialExplanation = `For your federal payments, since your income is expected to ${getIncomeExpectationText(incomeExpectationThisYear)} this year, we need to estimate your annual taxes this year and then use that to determine your quarterly payments. `
-    initialExplanation += `This minimizes the quarterly taxes you pay while preventing penalties.  `
+    initialExplanation = `For your federal payments, we can use federal safe harbor rules to minimize the quarterly taxes you pay while preventing penalties. `
+    initialExplanation += `Since your income is expected to ${getIncomeExpectationText(incomeExpectationThisYear)} this year, we need to estimate your annual taxes this year and then use that to determine your quarterly payments. `
     initialExplanation += `To estimate your annual federal taxes this year, we take your expected total income this year of ${convertNumberToRoundedCurrency(expectedTotalIncomeThisYear)} and subtract out your business deductions including your busines expenses, retirement contributions, student loan interest, health insurance, and other qualified deductions to get an adjusted gross income of ${convertNumberToRoundedCurrency(adjustedGrossIncomeThisYear)}. `
     initialExplanation += `We then subtract out your standard deduction of ${convertNumberToRoundedCurrency(getStandardDeduction(filingStatus))} to get a taxable federal income of ${convertNumberToRoundedCurrency(taxableFederalIncomeThisYear)}. `
     initialExplanation += `We use that to calculate an annual federal tax of ${convertNumberToRoundedCurrency(safeHarborFederalTaxesThisYear)} this year which is what you need to pay in total this year through quarterly payments. `

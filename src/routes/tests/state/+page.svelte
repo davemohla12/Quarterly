@@ -6,7 +6,7 @@
   const currentTaxQuarter = 'Q3'
   const filingStatus = 'head'
   const stateTaxPaidLastYear = 7000
-  const incomeExpectationThisYear = 'decrease'
+  const incomeExpectationThisYear = 'increase'
   const stateIncomeLastYear = 60000
   const expectedTotalIncomeThisYear = 55000
   const businessExpensesThisYear = 8000

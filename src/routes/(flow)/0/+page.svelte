@@ -8,11 +8,23 @@
   import { global } from '$src/data/global.svelte'
   import { goto } from '$app/navigation'
   import { user } from '$src/data/user.svelte'
+  import { onMount } from 'svelte'
 
   const headingText = `Hi! I'm Zenguider`
   const subheadingText = `I'll help you estimate and pay your quarterly taxes`
   const buttonText = 'NEXT'
   global.makeButtonActive = true
+
+  onMount(() => {
+    window.addEventListener('popstate', handleBack)
+    return () => {
+      window.removeEventListener('popstate', handleBack)
+    }
+  })
+
+  const handleBack = async () => {
+    goto('/')
+  }
 
   const handleNext = async () => {
     goto('/1')

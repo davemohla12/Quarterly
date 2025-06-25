@@ -7,10 +7,10 @@
     Free for a limited time
   </div>
   <div class="subheading">
-    Participate in our beta and we'll waive our yearly fee
+    Participate in our beta and we'll waive our fee
   </div>
   <div class="price">$0</div>
-  <div class="strikethrough">${price} per year</div>
+  <div class="strikethrough">${price} per tax year</div>
 </div>
 
 <style>

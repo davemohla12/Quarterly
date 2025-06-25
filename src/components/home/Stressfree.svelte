@@ -37,6 +37,7 @@
     const currentPage = await user.getValue('currentPage')
     if (buttonText == 'GET STARTED') {
       goto('/0')
+      await user.setValue('currentPage', '0')
     }
     else {
       goto(`/${currentPage}`)

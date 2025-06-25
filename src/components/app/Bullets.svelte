@@ -9,7 +9,7 @@
   </div>
   <div class="row">
     <img class="check" src="images/check.png" alt="Checkmark" />
-    <div class="text">Covers state and federal taxes</div>
+    <div class="text">Pay once — no subscription</div>
   </div>
   <div class="row">
     <img class="check" src="images/check.png" alt="Checkmark" />

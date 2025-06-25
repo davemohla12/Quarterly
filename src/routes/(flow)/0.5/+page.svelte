@@ -54,4 +54,4 @@
 <Heading text={headingText} onBack={handleBack} desktopwidth="500px" mobilewidth="250px" />
 <Subheading text={subheadingText} desktopwidth="500px" mobilewidth="250px" />
 <Button text={buttonText} onclick={handleNext} />
-<Back onBack={() =>handleBack(event)}/>
+<Back onBack={(event) =>handleBack(event)}/>

@@ -6,7 +6,7 @@
   let filingStatus = 'married'
   let federalTaxPaidLastYear = 20000
   let adjustedGrossIncomeLastYear = 180000
-  let incomeExpectationThisYear = 'decrease'
+  let incomeExpectationThisYear = 'increase'
   let expectedTotalIncomeThisYear = 100000
   let businessExpensesThisYear = 10000
   let retirementContributionsThisYear = 8000
