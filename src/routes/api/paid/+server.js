@@ -1,6 +1,6 @@
 import Stripe from 'stripe'
 import { json } from '@sveltejs/kit'
-import { STRIPE_KEY, STRIPE_SUBSCRIBED_WEBHOOK } from '$env/static/private'
+import { STRIPE_KEY, STRIPE_PAID_WEBHOOK } from '$env/static/private'
 import dayjs from 'dayjs'
 
 const stripe = new Stripe(STRIPE_KEY)
@@ -17,7 +17,7 @@ const POST = async ({ request }) => {
   let event
   
   try {
-    event = stripe.webhooks.constructEvent(body, signature, STRIPE_SUBSCRIBED_WEBHOOK)
+    event = stripe.webhooks.constructEvent(body, signature, STRIPE_PAID_WEBHOOK)
   } 
   catch (err) {
     console.error('Webhook signature verification failed:', err.message)
