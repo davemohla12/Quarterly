@@ -9,6 +9,7 @@
   import { payment } from '$src/data/payment.svelte'
   import { getNoIncomeText } from '$src/utilities/federaltax'
   import { user } from '$src/data/user.svelte'
+  import { currentTaxYear } from '$src/settings/settings'
   
   const headingText = `You don't need to pay any quarterly taxes this year`
   const subheadingText = `Since all your income has taxes automatically withheld, the IRS doesn't require you to make separate quarterly payments.`
@@ -16,26 +17,26 @@
   global.makeButtonActive = true
 
   const handleDone = async () => {
-    if (global.loggedIn && await user.getValue('lastTaxYearPaid') == currentTaxYear) {
-      payment.setValue('stateSupported', true)
-      payment.setValue('currentState', 'State')
-      payment.setValue('q1federalQuarterlyPayment', 0)
-      payment.setValue('q2federalQuarterlyPayment', 0)
-      payment.setValue('q3federalQuarterlyPayment', 0)
-      payment.setValue('q4federalQuarterlyPayment', 0)
-      payment.setValue('q1StateQuarterlyPayment', 0)
-      payment.setValue('q2StateQuarterlyPayment', 0)
-      payment.setValue('q3StateQuarterlyPayment', 0)
-      payment.setValue('q4StateQuarterlyPayment', 0)
-      payment.setValue('singleFederalDue', 0)
-      payment.setValue('singleFederalPaid', 0)
-      payment.setValue('singleFederalRemaining', 0)
-      payment.setValue('singleStateDue', 0)
-      payment.setValue('singleStatePaid', 0)
-      payment.setValue('singleStateRemaining', 0)
-      payment.setValue('explanation', getNoIncomeText())
-      user.setValue('currentPage', 'dashboard')
+    if (global.loggedIn && await user.getValue('latestTaxYearPaid') == currentTaxYear) {
+      await payment.setValue('stateSupported', true)
+      await payment.setValue('currentState', 'State')
+      awaitpayment.setValue('q1federalQuarterlyPayment', 0)
+      await payment.setValue('q2federalQuarterlyPayment', 0)
+      await payment.setValue('q3federalQuarterlyPayment', 0)
+      await payment.setValue('q4federalQuarterlyPayment', 0)
+      await payment.setValue('q1StateQuarterlyPayment', 0)
+      await payment.setValue('q2StateQuarterlyPayment', 0)
+      await payment.setValue('q3StateQuarterlyPayment', 0)
+      await payment.setValue('q4StateQuarterlyPayment', 0)
+      await payment.setValue('singleFederalDue', 0)
+      await payment.setValue('singleFederalPaid', 0)
+      await payment.setValue('singleFederalRemaining', 0)
+      await payment.setValue('singleStateDue', 0)
+      await payment.setValue('singleStatePaid', 0)
+      await payment.setValue('singleStateRemaining', 0)
+      await payment.setValue('explanation', getNoIncomeText())
       goto('/dashboard')
+      await user.setValue('currentPage', 'dashboard')
     }
     else {
       goto('/')

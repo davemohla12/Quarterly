@@ -15,18 +15,19 @@
   import { onMount } from 'svelte'
 
   const headingText = `You'll just pay federal quarterly taxes`
-  const subheadingText = `${convertStateToUpperCase(payment.currentState)} doesn't require quarterly taxes`
+  let subheadingText = $state('')
   const buttonText = 'NEXT'
   let showNote = $state(false)
   global.makeButtonActive = true
 
   onMount(async () => {
     const currentState = await payment.getValue('currentState')
+    subheadingText = `${convertStateToUpperCase(currentState)} doesn't require quarterly taxes`
     showNote = stateRules[currentState]?.note
   })
 
-  const handleNext = () => {
-    user.setValue('currentPage', '9')
+  const handleNext = async () => {
+    await user.setValue('currentPage', '9')
     goto('/9')
   }
 

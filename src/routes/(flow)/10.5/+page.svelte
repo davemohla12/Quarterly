@@ -38,10 +38,10 @@
     }
   }
 
-  const handleNext = () => {
-    payment.setValue('exemptions', inputValue)
-    user.setValue('currentPage', '11')
+  const handleNext = async () => {
+    await payment.setValue('exemptions', inputValue)
     goto('/11')
+    await user.setValue('currentPage', '11')
   }
 
   const handleKeyDown = (event) => {

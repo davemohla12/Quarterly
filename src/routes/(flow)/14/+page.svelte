@@ -14,7 +14,8 @@
   import { goto } from '$app/navigation'
   import { convertCurrencyToNumber } from '$src/utilities/utilities'
   import { user } from '$src/data/user.svelte'
-
+  import { getBelowMinimumTaxText } from '$src/utilities/federaltax'
+  
   let headingText = $state('')
   const buttonText = 'NEXT'
   const placholderText = 'Total Tax Due'
@@ -58,23 +59,23 @@
   }
 
   const handleNext = async () => {
-    payment.setValue('stateTaxPaidLastYear', convertCurrencyToNumber(inputValue))
+    await payment.setValue('stateTaxPaidLastYear', convertCurrencyToNumber(inputValue))
     if (await payment.getValue('stateTaxPaidLastYear') < stateRules[await payment.getValue('currentState')].minimumTaxForQuarterlyPayments) {
-      payment.setValue('stateSupported', true)
-      payment.setValue('q1StateQuarterlyPayment', 0)
-      payment.setValue('q2StateQuarterlyPayment', 0)
-      payment.setValue('q3StateQuarterlyPayment', 0)
-      payment.setValue('q4StateQuarterlyPayment', 0)
-      payment.setValue('singleStateDue', 0)
-      payment.setValue('singleStatePaid', 0)
-      payment.setValue('singleStateRemaining', 0)
-      payment.setValue('explanation', getBelowMinimumTaxText())
-      user.setValue('currentPage', '15')
+      await payment.setValue('stateSupported', true)
+      await payment.setValue('q1StateQuarterlyPayment', 0)
+      await payment.setValue('q2StateQuarterlyPayment', 0)
+      await payment.setValue('q3StateQuarterlyPayment', 0)
+      await payment.setValue('q4StateQuarterlyPayment', 0)
+      await payment.setValue('singleStateDue', 0)
+      await payment.setValue('singleStatePaid', 0)
+      await payment.setValue('singleStateRemaining', 0)
+      await payment.setValue('explanation', getBelowMinimumTaxText())
       goto('/15')
+      await user.setValue('currentPage', '15')
     }
     else {
-      user.setValue('currentPage', '17')
       goto('/17')
+      await user.setValue('currentPage', '17')
     }
   }
 

@@ -139,6 +139,9 @@
       width: 138px;
       height: 34px;
     }
+    .buttons {
+      right: 30px;
+    }
     .faq {
       display: block;
       margin-right: 50px;

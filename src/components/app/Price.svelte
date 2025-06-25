@@ -1,6 +1,10 @@
+<script>
+  import { price } from '$src/settings/settings'
+</script>
+
 <div class="container">
   <div class="price">$0</div>
-  <div class="strikeprice">$39 per year</div>
+  <div class="strikeprice">${price} per year</div>
 </div>
 
 <style>

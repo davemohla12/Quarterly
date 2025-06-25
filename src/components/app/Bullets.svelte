@@ -13,7 +13,7 @@
   </div>
   <div class="row">
     <img class="check" src="images/check.png" alt="Checkmark" />
-    <div class="text">Cancel anytime, no hassles</div>
+    <div class="text">60 day money-back guarantee</div>
   </div>
 </div>
 

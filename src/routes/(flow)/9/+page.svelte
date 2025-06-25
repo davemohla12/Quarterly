@@ -13,9 +13,9 @@
   const buttonText = 'NEXT'
   global.makeButtonActive = true
   
-  const handleNext = () => {
-    user.setValue('currentPage', '10')
+  const handleNext = async () => {
     goto('/10')
+    await user.setValue('currentPage', '10')
   }
 
   const handleKeyDown = (event) => {

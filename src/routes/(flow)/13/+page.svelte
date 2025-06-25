@@ -16,18 +16,18 @@
   global.makeButtonActive = true
   
   const handleDone = async () => {
-    if (global.loggedIn && await user.getValue('lastTaxYearPaid') == currentTaxYear) {
-      payment.setValue('stateSupported', false)
-      payment.setValue('q1federalQuarterlyPayment', 0)
-      payment.setValue('q2federalQuarterlyPayment', 0)
-      payment.setValue('q3federalQuarterlyPayment', 0)
-      payment.setValue('q4federalQuarterlyPayment', 0)
-      payment.setValue('singleFederalDue', 0)
-      payment.setValue('singleFederalPaid', 0)
-      payment.setValue('singleFederalRemaining', 0)
-      payment.setValue('explanation', getBelowMinimumTaxText())
-      user.setValue('currentPage', 'dashboard')
+    if (global.loggedIn && await user.getValue('latestTaxYearPaid') == currentTaxYear) {
+      await payment.setValue('stateSupported', false)
+      await payment.setValue('q1federalQuarterlyPayment', 0)
+      await payment.setValue('q2federalQuarterlyPayment', 0)
+      await payment.setValue('q3federalQuarterlyPayment', 0)
+      await payment.setValue('q4federalQuarterlyPayment', 0)
+      await payment.setValue('singleFederalDue', 0)
+      await payment.setValue('singleFederalPaid', 0)
+      await payment.setValue('singleFederalRemaining', 0)
+      await payment.setValue('explanation', getBelowMinimumTaxText())
       goto('/dashboard')
+      await user.setValue('currentPage', 'dashboard')
     }
     else {
       goto('/')

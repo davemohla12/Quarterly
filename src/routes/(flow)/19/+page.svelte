@@ -41,14 +41,14 @@
   }
 
   const handleNext = async () => {
-    payment.setValue('expectedTotalIncomeThisYear', convertCurrencyToNumber(inputValue))
+    await payment.setValue('expectedTotalIncomeThisYear', convertCurrencyToNumber(inputValue))
     if (await payment.getValue('expectedTotalIncomeThisYear') == 0) {
-      user.setValue('currentPage', '30')
       goto('/19.5')
+      await user.setValue('currentPage', '30')
     }
     else {
-      user.setValue('currentPage', '20')
       goto('/20')
+      await user.setValue('currentPage', '20')
     }
   }
 

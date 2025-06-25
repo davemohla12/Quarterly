@@ -24,8 +24,8 @@
   import Button from '$src/components/app/Button.svelte'
   import { user } from '$src/data/user.svelte'  
   import Loading from '$src/components/app/Loading.svelte'  
-  import { clearLocalStorage } from '$src/utilities/utilities'
   import { createBlankPayment } from '$src/utilities/database'
+  import Confirmation from '$src/components/app/Confirmation.svelte'
 
   let headingText = $state()
   let showExplanation = $state(false)
@@ -62,7 +62,7 @@
   
   onMount(async () => {
     loading = true
-    user.setValue('currentPage', 'dashboard')
+    await user.setValue('currentPage', 'dashboard')
     global.makeButtonActive = true
 
     taxYear = await payment.getValue('taxYear')
@@ -149,9 +149,9 @@
       })
   }
 
-  const handleEditClick = () => {
-    user.setValue('currentPage', '0.5')
+  const handleEditClick = async () => {
     goto('/0.5')
+    await user.setValue('currentPage', '0.5')
   }
 
   const handleDownloadClick = async () => {
@@ -184,8 +184,8 @@
 
   const handleStart = async () => {
     await createBlankPayment()
-    user.setValue('currentPage', '1')
     goto('/1')
+    await user.setValue('currentPage', '1')
   }
 
   const getFederalPayment = () => {
@@ -224,6 +224,9 @@
 {#if loading}
   <Loading />
 {:else}
+  {#if global.showConfirmationBanner}
+    <Confirmation />
+  {/if}
   {#if taxYear == currentTaxYear}
     <Heading text={headingText} desktopwidth="550px" mobilewidth="275px" />
     {#if payPreference == 'single'}
@@ -272,33 +275,35 @@
       {/if}     
       <Spacer />
     {/if}
+    
     {#if showPdf}
-    <div class="pdfcontainer" bind:this={pdfContainer}>
-      <Pdf 
-        federalDue={singleFederalDue} 
-        federalPaid={singleFederalPaid} 
-        federalRemaining={singleFederalRemaining} 
-        showState={stateSupported} 
-        stateName={currentState} 
-        stateDue={singleStateDue} 
-        statePaid={singleStatePaid} 
-        stateRemaining={singleStateRemaining} 
-        federalPayment1={q1federalQuarterlyPayment} 
-        federalPayment2={q2federalQuarterlyPayment} 
-        federalPayment3={q3federalQuarterlyPayment} 
-        federalPayment4={q4federalQuarterlyPayment} 
-        statePayment1={q1StateQuarterlyPayment} 
-        statePayment2={q2StateQuarterlyPayment} 
-        statePayment3={q3StateQuarterlyPayment} 
-        statePayment4={q4StateQuarterlyPayment} 
-        explanation={explanation}
-      /> 
-    </div>
+      <div class="pdfcontainer" bind:this={pdfContainer}>
+        <Pdf 
+          federalDue={singleFederalDue} 
+          federalPaid={singleFederalPaid} 
+          federalRemaining={singleFederalRemaining} 
+          showState={stateSupported} 
+          stateName={currentState} 
+          stateDue={singleStateDue} 
+          statePaid={singleStatePaid} 
+          stateRemaining={singleStateRemaining} 
+          federalPayment1={q1federalQuarterlyPayment} 
+          federalPayment2={q2federalQuarterlyPayment} 
+          federalPayment3={q3federalQuarterlyPayment} 
+          federalPayment4={q4federalQuarterlyPayment} 
+          statePayment1={q1StateQuarterlyPayment} 
+          statePayment2={q2StateQuarterlyPayment} 
+          statePayment3={q3StateQuarterlyPayment} 
+          statePayment4={q4StateQuarterlyPayment} 
+          explanation={explanation}
+        /> 
+      </div>
     {/if}
+
   {:else}
     <Heading text={`Let's get your tax payments for ${currentTaxYear}`} desktopwidth="600px" mobilewidth="275px" />
     <Subheading text={`I'll guide you through the whole process`} desktopwidth="600px" mobilewidth="275px" />
-      <Button text={'START NOW'} onclick={handleStart} />
+    <Button text={'START NOW'} onclick={handleStart} />
   {/if}   
 {/if}
 

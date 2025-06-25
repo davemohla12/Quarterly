@@ -33,12 +33,12 @@
     sendOneDayReminder = sendOneDayReminderValue
   }
 
-  const handleSave = () => {
-    user.setValue('sendReminders', sendReminders)
-    user.setValue('sendFiveDayReminder', sendFiveDayReminder)
-    user.setValue('sendOneDayReminder', sendOneDayReminder)
+  const handleSave = async () => {
     user.currentPage = 'dashboard'
     goto('/dashboard')
+    await user.setValue('sendReminders', sendReminders)
+    await user.setValue('sendFiveDayReminder', sendFiveDayReminder)
+    await user.setValue('sendOneDayReminder', sendOneDayReminder)
   }
 
 </script>

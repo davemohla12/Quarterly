@@ -91,12 +91,12 @@
     }
   }
   
-  const handleNext = () => {
-    payment.setValue('q1StatePaymentMade', convertCurrencyToNumber(inputValue1))
-    payment.setValue('q2StatePaymentMade', convertCurrencyToNumber(inputValue2))
-    payment.setValue('q3StatePaymentMade', convertCurrencyToNumber(inputValue3)) 
-    user.setValue('currentPage', '27')
+  const handleNext = async () => {
+    await payment.setValue('q1StatePaymentMade', convertCurrencyToNumber(inputValue1))
+    await payment.setValue('q2StatePaymentMade', convertCurrencyToNumber(inputValue2))
+    await payment.setValue('q3StatePaymentMade', convertCurrencyToNumber(inputValue3)) 
     goto('/27')
+    await user.setValue('currentPage', '27')
   }
 
   const handleKeyDown = (event) => {

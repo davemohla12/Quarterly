@@ -24,24 +24,24 @@
     window.open(stateRules[stateName].payLink, '_blank')
   }
 
-  const handleMarkPaidFederal = () => {
+  const handleMarkPaidFederal = async () => {
     isFederalPaid = true
-    payment.setValue('singleFederalMarkPaid', true)
+    await payment.setValue('singleFederalMarkPaid', true)
   }
 
-  const handleMarkPaidState = () => {
+  const handleMarkPaidState = async () => {
     isStatePaid = true  
-    payment.setValue('singleStateMarkPaid', true)
+    await payment.setValue('singleStateMarkPaid', true)
   }
 
-  const handleMarkNotPaidFederal = () => {
+  const handleMarkNotPaidFederal = async () => {
     isFederalPaid = false
-    payment.setValue('singleFederalMarkPaid', false)
+    await payment.setValue('singleFederalMarkPaid', false)
   }
 
-  const handleMarkNotPaidState = () => {
+  const handleMarkNotPaidState = async () => {
     isStatePaid = false
-    payment.setValue('singleStateMarkPaid', false)
+    await payment.setValue('singleStateMarkPaid', false)
   }   
 
 </script>

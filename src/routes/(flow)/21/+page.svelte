@@ -44,21 +44,21 @@
     global.makeButtonActive = true
   }
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (selectedRadioButton === 'Yes') {
-      payment.setValue('salaryOrWagesThisYear', true)
-      user.setValue('currentPage', '22')
+      await payment.setValue('salaryOrWagesThisYear', true)
       goto('/22')
+      await user.setValue('currentPage', '22')
     }
     else {
-      payment.setValue('salaryOrWagesThisYear', false)
+      await payment.setValue('salaryOrWagesThisYear', false)
       if (currentTaxQuarter == 'Q1') {
-        user.setValue('currentPage', '27')
         goto('/27')
+        await user.setValue('currentPage', '27')
       }
       else {
-        user.setValue('currentPage', '25')
         goto('/25')
+        await user.setValue('currentPage', '25')
       }
     }
   }

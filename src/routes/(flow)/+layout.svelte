@@ -6,7 +6,7 @@
   let props = $props()
   let children = props.children
   let loading = $state(true)
-  
+
   onMount(async () => {
     loading = true
     // if (user.currentPage) {
@@ -18,10 +18,11 @@
     loading = false
   })
   </script>
-  
+
   {#if loading}
     <div></div>
   {:else}
     {@render children()}
   {/if}
+  
 

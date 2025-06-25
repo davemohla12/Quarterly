@@ -12,7 +12,10 @@
   import Loading from '$src/components/app/Loading.svelte'
   import { user } from '$src/data/user.svelte'
   import { getLocalStorage } from '$src/utilities/utilities'
-  
+  import axios from 'axios'
+  import { priceId } from '$src/settings/settings'
+    import { consoleLoggingIntegration } from '@sentry/sveltekit';
+
   const expiredText = `This link has expired`
   const expiredButtonText = 'BACK TO HOME'
 
@@ -38,22 +41,21 @@
           global.showResumeBanner = true
         }
         else if (getLocalStorage('loginLocation') == 'flow') {
-          user.setValue('currentPage', 'dashboard')
+          goto('/checkout')
           await saveToUsers()
           await saveToPayments()
-          goto(`/dashboard`)
         }
         else if (getLocalStorage('loginLocation') == 'dashboard') {
-          user.setValue('currentPage', 'dashboard')
           goto(`/dashboard`)
+          await user.setValue('currentPage', 'dashboard')
         }
       }
     }
   })
 
-  const handleClick = () => {
-    user.setValue('currentPage', '0')
+  const handleClick = async () => {
     goto('/')
+    await user.setValue('currentPage', '0')
   }
 
 </script>

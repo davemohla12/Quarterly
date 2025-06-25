@@ -1,6 +1,6 @@
 import { getLocalStorage } from '$src/utilities/utilities'
 import { global } from '$src/data/global.svelte'
-import { setInUsers, getFromUsers } from '$src/utilities/database'
+import { setInUsers, getFromUsers, addToUsers } from '$src/utilities/database'
 import { setLocalStorage } from '$src/utilities/utilities'
 
 const user = $state({

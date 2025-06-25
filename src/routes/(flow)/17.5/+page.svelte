@@ -44,9 +44,9 @@
   }
 
   const handleNext = async () => {
-    payment.setValue('stateIncomeLastYear', convertCurrencyToNumber(inputValue))
-    user.setValue('currentPage', '18')
+    await payment.setValue('stateIncomeLastYear', convertCurrencyToNumber(inputValue))
     goto('/18')
+    await user.setValue('currentPage', '18')
   }
 
   const handleKeyDown = (event) => {

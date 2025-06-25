@@ -63,14 +63,13 @@
         global.showResumeBanner = true
       }
       else if (getLocalStorage('loginLocation') == 'flow') {
-        user.setValue('currentPage', 'dashboard')
-        goto(`/dashboard`)
+        goto('/checkout')
         await saveToUsers()
         await saveToPayments()
       }
       else if (getLocalStorage('loginLocation') == 'dashboard') {
-        user.setValue('currentPage', 'dashboard')
         goto(`/dashboard`)
+        await user.setValue('currentPage', 'dashboard')
       }
     }
   }

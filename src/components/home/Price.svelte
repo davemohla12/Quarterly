@@ -1,3 +1,7 @@
+<script>
+  import { price } from '$src/settings/settings'
+</script>
+
 <div class="container">
   <div class="heading">
     Free for a limited time
@@ -6,7 +10,7 @@
     Participate in our beta and we'll waive our yearly fee
   </div>
   <div class="price">$0</div>
-  <div class="strikethrough">$39 per year</div>
+  <div class="strikethrough">${price} per year</div>
 </div>
 
 <style>

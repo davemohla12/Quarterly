@@ -35,15 +35,15 @@
     global.makeButtonActive = true
   }
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (selectedRadioButton== radioButtons[0]) {
-      payment.setValue('payPreference', 'quarter')
+      await payment.setValue('payPreference', 'quarter')
     }
     else {
-      payment.setValue('payPreference', 'single')
+      await payment.setValue('payPreference', 'single')
     }
-    user.setValue('currentPage', '28')
     goto('/28')
+    await user.setValue('currentPage', '28')
   }
 
   const handleKeyDown = (event) => {

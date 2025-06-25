@@ -106,14 +106,14 @@
     }
   }
 
-  const handleNext = () => {
-    payment.setValue('businessExpensesThisYear', convertCurrencyToNumber(inputValue1))
-    payment.setValue('retirementContributionsThisYear', convertCurrencyToNumber(inputValue2))
-    payment.setValue('studentLoanInterestThisYear', convertCurrencyToNumber(inputValue3))
-    payment.setValue('healthInsuranceThisYear', convertCurrencyToNumber(inputValue4))
-    payment.otherDeductionsThisYear = convertCurrencyToNumber(inputValue5)
-    user.setValue('currentPage', '21')
+  const handleNext = async () => {
+    await payment.setValue('businessExpensesThisYear', convertCurrencyToNumber(inputValue1))
+    await payment.setValue('retirementContributionsThisYear', convertCurrencyToNumber(inputValue2))
+    await payment.setValue('studentLoanInterestThisYear', convertCurrencyToNumber(inputValue3))
+    await payment.setValue('healthInsuranceThisYear', convertCurrencyToNumber(inputValue4))
+    await payment.setValue('otherDeductionsThisYear', convertCurrencyToNumber(inputValue5))
     goto('/21')
+    await user.setValue('currentPage', '21')
   }
 
   const handleKeyDown = (event) => {

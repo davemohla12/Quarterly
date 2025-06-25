@@ -44,33 +44,33 @@
   }
 
   const handleNext = async () => {
-    payment.setValue('federalTaxPaidLastYear', convertCurrencyToNumber(inputValue))
+    await payment.setValue('federalTaxPaidLastYear', convertCurrencyToNumber(inputValue))
     if (await payment.getValue('federalTaxPaidLastYear') < federalRules.minimumTaxForQuarterlyPayments) {
-      payment.setValue('q1federalQuarterlyPayment', 0)
-      payment.setValue('q2federalQuarterlyPayment', 0)
-      payment.setValue('q3federalQuarterlyPayment', 0)
-      payment.setValue('q4federalQuarterlyPayment', 0)
-      payment.setValue('singleFederalDue', 0)
-      payment.setValue('singleFederalPaid', 0)
-      payment.setValue('singleFederalRemaining', 0)
-      payment.setValue('explanation', getBelowMinimumTaxText())
+      await payment.setValue('q1federalQuarterlyPayment', 0)
+      await payment.setValue('q2federalQuarterlyPayment', 0)
+      await payment.setValue('q3federalQuarterlyPayment', 0)
+      await payment.setValue('q4federalQuarterlyPayment', 0)
+      await payment.setValue('singleFederalDue', 0)
+      await payment.setValue('singleFederalPaid', 0)
+      await payment.setValue('singleFederalRemaining', 0)
+      await payment.setValue('explanation', getBelowMinimumTaxText())
       if (await payment.getValue('inMultipleStates')) {
-        user.setValue('currentPage', '13')
         goto(13)
+        await user.setValue('currentPage', '13')
       }
       else {
-        user.setValue('currentPage', '12')
         goto(12)
+        await user.setValue('currentPage', '12')
       }
     }
     else {
       if (await payment.getValue('stateSupported') && stateRules[await payment.getValue('currentState')].lastYearSafeHarborRule) {
-        user.setValue('currentPage', '14')
         goto(14)
+        await user.setValue('currentPage', '14')
       }
       else {
-        user.setValue('currentPage', '17')
         goto(17)
+        await user.setValue('currentPage', '17')
       }
     }
   }

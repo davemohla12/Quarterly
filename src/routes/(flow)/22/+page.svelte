@@ -38,21 +38,21 @@
     global.makeButtonActive = true
   }
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (selectedRadioButton == 'Yes') {
-      payment.setValue('hasW2', true)
-      user.setValue('currentPage', '23')
+      await payment.setValue('hasW2', true)
       goto('/23')
+      await user.setValue('currentPage', '23')
     }
     else {
-      payment.setValue('hasW2', false)
+      await payment.setValue('hasW2', false)
       if (currentTaxQuarter == 'Q1') {
-        user.setValue('currentPage', '27')
         goto('/27')
+        await user.setValue('currentPage', '27')
       }
       else {
-        user.setValue('currentPage', '25')
         goto('/25')
+        await user.setValue('currentPage', '25')
       }
     }
   }

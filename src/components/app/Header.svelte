@@ -6,7 +6,8 @@
   import { updateLoginState } from '$src/utilities/utilities'
   import { supabase } from '$src/utilities/supabase'
   import { user } from '$src/data/user.svelte'
-  import { clearLocalStorage, setLocalStorage } from '$src/utilities/utilities'
+  import { clearLocalStorage } from '$src/utilities/utilities'
+  import axios from 'axios'
 
   let props = $props()
   let hideBack = props.hideBack || false
@@ -50,10 +51,10 @@
     showAccountMenu = false
   }
 
-  const handleDashboard = () => {
-    goto('/dashboard')
-    user.setValue('currentPage', 'dashboard')
+  const handleDashboard = async () => {
     showAccountMenu = false
+    goto('/dashboard')
+    await user.setValue('currentPage', 'dashboard')
   }
 
   const handleReminders = () => {
@@ -61,19 +62,27 @@
     showAccountMenu = false
   }
 
-  const handleSubscription = () => {
+  const handleSubscription = async () => {
     showAccountMenu = false
+    try { 
+      const response = await axios.post('/api/subscription', {email: global.email})
+      window.location.href = response.data.url
+    } 
+    catch (error) {
+      console.log(error)
+    }
   }
 
   const handleSupport = () => {
+    goto('/support')
     showAccountMenu = false
   }
 
-  const handleReset = () => {
-    clearLocalStorage()
-    user.setValue('currentPage', '0')
-    goto('/0')
+  const handleReset = async () => {
     global.makeButtonActive = true
+    clearLocalStorage()
+    goto('/0')
+    await user.setValue('currentPage', '0')
   }
 
 </script>

@@ -43,15 +43,15 @@
   }
 
   const handleNext = async () => {
-    payment.setValue('adjustedGrossIncomeLastYear', convertCurrencyToNumber(inputValue))
+    await payment.setValue('adjustedGrossIncomeLastYear', convertCurrencyToNumber(inputValue))
     if (stateRules[await payment.getValue('currentState')].thisYearIncomeCalculationType?.type == 'federalAGI' || !stateRules[await payment.getValue('currentState')].lastYearSafeHarborRule) {
-      payment.setValue('stateIncomeLastYear', await payment.getValue('adjustedGrossIncomeLastYear'))
-      user.setValue('currentPage', '18')
+      await payment.setValue('stateIncomeLastYear', await payment.getValue('adjustedGrossIncomeLastYear'))
       goto('/18')
+      await user.setValue('currentPage', '18')
     }
     else { 
-      user.setValue('currentPage', '17.5')
       goto('/17.5')
+      await user.setValue('currentPage', '17.5')
     }
   }
 

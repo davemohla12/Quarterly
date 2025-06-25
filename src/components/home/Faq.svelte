@@ -1,3 +1,7 @@
+<script>
+  import { price } from '$src/settings/settings'
+</script>
+
 <div class="content">
   <div class="header">Frequently Asked Questions</div>
   <div class="question"><span class="number">1.</span>What is Zenguider?</div>
@@ -15,10 +19,10 @@
   <div class="question"><span class="number">4.</span>How do you calculate the payments?</div>
   <div class="answer">
     We use the latest federal and state tax rules to determine your quarterly payments. We base them on your income and filing status, and follow IRS “safe harbor” guidelines to help you avoid penalties while keeping your payments as low as possible.
-  </div>
+  </div>P
   <div class="question"><span class="number">5.</span>How much does it cost?</div>
   <div class="answer">
-    Zenguider is just $39 per tax year. This includes quarterly tax estimates for the full tax year and all the associated reminders. You can cancel any time. 
+    Zenguider is just ${price} per tax year. This includes quarterly tax estimates for the full tax year and all the associated reminders. You can cancel any time. 
   </div>
   <div class="question"><span class="number">6.</span>How long does it take to use?</div>
   <div class="answer">
@@ -30,7 +34,7 @@
   </div>
   <div class="question"><span class="number">8.</span>What if I'm not satisfied?</div>
   <div class="answer">
-    If you are not 100% satisfied with our service, just reach out to us at support@zenguider.com within 60 days of purchase and we'll gladly refund your full $39 subscription amount.  
+    If you are not 100% satisfied with our service, just reach out to us at support@zenguider.com within 60 days of purchase and we'll gladly refund your subscription fee.  
   </div>
   <div class="spacer"></div>
 </div>

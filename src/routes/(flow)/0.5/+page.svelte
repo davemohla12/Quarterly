@@ -22,27 +22,27 @@
     }
   })
 
-  const handleNext = () => {
-    user.setValue('currentPage', '1')
+  const handleNext = async () => {
     goto('/1')
+    await user.setValue('currentPage', '1')
   }
 
-  const handleKeyDown = (event) => {
+  const handleKeyDown = async (event) => {
     if (event.key === 'Enter') {
       if (global.makeButtonActive == true) {
         handleNext()
       }
     }
     if (event.key === 'ArrowLeft') {
-      user.setValue('currentPage', 'dashboard')
       goto('/dashboard')
+      await user.setValue('currentPage', 'dashboard')
     }
   }
 
-  const handleBack = (event) => {
+  const handleBack = async (event) => {
     event.preventDefault()
-    user.setValue('currentPage', 'dashboard')
     goto('/dashboard')
+    await user.setValue('currentPage', 'dashboard')
   }
 
 </script>

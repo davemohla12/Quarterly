@@ -41,23 +41,23 @@
 
   const handleNext = async () => {
     if (selectedRadioButton == 'Yes') {
-      payment.setValue('livingInCurrentStateAllThisYear', true)
-      payment.setValue('inMultipleStates', false)
+      await payment.setValue('livingInCurrentStateAllThisYear', true)
+      await payment.setValue('inMultipleStates', false)
       if (stateRules[await payment.getValue('currentState')].lastYearSafeHarborRule) {
-        user.setValue('currentPage', '8')
         goto('/8')
+        await user.setValue('currentPage', '8')
       }
       else {
-        user.setValue('currentPage', '9')
         goto('/9')
+        await user.setValue('currentPage', '9')
       }
     }
     else {
-      payment.setValue('livingInCurrentStateAllThisYear', false)
-      payment.setValue('inMultipleStates', true)
-      payment.setValue('stateSupported', false)
-      user.setValue('currentPage', '7')
+      await payment.setValue('livingInCurrentStateAllThisYear', false)
+      await payment.setValue('inMultipleStates', true)
+      await payment.setValue('stateSupported', false)
       goto('/7')
+      await user.setValue('currentPage', '7')
     }
   }
 

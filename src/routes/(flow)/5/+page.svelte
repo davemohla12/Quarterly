@@ -40,20 +40,20 @@
 
   const handleNext = async () => {
     if (selectedRadioButton == 'Yes') {
-      payment.setValue('livedInCurrentStateAllLastYear', true)
+      await payment.setValue('livedInCurrentStateAllLastYear', true)
     }
     else {
-      payment.setValue('livedInCurrentStateAllLastYear', false)
+      await payment.setValue('livedInCurrentStateAllLastYear', false)
     }
     if (selectedRadioButton === 'No' && stateRules[await payment.getValue('currentState')].stateHasQuarterlyTaxes) {
-      payment.setValue('inMultipleStates', true)
-      payment.setValue('stateSupported', false)
-      user.setValue('currentPage', '7')
+      await payment.setValue('inMultipleStates', true)
+      await payment.setValue('stateSupported', false)
       goto('/7')
+      await user.setValue('currentPage', '7')
     }
     else {
-      user.setValue('currentPage', '6')
       goto('/6')
+      await user.setValue('currentPage', '6')
     }
   }
 

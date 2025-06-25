@@ -89,16 +89,16 @@
   }
 
   const handleNext = async () => {
-    payment.setValue('q1FederalPaymentMade', convertCurrencyToNumber(inputValue1))
-    payment.setValue('q2FederalPaymentMade', convertCurrencyToNumber(inputValue2))
-    payment.setValue('q3FederalPaymentMade', convertCurrencyToNumber(inputValue3))
+    await payment.setValue('q1FederalPaymentMade', convertCurrencyToNumber(inputValue1))
+    await payment.setValue('q2FederalPaymentMade', convertCurrencyToNumber(inputValue2))
+    await payment.setValue('q3FederalPaymentMade', convertCurrencyToNumber(inputValue3))
     if (await payment.getValue('stateSupported')) {
-      user.setValue('currentPage', '26')
       goto('/26')
+      await user.setValue('currentPage', '26')
     }
     else {
-      user.setValue('currentPage', '27')
       goto('/27')
+      await user.setValue('currentPage', '27')
     }
   }
 

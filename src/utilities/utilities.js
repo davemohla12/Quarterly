@@ -47,7 +47,7 @@ const convertNumberToRoundedCurrency = (number) => {
   else { 
     return Number(number).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })
   }
-}
+} 
 
 const doesStateHaveQuarterlyTaxes = (state) => {
   if (stateRules[state].stateHasQuarterlyTaxes) {
@@ -191,5 +191,5 @@ export {
   convertShortToLongIncomeExpectation,
   getLocalStorage,
   setLocalStorage,
-  clearLocalStorage 
+  clearLocalStorage
 } 

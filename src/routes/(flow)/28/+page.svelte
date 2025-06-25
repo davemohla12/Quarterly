@@ -74,13 +74,14 @@
       }
     }
     setTimeout(async () => {
-      if (global.loggedIn && await user.getValue('lastTaxYearPaid') == currentTaxYear) {
-        user.setValue('currentPage', 'dashboard')
+      if (global.loggedIn && await user.getValue('latestTaxYearPaid') == currentTaxYear) {
         goto('/dashboard')
+        await user.setValue('currentPage', 'dashboard')
+
       }
       else { 
-        user.setValue('currentPage', '29')
         goto('/29')
+        await user.setValue('currentPage', '29')
       }
       await user.setValue('sendDashboardEmail', true)
     }, 2000)

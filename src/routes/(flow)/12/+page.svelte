@@ -19,12 +19,12 @@
 
   const handleNext = async () => {
     if (await payment.getValue('stateHasQuarterlyTaxes')) {
-      user.setValue('currentPage', '14')
       goto('/14')
+      await user.setValue('currentPage', '14')
     }
     else {
-      user.setValue('currentPage', '16')
       goto('/16')
+      await user.setValue('currentPage', '16')
     }
   }
 

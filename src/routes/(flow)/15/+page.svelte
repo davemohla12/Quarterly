@@ -26,12 +26,12 @@
 
   const handleNext = async () => {
     if (await payment.getValue('federalQuarterlyPayment') == 0) {
-      user.setValue('currentPage', '16')
       goto('/16')
+      await user.setValue('currentPage', '16')
     } 
     else {
-      user.setValue('currentPage', '17')
       goto('/17')
+      await user.setValue('currentPage', '17')
     }
   }
 </script>

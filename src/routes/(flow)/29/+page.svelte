@@ -17,21 +17,9 @@
   const buttonText = 'NEXT'
   global.makeButtonActive = true
 
-  onMount(async () => {
-    if (global.loggedIn && await user.getValue('lastTaxYearPaid') == currentTaxYear) {
-      user.setValue('currentPage', 'dashboard') 
-      goto('/dashboard')
-    }
-  })
-
   const handleNext = async () => {
-    // Move this to after user has successfully subscribed to paddle and uncomment addValue if they are logged in when subscribing
-    user.setValue('latestTaxYearPaid', currentTaxYear)
-    // user.addValue('taxYearsPaid', currentTaxYear)
-
     if (global.loggedIn) {
-      user.setValue('currentPage', 'dashboard') 
-      goto('/dashboard')
+      goto('/checkout')
     }
     else {
       setLocalStorage('loginLocation', 'flow')

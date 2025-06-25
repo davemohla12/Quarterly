@@ -52,9 +52,15 @@ const getOneDayEmail = () => {
               </tr>
               <tr>
                 <td align="center" style="padding-top: 20px; padding-bottom: 10px;">
-                  <a href="${PUBLIC_DOMAIN}/dashboard" style="font-family: Tahoma, sans-serif; font-size: 16px; background-color: #44D8A8; color: #FFFFFF; width: 200px; height: 50px; border-radius: 5px; border: none; cursor: pointer; text-decoration: none; display: inline-block; text-align: center; line-height: 50px;">
-                    PAY NOW
-                  </a>
+                  <table cellpadding="0" cellspacing="0" border="0" style="background-color: #44D8A8; border-radius: 5px;">
+                    <tr>
+                      <td style="padding: 15px 40px;">
+                        <a href="${PUBLIC_DOMAIN}/dashboard" style="font-family: Tahoma, sans-serif; font-size: 16px; color: #FFFFFF; text-decoration: none; display: block; text-align: center;">
+                          PAY NOW
+                        </a>
+                      </td>
+                    </tr>
+                  </table>
                 </td>
               </tr>
             </table>

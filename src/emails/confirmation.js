@@ -1,23 +1,6 @@
-import { PUBLIC_DOMAIN } from '$env/static/public' 
 import { PUBLIC_EMAIL_DOMAIN } from '$env/static/public' 
-import { currentTaxQuarter } from '$src/settings/settings'
-import { q1DueDate, q2DueDate, q3DueDate, q4DueDate } from '$src/settings/settings'
 
-const getFiveDayEmail = () => {
-  let dueDate
-  if (currentTaxQuarter == 'Q1') {
-    dueDate = q1DueDate.format('MMMM D, YYYY')
-  }
-  else if (currentTaxQuarter == 'Q2') {
-    dueDate = q2DueDate.format('MMMM D, YYYY')
-  }
-  else if (currentTaxQuarter == 'Q3') {  
-    dueDate = q3DueDate.format('MMMM D, YYYY')
-  }
-  else if (currentTaxQuarter == 'Q4') {
-    dueDate = q4DueDate.format('MMMM D, YYYY')
-  }
-
+const getConfirmationEmail = () => {
   return `
     <html lang="en">
     <head>
@@ -42,25 +25,12 @@ const getFiveDayEmail = () => {
               </tr>
               <tr>
                 <td align="center" style="font-family: Georgia, serif; font-size: 24px; font-weight: 600; color: #4A4A4A; padding-top: 20px;">
-                  Your quarterly payment is due soon
+                  Thank you for reaching out
                 </td>
               </tr>
               <tr>
                 <td align="center" style="font-family: Tahoma, sans-serif; font-size: 15px; color: #222; padding-top: 20px;">
-                  Pay by ${dueDate} to avoid penalties.
-                </td>
-              </tr>
-              <tr>
-                <td align="center" style="padding-top: 20px; padding-bottom: 10px;">
-                  <table cellpadding="0" cellspacing="0" border="0" style="background-color: #44D8A8; border-radius: 5px;">
-                    <tr>
-                      <td style="padding: 15px 40px;">
-                        <a href="${PUBLIC_DOMAIN}/dashboard" style="font-family: Tahoma, sans-serif; font-size: 16px; color: #FFFFFF; text-decoration: none; display: block; text-align: center;">
-                          PAY NOW
-                        </a>
-                      </td>
-                    </tr>
-                  </table>
+                  We’ll get back to you shortly.
                 </td>
               </tr>
             </table>
@@ -72,4 +42,4 @@ const getFiveDayEmail = () => {
   `
 }
 
-export { getFiveDayEmail }
+export { getConfirmationEmail }

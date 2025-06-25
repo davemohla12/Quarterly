@@ -35,14 +35,14 @@
   }
 
   const handleNext = async () => {
-    payment.setValue('incomeExpectationThisYear', convertLongToShortIncomeExpectation(selectedRadioButton))
+    await payment.setValue('incomeExpectationThisYear', convertLongToShortIncomeExpectation(selectedRadioButton))
     if (await payment.getValue('incomeExpectationThisYear') == 'decrease' || (stateRules[await payment.getValue('currentState')].stateHasQuarterlyTaxes && !stateRules[await payment.getValue('currentState')].lastYearSafeHarborRule)) {  
-      user.setValue('currentPage', '19')
       goto('/19')
+      await user.setValue('currentPage', '19')
     }
     else {
-      user.setValue('currentPage', '21')
       goto('/21')
+      await user.setValue('currentPage', '21')
     }
   }
 

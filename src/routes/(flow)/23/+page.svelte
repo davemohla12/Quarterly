@@ -42,19 +42,19 @@
   }
   
   const handleNext = async () => {
-    payment.setValue('federalWithholdingsThisYear', convertCurrencyToNumber(inputValue))
+    await payment.setValue('federalWithholdingsThisYear', convertCurrencyToNumber(inputValue))
     if (await payment.getValue('stateSupported')) {
-      user.setValue('currentPage', '24')
       goto('/24')
+      await user.setValue('currentPage', '24')
     }
     else {
       if (currentTaxQuarter == 'Q1') {
-        user.setValue('currentPage', '27')
         goto('/27')
+        await user.setValue('currentPage', '27')
       }
       else {
-        user.setValue('currentPage', '25')
         goto('/25')
+        await user.setValue('currentPage', '25')
       }
     }
   }

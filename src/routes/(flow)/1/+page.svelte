@@ -38,16 +38,16 @@
     global.makeButtonActive = true
   }
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (selectedRadioButton === 'Yes') {
-      payment.setValue('earnNonPaycheckIncomeThisYear', true)
-      user.setValue('currentPage', '3')
+      await payment.setValue('earnNonPaycheckIncomeThisYear', true)
       goto('/3')
+      await user.setValue('currentPage', '3')
     }
     else {
-      payment.setValue('earnNonPaycheckIncomeThisYear', false)
-      user.setValue('currentPage', '2')
+      await payment.setValue('earnNonPaycheckIncomeThisYear', false)
       goto('/2')
+      await user.setValue('currentPage', '2')
     }
   }
 
