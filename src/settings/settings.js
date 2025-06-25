@@ -31,6 +31,7 @@ const q2DueDate = dayjs('2025-06-15')
 const q3DueDate = dayjs('2025-09-15')
 const q4DueDate = dayjs('2025-01-15')
 const price = 39
-const priceId = 'price_1RdcH2PNrBqC31YHUWrzK3XR'
+const oneTimePriceId = 'price_1RdtoyPNrBqC31YHEXCpXBPw'
+const recurringPriceId = 'price_1RdcH2PNrBqC31YHUWrzK3XR'
 
-export { currentTaxYear, currentTaxQuarter, q1DueDate, q2DueDate, q3DueDate, q4DueDate, price, priceId }
+export { currentTaxYear, currentTaxQuarter, q1DueDate, q2DueDate, q3DueDate, q4DueDate, price, oneTimePriceId, recurringPriceId }

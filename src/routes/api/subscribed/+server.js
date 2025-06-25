@@ -34,7 +34,7 @@ const POST = async ({ request }) => {
         await stripe.subscriptions.create({
           customer: session.customer,
           items: [{
-            price: session.metadata.price_id,
+            price: session.metadata.recurring_price_id,
             quantity: 1,
           }],
           billing_cycle_anchor: billingCycleAnchor,

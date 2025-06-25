@@ -12,9 +12,6 @@
   import Loading from '$src/components/app/Loading.svelte'
   import { user } from '$src/data/user.svelte'
   import { getLocalStorage } from '$src/utilities/utilities'
-  import axios from 'axios'
-  import { priceId } from '$src/settings/settings'
-    import { consoleLoggingIntegration } from '@sentry/sveltekit';
 
   const expiredText = `This link has expired`
   const expiredButtonText = 'BACK TO HOME'

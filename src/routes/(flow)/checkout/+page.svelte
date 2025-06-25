@@ -5,7 +5,7 @@
   
   import { onMount } from 'svelte'
   import axios from 'axios'
-  import { priceId } from '$src/settings/settings'
+  import { recurringPriceId, oneTimePriceId } from '$src/settings/settings'
   import { global } from '$src/data/global.svelte'
   import { user } from '$src/data/user.svelte'
   import { currentTaxYear } from '$src/settings/settings'
@@ -19,7 +19,8 @@
     else {
       const response = await axios.post('/api/checkout', {
       email: global.email,
-      priceId: priceId
+      oneTimePriceId: oneTimePriceId,
+      recurringPriceId: recurringPriceId
     })
     window.location.href = response.data.url
     }

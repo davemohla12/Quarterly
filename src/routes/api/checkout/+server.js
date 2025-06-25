@@ -7,7 +7,7 @@ const stripe = new Stripe(STRIPE_KEY)
 
 const POST = async ({ request }) => {
   try {
-    const { email, priceId } = await request.json()
+    const { email, oneTimePriceId, recurringPriceId } = await request.json()
 
     let customer
     const existingCustomers = await stripe.customers.list({
@@ -28,7 +28,7 @@ const POST = async ({ request }) => {
       mode: 'payment',
       customer: customer.id,
       line_items: [{
-        price: priceId,
+        price: oneTimePriceId,
         quantity: 1,
       }],
       success_url: `${PUBLIC_DOMAIN}/subscribed`,
@@ -41,7 +41,7 @@ const POST = async ({ request }) => {
       payment_method_types: ['card'],
       metadata: {
         create_subscription: 'true',
-        price_id: priceId
+        recurring_price_id: recurringPriceId
       }
     })
 
