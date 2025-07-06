@@ -71,7 +71,7 @@
       to: 'davemohla@gmail.com',
       subject: 'How was your experience?',
       template: 'rating',
-      id: '42'
+      id: '44'
     })
     if (response.data.success) {
       console.log('Email sent successfully:', response.data)

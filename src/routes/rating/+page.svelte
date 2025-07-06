@@ -20,8 +20,16 @@
   $effect(async () => {
     id = $page.url.searchParams.get('id') || ''
     rating = $page.url.searchParams.get('rating') || ''
+    if (rating == 'bad' || rating == 'good') {
+      showFeedback = true
+    }
     if (id) {
       email = await getEmailFromId(id)
+    }
+    if (rating == 'bad' || rating == 'good') {
+      if (email) {
+        await setRating(email, rating, feedback)
+      }
     }
   })
 

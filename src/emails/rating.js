@@ -33,14 +33,15 @@ const getRatingEmail = (id) => {
                 <td align="center" style="padding-top: 30px; padding-bottom: 20px;">
                   <table cellpadding="0" cellspacing="0" border="0">
                     <tr>
-                      <td style="padding-right: 12px;">
-                        <a href="${PUBLIC_DOMAIN}/rating?id=${id}&rating=sad" style="text-decoration: none;">
-                          <img src="${PUBLIC_DOMAIN}/images/sadgray.png" alt="Sad" style="width: 47px; height: 47px; border-radius: 5px; display: block;" />
+                      <td style="background-color: #F7F7F7; width: 100px; height: 100px; border-radius: 5px;  text-align: center; vertical-align: middle;"">
+                        <a href="${PUBLIC_DOMAIN}/rating?id=${id}&rating=bad" style="text-decoration: none;">
+                          <img src="${PUBLIC_EMAIL_DOMAIN}/images/sadgray.png" alt="Sad" style="width: 47px; height: 47px;" />
                         </a>
                       </td>
-                      <td style="padding-left: 12px;">
-                        <a href="${PUBLIC_DOMAIN}/rating?id=${id}&rating=happy" style="text-decoration: none;">
-                          <img src="${PUBLIC_DOMAIN}/images/happygray.png" alt="Happy" style="width: 47px; height: 47px; border-radius: 5px; display: block;" />
+                       <td style="width: 24px;"></td>
+                      <td style="background-color: #F7F7F7; width: 100px; height: 100px; border-radius: 5px; text-align: center; vertical-align: middle;">
+                        <a href="${PUBLIC_DOMAIN}/rating?id=${id}&rating=good" style="text-decoration: none;">
+                          <img src="${PUBLIC_EMAIL_DOMAIN}/images/happygray.png" alt="Happy" style="width: 47px; height: 47px;" />
                         </a>
                       </td>
                     </tr>

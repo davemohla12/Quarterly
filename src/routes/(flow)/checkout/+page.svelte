@@ -2,7 +2,6 @@
   import Header from '$src/components/app/Header.svelte'
   import Avatar from '$src/components/app/Avatar.svelte'
   import Loading from '$src/components/app/Loading.svelte'
-  
   import { onMount } from 'svelte'
   import axios from 'axios'
   import { priceId } from '$src/settings/settings'
@@ -11,6 +10,7 @@
   import { currentTaxYear } from '$src/settings/settings'
   import { goto } from '$app/navigation'
   import { showCheckout } from '$src/settings/settings'
+  import dayjs from 'dayjs'
 
   onMount(async () => { 
     if (showCheckout) {
@@ -31,7 +31,8 @@
           user.setValue('lastPaymentAmount', response.data.price),
           user.setValue('lastPaymentDate', new Date().toISOString()),
           user.addValue('paymentDates', new Date().toISOString()),
-          user.setValue('totalPayments', totalPayments + 1)
+          user.setValue('totalPayments', totalPayments + 1),
+          user.setValue('sendRatingsEmailOn', dayjs().add(3, 'day').toISOString())
         ])
         window.location.href = response.data.url
       }

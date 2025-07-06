@@ -49,7 +49,7 @@ const sendOneDayEmail = async () => {
 
 const GET = async ({ url }) => {
   try {
-    const token = url.searchParams.get('cron_secret')
+    const token = url.searchParams.get('cron_key')
 
     if (token == CRON_KEY) {
       const emails = await getEmails()
