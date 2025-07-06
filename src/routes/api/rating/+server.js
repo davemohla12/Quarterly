@@ -24,6 +24,14 @@ const GET = async ({ url }) => {
       const message = []
       for (const email of emails) {
         const sendRatingsEmailOn = await getValueFromUsers( email, 'sendRatingsEmailOn')
+        
+        console.log(`email: ${email}`)
+        console.log(`Server date: ${dayjs().format()}`)
+        console.log(`sendRatingsEmailOn: ${sendRatingsEmailOn}`)
+        console.log(`Server timezone: ${Intl.DateTimeFormat().resolvedOptions().timeZone}`)
+        console.log(`isSame result: ${dayjs().isSame(sendRatingsEmailOn, 'day')}`)
+        console.log(``)
+
         if (dayjs().isSame(sendRatingsEmailOn, 'day')) {
           const id = await getValueFromUsers(email, 'id')
           await axios.post(`${PUBLIC_DOMAIN}/api/email`, {
