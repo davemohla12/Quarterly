@@ -10,6 +10,7 @@
   import { global } from '$src/data/global.svelte'
   import { payment } from '$src/data/payment.svelte'
   import { user } from '$src/data/user.svelte'
+  import { stateRules } from '$src/rules/state'
 
   const headingText = `You don't need to pay any federal quarterly taxes this year`
   const subheadingText = `Because you owed less than $${federalRules.minimumTaxForQuarterlyPayments} in federal tax last year, the IRS doesn't require you to make estimated payments this year`
@@ -18,9 +19,16 @@
   global.makeButtonActive = true
 
   const handleNext = async () => {
-    if (await payment.getValue('stateHasQuarterlyTaxes')) {
-      goto('/14')
-      await user.setValue('currentPage', '14')
+    await payment.setValue('safeToSkipFederalPayment', true)
+    if (await payment.getValue('stateSupported')) {
+      if (!stateRules[await payment.getValue('currentState')].lastYearSafeHarborRule || !await payment.getValue('livedInCurrentStateAllLastYear')) {
+        goto('/19')
+        await user.setValue('currentPage', '19')
+      }
+      else {
+        goto('/14')
+        await user.setValue('currentPage', '14')
+      }
     }
     else {
       goto('/16')

@@ -45,16 +45,8 @@
     else {
       await payment.setValue('livedInCurrentStateAllLastYear', false)
     }
-    if (selectedRadioButton === 'No' && stateRules[await payment.getValue('currentState')].stateHasQuarterlyTaxes) {
-      await payment.setValue('inMultipleStates', true)
-      await payment.setValue('stateSupported', false)
-      goto('/7')
-      await user.setValue('currentPage', '7')
-    }
-    else {
-      goto('/6')
-      await user.setValue('currentPage', '6')
-    }
+    goto('/6')
+    await user.setValue('currentPage', '6')
   }
 
   const handleKeyDown = (event) => {

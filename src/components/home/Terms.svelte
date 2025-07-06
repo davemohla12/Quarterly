@@ -8,11 +8,11 @@
     </div>
     <div class="pointcontainer">
       <div class="number">2.</div>
-      <div class="point"><span class="section">Fee</span> – You agree to pay the Zenguider subscription fee when due and to promptly resolve any payment issues. The subscription covers access to tax year-based quarterly estimates and reminders.</div>
+      <div class="point"><span class="section">Fee</span> – You agree to pay a one-time fee for each tax year you use the Zenguider service. This fee includes access to your quarterly tax payment estimates and lifetime email reminders about upcoming quarterly due dates, which you can turn off at any time.</div>
     </div>
     <div class="pointcontainer">
       <div class="number">3.</div>
-      <div class="point"><span class="section">Subscription</span> - You understand that your subscription covers a single tax year and renews annually, typically before the first quarterly payment due date of the new tax year (e.g., February 1). You may cancel your subscription at any time, and access will continue through the end of the current billing period.</div>
+      <div class="point"><span class="section">Coverage</span> - You understand that your payment provides you access to quarterly tax estimates for a full tax year. Payment is required again for each additional tax year you wish to use the service.</div>
     </div>
     <div class="pointcontainer">
       <div class="number">4.</div>
@@ -20,7 +20,7 @@
     </div>
     <div class="pointcontainer">
       <div class="number">5.</div>
-      <div class="point"><span class="section">Prior Years</span> - You understand that if you had an active subscription for a previous tax year, you will retain access to that year's quarterly estimates, even after cancellation, as a courtesy and for reference purposes.</div>
+      <div class="point"><span class="section">Prior Years</span> - You understand that if you paid for access to a prior tax year, you will retain access to that year’s quarterly estimates, even if you choose not to pay for future tax years.</div>
     </div>
     <div class="pointcontainer">
       <div class="number">6.</div>
@@ -28,7 +28,7 @@
     </div>
     <div class="pointcontainer">
       <div class="number">7.</div>
-      <div class="point"><span class="section">Data</span> - You understand that Zenguider uses the information you provide solely to generate tax estimate outputs and reminders. We do not sell your data. You can view our full Privacy Policy for details.</div>
+      <div class="point"><span class="section">Data</span> - You understand that Zenguider uses the information you provide solely to generate tax estimate outputs and reminders. We do not sell your data. You can view our full <a href="/privacy" target="_blank">Privacy Policy</a> for details.</div>
     </div>
     <div class="pointcontainer">
       <div class="number">8.</div>
@@ -84,17 +84,24 @@
     margin-top: 20px;
     display: flex;
     flex-direction: row;
-    gap: 10px;
   }
   .number { 
     font-weight: var(--bold);
+    flex-shrink: 0;
+    margin-right: 15px;
   }
   .section {
     font-weight: var(--bold);
-    margin-left: 2px;
   }
   .spacer {
     height: 50px;
+  }
+  a {
+    color: var(--dark);
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
   }
   @media (min-width: 768px) {
     .content {

@@ -11,6 +11,8 @@
   import { stateRules } from '$src/rules/state'
   import { user } from '$src/data/user.svelte'
   import { onMount } from 'svelte'
+  import { safePostHog } from '$src/utilities/posthog'
+  import { currentTaxYear } from '$src/settings/settings'
 
   let headingText = $state('')
   let subheadingText = $state('')
@@ -20,10 +22,15 @@
   onMount(async () => {
     headingText = `You don't need to pay any quarterly taxes this year`
     subheadingText = `You may still pay income tax at the end of the year but you don't need to worry about quarterly taxes`
+    if (await user.getValue('latestTaxYearPaid') != currentTaxYear) {
+      safePostHog.capture('flow_no_payments_viewed', {
+        reason: 'below_minimum_threshold'
+      })
+    }
   })
 
   const handleDone = async () => {
-    if (global.loggedIn && await user.getValue('latestTaxYearPaid') == currentTaxYear) {
+    if (global.loggedIn) {
       if (stateRules[await payment.getValue('currentState')].stateHasQuarterlyTaxes == true) { 
         await payment.setValue('stateSupported', true)
         await payment.setValue('q1federalQuarterlyPayment', 0)
@@ -57,6 +64,7 @@
     }
     else {
       goto('/')
+      await user.setValue('currentPage', 'home')
     }
   }
 

@@ -5,10 +5,11 @@ import { getFiveDayEmail } from '$src/emails/fiveday'
 import { getOneDayEmail } from '$src/emails/oneday'
 import { getSupportEmail } from '$src/emails/support'
 import { getConfirmationEmail } from '$src/emails/confirmation'
+import { getRatingEmail } from '$src/emails/rating'
 import { RESEND_API_KEY } from '$env/static/private'
 
 const POST = async ({ request }) => {
-  const { to, subject, template, message, email } = await request.json()
+  const { to, subject, template, message, email, id } = await request.json()
 
   let html = ''
 
@@ -16,16 +17,20 @@ const POST = async ({ request }) => {
     html = getDashboardEmail()
   }
   else if (template == 'fiveday') {
-    html = getFiveDayEmail()
+    html = getFiveDayEmail(id)
   }
   else if (template == 'oneday') {
-    html = getOneDayEmail()
+    html = getOneDayEmail(id)
   }
   else if (template == 'support') {
     html = getSupportEmail(message)
   }
   else if (template == 'confirmation') {
     html = getConfirmationEmail()
+  }
+  else if (template == 'rating') {
+    html = getRatingEmail(id)
+    console.log(html)
   }
 
   try { 

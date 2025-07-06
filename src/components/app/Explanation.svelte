@@ -3,6 +3,7 @@
   import { fade } from 'svelte/transition'
 
   let props = $props()
+  let smallFont = props.smallFont || false
   let explanation = $derived(props.explanation || '')
   let onCloseClick = props.onCloseClick || (() => {})
   let showHide = props.showHide !== undefined ? props.showHide : true
@@ -12,7 +13,7 @@
   }
 </script>
 
-  <div class="explanation" in:fade={{ duration: 200 }} out:fade={{ duration: 200 }}>
+  <div class="explanation" in:fade={{ duration: 200 }} out:fade={{ duration: 200 }} class:smallFont={smallFont}>
     {explanation}
   </div>
   {#if showHide}
@@ -39,6 +40,9 @@
   }
   .spacer {
     height: 40px;
+  }
+  .smallFont {
+    font-size: 14px;
   }
   @media (min-width: 768px) {
     .explanation {

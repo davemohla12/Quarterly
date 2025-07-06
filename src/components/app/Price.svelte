@@ -4,7 +4,7 @@
 
 <div class="container">
   <div class="price">$0</div>
-  <div class="strikeprice">${price} per year</div>
+  <div class="strikeprice">${price} for a full tax year</div>
 </div>
 
 <style>

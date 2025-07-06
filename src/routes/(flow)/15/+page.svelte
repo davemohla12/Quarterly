@@ -25,7 +25,8 @@
   })
 
   const handleNext = async () => {
-    if (await payment.getValue('federalQuarterlyPayment') == 0) {
+    await payment.setValue('safeToSkipStatePayment', true)
+    if (await payment.getValue('safeToSkipFederalPayment') == true) {
       goto('/16')
       await user.setValue('currentPage', '16')
     } 

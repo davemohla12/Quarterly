@@ -1,7 +1,6 @@
 import { global } from '$src/data/global.svelte'
 import { getLocalStorage } from '$src/utilities/utilities'
-import { getFromPayments } from '$src/utilities/database'
-import { setInPayments } from '$src/utilities/database'
+import { getFromPayments, getFromPaymentsByYear, setInPayments, setInPaymentsByYear } from '$src/utilities/database'
 import { setLocalStorage } from '$src/utilities/utilities'
 
 const payment = $state({
@@ -21,6 +20,14 @@ const payment = $state({
     else {
       setLocalStorage(field, value)
     }
+  },
+
+  async getValueByYear(field, year) {
+    return await getFromPaymentsByYear(field, year)
+  },
+
+  async setValueByYear(year, field, value) {
+    await setInPaymentsByYear(year, field, value)
   }
 })
 

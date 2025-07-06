@@ -5,12 +5,19 @@
   import { user } from '$src/data/user.svelte'
   import { onMount } from 'svelte'
 
+  let showSpinner = $state(true)
   let buttonText = $state('GET STARTED')
 
   $effect(async () => {
+    showSpinner = true
     if (global.loggedIn) {
-      if (await user.getValue('currentPage') == 'dashboard') {
+      const currentPage = await user.getValue('currentPage')
+      if (currentPage == 'dashboard') {
         buttonText = 'DASHBOARD'
+      }
+      else if (currentPage == 'home' || !currentPage) {
+        await user.setValue('currentPage', 'home')
+        buttonText = 'GET STARTED'
       }
       else {
         buttonText = 'RESUME'
@@ -19,6 +26,7 @@
     else {
       buttonText = 'GET STARTED'
     }
+    showSpinner = false
   })
 
   onMount(() => {
@@ -62,8 +70,12 @@
       Built for freelancers, creators, and small business owners who value clarity and simplicity
     </div>
     <Clickable onclick={handleButtonClick}>
-      <div class="button">
-        {buttonText}
+      <div class="button">    
+        {#if showSpinner}
+          <div class="circle"></div>
+        {:else}
+          {buttonText}
+        {/if}
       </div>
     </Clickable>
   </div>
@@ -134,6 +146,19 @@
     border-radius: 5px;
     margin-top: 25px;
     cursor: pointer; 
+  }
+  .circle {
+    width: 19px;
+    height: 19px;
+    border: 2px solid var(--white);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: circle 0.8s linear infinite;
+    }
+  @keyframes circle {
+    to {
+      transform: rotate(360deg);
+    }
   }
   .stressfree {
     width: 276px;

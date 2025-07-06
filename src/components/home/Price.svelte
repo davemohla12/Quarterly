@@ -10,7 +10,7 @@
     Participate in our beta and we'll waive our fee
   </div>
   <div class="price">$0</div>
-  <div class="strikethrough">${price} per tax year</div>
+  <div class="strikethrough">${price} for full tax year</div>
 </div>
 
 <style>

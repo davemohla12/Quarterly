@@ -29,11 +29,12 @@ const getValueFromDatabase = async (table, email, field) => {
   }
 }
 
-const sendFiveDayEmail = async () => {
+const sendFiveDayEmail = async (id) => {
   await axios.post(`${PUBLIC_DOMAIN}/api/email`, {
     to: 'davemohla@gmail.com',
     subject: 'Your quarterly tax payment is due soon',
-    template: 'fiveday'
+    template: 'fiveday',
+    id: id
   })
 }
 
@@ -41,7 +42,8 @@ const sendOneDayEmail = async () => {
   await axios.post(`${PUBLIC_DOMAIN}/api/email`, {
     to: 'davemohla@gmail.com',
     subject: 'Your quarterly payment is due',
-    template: 'oneday'
+    template: 'oneday',
+    id: id
   })
 }
 
@@ -57,64 +59,84 @@ const GET = async ({ url }) => {
         const sendReminders = await getValueFromDatabase('Users', email, 'sendReminders')
         const sendFiveDayReminder = await getValueFromDatabase('Users', email, 'sendFiveDayReminder')
         const sendOneDayReminder = await getValueFromDatabase('Users', email, 'sendOneDayReminder')
-
-        console.log(`Email: ${email}`)
-        console.log(`Pay Preference: ${payPreference}`)
-        console.log(`Send Reminders: ${sendReminders}`)
-        console.log(`Send Five Day Reminder: ${sendFiveDayReminder}`)
-        console.log(`Send One Day Reminder: ${sendOneDayReminder}`)
+        const id = await getValueFromDatabase('Users', email, 'id')
+        const q1FederalMarkPaid = await getValueFromDatabase('Payments', email, 'q1FederalMarkPaid')
+        const q1StateMarkPaid = await getValueFromDatabase('Payments', email, 'q1StateMarkPaid')
+        const q2FederalMarkPaid = await getValueFromDatabase('Payments', email, 'q2FederalMarkPaid')
+        const q2StateMarkPaid = await getValueFromDatabase('Payments', email, 'q2StateMarkPaid')
+        const q3FederalMarkPaid = await getValueFromDatabase('Payments', email, 'q3FederalMarkPaid')
+        const q3StateMarkPaid = await getValueFromDatabase('Payments', email, 'q3StateMarkPaid')
+        const q4FederalMarkPaid = await getValueFromDatabase('Payments', email, 'q4FederalMarkPaid')
+        const q4StateMarkPaid = await getValueFromDatabase('Payments', email, 'q4StateMarkPaid')
+        const stateSupported = await getValueFromDatabase('Payments', email, 'stateSupported')
 
         if (payPreference == 'quarter') {
           if (sendReminders) {
             if (sendFiveDayReminder) {
               if (currentTaxQuarter == 'Q1') {
                 if (dayjs().isSame(q1DueDate.subtract(5, 'days'), 'day')) {
-                  await sendFiveDayEmail()
-                  message.push(`Sent 5 day reminder email to ${email}`)
+                  if (!(q1FederalMarkPaid && (q1StateMarkPaid || !stateSupported))) {
+                    await sendFiveDayEmail(id)
+                    message.push(`Sent 5 day reminder email to ${email}`)
+                  }
                 }
               }
               else if (currentTaxQuarter == 'Q2') {
                 if (dayjs().isSame(q2DueDate.subtract(5, 'days'), 'day')) {
-                  await sendFiveDayEmail()
-                  message.push(`Sent 5 day reminder email to ${email}`)
+                  if (!(q2FederalMarkPaid && (q2StateMarkPaid || !stateSupported))) {
+                    await sendFiveDayEmail(id)
+                    message.push(`Sent 5 day reminder email to ${email}`)
+                  }
                 }
               }
               else if (currentTaxQuarter == 'Q3') {
                 if (dayjs().isSame(q3DueDate.subtract(5, 'days'), 'day')) {
-                  await sendFiveDayEmail()  
-                  message.push(`Sent 5 day reminder email to ${email}`)
+                  if (!(q3FederalMarkPaid && (q3StateMarkPaid || !stateSupported))) {
+                    await sendFiveDayEmail(id)  
+                    message.push(`Sent 5 day reminder email to ${email}`)
+                  }
                 }
               } 
               else if (currentTaxQuarter == 'Q4') {
                 if (dayjs().isSame(q4DueDate.subtract(5, 'days'), 'day')) {
-                  await sendFiveDayEmail()  
-                  message.push(`Sent 5 day reminder email to ${email}`)
+                  if (!(q4FederalMarkPaid && (q4StateMarkPaid || !stateSupported))) {
+                    await sendFiveDayEmail(id)  
+                    message.push(`Sent 5 day reminder email to ${email}`)
+                  }
                 }
               }
             }
             if (sendOneDayReminder) {
               if (currentTaxQuarter == 'Q1') {
                 if (dayjs().isSame(q1DueDate.subtract(1, 'day'), 'day')) {
-                  await sendOneDayEmail()   
-                  message.push(`Sent 1 day reminder email to ${email}`)
+                  if (!(q1FederalMarkPaid && (q1StateMarkPaid || !stateSupported))) {
+                    await sendOneDayEmail(id)     
+                    message.push(`Sent 1 day reminder email to ${email}`)
+                  }
                 }
               }
               else if (currentTaxQuarter == 'Q2') {
                 if (dayjs().isSame(q2DueDate.subtract(1, 'day'), 'day')) {
-                  await sendOneDayEmail()   
-                  message.push(`Sent 1 day reminder email to ${email}`)
+                  if (!(q2FederalMarkPaid && (q2StateMarkPaid || !stateSupported))) {
+                    await sendOneDayEmail(id)   
+                    message.push(`Sent 1 day reminder email to ${email}`)
+                  }
                 } 
               }
               else if (currentTaxQuarter == 'Q3') {
                 if (dayjs().isSame(q3DueDate.subtract(1, 'day'), 'day')) {
-                  await sendOneDayEmail()   
-                  message.push(`Sent 1 day reminder email to ${email}`)
+                  if (!(q3FederalMarkPaid && (q3StateMarkPaid || !stateSupported))) {
+                    await sendOneDayEmail(id)   
+                    message.push(`Sent 1 day reminder email to ${email}`)
+                  }
                 }
               }
               else if (currentTaxQuarter == 'Q4') {
                 if (dayjs().isSame(q4DueDate.subtract(1, 'day'), 'day')) {
-                  await sendOneDayEmail()
-                  message.push(`Sent 1 day reminder email to ${email}`)
+                  if (!(q4FederalMarkPaid && (q4StateMarkPaid || !stateSupported))) {
+                    await sendOneDayEmail(id)
+                    message.push(`Sent 1 day reminder email to ${email}`)
+                  }
                 }
               }
             }

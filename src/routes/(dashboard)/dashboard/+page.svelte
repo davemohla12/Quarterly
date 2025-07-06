@@ -4,7 +4,6 @@
   import Heading from '$src/components/app/Heading.svelte'
   import QuarterlyPayments from '$src/components/app/QuarterlyPayments.svelte'
   import QuarterlyPay from '$src/components/app/QuarterlyPay.svelte'
-  import { payment } from '$src/data/payment.svelte'
   import { global } from '$src/data/global.svelte'
   import { goto } from '$app/navigation'
   import { onMount } from 'svelte'
@@ -24,8 +23,12 @@
   import Button from '$src/components/app/Button.svelte'
   import { user } from '$src/data/user.svelte'  
   import Loading from '$src/components/app/Loading.svelte'  
-  import { createBlankPayment } from '$src/utilities/database'
+  import { createBlankPayment } from '$src/utilities/database'  
   import Confirmation from '$src/components/app/Confirmation.svelte'
+  import { getAllPaymentValues } from '$src/utilities/database' 
+  import { getLocalStorage, setLocalStorage } from '$src/utilities/utilities'
+  import { payment } from '$src/data/payment.svelte'
+  import { safePostHog } from '$src/utilities/posthog'
 
   let headingText = $state()
   let showExplanation = $state(false)
@@ -38,106 +41,116 @@
   let stateThisQuarterPayment = $state(0)
   
   let taxYear = $state()
-  let singleFederalDue = $state()
-  let singleFederalPaid = $state()
-  let singleFederalRemaining = $state()
+  let federalDue = $state()
+  let federalPaid = $state()
+  let federalRemaining = $state()
   let stateSupported = $state()
   let currentState = $state()
-  let singleStateDue = $state()
-  let singleStatePaid = $state()
-  let singleStateRemaining = $state() 
-  let q1federalQuarterlyPayment = $state()
-  let q2federalQuarterlyPayment = $state()
-  let q3federalQuarterlyPayment = $state()
-  let q4federalQuarterlyPayment = $state()
-  let q1StateQuarterlyPayment = $state()
-  let q2StateQuarterlyPayment = $state()
-  let q3StateQuarterlyPayment = $state()
-  let q4StateQuarterlyPayment = $state()
+  let stateDue = $state()
+  let statePaid = $state()
+  let stateRemaining = $state() 
+  let federalPayment1 = $state()
+  let federalPayment2 = $state()
+  let federalPayment3 = $state()
+  let federalPayment4 = $state()
+  let statePayment1 = $state()
+  let statePayment2 = $state()
+  let statePayment3 = $state()
+  let statePayment4 = $state()
   let explanation = $state()
   let payPreference = $state()
   let quarterName = $state()
   let isFederalPaid = $state()
   let isStatePaid = $state()
-  
+
   onMount(async () => {
     loading = true
-    await user.setValue('currentPage', 'dashboard')
-    global.makeButtonActive = true
-
-    taxYear = await payment.getValue('taxYear')
-    singleFederalDue = await payment.getValue('singleFederalDue')
-    singleFederalPaid = await payment.getValue('singleFederalPaid')
-    singleFederalRemaining = await payment.getValue('singleFederalRemaining')
-    stateSupported = await payment.getValue('stateSupported')
-    currentState = await payment.getValue('currentState')
-    singleStateDue = await payment.getValue('singleStateDue')
-    singleStatePaid = await payment.getValue('singleStatePaid')
-    singleStateRemaining = await payment.getValue('singleStateRemaining')
-    q1federalQuarterlyPayment = await payment.getValue('q1federalQuarterlyPayment')
-    q2federalQuarterlyPayment = await payment.getValue('q2federalQuarterlyPayment')
-    q3federalQuarterlyPayment = await payment.getValue('q3federalQuarterlyPayment')
-    q4federalQuarterlyPayment = await payment.getValue('q4federalQuarterlyPayment')
-    q1StateQuarterlyPayment = await payment.getValue('q1StateQuarterlyPayment')
-    q2StateQuarterlyPayment = await payment.getValue('q2StateQuarterlyPayment')
-    q3StateQuarterlyPayment = await payment.getValue('q3StateQuarterlyPayment')
-    q4StateQuarterlyPayment = await payment.getValue('q4StateQuarterlyPayment')
-    explanation = await payment.getValue('explanation')
-    payPreference = await payment.getValue('payPreference')
-
-    if (payPreference == 'single') {
-      isFederalPaid = await payment.getValue('singleFederalMarkPaid')
-      isStatePaid = await payment.getValue('singleStateMarkPaid')
-    }
+    if (!global.loggedIn) {
+      setLocalStorage('loginLocation', 'dashboard')
+      goto('/login')
+    } 
     else { 
-      if (currentTaxQuarter == 'Q1') {
-        quarterName = 'April' 
-        isFederalPaid = await payment.getValue('q1FederalMarkPaid')
-        isStatePaid = await payment.getValue('q1StateMarkPaid')
-      } 
-      else if (currentTaxQuarter == 'Q2') {
-        quarterName = 'June'
-        isFederalPaid = await payment.getValue('q2FederalMarkPaid')
-        isStatePaid = await payment.getValue('q2StateMarkPaid')
-      } 
-      else if (currentTaxQuarter == 'Q3') {    
-        quarterName = 'September'
-        isFederalPaid = await payment.getValue('q3FederalMarkPaid')
-        isStatePaid = await payment.getValue('q3StateMarkPaid')
-      }
-      else if (currentTaxQuarter == 'Q4') {
-        quarterName = 'January'
-        isFederalPaid = await payment.getValue('q4FederalMarkPaid')
-        isStatePaid = await payment.getValue('q4StateMarkPaid')
-      }
-    }
+      global.makeButtonActive = true
 
-    if (payPreference == 'single') {
-      headingText = `Your remaining payment for ${currentTaxYear}`
-    }
-    else {
-      headingText = `Your quarterly payments for ${currentTaxYear}`
-      if (currentTaxQuarter == 'Q1') {
-        federalThisQuarterPayment = q1federalQuarterlyPayment
-        stateThisQuarterPayment = q1StateQuarterlyPayment
+      const paymentValues = await getAllPaymentValues(global.email, currentTaxYear)
+
+      taxYear = paymentValues?.taxYear
+      federalDue = paymentValues?.singleFederalDue
+      federalPaid = paymentValues?.singleFederalPaid
+      federalRemaining = paymentValues?.singleFederalRemaining
+      stateSupported = paymentValues?.stateSupported
+      currentState = paymentValues?.currentState
+      stateDue = paymentValues?.singleStateDue
+      statePaid = paymentValues?.singleStatePaid
+      stateRemaining = paymentValues?.singleStateRemaining
+      federalPayment1 = paymentValues?.q1federalQuarterlyPayment
+      federalPayment2 = paymentValues?.q2federalQuarterlyPayment
+      federalPayment3 = paymentValues?.q3federalQuarterlyPayment
+      federalPayment4 = paymentValues?.q4federalQuarterlyPayment
+      statePayment1 = paymentValues?.q1StateQuarterlyPayment
+      statePayment2 = paymentValues?.q2StateQuarterlyPayment
+      statePayment3 = paymentValues?.q3StateQuarterlyPayment
+      statePayment4 = paymentValues?.q4StateQuarterlyPayment
+      explanation = paymentValues?.explanation
+      payPreference = paymentValues?.payPreference
+
+      global.showPaidDates = paymentValues?.showPaidDates 
+      global.q1FederalPaidDate = paymentValues?.q1FederalPaidDate
+      global.q2FederalPaidDate = paymentValues?.q2FederalPaidDate
+      global.q3FederalPaidDate = paymentValues?.q3FederalPaidDate
+      global.q4FederalPaidDate = paymentValues?.q4FederalPaidDate
+      global.q1StatePaidDate = paymentValues?.q1StatePaidDate
+      global.q2StatePaidDate = paymentValues?.q2StatePaidDate
+      global.q3StatePaidDate = paymentValues?.q3StatePaidDate
+      global.q4StatePaidDate = paymentValues?.q4StatePaidDate
+      global.singleFederalPaidDate = paymentValues?.singleFederalPaidDate
+      global.singleStatePaidDate = paymentValues?.singleStatePaidDate
+
+      if (payPreference == 'single') {
+        headingText = `Your remaining payment for ${currentTaxYear}`
+        isFederalPaid = paymentValues?.singleFederalMarkPaid
+        isStatePaid = paymentValues?.singleStateMarkPaid
       }
-      else if (currentTaxQuarter == 'Q2') {
-        federalThisQuarterPayment = q2federalQuarterlyPayment
-        stateThisQuarterPayment = q2StateQuarterlyPayment
-      } 
-      else if (currentTaxQuarter == 'Q3') {
-        federalThisQuarterPayment = q3federalQuarterlyPayment
-        stateThisQuarterPayment = q3StateQuarterlyPayment
-          }
-      else {
-        federalThisQuarterPayment = q4federalQuarterlyPayment
-        stateThisQuarterPayment = q4StateQuarterlyPayment
+      else { 
+        headingText = `Your quarterly payments for ${currentTaxYear}`
+        if (currentTaxQuarter == 'Q1') {
+          quarterName = 'April' 
+          isFederalPaid = paymentValues?.q1FederalMarkPaid
+          isStatePaid = paymentValues?.q1StateMarkPaid
+          federalThisQuarterPayment = federalPayment1
+          stateThisQuarterPayment = statePayment1
+        } 
+        else if (currentTaxQuarter == 'Q2') {
+          quarterName = 'June'
+          isFederalPaid = paymentValues?.q2FederalMarkPaid
+          isStatePaid = paymentValues?.q2StateMarkPaid
+          federalThisQuarterPayment = federalPayment2
+          stateThisQuarterPayment = statePayment2
+        } 
+        else if (currentTaxQuarter == 'Q3') {    
+          quarterName = 'September'
+          isFederalPaid = paymentValues?.q3FederalMarkPaid
+          isStatePaid = paymentValues?.q3StateMarkPaid
+          federalThisQuarterPayment = federalPayment3
+          stateThisQuarterPayment = statePayment3
+        }
+        else if (currentTaxQuarter == 'Q4') {
+          quarterName = 'January'
+          isFederalPaid = paymentValues?.q4FederalMarkPaid
+          isStatePaid = paymentValues?.q4StateMarkPaid 
+          federalThisQuarterPayment = federalPayment4
+          stateThisQuarterPayment = statePayment4
+        }
       }
-    }
-    loading = false
-    if (await user.getValue('sendDashboardEmail')) {
-      sendDashboardEmail()
-      await user.setValue('sendDashboardEmail', false)
+      loading = false
+      safePostHog.capture('flow_dashboard_viewed', {
+        pay_preference: payPreference,
+      })
+      await user.setValue('currentPage', 'dashboard')
+      if (getLocalStorage('sendDashboardEmail')) {
+        await sendDashboardEmail()
+        setLocalStorage('sendDashboardEmail', false)
+      }
     }
   })
 
@@ -150,11 +163,13 @@
   }
 
   const handleEditClick = async () => {
+    safePostHog.capture('edit_inputs_clicked')
     goto('/0.5')
     await user.setValue('currentPage', '0.5')
   }
 
   const handleDownloadClick = async () => {
+    safePostHog.capture('download_pdf_clicked')
     showPdf = true
     await tick()
     const canvas = await html2canvas(pdfContainer, {scale: 2})
@@ -168,6 +183,9 @@
   }
 
   const handleViewClick = () => {
+    if (!showExplanation) {
+      safePostHog.capture('view_details_clicked')
+    }
     showExplanation = !showExplanation
     if (showExplanation) {
       viewText = 'HIDE DETAILS'
@@ -190,32 +208,87 @@
 
   const getFederalPayment = () => {
     if (currentTaxQuarter == 'Q1') {
-      return q1federalQuarterlyPayment
+      return federalPayment1
     }
     else if (currentTaxQuarter == 'Q2') {
-      return q2federalQuarterlyPayment
+      return federalPayment2
     }
     else if (currentTaxQuarter == 'Q3') {
-      return q3federalQuarterlyPayment
+      return federalPayment3
     }
     else {
-      return q4federalQuarterlyPayment
+      return federalPayment4
     }
   }
 
   const getStatePayment = () => {
     if (currentTaxQuarter == 'Q1') {
-      return q1StateQuarterlyPayment
+      return statePayment1
     }
     else if (currentTaxQuarter == 'Q2') {
-      return q2StateQuarterlyPayment
+      return statePayment2
     }
     else if (currentTaxQuarter == 'Q3') {
-      return q3StateQuarterlyPayment
+      return statePayment3
     }
     else {
-      return q4StateQuarterlyPayment
+      return statePayment4
     }
+  }
+
+  const handleFederalPaidDateChange = (date) => {
+    global.singleFederalPaidDate = date
+    payment.setValueByYear(currentTaxYear, 'singleFederalPaidDate', date)
+  }
+
+  const handleStatePaidDateChange = (date) => {
+    global.singleStatePaidDate = date
+    payment.setValueByYear(currentTaxYear, 'singleStatePaidDate', date)
+  }
+
+  const handleQ1FederalPaidDateChange = (date) => {
+    global.q1FederalPaidDate = date
+    payment.setValueByYear(currentTaxYear, 'q1FederalPaidDate', date)
+  }
+
+  const handleQ2FederalPaidDateChange = (date) => {
+    global.q2FederalPaidDate = date
+    payment.setValueByYear(currentTaxYear, 'q2FederalPaidDate', date)
+  }
+
+  const handleQ3FederalPaidDateChange = (date) => {
+    global.q3FederalPaidDate = date
+    payment.setValueByYear(currentTaxYear, 'q3FederalPaidDate', date)
+  }
+
+  const handleQ4FederalPaidDateChange = (date) => {
+    global.q4FederalPaidDate = date
+    payment.setValueByYear(currentTaxYear, 'q4FederalPaidDate', date)
+  }
+
+  const handleQ1StatePaidDateChange = (date) => {
+    global.q1StatePaidDate = date
+    payment.setValueByYear(currentTaxYear, 'q1StatePaidDate', date)
+  }
+
+  const handleQ2StatePaidDateChange = (date) => {
+    global.q2StatePaidDate = date
+    payment.setValueByYear(currentTaxYear, 'q2StatePaidDate', date)
+  }
+
+  const handleQ3StatePaidDateChange = (date) => {
+    global.q3StatePaidDate = date
+    payment.setValueByYear(currentTaxYear, 'q3StatePaidDate', date)
+  }
+
+  const handleQ4StatePaidDateChange = (date) => {
+    global.q4StatePaidDate = date
+    payment.setValueByYear(currentTaxYear, 'q4StatePaidDate', date)
+  }
+
+  const handleShowPaidDatesChange = () => {
+    global.showPaidDates = !global.showPaidDates
+    payment.setValueByYear(currentTaxYear, 'showPaidDates', global.showPaidDates)
   }
 
 </script>
@@ -231,27 +304,51 @@
     <Heading text={headingText} desktopwidth="550px" mobilewidth="275px" />
     {#if payPreference == 'single'}
       <SinglePayments 
-        federalDue={singleFederalDue} 
-        federalPaid={singleFederalPaid} 
-        federalRemaining={singleFederalRemaining} 
-        showState={stateSupported} 
-        stateName={currentState} 
-        stateDue={singleStateDue} 
-        statePaid={singleStatePaid} 
-        stateRemaining={singleStateRemaining} 
+        federalDue={federalDue} 
+        federalPaid={federalPaid} 
+        federalRemaining={federalRemaining} 
+        stateSupported={stateSupported} 
+        currentState={currentState} 
+        stateDue={stateDue} 
+        statePaid={statePaid} 
+        stateRemaining={stateRemaining} 
+        showPaidDates={global.showPaidDates}
+        singleFederalPaidDate={global.singleFederalPaidDate}
+        singleStatePaidDate={global.singleStatePaidDate}
+        onFederalPaidDateChange={handleFederalPaidDateChange}
+        onStatePaidDateChange={handleStatePaidDateChange}
+        onShowPaidDatesChange={handleShowPaidDatesChange}
       />
     {:else}
       <QuarterlyPayments 
-        federalPayment1={q1federalQuarterlyPayment} 
-        federalPayment2={q2federalQuarterlyPayment} 
-        federalPayment3={q3federalQuarterlyPayment} 
-        federalPayment4={q4federalQuarterlyPayment} 
-        showState={stateSupported} 
-        stateName={currentState} 
-        statePayment1={q1StateQuarterlyPayment} 
-        statePayment2={q2StateQuarterlyPayment} 
-        statePayment3={q3StateQuarterlyPayment} 
-        statePayment4={q4StateQuarterlyPayment} 
+        federalPayment1={federalPayment1} 
+        federalPayment2={federalPayment2} 
+        federalPayment3={federalPayment3} 
+        federalPayment4={federalPayment4} 
+        stateSupported={stateSupported} 
+        currentState={currentState} 
+        statePayment1={statePayment1} 
+        statePayment2={statePayment2} 
+        statePayment3={statePayment3} 
+        statePayment4={statePayment4} 
+        showPaidDates={global.showPaidDates}
+        q1FederalPaidDate={global.q1FederalPaidDate}
+        q2FederalPaidDate={global.q2FederalPaidDate}
+        q3FederalPaidDate={global.q3FederalPaidDate}
+        q4FederalPaidDate={global.q4FederalPaidDate}
+        q1StatePaidDate={global.q1StatePaidDate}
+        q2StatePaidDate={global.q2StatePaidDate}
+        q3StatePaidDate={global.q3StatePaidDate}
+        q4StatePaidDate={global.q4StatePaidDate}
+        onQ1FederalPaidDateChange={handleQ1FederalPaidDateChange}
+        onQ2FederalPaidDateChange={handleQ2FederalPaidDateChange}
+        onQ3FederalPaidDateChange={handleQ3FederalPaidDateChange}
+        onQ4FederalPaidDateChange={handleQ4FederalPaidDateChange}
+        onQ1StatePaidDateChange={handleQ1StatePaidDateChange}
+        onQ2StatePaidDateChange={handleQ2StatePaidDateChange}
+        onQ3StatePaidDateChange={handleQ3StatePaidDateChange}
+        onQ4StatePaidDateChange={handleQ4StatePaidDateChange}
+        onShowPaidDatesChange={handleShowPaidDatesChange}
       />
     {/if}
     <Options onEditClick={handleEditClick} onDownloadClick={handleDownloadClick} onViewClick={handleViewClick} viewText={viewText} />
@@ -262,16 +359,16 @@
     {/if}
     {#if payPreference == 'single'}
       {#if stateSupported && currentState}
-        <SinglePay federalSingleAmount={singleFederalRemaining} showState={true} stateName={currentState} stateSingleAmount={singleStateRemaining} isFederalPaid={isFederalPaid} isStatePaid={isStatePaid} />
+        <SinglePay federalSingleAmount={federalRemaining} stateSupported={true} currentState={currentState} stateSingleAmount={stateRemaining} isFederalPaid={isFederalPaid} isStatePaid={isStatePaid} />
       {:else}
-        <SinglePay federalSingleAmount={singleFederalRemaining} showState={false} isFederalPaid={isFederalPaid} isStatePaid={isStatePaid} />
+        <SinglePay federalSingleAmount={federalRemaining} stateSupported={false} isFederalPaid={isFederalPaid} isStatePaid={isStatePaid} />
       {/if}
       <Spacer />
     {:else}
       {#if stateSupported && currentState}
-        <QuarterlyPay federalQuarterAmount={getFederalPayment()} showState={true} stateName={currentState} stateQuarterAmount={getStatePayment()} quarterName={quarterName} isFederalPaid={isFederalPaid} isStatePaid={isStatePaid} />
+        <QuarterlyPay federalQuarterAmount={getFederalPayment()} stateSupported={true} currentState={currentState} stateQuarterAmount={getStatePayment()} quarterName={quarterName} isFederalPaid={isFederalPaid} isStatePaid={isStatePaid} />
       {:else}
-        <QuarterlyPay federalQuarterAmount={getFederalPayment()} showState={false} quarterName={quarterName} isFederalPaid={isFederalPaid} isStatePaid={isStatePaid} />
+        <QuarterlyPay federalQuarterAmount={getFederalPayment()} stateSupported={false} quarterName={quarterName} isFederalPaid={isFederalPaid} isStatePaid={isStatePaid} />
       {/if}     
       <Spacer />
     {/if}
@@ -279,23 +376,35 @@
     {#if showPdf}
       <div class="pdfcontainer" bind:this={pdfContainer}>
         <Pdf 
-          federalDue={singleFederalDue} 
-          federalPaid={singleFederalPaid} 
-          federalRemaining={singleFederalRemaining} 
-          showState={stateSupported} 
-          stateName={currentState} 
-          stateDue={singleStateDue} 
-          statePaid={singleStatePaid} 
-          stateRemaining={singleStateRemaining} 
-          federalPayment1={q1federalQuarterlyPayment} 
-          federalPayment2={q2federalQuarterlyPayment} 
-          federalPayment3={q3federalQuarterlyPayment} 
-          federalPayment4={q4federalQuarterlyPayment} 
-          statePayment1={q1StateQuarterlyPayment} 
-          statePayment2={q2StateQuarterlyPayment} 
-          statePayment3={q3StateQuarterlyPayment} 
-          statePayment4={q4StateQuarterlyPayment} 
+          payPreference={payPreference}
+          federalDue={federalDue} 
+          federalPaid={federalPaid} 
+          federalRemaining={federalRemaining} 
+          stateSupported={stateSupported} 
+          currentState={currentState} 
+          stateDue={stateDue} 
+          statePaid={statePaid} 
+          stateRemaining={stateRemaining} 
+          federalPayment1={federalPayment1} 
+          federalPayment2={federalPayment2} 
+          federalPayment3={federalPayment3} 
+          federalPayment4={federalPayment4} 
+          statePayment1={statePayment1} 
+          statePayment2={statePayment2} 
+          statePayment3={statePayment3} 
+          statePayment4={statePayment4} 
           explanation={explanation}
+          showPaidDates={global.showPaidDates}
+          singleFederalPaidDate={global.singleFederalPaidDate}
+          singleStatePaidDate={global.singleStatePaidDate}
+          q1FederalPaidDate={global.q1FederalPaidDate}
+          q2FederalPaidDate={global.q2FederalPaidDate}
+          q3FederalPaidDate={global.q3FederalPaidDate}
+          q4FederalPaidDate={global.q4FederalPaidDate}
+          q1StatePaidDate={global.q1StatePaidDate}  
+          q2StatePaidDate={global.q2StatePaidDate}
+          q3StatePaidDate={global.q3StatePaidDate}
+          q4StatePaidDate={global.q4StatePaidDate}
         /> 
       </div>
     {/if}

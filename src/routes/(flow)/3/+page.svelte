@@ -11,13 +11,18 @@
   import { doesStateHaveQuarterlyTaxes, convertStateToLowerCase, convertStateToUpperCase } from '$src/utilities/utilities'
   import { onMount } from 'svelte'
   import { user } from '$src/data/user.svelte'
-  
+  import { safePostHog } from '$src/utilities/posthog'
+  import { currentTaxYear } from '$src/settings/settings'
+
   const headingText = `What state do you reside in?`
   const buttonText = 'NEXT'
   global.makeButtonActive = false
-  let currentState = $state(null)
+  let currentState = $state()
 
   onMount(async () => {
+    if (await user.getValue('latestTaxYearPaid') != currentTaxYear) {
+      safePostHog.capture('flow_state_viewed')
+    }
     if (global.loggedIn) {
       if (await payment.getValue('currentState')) {
         currentState = convertStateToUpperCase(await payment.getValue('currentState'))

@@ -10,14 +10,27 @@
   import { payment } from '$src/data/payment.svelte'
   import { stateRules } from '$src/rules/state'
   import { getNoExpectedIncomeText } from '$src/utilities/federaltax'
+  import { safePostHog } from '$src/utilities/posthog'
+  import { currentTaxYear } from '$src/settings/settings'
+  import { onMount } from 'svelte'
 
   const headingText = `You don't need to pay any quarterly taxes this year`
   const subheadingText = `Since you don't expect to have any income this year you don't need to worry about quarterly taxes`
   const buttonText = 'DONE'
   global.makeButtonActive = true
 
+  onMount(async () => {
+    if (await user.getValue('latestTaxYearPaid') != currentTaxYear) {
+      safePostHog.capture('flow_no_payments_viewed', {
+        reason: 'no_expected_income'
+      })
+    }
+  })
+
   const handleDone = async () => {
-    if (global.loggedIn && await user.getValue('latestTaxYearPaid') == currentTaxYear) {
+    await payment.setValue('safeToSkipFederalPayment', true)
+    await payment.setValue('safeToSkipStatePayment', true)
+    if (global.loggedIn) {
       if (stateRules[await payment.getValue('currentState')].stateHasQuarterlyTaxes == true) { 
         await payment.setValue('stateSupported', true)
         await payment.setValue('q1federalQuarterlyPayment', 0)
@@ -51,6 +64,7 @@
     }
     else {
       goto('/')
+      await user.setValue('currentPage', 'home')
     }
   }
 

@@ -3,7 +3,7 @@
   import { goto } from '$app/navigation'
   import { supabase } from '$src/utilities/supabase'
   import { global } from '$src/data/global.svelte'
-  import { saveToUsers, saveToPayments } from '$src/utilities/database'
+  import { saveToPayments, createUserIfNotExists } from '$src/utilities/database'
   import { updateLoginState } from '$src/utilities/utilities'
   import Header from '$src/components/app/Header.svelte'
   import Avatar from '$src/components/app/Avatar.svelte'
@@ -34,15 +34,16 @@
           goto('/')
         }
         else if (getLocalStorage('loginLocation') == 'later') {
-          await saveToUsers()
+          await createUserIfNotExists()
           await saveToPayments()
-          goto('/')
           global.showResumeBanner = true
+          goto('/')
         }
         else if (getLocalStorage('loginLocation') == 'flow') {
-          goto('/checkout')
-          await saveToUsers()
+          await createUserIfNotExists()
           await saveToPayments()
+          goto('/checkout')
+          await user.setValue('currentPage', 'checkout')
         }
         else if (getLocalStorage('loginLocation') == 'dashboard') {
           goto(`/dashboard`)

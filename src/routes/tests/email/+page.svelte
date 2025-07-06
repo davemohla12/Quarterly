@@ -1,5 +1,6 @@
 <script>
   import axios from 'axios'
+  import { user } from '$src/data/user.svelte'
 
   const sendDashboardEmail = async () => {
     const response = await axios.post('/api/email', {
@@ -13,22 +14,25 @@
   }
 
   const sendFiveDayEmail = async () => {
+    const id = await user.getValue('id')
     const response = await axios.post('/api/email', {
       to: 'davemohla@gmail.com',
       subject: 'Your quarterly tax payment is due soon',
-      template: 'fiveday'
+      template: 'fiveday',
+      id: id
     })
     if (response.data.success) {
       console.log('Email sent successfully:', response.data)
     }
   }
 
-    
   const sendOneDayEmail = async () => {
+    const id = await user.getValue('id')
     const response = await axios.post('/api/email', {
       to: 'davemohla@gmail.com',
       subject: 'Your quarterly payment is due',
-      template: 'oneday'
+      template: 'oneday',
+      id: id
     })
     if (response.data.success) {
       console.log('Email sent successfully:', response.data)
@@ -62,6 +66,21 @@
     }
   }
 
+  const sendRatingEmail = async () => {
+    const response = await axios.post('/api/email', {
+      to: 'davemohla@gmail.com',
+      subject: 'How was your experience?',
+      template: 'rating',
+      id: '42'
+    })
+    if (response.data.success) {
+      console.log('Email sent successfully:', response.data)
+    }
+    else {
+      console.log(response.data)
+    }
+  }
+
   </script>
 
 <button onclick={sendDashboardEmail}>
@@ -78,4 +97,7 @@
 </button>
 <button onclick={sendConfirmationEmail}>
   Send Confirmation Email
+</button>
+<button onclick={sendRatingEmail}>
+  Send Rating Email
 </button>

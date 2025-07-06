@@ -8,10 +8,21 @@
   import { goto } from '$app/navigation'
   import { global } from '$src/data/global.svelte'
   import { user } from '$src/data/user.svelte'
+  import { onMount } from 'svelte'
+  import { safePostHog } from '$src/utilities/posthog'
+  import { currentTaxYear } from '$src/settings/settings'
   
   const headingText = `You'll need your federal and state tax returns from last year`
   const buttonText = 'NEXT'
   global.makeButtonActive = true
+
+  onMount(async () => {
+    if (await user.getValue('latestTaxYearPaid') != currentTaxYear) {
+      safePostHog.capture('flow_returns_viewed', {
+        returns: 'federal_and_state'
+      })
+    }
+  })
   
   const handleNext = () => {
     user.setValue('currentPage', '10')

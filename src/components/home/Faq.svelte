@@ -6,7 +6,7 @@
   <div class="header">Frequently Asked Questions</div>
   <div class="question"><span class="number">1.</span>What is Zenguider?</div>
   <div class="answer">
-    Zenguider is a web app that helps you calculate and stay on top of your federal and state quarterly income tax payments. It gives you a clear breakdown by quarter and reminds you before each due date so you never miss a payment.
+    Zenguider is a web app that helps you calculate and pay your federal and state quarterly income tax payments. It gives you a clear breakdown by quarter and reminds you before each due date so you never miss a payment.
   </div>
   <div class="question"><span class="number">2.</span>Why should I use it?</div>
   <div class="answer">
@@ -34,7 +34,7 @@
   </div>
   <div class="question"><span class="number">8.</span>How do I get started?</div>
   <div class="answer">
-    Just click "Get Started" on the homepage, answer a few questions, and Zenguider will walk you through everything step by step. It’s fast, easy, and designed to help you feel in control of your taxes.
+    Just click "Get Started" on the homepage, answer a few questions, and Zenguider will walk you through everything step-by-step. It’s fast, easy, and designed to help you feel in control of your taxes.
   </div>
   <div class="question"><span class="number">9.</span>What if I'm not satisfied?</div>
   <div class="answer">

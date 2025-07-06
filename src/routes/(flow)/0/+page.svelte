@@ -9,6 +9,7 @@
   import { goto } from '$app/navigation'
   import { user } from '$src/data/user.svelte'
   import { onMount } from 'svelte'
+  import { safePostHog } from '$src/utilities/posthog'
 
   const headingText = `Hi! I'm Zenguider`
   const subheadingText = `I'll help you estimate and pay your quarterly taxes`
@@ -16,6 +17,7 @@
   global.makeButtonActive = true
 
   onMount(() => {
+    safePostHog.capture('flow_started')
     window.addEventListener('popstate', handleBack)
     return () => {
       window.removeEventListener('popstate', handleBack)

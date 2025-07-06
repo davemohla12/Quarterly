@@ -3,7 +3,7 @@ import { PUBLIC_EMAIL_DOMAIN } from '$env/static/public'
 import { currentTaxQuarter } from '$src/settings/settings'
 import { q1DueDate, q2DueDate, q3DueDate, q4DueDate } from '$src/settings/settings'
 
-const getOneDayEmail = () => {
+const getOneDayEmail = (id) => {
   let dueDate
   if (currentTaxQuarter == 'Q1') {
     dueDate = q1DueDate.format('MMMM D, YYYY')
@@ -66,6 +66,23 @@ const getOneDayEmail = () => {
             </table>
           </td>
         </tr>
+        <tr>
+        <td align="center" style="padding-top: 15px;">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+              <td align="center">
+                <a href="${PUBLIC_DOMAIN}/reminders?id=${id}" style="font-family: Tahoma, sans-serif; font-size: 13px; color: #B4B3B3; text-decoration: none;">
+                  Manage Reminders
+                </a>
+                <span style="font-family: Tahoma, sans-serif; font-size: 13px; color: #B4B3B3; margin: 0 8px;">•</span>
+                <a href="${PUBLIC_DOMAIN}/confirmation?id=${id}&action=stop" style="font-family: Tahoma, sans-serif; font-size: 13px; color: #B4B3B3; text-decoration: none;">
+                  Stop Reminders
+                </a>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
       </table>
     </body>
   </html>

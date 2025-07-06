@@ -9,22 +9,39 @@
   import { user } from '$src/data/user.svelte'
   import { onMount } from 'svelte'
   import Loading from '$src/components/app/Loading.svelte'
+  import { page } from '$app/stores'
 
   const headingText = `Manage your reminders`
   const buttonText = 'SAVE'
   global.makeButtonActive = true
+  let hideBack = $state()
 
   let loading = $state(true)
   let sendReminders = $state(false)
   let sendFiveDayReminder = $state(false)
   let sendOneDayReminder = $state(false)
+  let id = $state('')
 
   onMount(async () => {
     loading = true
-    sendReminders = await user.getValue('sendReminders')
-    sendFiveDayReminder = await user.getValue('sendFiveDayReminder')
-    sendOneDayReminder = await user.getValue('sendOneDayReminder')
-    loading = false
+    if (global.loggedIn) {
+      hideBack = false
+      sendReminders = await user.getValue('sendReminders')
+      sendFiveDayReminder = await user.getValue('sendFiveDayReminder')
+      sendOneDayReminder = await user.getValue('sendOneDayReminder')
+      loading = false
+    }
+  })
+
+  $effect(async () => {
+    id = $page.url.searchParams.get('id') || ''
+    if (id) {
+      hideBack = true
+      sendReminders = await user.getValueById('sendReminders', id)
+      sendFiveDayReminder = await user.getValueById('sendFiveDayReminder', id)
+      sendOneDayReminder = await user.getValueById('sendOneDayReminder', id)
+      loading = false
+    }
   })
 
   const handleSelect = (sendRemindersValue, sendFiveDayReminderValue, sendOneDayReminderValue) => {
@@ -34,16 +51,24 @@
   }
 
   const handleSave = async () => {
-    user.currentPage = 'dashboard'
-    goto('/dashboard')
-    await user.setValue('sendReminders', sendReminders)
-    await user.setValue('sendFiveDayReminder', sendFiveDayReminder)
-    await user.setValue('sendOneDayReminder', sendOneDayReminder)
+    if (id) {
+      await user.setValueById('sendReminders', id, sendReminders)
+      await user.setValueById('sendFiveDayReminder', id, sendFiveDayReminder)
+      await user.setValueById('sendOneDayReminder', id, sendOneDayReminder)
+      goto(`/confirmation?id=${id}&action=update`)
+    }
+    else { 
+      user.currentPage = 'dashboard'
+      goto('/dashboard')
+      await user.setValue('sendReminders', sendReminders)
+      await user.setValue('sendFiveDayReminder', sendFiveDayReminder)
+      await user.setValue('sendOneDayReminder', sendOneDayReminder)
+    }
   }
 
 </script>
 
-<Header showAccountIcon={true} />
+<Header hideBack={hideBack} showAccountIcon={true} />
 <Avatar />
 {#if loading}
   <Loading />

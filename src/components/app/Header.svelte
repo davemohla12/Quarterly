@@ -7,15 +7,18 @@
   import { supabase } from '$src/utilities/supabase'
   import { user } from '$src/data/user.svelte'
   import { clearLocalStorage } from '$src/utilities/utilities'
-  import axios from 'axios'
+  import { safePostHog } from '$src/utilities/posthog'
 
   let props = $props()
-  let hideBack = props.hideBack || false
-  let hideIcons = props.hideIcons || false
-  let hideReset = props.hideReset || false
-  let onBack = props.onBack || (() => {})
+  let hideBack = $derived(props.hideBack || false)
+  let hideIcons = $derived(props.hideIcons || false)
+  let hideReset = $derived(props.hideReset || false)
+  let showDownload = $derived(props.showDownload || false)
+  let ondownloadclick = $derived(props.ondownloadclick || (() => {}))
+  let onBack = $derived(props.onBack || (() => {}))
+  let showAccountIcon = $derived(props.showAccountIcon || false)
   let showAccountMenu = $state(false)
-  let showAccountIcon = props.showAccountIcon || false
+  let showAdminLogout = $derived(props.showAdminLogout || false)
 
   onMount(() => {
       document.addEventListener('click', handleClickOutside)
@@ -58,22 +61,19 @@
   }
 
   const handleReminders = () => {
+    safePostHog.capture('reminders_clicked')
     goto('/reminders')
     showAccountMenu = false
   }
 
-  const handleSubscription = async () => {
+  const handlePriorYears = () => {  
+    safePostHog.capture('prior_years_clicked')
+    goto('/prior')
     showAccountMenu = false
-    try { 
-      const response = await axios.post('/api/subscription', {email: global.email})
-      window.location.href = response.data.url
-    } 
-    catch (error) {
-      console.log(error)
-    }
   }
 
   const handleSupport = () => {
+    safePostHog.capture('support_clicked')
     goto('/support')
     showAccountMenu = false
   }
@@ -83,6 +83,15 @@
     clearLocalStorage()
     goto('/0')
     await user.setValue('currentPage', '0')
+  }
+
+  const handleDownloadClick = () => {
+    ondownloadclick()
+  }
+
+  const handleAdminLogout = () => {
+    clearLocalStorage()
+    goto('/admin/login')
   }
 
 </script>
@@ -103,12 +112,22 @@
           <img class="reset" src="/images/reset.png" alt="Reset" />
         </Clickable>
       {/if}
+      {#if showDownload}
+        <Clickable onclick={handleDownloadClick}>
+          <img class="download" src="/images/download.png" alt="Download" />
+        </Clickable>
+      {/if}
       {#if global.loggedIn && showAccountIcon}
         <Clickable onclick={handleAccountClick}>
           <img class="account" src="/images/account.png" alt="Account" />
         </Clickable>
       {:else if global.loggedIn}
         <Clickable onclick={handleLogout}>
+          <img class="logout" src="/images/logout.png" alt="Logout" />
+        </Clickable>
+      {/if}
+      {#if showAdminLogout}
+        <Clickable onclick={handleAdminLogout}>
           <img class="logout" src="/images/logout.png" alt="Logout" />
         </Clickable>
       {/if}
@@ -120,8 +139,8 @@
           <Clickable onclick={handleReminders}>
             <div class="item">Reminders</div>
           </Clickable>
-          <Clickable onclick={handleSubscription}>
-            <div class="item">Subscription</div>
+          <Clickable onclick={handlePriorYears}>
+            <div class="item">Prior Years</div>
           </Clickable>
           <div class="divider"></div>
           <Clickable onclick={handleSupport}>
@@ -164,6 +183,12 @@
     width: 18px;
     height: 21px;
     margin-right: 10px;
+  }
+  .download {
+    width: 26px;
+    height: 26px;
+    margin-left: 15px;  
+    margin-right: 5px;
   }
   .logout {
     width: 21px;
@@ -216,6 +241,9 @@
       margin-left: 20px;
       width: 134px;
       height: 33px;
+    }
+    .download { 
+      margin-right: 15px;
     }
     .logout {
       margin-right: 10px;

@@ -13,7 +13,7 @@
   import { global } from '$src/data/global.svelte'
   import { supabase } from '$src/utilities/supabase'
   import ErrorText from '$src/components/app/ErrorText.svelte'
-  import { saveToUsers, saveToPayments } from '$src/utilities/database'
+  import { saveToPayments, createUserIfNotExists } from '$src/utilities/database'
   import { user } from '$src/data/user.svelte'
   import { getLocalStorage } from '$src/utilities/utilities'
 
@@ -99,15 +99,16 @@
         goto('/')
       }
       else if (getLocalStorage('loginLocation') == 'later') {
-        await saveToUsers()
+        await createUserIfNotExists()
         await saveToPayments()
-        goto('/')
         global.showResumeBanner = true
+        goto('/')
       }
       else if (getLocalStorage('loginLocation') == 'flow') {
-        goto('/checkout')
-        await saveToUsers()
+        await createUserIfNotExists()
         await saveToPayments()
+        goto('/checkout')
+        await user.setValue('currentPage', 'checkout')
       }
       else if (getLocalStorage('loginLocation') == 'dashboard') {
         goto(`/dashboard`)
@@ -136,11 +137,11 @@
         global.justSignedUp = true
         global.email = email
         if (getLocalStorage('loginLocation') == 'flow') {
-          await saveToUsers()
+          await createUserIfNotExists()
           await saveToPayments()
         }
         else if (getLocalStorage('loginLocation') == 'later') {
-          await saveToUsers()
+          await createUserIfNotExists()
           await saveToPayments()
         }
         else if (getLocalStorage('loginLocation') == 'dashboard') {

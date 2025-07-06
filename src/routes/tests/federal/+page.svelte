@@ -4,17 +4,17 @@
 
   let currentTaxQuarter = 'Q2'
   let filingStatus = 'married'
-  let federalTaxPaidLastYear = 20000
+  let federalTaxPaidLastYear = 18000
   let adjustedGrossIncomeLastYear = 180000
-  let incomeExpectationThisYear = 'increase'
-  let expectedTotalIncomeThisYear = 100000
-  let businessExpensesThisYear = 10000
+  let incomeExpectationThisYear = 'decrease'
+  let expectedTotalIncomeThisYear = 120000
+  let businessExpensesThisYear = 15000
   let retirementContributionsThisYear = 8000
-  let studentLoanInterestThisYear = 500
-  let healthInsuranceThisYear = 5000
-  let otherDeductionsThisYear = 1500
-  let withholdings = 10000
-  let q1PaymentMade = 0
+  let studentLoanInterestThisYear = 0
+  let healthInsuranceThisYear = 6000
+  let otherDeductionsThisYear = 2000
+  let withholdings = 2000
+  let q1PaymentMade = 1500
   let q2PaymentMade = 0
   let q3PaymentMade = 0
 

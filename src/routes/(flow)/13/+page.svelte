@@ -9,14 +9,26 @@
   import { getBelowMinimumTaxText } from '$src/utilities/federaltax'
   import { payment } from '$src/data/payment.svelte'
   import { user } from '$src/data/user.svelte'
+  import { safePostHog } from '$src/utilities/posthog'
+  import { currentTaxYear } from '$src/settings/settings'
+  import { onMount } from 'svelte'
 
   const headingText = `You don't need to pay any federal quarterly taxes this year`
   const subheadingText = `Since you're living in multiple states this year, I can't estimate your state taxes — but you're all set on the federal side`
   const buttonText = 'DONE'
   global.makeButtonActive = true
+
+  onMount(async () => {
+    if (await user.getValue('latestTaxYearPaid') != currentTaxYear) {
+      safePostHog.capture('flow_no_payments_viewed', {
+        reason: 'below_minimum_threshold'
+      })
+    }
+  })
   
   const handleDone = async () => {
-    if (global.loggedIn && await user.getValue('latestTaxYearPaid') == currentTaxYear) {
+    await payment.setValue('safeToSkipFederalPayment', true)
+    if (global.loggedIn) {
       await payment.setValue('stateSupported', false)
       await payment.setValue('q1federalQuarterlyPayment', 0)
       await payment.setValue('q2federalQuarterlyPayment', 0)
@@ -31,6 +43,7 @@
     }
     else {
       goto('/')
+      await user.setValue('currentPage', 'home')
     }
   }
 

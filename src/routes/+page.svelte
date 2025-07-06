@@ -13,10 +13,12 @@
   import { global } from '$src/data/global.svelte'
   import { onMount } from 'svelte'
   import { clearLocalStorage, setLocalStorage } from '$src/utilities/utilities'
+  import { safePostHog } from '$src/utilities/posthog'
 
   onMount(async () => {
     clearLocalStorage()
     setLocalStorage('loginLocation', 'home')
+    safePostHog.capture('home_viewed')
   })
   
 </script>

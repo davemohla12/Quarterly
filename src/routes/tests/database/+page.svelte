@@ -1,5 +1,5 @@
 <script>
-  import { getFromPayments, setInPayments, saveToPayments, getFromUsers, setInUsers, saveToUsers, getEmails, addToUsers, createBlankPayment } from '$src/utilities/database'
+  import { getFromPayments, setInPayments, saveToPayments, getFromUsers, setInUsers, saveToUsers, getEmails, addToUsers, createBlankPayment, getPriorYears } from '$src/utilities/database'
   import { setLocalStorage } from '$src/utilities/utilities'
 
   const handleSaveToPayments = async () => {
@@ -51,6 +51,13 @@
     console.log(`Added ${year} to ${field}`)
   }
 
+  const handleGetPriorYears = async () => {
+    const years = await getPriorYears()
+    for (const year of years) {
+      console.log(`${year}`)
+    }
+  }
+
 </script>
 
 <button onclick={handleSaveToPayments}>Save to Payments</button>
@@ -62,6 +69,8 @@
 <button onclick={handleGetFromUsers}>Get from Users</button>
 <button onclick={handleGetEmails}>Get Emails</button>
 <button onclick={handleAddToUsers}>Add New Paid Tax Year</button>
+<button onclick={handleGetPriorYears}>Get Prior Tax Year</button>
+
 
 <style>
   button {

@@ -1,47 +1,73 @@
 <script>
   import { payment } from '$src/data/payment.svelte'
-  import { onMount } from 'svelte'
   import { formatCurrency } from '$src/utilities/utilities'
   import Clickable from '$src/components/app/Clickable.svelte'
   import { federalRules } from '$src/rules/federal'
   import { stateRules } from '$src/rules/state'
   import { convertStateToAllUpperCase } from '$src/utilities/utilities'
   import { fade } from 'svelte/transition'
+  import dayjs from 'dayjs'
+  import { global } from '$src/data/global.svelte'
+  import { safePostHog } from '$src/utilities/posthog'
 
   let props = $props()
   let federalSingleAmount = $derived(props.federalSingleAmount || 0)
-  let showState = $derived(props.showState || false)
-  let stateName = $derived(props.stateName || '')
+  let stateSupported = $derived(props.stateSupported || false)
+  let currentState = $derived(props.currentState || '')
   let stateSingleAmount = $derived(props.stateSingleAmount || 0)
   let isFederalPaid = $derived(props.isFederalPaid || false)
   let isStatePaid = $derived(props.isStatePaid || false)
 
   const handleFederalClick = () => {
+    safePostHog.capture('pay_button_clicked', {
+        payee: 'federal',
+        payPreference: 'single'
+      })
     window.open(federalRules.payLink, '_blank')
   }
 
   const handleStateClick = () => {
-    window.open(stateRules[stateName].payLink, '_blank')
+    safePostHog.capture('pay_button_clicked', {
+        payee: 'state',
+        payPreference: 'single'
+      })
+    window.open(stateRules[currentState].payLink, '_blank')
   }
 
   const handleMarkPaidFederal = async () => {
+    safePostHog.capture('mark_paid_button_clicked', {
+        payee: 'federal',
+        payPreference: 'single'
+      })
     isFederalPaid = true
     await payment.setValue('singleFederalMarkPaid', true)
+    global.singleFederalPaidDate = dayjs().toISOString()
+    await payment.setValue('singleFederalPaidDate', global.singleFederalPaidDate)
   }
 
   const handleMarkPaidState = async () => {
+    safePostHog.capture('mark_paid_button_clicked', {
+        payee: 'state',
+        payPreference: 'single'
+      })
     isStatePaid = true  
-    await payment.setValue('singleStateMarkPaid', true)
+    await payment.setValue('singleStateMarkPaid', true) 
+    global.singleStatePaidDate = dayjs().toISOString()
+    await payment.setValue('singleStatePaidDate', global.singleStatePaidDate)
   }
 
   const handleMarkNotPaidFederal = async () => {
     isFederalPaid = false
     await payment.setValue('singleFederalMarkPaid', false)
+    global.singleFederalPaidDate = null
+    await payment.setValue('singleFederalPaidDate', global.singleFederalPaidDate)
   }
 
   const handleMarkNotPaidState = async () => {
     isStatePaid = false
     await payment.setValue('singleStateMarkPaid', false)
+    global.singleStatePaidDate = null
+    await payment.setValue('singleStatePaidDate', global.singleStatePaidDate)
   }   
 
 </script>
@@ -77,8 +103,8 @@
     <div class="description">No federal payment is needed this year</div>
     <div class="spacer"></div>
   {/if} 
-  {#if showState}
-    <div class="header">{convertStateToAllUpperCase(stateName)}</div>
+  {#if stateSupported}
+    <div class="header">{convertStateToAllUpperCase(currentState)}</div>
     {#if stateSingleAmount > 0}
       {#if !isStatePaid}
         <div in:fade={{ duration: 200 }} >
@@ -123,13 +149,13 @@
     font-family: 'Merriweather', serif;
     font-size: 24px;
     font-weight: var(--regular);
-    margin-left: 20px;
-    margin-right: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
     margin-top: 7px;
     text-align: center;
   }
   .header {
-    font-size: 18px;
+    font-size: 17px;
     font-weight: var(--bold);
     text-align: center;
     margin-top: 20px;

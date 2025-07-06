@@ -4,9 +4,9 @@ const getCurrentTaxYear = () => {
   const currentMonth = dayjs().format('MMMM')
   const currentTaxYear = dayjs().year()
   if (currentMonth == 'January' || currentMonth == 'February') {
-    return currentTaxYear - 1
+    return Number((currentTaxYear) - 1)
     } else {
-      return currentTaxYear
+      return Number(currentTaxYear)
   }
   // return 2026
 }
@@ -17,9 +17,9 @@ const getCurrentTaxQuarter = () => {
     return 'Q1'
   } else if (currentMonth == 'May' || currentMonth == 'June') {
     return 'Q2'
-  } else if (currentMonth == 'August' || currentMonth == 'September' || currentMonth == 'October' || currentMonth == 'November') {
+  } else if (currentMonth == 'July' || currentMonth == 'August' || currentMonth == 'September') {
     return 'Q3'
-  } else {
+  } else if (currentMonth == 'October' || currentMonth == 'November' || currentMonth == 'December' || currentMonth == 'January') {
     return 'Q4'
   }
 }
@@ -33,5 +33,6 @@ const q4DueDate = dayjs('2025-01-15')
 const price = 39
 const priceId = 'price_1RdtoyPNrBqC31YHEXCpXBPw'
 const showCheckout = true
+const adminPasscode = '1234'
 
-export { currentTaxYear, currentTaxQuarter, q1DueDate, q2DueDate, q3DueDate, q4DueDate, price, priceId, showCheckout }
+export { currentTaxYear, currentTaxQuarter, q1DueDate, q2DueDate, q3DueDate, q4DueDate, price, priceId, showCheckout, adminPasscode }

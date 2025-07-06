@@ -60,7 +60,6 @@ const getNoExpectedIncomeText = () => {
   return explanation
 }
 
-
 const getFederalTaxes = (incomeExpectationThisYear, federalTaxPaidLastYear, adjustedGrossIncomeLastYear, filingStatus, expectedTotalIncomeThisYear, businessExpensesThisYear, retirementContributionsThisYear, studentLoanInterestThisYear, healthInsuranceThisYear, otherDeductionsThisYear) => {
   let safeHarborFederalTaxesThisYear 
   let adjustedGrossIncomeThisYear 

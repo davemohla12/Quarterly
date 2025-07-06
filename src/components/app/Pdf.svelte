@@ -1,16 +1,16 @@
 <script>
   import QuarterlyPayments from '$src/components/app/QuarterlyPayments.svelte'
   import Explanation from '$src/components/app/Explanation.svelte'
-  import { payment } from '$src/data/payment.svelte'
   import SinglePayments from '$src/components/app/SinglePayments.svelte'
   import { currentTaxYear } from '$src/settings/settings'
 
   let props = $props()
+  let payPreference = $derived(props.payPreference)
   let federalDue = $derived(props.federalDue)
   let federalPaid = $derived(props.federalPaid)
   let federalRemaining = $derived(props.federalRemaining)
-  let showState = $derived(props.showState)
-  let stateName = $derived(props.stateName)
+  let stateSupported = $derived(props.stateSupported)
+  let currentState = $derived(props.currentState)
   let stateDue = $derived(props.stateDue)
   let statePaid = $derived(props.statePaid)
   let stateRemaining = $derived(props.stateRemaining)
@@ -23,27 +23,42 @@
   let statePayment3 = $derived(props.statePayment3)
   let statePayment4 = $derived(props.statePayment4)
   let explanation = $derived(props.explanation)
+  let showPaidDates = $derived(props.showPaidDates)
+  let singleFederalPaidDate = $derived(props.singleFederalPaidDate)
+  let singleStatePaidDate = $derived(props.singleStatePaidDate)
+  let q1FederalPaidDate = $derived(props.q1FederalPaidDate)
+  let q2FederalPaidDate = $derived(props.q2FederalPaidDate)
+  let q3FederalPaidDate = $derived(props.q3FederalPaidDate)
+  let q4FederalPaidDate = $derived(props.q4FederalPaidDate)
+  let q1StatePaidDate = $derived(props.q1StatePaidDate)
+  let q2StatePaidDate = $derived(props.q2StatePaidDate)
+  let q3StatePaidDate = $derived(props.q3StatePaidDate)
+  let q4StatePaidDate = $derived(props.q4StatePaidDate)
 
 </script>
 
 <div class="center">
   <img class="logo" src="/images/logo.png" alt="Logo"/>
-  {#if payment.payPreference == 'single'}
+  {#if payPreference == 'single' }
     <div class="headline">Your remaining payment for {currentTaxYear}</div>
   {:else}
     <div class="headline">Your quarterly payments for {currentTaxYear}</div>
   {/if}
 </div>
-{#if payment.payPreference == 'single'}
+{#if payPreference == 'single'}
   <SinglePayments 
     federalDue={federalDue} 
     federalPaid={federalPaid} 
     federalRemaining={federalRemaining} 
-    showState={payment.stateSupported} 
-    stateName={payment.currentState} 
+    stateSupported={stateSupported} 
+    currentState={currentState} 
     stateDue={stateDue} 
     statePaid={statePaid} 
     stateRemaining={stateRemaining} 
+    showPaidDates={showPaidDates}
+    singleFederalPaidDate={singleFederalPaidDate}
+    singleStatePaidDate={singleStatePaidDate}
+    hideMoreMenu={true}
   />
 {:else} 
   <QuarterlyPayments 
@@ -51,16 +66,28 @@
     federalPayment2={federalPayment2} 
     federalPayment3={federalPayment3} 
     federalPayment4={federalPayment4} 
-    showState={showState} 
-    stateName={stateName} 
+    stateSupported={stateSupported} 
+    currentState={currentState} 
     statePayment1={statePayment1} 
     statePayment2={statePayment2} 
     statePayment3={statePayment3} 
     statePayment4={statePayment4} 
+    showPaidDates={showPaidDates}
+    q1FederalPaidDate={q1FederalPaidDate}
+    q2FederalPaidDate={q2FederalPaidDate}
+    q3FederalPaidDate={q3FederalPaidDate}
+    q4FederalPaidDate={q4FederalPaidDate}
+    q1StatePaidDate={q1StatePaidDate}
+    q2StatePaidDate={q2StatePaidDate}
+    q3StatePaidDate={q3StatePaidDate}
+    q4StatePaidDate={q4StatePaidDate}
+    hideBlankPayments={true}
+    hideMoreMenu={true}
   />
 {/if}
+<div class="explanation">Explanation</div>
 <div class="center">
-  <Explanation explanation={explanation} showHide={false} />
+  <Explanation explanation={explanation} showHide={false} smallFont={true} />
 </div>
 
 <style>
@@ -79,5 +106,13 @@
     font-size: 24px;
     font-weight: var(--regular);
     margin-top: 20px;
+  }
+  .explanation {
+    font-family: 'Merriweather', serif;
+    font-size: 24px;
+    font-weight: var(--regular);
+    text-align: center;
+    width: 100%;
+    margin-top: 10px;
   }
 </style>

@@ -54,22 +54,22 @@
       await payment.setValue('singleFederalPaid', 0)
       await payment.setValue('singleFederalRemaining', 0)
       await payment.setValue('explanation', getBelowMinimumTaxText())
-      if (await payment.getValue('inMultipleStates')) {
-        goto(13)
+      if (await payment.getValue('livingInCurrentStateAllThisYear') == false) {
+        goto('/13')
         await user.setValue('currentPage', '13')
       }
       else {
-        goto(12)
+        goto('/12')
         await user.setValue('currentPage', '12')
       }
     }
     else {
-      if (await payment.getValue('stateSupported') && stateRules[await payment.getValue('currentState')].lastYearSafeHarborRule) {
-        goto(14)
+      if (await payment.getValue('stateSupported') && stateRules[await payment.getValue('currentState')].lastYearSafeHarborRule && await payment.getValue('livedInCurrentStateAllLastYear')) {
+        goto('/14')
         await user.setValue('currentPage', '14')
       }
       else {
-        goto(17)
+        goto('/17')
         await user.setValue('currentPage', '17')
       }
     }

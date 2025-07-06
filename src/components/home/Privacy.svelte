@@ -8,7 +8,7 @@
     </div>
     <div class="pointcontainer">
       <div class="number">2.</div>
-      <div class="point"><span class="section">Usage</span> – We use the information you provide to generate your quarterly tax estimates, send you reminders, maintain and improve our service, communicate with you about your account and subscription, and respond to your support requests. Your information is never sold to third parties.</div>
+      <div class="point"><span class="section">Usage</span> – We use the information you provide to generate your quarterly tax estimates, send you reminders, maintain and improve our service, communicate with you about your account, and respond to your support requests. Your information is never sold to third parties.</div>
     </div>
     <div class="pointcontainer">
       <div class="number">3.</div>
@@ -60,10 +60,11 @@
     margin-top: 20px;
     display: flex;
     flex-direction: row;
-    gap: 10px;
   }
   .number { 
     font-weight: var(--bold);
+    flex-shrink: 0;
+    margin-right: 15px;
   }
   .section {
     font-weight: var(--bold);

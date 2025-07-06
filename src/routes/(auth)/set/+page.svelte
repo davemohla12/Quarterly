@@ -8,7 +8,7 @@
   import PasswordInput from '$src/components/app/PasswordInput.svelte'
   import { supabase } from '$src/utilities/supabase' 
   import { onMount } from 'svelte'
-  import { saveToUsers, saveToPayments } from '$src/utilities/database'
+  import { saveToPayments, createUserIfNotExists } from '$src/utilities/database'
   import { user } from '$src/data/user.svelte'
   import { getLocalStorage } from '$src/utilities/utilities'  
   
@@ -59,15 +59,17 @@
         goto('/')
       }
       else if (getLocalStorage('loginLocation') == 'later') {
-        await saveToUsers()
+        await createUserIfNotExists()
         await saveToPayments()
-        goto('/')
         global.showResumeBanner = true
+        goto('/')
       }
       else if (getLocalStorage('loginLocation') == 'flow') {
-        goto('/checkout')
-        await saveToUsers()
+        await createUserIfNotExists()
         await saveToPayments()
+        goto('/checkout')
+        await user.setValue('currentPage', 'checkout')
+
       }
       else if (getLocalStorage('loginLocation') == 'dashboard') {
         goto(`/dashboard`)

@@ -55,7 +55,7 @@ const getIncomeExpectationText = (incomeExpectationThisYear) => {
   }
 }
 
-const getStateTaxes = (state, incomeExpectationThisYear, stateTaxPaidLastYear, stateIncomeLastYear, filingStatus, expectedTotalIncomeThisYear, businessExpensesThisYear, retirementContributionsThisYear, studentLoanInterestThisYear, healthInsuranceThisYear, otherDeductionsThisYear, exemptions) => {
+const getStateTaxes = (state, livedInCurrentStateAllLastYear, incomeExpectationThisYear, stateTaxPaidLastYear, stateIncomeLastYear, filingStatus, expectedTotalIncomeThisYear, businessExpensesThisYear, retirementContributionsThisYear, studentLoanInterestThisYear, healthInsuranceThisYear, otherDeductionsThisYear, exemptions) => {
   let safeHarborStateTaxesThisYear 
   let stateAdjustableGrossIncomeThisYear 
   let taxableStateIncomeThisYear
@@ -67,7 +67,7 @@ const getStateTaxes = (state, incomeExpectationThisYear, stateTaxPaidLastYear, s
     healthInsuranceThisYear,
     otherDeductionsThisYear
   }  
-  if ((incomeExpectationThisYear == 'increase' || incomeExpectationThisYear == 'same') && stateRules[state].lastYearSafeHarborRule) {
+  if ((incomeExpectationThisYear == 'increase' || incomeExpectationThisYear == 'same') && stateRules[state].lastYearSafeHarborRule && livedInCurrentStateAllLastYear) {
     let safeHarborHighIncome = stateRules[state].lastYearSafeHarborHighIncome
     let safeHarborPercentage
     if (safeHarborHighIncome == null) {
@@ -87,7 +87,6 @@ const getStateTaxes = (state, incomeExpectationThisYear, stateTaxPaidLastYear, s
     initialExplanation = `For your ${convertStateToUpperCase(state)} payments, we can use ${convertStateToUpperCase(state)} safe harbor rules to minimize the quarterly taxes you pay while preventing penalties. `
     initialExplanation += `Since your income is expected to ${getIncomeExpectationText(incomeExpectationThisYear)} this year and ${convertStateToUpperCase(state)} supports it, we can use the amount you paid in taxes last year to determine your quarterly payments this year. `
     initialExplanation += `Per ${convertStateToUpperCase(state)} tax rules, given your income, you can pay ${convertNumberToRoundedCurrency(safeHarborStateTaxesThisYear)} in total quarterly payments with no penalty, which is ${Math.round(safeHarborPercentage * 100)}% of ${convertNumberToRoundedCurrency(stateTaxPaidLastYear)}, which is what you paid last year in ${convertStateToUpperCase(state)} taxes. `
-
   } 
   else {
     if (stateRules[state].thisYearIncomeCalculationType.type === 'federalAGI') {
@@ -104,11 +103,14 @@ const getStateTaxes = (state, incomeExpectationThisYear, stateTaxPaidLastYear, s
     safeHarborStateTaxesThisYear = calculateTax(state, taxableStateIncomeThisYear, filingStatus)
     const multiplier = stateRules[state].thisYearSafeHarborUsedPercentage || 1
     safeHarborStateTaxesThisYear = multiplier * safeHarborStateTaxesThisYear
-    initialExplanation = `For your ${convertStateToUpperCase(state)} payments, we can use ${convertStateToUpperCase(state)} safe harbor rules to minimize the quarterly taxes you pay while preventing penalties. `
-    if (!stateRules[state].lastYearSafeHarborRule) {
-      initialExplanation += `Since your income is expected to ${getIncomeExpectationText(incomeExpectationThisYear)} this year and ${convertStateToUpperCase(state)} supports it, we can use the amount you paid in taxes last year to determine your quarterly payments this year. `
+    if (!livedInCurrentStateAllLastYear) {
+      initialExplanation += `Since you lived in multiple states last year, we can use ${convertStateToUpperCase(state)} safe harbor rules applied to this year's expected income to minimize the quarterly taxes you pay while preventing penalties. `
+    }
+    else if (!stateRules[state].lastYearSafeHarborRule) {
+      initialExplanation = `For your ${convertStateToUpperCase(state)} payments, we can use ${convertStateToUpperCase(state)} safe harbor rules applied to this year's expected income to minimize the quarterly taxes you pay while preventing penalties. `
     }
     else { 
+      initialExplanation = `For your ${convertStateToUpperCase(state)} payments, we can use ${convertStateToUpperCase(state)} safe harbor rules to minimize the quarterly taxes you pay while preventing penalties. `
       initialExplanation += `Since your income is expected to ${getIncomeExpectationText(incomeExpectationThisYear)} this year, we need to estimate your annual ${convertStateToUpperCase(state)} taxes this year and then use that to determine your quarterly payments. `
     }
     initialExplanation += `To estimate your annual ${convertStateToUpperCase(state)} taxes this year, we take your expected total income this year of ${convertNumberToRoundedCurrency(expectedTotalIncomeThisYear)} and subtract out the business deductions and exemptions that ${convertStateToUpperCase(state)} allows to get an adjusted state income of ${convertNumberToRoundedCurrency(stateAdjustableGrossIncomeThisYear)}. `
@@ -123,7 +125,6 @@ const getStateTaxes = (state, incomeExpectationThisYear, stateTaxPaidLastYear, s
   }
   return taxes
 }
-
 
 const getStateSinglePayment = (state, yearlyTaxes, withholdings, payment1, payment2, payment3, initialExplanation) => {
   let due = 0

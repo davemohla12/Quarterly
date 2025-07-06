@@ -9,18 +9,28 @@
   import { payment } from '$src/data/payment.svelte'
   import { getNoIncomeText } from '$src/utilities/federaltax'
   import { user } from '$src/data/user.svelte'
+  import { safePostHog } from '$src/utilities/posthog'
   import { currentTaxYear } from '$src/settings/settings'
+  import { onMount } from 'svelte'
   
   const headingText = `You don't need to pay any quarterly taxes this year`
   const subheadingText = `Since all your income has taxes automatically withheld, the IRS doesn't require you to make separate quarterly payments.`
   const buttonText = 'DONE' 
   global.makeButtonActive = true
 
+  onMount(async () => {
+    if (await user.getValue('latestTaxYearPaid') != currentTaxYear) {
+      safePostHog.capture('flow_no_payments_viewed', {
+        reason: 'all_income_withheld'
+      })
+    }
+  })
+
   const handleDone = async () => {
-    if (global.loggedIn && await user.getValue('latestTaxYearPaid') == currentTaxYear) {
+    if (global.loggedIn) {
       await payment.setValue('stateSupported', true)
       await payment.setValue('currentState', 'State')
-      awaitpayment.setValue('q1federalQuarterlyPayment', 0)
+      await payment.setValue('q1federalQuarterlyPayment', 0)
       await payment.setValue('q2federalQuarterlyPayment', 0)
       await payment.setValue('q3federalQuarterlyPayment', 0)
       await payment.setValue('q4federalQuarterlyPayment', 0)
@@ -40,6 +50,7 @@
     }
     else {
       goto('/')
+      await user.setValue('currentPage', 'home')
     }
   }
 

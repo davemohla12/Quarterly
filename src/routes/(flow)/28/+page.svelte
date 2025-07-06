@@ -10,6 +10,7 @@
   import { getStateTaxes, getStateQuarterlyPayment, getStateSinglePayment } from '$src/utilities/statetax'
   import { currentTaxQuarter, currentTaxYear } from '$src/settings/settings'
   import { user } from '$src/data/user.svelte'
+  import { setLocalStorage } from '$src/utilities/utilities'
 
   onMount(async () => {
     await payment.setValue('taxYear', currentTaxYear)
@@ -27,7 +28,7 @@
       await payment.setValue('explanation', federalSinglePayment.explanation)
 
       if (await payment.getValue('stateSupported')) {
-        let stateTaxes = getStateTaxes(await payment.getValue('currentState'), await payment.getValue('incomeExpectationThisYear'), await payment.getValue('stateTaxPaidLastYear'), await payment.getValue('stateIncomeLastYear'), await payment.getValue('filingStatus'), await payment.getValue('expectedTotalIncomeThisYear'), await payment.getValue('businessExpensesThisYear'), await payment.getValue('retirementContributionsThisYear'), await payment.getValue('studentLoanInterestThisYear'), await payment.getValue('healthInsuranceThisYear'), await payment.getValue('otherDeductionsThisYear'), await payment.getValue('exemptions'))
+        let stateTaxes = getStateTaxes(await payment.getValue('currentState'), await payment.getValue('livedInCurrentStateAllLastYear'), await payment.getValue('incomeExpectationThisYear'), await payment.getValue('stateTaxPaidLastYear'), await payment.getValue('stateIncomeLastYear'), await payment.getValue('filingStatus'), await payment.getValue('expectedTotalIncomeThisYear'), await payment.getValue('businessExpensesThisYear'), await payment.getValue('retirementContributionsThisYear'), await payment.getValue('studentLoanInterestThisYear'), await payment.getValue('healthInsuranceThisYear'), await payment.getValue('otherDeductionsThisYear'), await payment.getValue('exemptions'))
         let stateSinglePayment = getStateSinglePayment(await payment.getValue('currentState'), stateTaxes.safeHarborStateTaxesThisYear, await payment.getValue('stateWithholdingsThisYear'), await payment.getValue('q1StatePaymentMade'), await payment.getValue('q2StatePaymentMade'), await payment.getValue('q3StatePaymentMade'), stateTaxes.initialExplanation)
 
         await payment.setValue('stateAdjustableGrossIncomeThisYear', stateTaxes.stateAdjustableGrossIncomeThisYear)
@@ -57,7 +58,7 @@
       await payment.setValue('explanation', federalQuarterlyPayments.explanation)
 
       if (await payment.getValue('stateSupported')) {
-        let stateTaxes = getStateTaxes(await payment.getValue('currentState'), await payment.getValue('incomeExpectationThisYear'), await payment.getValue('stateTaxPaidLastYear'), await payment.getValue('stateIncomeLastYear'), await payment.getValue('filingStatus'), await payment.getValue('expectedTotalIncomeThisYear'), await payment.getValue('businessExpensesThisYear'), await payment.getValue('retirementContributionsThisYear'), await payment.getValue('studentLoanInterestThisYear'), await payment.getValue('healthInsuranceThisYear'), await payment.getValue('otherDeductionsThisYear'), await payment.getValue('exemptions'))
+        let stateTaxes = getStateTaxes(await payment.getValue('currentState'), await payment.getValue('livedInCurrentStateAllLastYear'), await payment.getValue('incomeExpectationThisYear'), await payment.getValue('stateTaxPaidLastYear'), await payment.getValue('stateIncomeLastYear'), await payment.getValue('filingStatus'), await payment.getValue('expectedTotalIncomeThisYear'), await payment.getValue('businessExpensesThisYear'), await payment.getValue('retirementContributionsThisYear'), await payment.getValue('studentLoanInterestThisYear'), await payment.getValue('healthInsuranceThisYear'), await payment.getValue('otherDeductionsThisYear'), await payment.getValue('exemptions'))
         let stateQuarterlyPayments = getStateQuarterlyPayment(await payment.getValue('currentState'), currentTaxQuarter, stateTaxes.safeHarborStateTaxesThisYear, await payment.getValue('stateWithholdingsThisYear'), await payment.getValue('q1StatePaymentMade'), await payment.getValue('q2StatePaymentMade'), await payment.getValue('q3StatePaymentMade'), stateTaxes.initialExplanation)
 
         await payment.setValue('stateAdjustableGrossIncomeThisYear', stateTaxes.stateAdjustableGrossIncomeThisYear)
@@ -75,15 +76,15 @@
     }
     setTimeout(async () => {
       if (global.loggedIn && await user.getValue('latestTaxYearPaid') == currentTaxYear) {
+        setLocalStorage('sendDashboardEmail', true)
         goto('/dashboard')
         await user.setValue('currentPage', 'dashboard')
-
       }
       else { 
+        setLocalStorage('sendDashboardEmail', true)
         goto('/29')
         await user.setValue('currentPage', '29')
       }
-      await user.setValue('sendDashboardEmail', true)
     }, 2000)
   })
 </script>

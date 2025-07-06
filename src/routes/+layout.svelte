@@ -5,6 +5,7 @@
   import * as Sentry from '@sentry/browser'
   import { PUBLIC_ENVIRONMENT } from '$env/static/public' 
   import { global } from '$src/data/global.svelte'
+  import { safePostHog } from '$src/utilities/posthog'
   
   let props = $props()
   let children = props.children
@@ -15,9 +16,23 @@
     const response = await supabase.auth.getSession()
     const session = response.data.session
     await updateLoginState(session)
-    Sentry.setUser({ email: global.email })
+    if (session && session.user) {
+      global.email = session.user.email
+      Sentry.setUser({ email: global.email })
+      safePostHog.identify(session.user.id, {
+        email: global.email
+      })
+    }
     supabase.auth.onAuthStateChange((event, session) => {
       updateLoginState(session)
+      if (event === 'SIGNED_IN' && session?.user) {
+        safePostHog.identify(session.user.id, {
+          email: session.user.email,
+        })
+      } 
+      else if (event === 'SIGNED_OUT') {
+        safePostHog.reset() 
+      }
     })
     loading = false
   })

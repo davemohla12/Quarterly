@@ -52,6 +52,8 @@
     }
     else {
       await payment.setValue('salaryOrWagesThisYear', false)
+      await payment.setValue('federalWithholdingsThisYear', 0)
+      await payment.setValue('stateWithholdingsThisYear', 0)
       if (currentTaxQuarter == 'Q1') {
         goto('/27')
         await user.setValue('currentPage', '27')

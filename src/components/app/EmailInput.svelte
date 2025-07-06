@@ -1,9 +1,13 @@
 <script>
   import validator from 'validator'
+  import Clickable from './Clickable.svelte'
 
   let props = $props()
   let onInput = props.onInput
   let placeholder = props.placeholder || ''
+  let showClear = props.showClear || false
+  let onclear = props.onclear || (() => {})
+  let hideError = props.hideError || false
   let isFocused = $state(false)
   let inputValue = $state(props.value || '')
   let hasBlurred = $state(false)
@@ -15,7 +19,7 @@
 
   const validateEmail = (value) => {
     const isValidEmail = validator.isEmail(value)
-    if (hasBlurred && !isValidEmail) {
+    if (hasBlurred && !isValidEmail && !hideError) {
       error = 'Enter a valid email address'
     } 
     else {
@@ -30,6 +34,7 @@
   }
   
   const handleFocus = () => {
+    error = ''
     isFocused = true
   }
 
@@ -43,6 +48,11 @@
 <div class="container">
   <input class="input" class:errorinput={error !== ''} type="email" value={inputValue} onfocus={handleFocus} onblur={handleBlur} oninput={handleInput} />
   <div class="placeholder" class:active={isFocused || inputValue} class:errorplaceholder={error !== ''}>{placeholder}</div>
+  {#if showClear && inputValue}
+    <Clickable onclick={onclear}>
+      <img class="clear" src="images/clear.png" alt="Clear" />
+    </Clickable>
+  {/if}
   <div class="error">{error}</div>
 </div>
 
@@ -86,13 +96,17 @@
     background: white;
     padding: 0 4px;
   }
-  /* .errorplaceholder {
-    color: var(--red);
-  } */
   .active {
     top: -7px;
     left: 16px;
     font-size: 12px;
+  }
+  .clear {
+    width: 14px;
+    height: 14px;
+    position: absolute;
+    right: 20px;
+    top: 22px;
   }
   .error {
     color: var(--red);

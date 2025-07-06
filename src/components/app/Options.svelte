@@ -42,7 +42,7 @@
     margin-left: auto;
     margin-right: auto;
     gap: 15px;
-    margin-top: 10px;
+    margin-top: 5px;
   }
   .option {
     color: var(--gray4);
@@ -61,7 +61,8 @@
   }
   @media (min-width: 768px) {
     .options {
-    width: 100%;
+      width: 100%;
+      margin-top: 8px;
     } 
     .option {
       font-size: 16px;

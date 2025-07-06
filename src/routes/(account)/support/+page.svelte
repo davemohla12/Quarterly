@@ -7,13 +7,20 @@
   import Subheading from '$src/components/app/Subheading.svelte'
   import Support from '$src/components/app/Support.svelte'
   import axios from 'axios'
-  import { goto } from '$app/navigation';
+  import { goto } from '$app/navigation'  
+  import { onMount } from 'svelte'
 
   const headingText = `We're here to help`
   const subheadingText = `We'll get back to you right away`
   const buttonText = 'SUBMIT'
   global.makeButtonActive = false
   let message = $state('')
+
+  onMount(() => {
+    if (!global.loggedIn) {
+      goto('/')
+    } 
+  })
 
   const handleInput = (value) => {
     message = value
