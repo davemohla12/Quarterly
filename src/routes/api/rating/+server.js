@@ -4,6 +4,7 @@ import { supabase } from '$src/utilities/supabase'
 import { CRON_KEY } from '$env/static/private'
 import { getEmails } from '$src/utilities/database'   
 import dayjs from 'dayjs' 
+import { PUBLIC_DOMAIN } from '$env/static/public'
 
 const getValueFromDatabase = async (table, email, field) => {
   if (table == 'Payments') {
@@ -49,6 +50,7 @@ const GET = async ({ url }) => {
     }
   }
   catch (error) {
+    console.log(error)
     return json({ message: 'Error sending rating emails' }, { status: 500 })
   }
 }

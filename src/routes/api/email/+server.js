@@ -30,7 +30,6 @@ const POST = async ({ request }) => {
   }
   else if (template == 'rating') {
     html = getRatingEmail(id)
-    console.log(html)
   }
 
   try { 
