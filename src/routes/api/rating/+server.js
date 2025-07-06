@@ -22,16 +22,17 @@ const GET = async ({ url }) => {
     if (token == CRON_KEY) {
       const emails = await getEmails()
       const message = []
+      const debugInfo = []
       for (const email of emails) {
         const sendRatingsEmailOn = await getValueFromUsers( email, 'sendRatingsEmailOn')
-        
-        console.log(`email: ${email}`)
-        console.log(`Server date: ${dayjs().format()}`)
-        console.log(`sendRatingsEmailOn: ${sendRatingsEmailOn}`)
-        console.log(`Server timezone: ${Intl.DateTimeFormat().resolvedOptions().timeZone}`)
-        console.log(`isSame result: ${dayjs().isSame(sendRatingsEmailOn, 'day')}`)
-        console.log(``)
-
+        const debugData = {
+          email: email,
+          serverDate: dayjs().format(),
+          sendRatingsEmailOn: sendRatingsEmailOn,
+          serverTimezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+          isSameResult: dayjs().isSame(sendRatingsEmailOn, 'day')
+        }
+        debugInfo.push(debugData)
         if (dayjs().isSame(sendRatingsEmailOn, 'day')) {
           const id = await getValueFromUsers(email, 'id')
           await axios.post(`${PUBLIC_DOMAIN}/api/email`, {
@@ -48,8 +49,7 @@ const GET = async ({ url }) => {
         return json({ message: message.join('\n') })
       }
       else {
-        console.log('No rating emails sent')
-        return json({ message: 'No rating emails sent' })
+        return json({ message: 'No rating emails sent', debugInfo: debugInfo })
       }
     }
     else {
