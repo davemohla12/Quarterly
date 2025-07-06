@@ -6,8 +6,8 @@
   const sendRating = async () => {
     try {
       const response = await axios.get(`/api/rating?cron_key=${cronKey}`)
-      if (response.status == 200) {
-        console.log('called successfully')
+      if (response.data) {
+        console.log(response.data.message)
       }
     }
     catch (error) {

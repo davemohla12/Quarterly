@@ -21,6 +21,7 @@ const GET = async ({ url }) => {
 
     if (token == CRON_KEY) {
       const emails = await getEmails()
+      const message = []
       for (const email of emails) {
         const sendRatingsEmailOn = await getValueFromUsers( email, 'sendRatingsEmailOn')
         if (dayjs().isSame(sendRatingsEmailOn, 'day')) {
@@ -31,9 +32,17 @@ const GET = async ({ url }) => {
             template: 'rating',
             id: id
           })
+          message.push(`Sent rating email to ${email}`)
         }
       }
-      return json({ message: 'Rating emails api run' }, { status: 200 })
+      if (message.length > 0) {
+        console.log(message.join('\n'))
+        return json({ message: message.join('\n') })
+      }
+      else {
+        console.log('No rating emails sent')
+        return json({ message: 'No rating emails sent' })
+      }
     }
     else {
       return json({ message: 'Invalid token' }, { status: 401 })
