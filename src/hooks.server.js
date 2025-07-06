@@ -16,9 +16,17 @@ const handleError = ({ error, event }) => {
       path: event.url.pathname
     }
   })
+  if (PUBLIC_ENVIRONMENT === 'development') {
+    console.log('Detailed error:', error)
+    return {
+      message: 'Something went wrong',
+      error: error.message,
+      stack: error.stack,
+      details: error.toString()
+    }
+  }
   return {
     message: 'Something went wrong'
   }
 }
-
 export { handleError }
