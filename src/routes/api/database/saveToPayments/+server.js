@@ -9,18 +9,18 @@ const supabaseAdmin = createClient(PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KE
 
 export async function POST({ request }) {
   console.log('🔍 saveToPayments endpoint called')
-  
+
   try { 
     const { email, taxYear, localStorageData } = await request.json()
 
-    console.log('📧 Request data:', {
+    console.log('Request data:', {
       email: email,
       taxYear: taxYear,
       localStorageDataKeys: localStorageData ? Object.keys(localStorageData) : null,
       localStorageDataSize: localStorageData ? Object.keys(localStorageData).length : 0
     })
     
-    console.log('🔍 Checking for existing payment record...')
+    console.log('Checking for existing payment record...')
     let response = await supabaseAdmin
       .from('Payments')
       .select('*')
@@ -28,19 +28,19 @@ export async function POST({ request }) {
       .eq('taxYear', taxYear)
       .maybeSingle()
 
-    console.log('📊 Initial query result:', {
+    console.log('Initial query result:', {
         hasData: !!response.data,
         error: response.error,
         dataId: response.data?.id
       })
 
     if (response.error) {
-      console.log('❌ Error querying existing payment:', response.error)
+      console.log('Error querying existing payment:', response.error)
       return json({ success: false, error: 'Database query failed' }, { status: 500 })
     }
 
     if (!response.data) {
-      console.log('➕ Creating new payment record...')
+      console.log('Creating new payment record...')
       const insertResult = await supabaseAdmin
         .from('Payments')
         .insert({
@@ -49,18 +49,18 @@ export async function POST({ request }) {
           showPaidDates: true
         })
       
-      console.log('📝 Insert result:', {
+      console.log('Insert result:', {
         error: insertResult.error,
         status: insertResult.status,
         statusText: insertResult.statusText
       })
 
       if (insertResult.error) {
-        console.log('❌ Error creating payment record:', insertResult.error)
+        console.log('Error creating payment record:', insertResult.error)
         return json({ success: false, error: 'Failed to create payment record' }, { status: 500 })
       }
       
-      console.log('🔄 Fetching newly created record...')
+      console.log('Fetching newly created record...')
       response = await supabaseAdmin
         .from('Payments')
         .select('*')
@@ -68,7 +68,7 @@ export async function POST({ request }) {
         .eq('taxYear', taxYear)
         .maybeSingle()
 
-      console.log('🆕 New record fetched:', {
+      console.log('New record fetched:', {
         hasData: !!response.data,
         error: response.error,
         dataId: response.data?.id
@@ -88,29 +88,29 @@ export async function POST({ request }) {
       fields: Object.keys(updateData)
     })
     
-    console.log('💾 Updating payment record...')
+    console.log('Updating payment record...')
     const updateResult = await supabaseAdmin
       .from('Payments')
       .update(updateData)
       .eq('email', email)
       .eq('taxYear', taxYear)
     
-    console.log('✅ Update result:', {
+    console.log('Update result:', {
         error: updateResult.error,
         status: updateResult.status,
         statusText: updateResult.statusText
       })
 
     if (updateResult.error) {
-      console.error('❌ Error updating payment record:', updateResult.error)
+      console.error('Error updating payment record:', updateResult.error)
       return json({ success: false, error: 'Failed to update payment record' }, { status: 500 })
     }
     
-    console.log('🎉 saveToPayments completed successfully')
+    console.log('saveToPayments completed successfully')
     return json({ success: true })
   }
   catch (error) {
-    console.log('💥 Unexpected error in saveToPayments:', error)
+    console.log('Unexpected error in saveToPayments:', error)
     console.log('Stack trace:', error.stack)
     return json({ success: false, error: 'Internal server error' }, { status: 500 })
   }
