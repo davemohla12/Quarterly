@@ -151,7 +151,6 @@
           }
         }
       })    
-      await new Promise(resolve => setTimeout(resolve, 100))
       const loginResult2 = await supabase.auth.signInWithPassword({ email, password })
       loginUser = loginResult2.data?.user
       loginError = loginResult2.error?.message?.toLowerCase()  
