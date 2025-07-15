@@ -141,8 +141,7 @@
       }
     }
     else {
-      console.log('First login failed:', loginError)
-      const signUpResult = await supabase.auth.signUp({ 
+      await supabase.auth.signUp({ 
         email, 
         password, 
         options: {
@@ -152,12 +151,10 @@
           }
         }
       })    
-      console.log('Signup result:', signUpResult)
       await new Promise(resolve => setTimeout(resolve, 100))
       const loginResult2 = await supabase.auth.signInWithPassword({ email, password })
       loginUser = loginResult2.data?.user
       loginError = loginResult2.error?.message?.toLowerCase()  
-      console.log('Second login attempt:', loginError, loginUser)
       if (loginError.includes('invalid login credentials')){
         disableButton = false
         errorMessage = "Your login is invalid or you may have signed up using another method. Please try again."
