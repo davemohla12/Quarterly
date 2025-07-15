@@ -1,6 +1,6 @@
 <script>
   let props = $props()
-  let text = props.text
+  let text = $derived(props.text)
 </script>
 
 
