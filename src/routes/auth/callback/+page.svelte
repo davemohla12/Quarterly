@@ -29,25 +29,30 @@
       const response = await supabase.auth.getSession()
       const session = response.data.session
       if (session) {
-        await updateLoginState(session)
-        if (getLocalStorage('loginLocation') == 'home') {
+        const loginLocation = getLocalStorage('loginLocation')
+        if (loginLocation == 'home') {
           goto('/')
         }
-        else if (getLocalStorage('loginLocation') == 'later') {
+        else if (loginLocation == 'later') {
           await createUserIfNotExists()
+          await user.setValue('currentPage', getLocalStorage('currentPage'))
           await saveToPayments()
           global.showResumeBanner = true
           goto('/')
         }
-        else if (getLocalStorage('loginLocation') == 'flow') {
+        else if (loginLocation == 'flow') {
           await createUserIfNotExists()
+          await user.setValue('currentPage', 'checkout')
           await saveToPayments()
           goto('/checkout')
-          await user.setValue('currentPage', 'checkout')
         }
-        else if (getLocalStorage('loginLocation') == 'dashboard') {
+        else if (loginLocation == 'dashboard') {
           goto(`/dashboard`)
           await user.setValue('currentPage', 'dashboard')
+        }
+        else if (loginLocation == 'refer') {
+          goto('/refer')
+          await user.setValue('currentPage', 'refer')
         }
       }
     }

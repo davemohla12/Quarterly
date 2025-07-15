@@ -4,7 +4,7 @@
 
   let props = $props()
   let onInput = props.onInput
-  let placeholder = props.placeholder || ''
+  let placeholder = $derived(props.placeholder || '')
   let value = $derived(props.value || '')
   let helpText = props.helpText || ''
   let isFocused = $state(false)

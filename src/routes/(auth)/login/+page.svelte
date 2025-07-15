@@ -92,6 +92,7 @@
   const signUpUser = async () => {
     disableButton = true
     errorMessage = ''
+    global.email = email
     const loginResult = await supabase.auth.signInWithPassword({ email, password })
     let loginUser = loginResult.data?.user
     let loginError = loginResult.error?.message?.toLowerCase()
@@ -101,19 +102,24 @@
       }
       else if (getLocalStorage('loginLocation') == 'later') {
         await createUserIfNotExists()
+        await user.setValue('currentPage', getLocalStorage('currentPage'))
         await saveToPayments()
         goto('/')
         global.showResumeBanner = true
       }
       else if (getLocalStorage('loginLocation') == 'flow') {
         await createUserIfNotExists()
+        await user.setValue('currentPage', 'checkout')
         await saveToPayments()
         goto('/checkout')
-        await user.setValue('currentPage', 'checkout')
       }
       else if (getLocalStorage('loginLocation') == 'dashboard') {
         goto(`/dashboard`)
         await user.setValue('currentPage', 'dashboard')
+      }
+      else if (getLocalStorage('loginLocation') == 'refer') {
+        goto('/refer')
+        await user.setValue('currentPage', 'refer')
       }
     }
     else {
@@ -138,11 +144,11 @@
         global.justSignedUp = true
         global.email = email
         if (getLocalStorage('loginLocation') == 'flow') {
-          await createUserIfNotExists()
+          await createUserIfNotExists({currentPage: 'checkout'})
           await saveToPayments()
         }
         else if (getLocalStorage('loginLocation') == 'later') {
-          await createUserIfNotExists()
+          await createUserIfNotExists({currentPage: getLocalStorage('currentPage')})
           await saveToPayments()
         }
         else if (getLocalStorage('loginLocation') == 'dashboard') {

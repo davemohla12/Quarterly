@@ -24,18 +24,9 @@
   global.makeButtonActive = false
 
   onMount(async () => {
-    if (currentTaxQuarter == 'Q2') {
-      placeholderText1 = 'April Payment'
-    }
-    else if (currentTaxQuarter == 'Q3') {
-      placeholderText1 = 'April Payment'
-      placeholderText2 = 'June Payment'
-    }
-    else if (currentTaxQuarter == 'Q4') {
-      placeholderText1 = 'April Payment'
-      placeholderText2 = 'June Payment'
-      placeholderText3 = 'September Payment'
-    }
+    placeholderText1 = 'April Payment'
+    placeholderText2 = 'June Payment'
+    placeholderText3 = 'September Payment'
     if (global.loggedIn) {
       if (await payment.getValue('q1FederalPaymentMade')) { 
         const q1FederalPaymentMade = await payment.getValue('q1FederalPaymentMade')
@@ -97,8 +88,14 @@
       await user.setValue('currentPage', '26')
     }
     else {
-      goto('/27')
-      await user.setValue('currentPage', '27')
+      if (await payment.getValue('livingInCurrentStateAllThisYear')) {
+        goto('/27')
+        await user.setValue('currentPage', '27')
+      }
+      else {
+        goto('/28')
+        await user.setValue('currentPage', '28')
+      }
     }
   }
 
@@ -119,13 +116,13 @@
 <Header />
 <Avatar />
 <Heading text={headingText} desktopwidth="550px" mobilewidth="320px" />
-{#if placeholderText1 != ''}
+{#if currentTaxQuarter == 'Q2' || currentTaxQuarter == 'Q3' || currentTaxQuarter == 'Q4'}
   <DollarInput placeholder={placeholderText1} value={inputValue1} onInput={handleInput1} />
 {/if}
-{#if placeholderText2 != ''}
+{#if currentTaxQuarter == 'Q3' || currentTaxQuarter == 'Q4'}
   <DollarInput placeholder={placeholderText2} value={inputValue2} onInput={handleInput2} />
 {/if}
-{#if placeholderText3 != ''}
+{#if currentTaxQuarter == 'Q4'}
   <DollarInput placeholder={placeholderText3} value={inputValue3} onInput={handleInput3} />
 {/if}
 <Button text={buttonText} onclick={handleNext} />

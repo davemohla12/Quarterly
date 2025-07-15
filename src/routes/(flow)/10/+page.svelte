@@ -39,7 +39,7 @@
 
   const handleNext = async () => {
     await payment.setValue('filingStatus', convertLongToShortFilingStatus(selectedRadioButton))
-    if (await payment.getValue('stateSupported') && stateRules[await payment.getValue('currentState')].standardDeductionMethod.type == 'exemptions') {
+    if (await payment.getValue('stateSupported') && (stateRules[await payment.getValue('currentState')].standardDeductionMethod?.type == 'exemptions' || !await payment.getValue('livingInCurrentStateAllThisYear'))) {
       goto('/10.5')
       await user.setValue('currentPage', '10.5')
     }

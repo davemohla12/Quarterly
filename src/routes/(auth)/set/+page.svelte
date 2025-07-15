@@ -60,12 +60,14 @@
       }
       else if (getLocalStorage('loginLocation') == 'later') {
         await createUserIfNotExists()
+        await user.setValue('currentPage', getLocalStorage('currentPage'))
         await saveToPayments()
         global.showResumeBanner = true
         goto('/')
       }
       else if (getLocalStorage('loginLocation') == 'flow') {
         await createUserIfNotExists()
+        await user.setValue('currentPage', 'checkout')
         await saveToPayments()
         goto('/checkout')
         await user.setValue('currentPage', 'checkout')

@@ -5,15 +5,15 @@
   import Subheading from '$src/components/app/Subheading.svelte'
   import Button from '$src/components/app/Button.svelte'
   import Later from '$src/components/app/Later.svelte'
-  import { goto } from '$app/navigation'
   import { global } from '$src/data/global.svelte'
+  import { goto } from '$app/navigation'
   import { user } from '$src/data/user.svelte'
-  
-  const headingText = `I can help you with just your federal quarterly taxes`
-  const subheadingText = `Multi-state taxes are a bit more complicated so you'll need to estimate and pay your state taxes on your own`
+
+  const headingText = `You'll just pay federal quarterly taxes`
+  let subheadingText = `All the states you are living in this year don't require quarterly taxes`
   const buttonText = 'NEXT'
   global.makeButtonActive = true
-  
+
   const handleNext = async () => {
     goto('/9')
     await user.setValue('currentPage', '9')
@@ -35,7 +35,7 @@
 
 <Header />
 <Avatar />
-<Heading text={headingText} desktopwidth="500px" mobilewidth="320px" />
-<Subheading text={subheadingText} desktopwidth="400px" mobilewidth="320px"/>
+<Heading text={headingText} desktopwidth="450px" mobilewidth="300px" />
+<Subheading text={subheadingText} />
 <Button text={buttonText} onclick={handleNext} />
 <Later />

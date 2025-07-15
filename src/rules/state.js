@@ -24,6 +24,11 @@ const stateRules = {
         { lowIncome: 500, highIncome: 3000, taxRate: 0.04 },
         { lowIncome: 3000, highIncome: Infinity, taxRate: 0.05 }
       ],
+      married: [
+        { lowIncome: 0, highIncome: 1000, taxRate: 0.02 },
+        { lowIncome: 1000, highIncome: 6000, taxRate: 0.04 },
+        { lowIncome: 6000, highIncome: Infinity, taxRate: 0.05 }
+      ],
       separate: [
         { lowIncome: 0, highIncome: 500, taxRate: 0.02 },
         { lowIncome: 500, highIncome: 3000, taxRate: 0.04 },
@@ -81,6 +86,9 @@ const stateRules = {
       single: [
         { lowIncome: 0, highIncome: Infinity, taxRate: 0.025 }
       ],
+      married: [
+        { lowIncome: 0, highIncome: Infinity, taxRate: 0.025 }
+      ],
       separate: [
         { lowIncome: 0, highIncome: Infinity, taxRate: 0.025 }
       ],
@@ -127,6 +135,22 @@ const stateRules = {
     incomeTaxRate: {
       single: [
         { lowIncome: 0, highIncome: 5499.99, taxRate: 0.00 },
+        { lowIncome: 5500, highIncome: 10899.99, taxRate: 0.02 },
+        { lowIncome: 10900, highIncome: 15599.99, taxRate: 0.03 },
+        { lowIncome: 15600, highIncome: 25699.99, taxRate: 0.034 },
+        { lowIncome: 25700, highIncome: 29999.99, taxRate: 0.039 },
+        { lowIncome: 30000, highIncome: 39999.99, taxRate: 0.039 },
+        { lowIncome: 40000, highIncome: 49999.99, taxRate: 0.039 },
+        { lowIncome: 50000, highIncome: 59999.99, taxRate: 0.039 },
+        { lowIncome: 60000, highIncome: 69999.99, taxRate: 0.039 },
+        { lowIncome: 70000, highIncome: 80000.99, taxRate: 0.039 },
+        { lowIncome: 80001, highIncome: 92300.99, taxRate: 0.039 },
+        { lowIncome: 92301, highIncome: 95500.99, taxRate: 0.039 },
+        { lowIncome: 95501, highIncome: 99999.99, taxRate: 0.039 },
+        { lowIncome: 100000, highIncome: Infinity, taxRate: 0.039 }
+      ],
+      married: [
+        { lowIncome: 0, highIncome: 5499.99, taxRate: 0 },
         { lowIncome: 5500, highIncome: 10899.99, taxRate: 0.02 },
         { lowIncome: 10900, highIncome: 15599.99, taxRate: 0.03 },
         { lowIncome: 15600, highIncome: 25699.99, taxRate: 0.034 },
@@ -242,18 +266,30 @@ const stateRules = {
         { lowIncome: 721314, highIncome: 1000000, taxRate: 0.123 },
         { lowIncome: 1000000, highIncome: Infinity, taxRate: 0.133 }
       ],
-        separate: [
-          { lowIncome: 0, highIncome: 10756, taxRate: 0.01 },
-          { lowIncome: 10756, highIncome: 25499, taxRate: 0.02 },
-          { lowIncome: 25499, highIncome: 40245, taxRate: 0.04 },
-          { lowIncome: 40245, highIncome: 55866, taxRate: 0.06 },
-          { lowIncome: 55866, highIncome: 70606, taxRate: 0.08 },
-          { lowIncome: 70606, highIncome: 360659, taxRate: 0.093 },
-          { lowIncome: 360659, highIncome: 432787, taxRate: 0.103 },
-          { lowIncome: 432787, highIncome: 721314, taxRate: 0.113 },
-          { lowIncome: 721314, highIncome: 1000000, taxRate: 0.123 },
-          { lowIncome: 1000000, highIncome: Infinity, taxRate: 0.133 }
-        ],
+      married: [
+        { lowIncome: 0, highIncome: 10756, taxRate: 0.01 },
+        { lowIncome: 10756, highIncome: 25499, taxRate: 0.02 },
+        { lowIncome: 25499, highIncome: 40245, taxRate: 0.04 },
+        { lowIncome: 40245, highIncome: 55866, taxRate: 0.06 },
+        { lowIncome: 55866, highIncome: 70606, taxRate: 0.08 },
+        { lowIncome: 70606, highIncome: 360659, taxRate: 0.093 },
+        { lowIncome: 360659, highIncome: 432787, taxRate: 0.103 },
+        { lowIncome: 432787, highIncome: 721314, taxRate: 0.113 },
+        { lowIncome: 721314, highIncome: 1000000, taxRate: 0.123 },
+        { lowIncome: 1000000, highIncome: Infinity, taxRate: 0.133 }
+      ],
+      separate: [
+        { lowIncome: 0, highIncome: 10756, taxRate: 0.01 },
+        { lowIncome: 10756, highIncome: 25499, taxRate: 0.02 },
+        { lowIncome: 25499, highIncome: 40245, taxRate: 0.04 },
+        { lowIncome: 40245, highIncome: 55866, taxRate: 0.06 },
+        { lowIncome: 55866, highIncome: 70606, taxRate: 0.08 },
+        { lowIncome: 70606, highIncome: 360659, taxRate: 0.093 },
+        { lowIncome: 360659, highIncome: 432787, taxRate: 0.103 },
+        { lowIncome: 432787, highIncome: 721314, taxRate: 0.113 },
+        { lowIncome: 721314, highIncome: 1000000, taxRate: 0.123 },
+        { lowIncome: 1000000, highIncome: Infinity, taxRate: 0.133 }
+      ],
       head: [
         { lowIncome: 0, highIncome: 21527, taxRate: 0.01 },
         { lowIncome: 21528, highIncome: 51000, taxRate: 0.02 },
@@ -313,6 +349,9 @@ const stateRules = {
     },
     incomeTaxRate: {
       single: [
+        { lowIncome: 0, highIncome: Infinity, taxRate: 0.044 }
+      ],
+      married: [
         { lowIncome: 0, highIncome: Infinity, taxRate: 0.044 }
       ],
       separate: [
@@ -448,6 +487,15 @@ const stateRules = {
         { lowIncome: 25000, highIncome: 60000, baseTax: 1001, taxRate: 0.0555 },
         { lowIncome: 60000, highIncome: Infinity, baseTax: 2943, taxRate: 0.066 }
       ],
+      married: [
+        { lowIncome: 0, highIncome: 2000, taxRate: 0.00 },
+        { lowIncome: 2000, highIncome: 5000, baseTax: 0, taxRate: 0.022 },
+        { lowIncome: 5000, highIncome: 10000, baseTax: 66, taxRate: 0.039 },
+        { lowIncome: 10000, highIncome: 20000, baseTax: 261, taxRate: 0.048 },
+        { lowIncome: 20000, highIncome: 25000, baseTax: 741, taxRate: 0.052 },
+        { lowIncome: 25000, highIncome: 60000, baseTax: 1001, taxRate: 0.0555 },
+        { lowIncome: 60000, highIncome: Infinity, baseTax: 2943, taxRate: 0.066 }
+      ],
       separate: [
         { lowIncome: 0, highIncome: 2000, taxRate: 0.00 },
         { lowIncome: 2000, highIncome: 5000, baseTax: 0, taxRate: 0.022 },
@@ -511,6 +559,15 @@ const stateRules = {
     },
     incomeTaxRate: {
       single: [
+        { lowIncome: 0, highIncome: 10000, taxRate: 0.04 },
+        { lowIncome: 10000, highIncome: 40000, baseTax: 400, taxRate: 0.06 },
+        { lowIncome: 40000, highIncome: 60000, baseTax: 2200, taxRate: 0.065 },
+        { lowIncome: 60000, highIncome: 250000, baseTax: 3500, taxRate: 0.085 },
+        { lowIncome: 250000, highIncome: 500000, baseTax: 19650, taxRate: 0.0925 },
+        { lowIncome: 500000, highIncome: 1000000, baseTax: 42775, taxRate: 0.0975 },
+        { lowIncome: 1000000, highIncome: Infinity, baseTax: 91525, taxRate: 0.1075 }
+      ],
+      married: [
         { lowIncome: 0, highIncome: 10000, taxRate: 0.04 },
         { lowIncome: 10000, highIncome: 40000, baseTax: 400, taxRate: 0.06 },
         { lowIncome: 40000, highIncome: 60000, baseTax: 2200, taxRate: 0.065 },
@@ -586,35 +643,43 @@ const stateRules = {
     incomeTaxRate: {
       single: [
         { lowIncome: 0, highIncome: 750, taxRate: 0.01 },
-        { lowIncome: 750, highIncome: 2250, baseTax: 7.50, taxRate: 0.02 },
-        { lowIncome: 2250, highIncome: 3750, baseTax: 37.50, taxRate: 0.03 },
-        { lowIncome: 3750, highIncome: 5250, baseTax: 82.50, taxRate: 0.04 },
-        { lowIncome: 5250, highIncome: 7000, baseTax: 142.50, taxRate: 0.05 },
-        { lowIncome: 7000, highIncome: Infinity, baseTax: 227.50, taxRate: 0.0575 }
+        { lowIncome: 750, highIncome: 2250, taxRate: 0.02 },
+        { lowIncome: 2250, highIncome: 3750, taxRate: 0.03 },
+        { lowIncome: 3750, highIncome: 5250, taxRate: 0.04 },
+        { lowIncome: 5250, highIncome: 7000, taxRate: 0.05 },
+        { lowIncome: 7000, highIncome: Infinity, taxRate: 0.0575 }
+      ],
+      married: [
+        { lowIncome: 0, highIncome: 1000, taxRate: 0.01 },
+        { lowIncome: 1000, highIncome: 3000, taxRate: 0.02 },
+        { lowIncome: 3000, highIncome: 5000, taxRate: 0.03 },
+        { lowIncome: 5000, highIncome: 7000, taxRate: 0.04 },
+        { lowIncome: 7000, highIncome: 10000, taxRate: 0.05 },
+        { lowIncome: 10000, highIncome: Infinity, taxRate: 0.0575 }
       ],
       separate: [
-        { lowIncome: 0, highIncome: 750, taxRate: 0.01 },
-        { lowIncome: 750, highIncome: 2250, baseTax: 7.50, taxRate: 0.02 },
-        { lowIncome: 2250, highIncome: 3750, baseTax: 37.50, taxRate: 0.03 },
-        { lowIncome: 3750, highIncome: 5250, baseTax: 82.50, taxRate: 0.04 },
-        { lowIncome: 5250, highIncome: 7000, baseTax: 142.50, taxRate: 0.05 },
-        { lowIncome: 7000, highIncome: Infinity, baseTax: 227.50, taxRate: 0.0575 }
+        { lowIncome: 0, highIncome: 500, taxRate: 0.01 },
+        { lowIncome: 500, highIncome: 1500, taxRate: 0.02 },
+        { lowIncome: 1500, highIncome: 2500, taxRate: 0.03 },
+        { lowIncome: 2500, highIncome: 3500, taxRate: 0.04 },
+        { lowIncome: 3500, highIncome: 5000, taxRate: 0.05 },
+        { lowIncome: 5000, highIncome: Infinity, taxRate: 0.0575 }
       ],
       head: [
-        { lowIncome: 0, highIncome: 750, taxRate: 0.01 },
-        { lowIncome: 750, highIncome: 2250, baseTax: 7.50, taxRate: 0.02 },
-        { lowIncome: 2250, highIncome: 3750, baseTax: 37.50, taxRate: 0.03 },
-        { lowIncome: 3750, highIncome: 5250, baseTax: 82.50, taxRate: 0.04 },
-        { lowIncome: 5250, highIncome: 7000, baseTax: 142.50, taxRate: 0.05 },
-        { lowIncome: 7000, highIncome: Infinity, baseTax: 227.50, taxRate: 0.0575 }
+        { lowIncome: 0, highIncome: 1000, taxRate: 0.01 },
+        { lowIncome: 1000, highIncome: 3000, taxRate: 0.02 },
+        { lowIncome: 3000, highIncome: 5000, taxRate: 0.03 },
+        { lowIncome: 5000, highIncome: 7000, taxRate: 0.04 },
+        { lowIncome: 7000, highIncome: 10000, taxRate: 0.05 },
+        { lowIncome: 10000, highIncome: Infinity, taxRate: 0.0575 }
       ],
       widow: [
-        { lowIncome: 0, highIncome: 750, taxRate: 0.01 },
-        { lowIncome: 750, highIncome: 2250, baseTax: 7.50, taxRate: 0.02 },
-        { lowIncome: 2250, highIncome: 3750, baseTax: 37.50, taxRate: 0.03 },
-        { lowIncome: 3750, highIncome: 5250, baseTax: 82.50, taxRate: 0.04 },
-        { lowIncome: 5250, highIncome: 7000, baseTax: 142.50, taxRate: 0.05 },
-        { lowIncome: 7000, highIncome: Infinity, baseTax: 227.50, taxRate: 0.0575 }
+        { lowIncome: 0, highIncome: 1000, taxRate: 0.01 },
+        { lowIncome: 1000, highIncome: 3000, taxRate: 0.02 },
+        { lowIncome: 3000, highIncome: 5000, taxRate: 0.03 },
+        { lowIncome: 5000, highIncome: 7000, taxRate: 0.04 },
+        { lowIncome: 7000, highIncome: 10000, taxRate: 0.05 },
+        { lowIncome: 10000, highIncome: Infinity, taxRate: 0.0575 }
       ]
     },
     quarterlyCumulativeSchedule: {
@@ -671,6 +736,20 @@ const stateRules = {
         { lowIncome: 175000, highIncome: 200000, baseTax: 14721.90, taxRate: 0.10 },
         { lowIncome: 200000, highIncome: Infinity, baseTax: 17221.90, taxRate: 0.11 }
       ],
+      married: [
+        { lowIncome: 0, highIncome: 4800, taxRate: 0.014 },
+        { lowIncome: 4800, highIncome: 9600, baseTax: 67.20, taxRate: 0.032 },
+        { lowIncome: 9600, highIncome: 19200, baseTax: 220.80, taxRate: 0.055 },
+        { lowIncome: 19200, highIncome: 28800, baseTax: 748.80, taxRate: 0.064 },
+        { lowIncome: 28800, highIncome: 38400, baseTax: 1260.80, taxRate: 0.068 },
+        { lowIncome: 38400, highIncome: 48000, baseTax: 1932.80, taxRate: 0.072 },
+        { lowIncome: 48000, highIncome: 72000, baseTax: 2628.80, taxRate: 0.076 },
+        { lowIncome: 72000, highIncome: 96000, baseTax: 4452.80, taxRate: 0.079 },
+        { lowIncome: 96000, highIncome: 300000, baseTax: 6348.80, taxRate: 0.0825 },
+        { lowIncome: 300000, highIncome: 350000, baseTax: 24943.80, taxRate: 0.09 },
+        { lowIncome: 350000, highIncome: 400000, baseTax: 29443.80, taxRate: 0.10 },
+        { lowIncome: 400000, highIncome: Infinity, baseTax: 34443.80, taxRate: 0.11 }
+      ],
       separate: [
         { lowIncome: 0, highIncome: 2400, taxRate: 0.014 },
         { lowIncome: 2400, highIncome: 4800, baseTax: 33.60, taxRate: 0.032 },
@@ -700,20 +779,20 @@ const stateRules = {
         { lowIncome: 200000, highIncome: Infinity, baseTax: 17221.90, taxRate: 0.11 }
       ],
       widow: [
-        { lowIncome: 0, highIncome: 2400, taxRate: 0.014 },
-        { lowIncome: 2400, highIncome: 4800, baseTax: 33.60, taxRate: 0.032 },
-        { lowIncome: 4800, highIncome: 9600, baseTax: 110.40, taxRate: 0.055 },
-        { lowIncome: 9600, highIncome: 14400, baseTax: 374.40, taxRate: 0.064 },
-        { lowIncome: 14400, highIncome: 19200, baseTax: 630.40, taxRate: 0.068 },
-        { lowIncome: 19200, highIncome: 24000, baseTax: 966.40, taxRate: 0.072 },
-        { lowIncome: 24000, highIncome: 36000, baseTax: 1314.40, taxRate: 0.076 },
-        { lowIncome: 36000, highIncome: 48000, baseTax: 2226.40, taxRate: 0.079 },
-        { lowIncome: 48000, highIncome: 150000, baseTax: 3174.40, taxRate: 0.0825 },
-        { lowIncome: 150000, highIncome: 175000, baseTax: 12471.90, taxRate: 0.09 },
-        { lowIncome: 175000, highIncome: 200000, baseTax: 14721.90, taxRate: 0.10 },
-        { lowIncome: 200000, highIncome: Infinity, baseTax: 17221.90, taxRate: 0.11 }
+        { lowIncome: 0, highIncome: 4800, taxRate: 0.014 },
+        { lowIncome: 4800, highIncome: 9600, baseTax: 67.20, taxRate: 0.032 },
+        { lowIncome: 9600, highIncome: 19200, baseTax: 220.80, taxRate: 0.055 },
+        { lowIncome: 19200, highIncome: 28800, baseTax: 748.80, taxRate: 0.064 },
+        { lowIncome: 28800, highIncome: 38400, baseTax: 1260.80, taxRate: 0.068 },
+        { lowIncome: 38400, highIncome: 48000, baseTax: 1932.80, taxRate: 0.072 },
+        { lowIncome: 48000, highIncome: 72000, baseTax: 2628.80, taxRate: 0.076 },
+        { lowIncome: 72000, highIncome: 96000, baseTax: 4452.80, taxRate: 0.079 },
+        { lowIncome: 96000, highIncome: 300000, baseTax: 6348.80, taxRate: 0.0825 },
+        { lowIncome: 300000, highIncome: 350000, baseTax: 24943.80, taxRate: 0.09 },
+        { lowIncome: 350000, highIncome: 400000, baseTax: 29443.80, taxRate: 0.10 },
+        { lowIncome: 400000, highIncome: Infinity, baseTax: 34443.80, taxRate: 0.11 }
       ]
-    },
+    },    
     quarterlyCumulativeSchedule: {
       Q1: 0.25,
       Q2: 0.50,
@@ -1479,10 +1558,46 @@ const stateRules = {
         { lowIncome: 7878, highIncome: 9191, taxRate: 0.045, baseTax: 197, baseThreshold: 7878 },
         { lowIncome: 9191, highIncome: Infinity, taxRate: 0.047, baseTax: 256, baseThreshold: 9191 }
       ],
-      married: "sameAsSingle",
-      separate: "sameAsSingle",
-      head: "sameAsSingle",
-      widow: "sameAsSingle"
+      married: [
+        { lowIncome: 0, highIncome: 1313, taxRate: 0.0 },
+        { lowIncome: 1313, highIncome: 2626, taxRate: 0.02 },
+        { lowIncome: 2626, highIncome: 3939, taxRate: 0.025, baseTax: 26, baseThreshold: 2626 },
+        { lowIncome: 3939, highIncome: 5252, taxRate: 0.03, baseTax: 59, baseThreshold: 3939 },
+        { lowIncome: 5252, highIncome: 6565, taxRate: 0.035, baseTax: 98, baseThreshold: 5252 },
+        { lowIncome: 6565, highIncome: 7878, taxRate: 0.04, baseTax: 144, baseThreshold: 6565 },
+        { lowIncome: 7878, highIncome: 9191, taxRate: 0.045, baseTax: 197, baseThreshold: 7878 },
+        { lowIncome: 9191, highIncome: Infinity, taxRate: 0.047, baseTax: 256, baseThreshold: 9191 }
+      ],
+      separate: [
+        { lowIncome: 0, highIncome: 1313, taxRate: 0.0 },
+        { lowIncome: 1313, highIncome: 2626, taxRate: 0.02 },
+        { lowIncome: 2626, highIncome: 3939, taxRate: 0.025, baseTax: 26, baseThreshold: 2626 },
+        { lowIncome: 3939, highIncome: 5252, taxRate: 0.03, baseTax: 59, baseThreshold: 3939 },
+        { lowIncome: 5252, highIncome: 6565, taxRate: 0.035, baseTax: 98, baseThreshold: 5252 },
+        { lowIncome: 6565, highIncome: 7878, taxRate: 0.04, baseTax: 144, baseThreshold: 6565 },
+        { lowIncome: 7878, highIncome: 9191, taxRate: 0.045, baseTax: 197, baseThreshold: 7878 },
+        { lowIncome: 9191, highIncome: Infinity, taxRate: 0.047, baseTax: 256, baseThreshold: 9191 }
+      ],
+      head: [
+        { lowIncome: 0, highIncome: 1313, taxRate: 0.0 },
+        { lowIncome: 1313, highIncome: 2626, taxRate: 0.02 },
+        { lowIncome: 2626, highIncome: 3939, taxRate: 0.025, baseTax: 26, baseThreshold: 2626 },
+        { lowIncome: 3939, highIncome: 5252, taxRate: 0.03, baseTax: 59, baseThreshold: 3939 },
+        { lowIncome: 5252, highIncome: 6565, taxRate: 0.035, baseTax: 98, baseThreshold: 5252 },
+        { lowIncome: 6565, highIncome: 7878, taxRate: 0.04, baseTax: 144, baseThreshold: 6565 },
+        { lowIncome: 7878, highIncome: 9191, taxRate: 0.045, baseTax: 197, baseThreshold: 7878 },
+        { lowIncome: 9191, highIncome: Infinity, taxRate: 0.047, baseTax: 256, baseThreshold: 9191 }
+      ],
+      widow: [
+        { lowIncome: 0, highIncome: 1313, taxRate: 0.0 },
+        { lowIncome: 1313, highIncome: 2626, taxRate: 0.02 },
+        { lowIncome: 2626, highIncome: 3939, taxRate: 0.025, baseTax: 26, baseThreshold: 2626 },
+        { lowIncome: 3939, highIncome: 5252, taxRate: 0.03, baseTax: 59, baseThreshold: 3939 },
+        { lowIncome: 5252, highIncome: 6565, taxRate: 0.035, baseTax: 98, baseThreshold: 5252 },
+        { lowIncome: 6565, highIncome: 7878, taxRate: 0.04, baseTax: 144, baseThreshold: 6565 },
+        { lowIncome: 7878, highIncome: 9191, taxRate: 0.045, baseTax: 197, baseThreshold: 7878 },
+        { lowIncome: 9191, highIncome: Infinity, taxRate: 0.047, baseTax: 256, baseThreshold: 9191 }
+      ],
     },
     quarterlyCumulativeSchedule: {
       Q1: 0.25,

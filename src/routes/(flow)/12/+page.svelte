@@ -21,7 +21,7 @@
   const handleNext = async () => {
     await payment.setValue('safeToSkipFederalPayment', true)
     if (await payment.getValue('stateSupported')) {
-      if (!stateRules[await payment.getValue('currentState')].lastYearSafeHarborRule || !await payment.getValue('livedInCurrentStateAllLastYear')) {
+      if (!stateRules[await payment.getValue('currentState')].lastYearSafeHarborRule || !await payment.getValue('livedInCurrentStateAllLastYear') || !await payment.getValue('livingInCurrentStateAllThisYear')) {
         goto('/19')
         await user.setValue('currentPage', '19')
       }

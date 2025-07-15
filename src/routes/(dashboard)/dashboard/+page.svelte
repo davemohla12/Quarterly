@@ -29,13 +29,15 @@
   import { getLocalStorage, setLocalStorage } from '$src/utilities/utilities'
   import { payment } from '$src/data/payment.svelte'
   import { safePostHog } from '$src/utilities/posthog'
+  import ReferralBanner from '$src/components/app/ReferralBanner.svelte'
 
-  let headingText = $state()
+  let headingText = $state()  
   let showExplanation = $state(false)
   let viewText = $state('VIEW DETAILS')
   let pdfContainer = $state(null)
   let showPdf = $state(false)
   let loading = $state(true)
+  let showReferralBanner = $state(false)
   
   let federalThisQuarterPayment = $state(0)
   let stateThisQuarterPayment = $state(0)
@@ -44,7 +46,6 @@
   let federalDue = $state()
   let federalPaid = $state()
   let federalRemaining = $state()
-  let stateSupported = $state()
   let currentState = $state()
   let stateDue = $state()
   let statePaid = $state()
@@ -63,6 +64,13 @@
   let isFederalPaid = $state()
   let isStatePaid = $state()
 
+  let livingInCurrentStateAllThisYear = $state()
+  let q1State = $state()
+  let q2State = $state()
+  let q3State = $state()
+  let q4State = $state()
+  let otherStatesToPay = $state()
+
   onMount(async () => {
     loading = true
     if (!global.loggedIn) {
@@ -78,8 +86,8 @@
       federalDue = paymentValues?.singleFederalDue
       federalPaid = paymentValues?.singleFederalPaid
       federalRemaining = paymentValues?.singleFederalRemaining
-      stateSupported = paymentValues?.stateSupported
       currentState = paymentValues?.currentState
+
       stateDue = paymentValues?.singleStateDue
       statePaid = paymentValues?.singleStatePaid
       stateRemaining = paymentValues?.singleStateRemaining
@@ -94,6 +102,26 @@
       explanation = paymentValues?.explanation
       payPreference = paymentValues?.payPreference
 
+      livingInCurrentStateAllThisYear = paymentValues?.livingInCurrentStateAllThisYear
+      q1State = paymentValues?.q1State
+      q2State = paymentValues?.q2State
+      q3State = paymentValues?.q3State
+      q4State = paymentValues?.q4State
+      otherStatesToPay = paymentValues?.otherStatesToPay
+      if (!livingInCurrentStateAllThisYear) {
+        if (currentTaxQuarter == 'Q1') {
+          currentState = q1State
+        }
+        else if (currentTaxQuarter == 'Q2') {
+          currentState = q2State
+        }
+        else if (currentTaxQuarter == 'Q3') {
+          currentState = q3State
+        }
+        else if (currentTaxQuarter == 'Q4') {
+          currentState = q4State
+        }
+      }
       global.showPaidDates = paymentValues?.showPaidDates 
       global.q1FederalPaidDate = paymentValues?.q1FederalPaidDate
       global.q2FederalPaidDate = paymentValues?.q2FederalPaidDate
@@ -143,14 +171,15 @@
         }
       }
       loading = false
-      safePostHog.capture('flow_dashboard_viewed', {
-        pay_preference: payPreference,
-      })
+      showReferralBanner = await user.getValue('showReferralBanner')
       await user.setValue('currentPage', 'dashboard')
       if (getLocalStorage('sendDashboardEmail')) {
         await sendDashboardEmail()
         setLocalStorage('sendDashboardEmail', false)
       }
+      safePostHog.capture('flow_dashboard_viewed', {
+        pay_preference: payPreference,
+      })
     }
   })
 
@@ -291,6 +320,11 @@
     payment.setValueByYear(currentTaxYear, 'showPaidDates', global.showPaidDates)
   }
 
+  const handleCloseReferralBanner = async () => {
+    showReferralBanner = false
+    await user.setValue('showReferralBanner', false)
+  }
+
 </script>
 <Header hideBack={true} hideReset={true} showAccountIcon={true} />
 <Avatar /> 
@@ -300,6 +334,9 @@
   {#if global.showConfirmationBanner}
     <Confirmation />
   {/if}
+  {#if showReferralBanner}
+    <ReferralBanner onclose={handleCloseReferralBanner} />
+  {/if}
   {#if taxYear == currentTaxYear}
     <Heading text={headingText} desktopwidth="550px" mobilewidth="275px" />
     {#if payPreference == 'single'}
@@ -307,7 +344,6 @@
         federalDue={federalDue} 
         federalPaid={federalPaid} 
         federalRemaining={federalRemaining} 
-        stateSupported={stateSupported} 
         currentState={currentState} 
         stateDue={stateDue} 
         statePaid={statePaid} 
@@ -325,7 +361,6 @@
         federalPayment2={federalPayment2} 
         federalPayment3={federalPayment3} 
         federalPayment4={federalPayment4} 
-        stateSupported={stateSupported} 
         currentState={currentState} 
         statePayment1={statePayment1} 
         statePayment2={statePayment2} 
@@ -349,6 +384,11 @@
         onQ3StatePaidDateChange={handleQ3StatePaidDateChange}
         onQ4StatePaidDateChange={handleQ4StatePaidDateChange}
         onShowPaidDatesChange={handleShowPaidDatesChange}
+        livingInCurrentStateAllThisYear={livingInCurrentStateAllThisYear}
+        q1State={q1State}
+        q2State={q2State}
+        q3State={q3State}
+        q4State={q4State}
       />
     {/if}
     <Options onEditClick={handleEditClick} onDownloadClick={handleDownloadClick} onViewClick={handleViewClick} viewText={viewText} />
@@ -358,29 +398,21 @@
       </div>
     {/if}
     {#if payPreference == 'single'}
-      {#if stateSupported && currentState}
-        <SinglePay federalSingleAmount={federalRemaining} stateSupported={true} currentState={currentState} stateSingleAmount={stateRemaining} isFederalPaid={isFederalPaid} isStatePaid={isStatePaid} />
-      {:else}
-        <SinglePay federalSingleAmount={federalRemaining} stateSupported={false} isFederalPaid={isFederalPaid} isStatePaid={isStatePaid} />
-      {/if}
+      <SinglePay federalSingleAmount={federalRemaining} currentState={currentState} stateSingleAmount={stateRemaining} isFederalPaid={isFederalPaid} isStatePaid={isStatePaid} />
       <Spacer />
     {:else}
-      {#if stateSupported && currentState}
-        <QuarterlyPay federalQuarterAmount={getFederalPayment()} stateSupported={true} currentState={currentState} stateQuarterAmount={getStatePayment()} quarterName={quarterName} isFederalPaid={isFederalPaid} isStatePaid={isStatePaid} />
-      {:else}
-        <QuarterlyPay federalQuarterAmount={getFederalPayment()} stateSupported={false} quarterName={quarterName} isFederalPaid={isFederalPaid} isStatePaid={isStatePaid} />
-      {/if}     
+      <QuarterlyPay federalQuarterAmount={getFederalPayment()} currentState={currentState} stateQuarterAmount={getStatePayment()} quarterName={quarterName} isFederalPaid={isFederalPaid} isStatePaid={isStatePaid} otherStatesToPay={otherStatesToPay} />
       <Spacer />
     {/if}
     
     {#if showPdf}
       <div class="pdfcontainer" bind:this={pdfContainer}>
         <Pdf 
+          taxYear={currentTaxYear}
           payPreference={payPreference}
           federalDue={federalDue} 
           federalPaid={federalPaid} 
           federalRemaining={federalRemaining} 
-          stateSupported={stateSupported} 
           currentState={currentState} 
           stateDue={stateDue} 
           statePaid={statePaid} 
@@ -405,6 +437,11 @@
           q2StatePaidDate={global.q2StatePaidDate}
           q3StatePaidDate={global.q3StatePaidDate}
           q4StatePaidDate={global.q4StatePaidDate}
+          livingInCurrentStateAllThisYear={livingInCurrentStateAllThisYear}
+          q1State={q1State}
+          q2State={q2State}
+          q3State={q3State}
+          q4State={q4State}
         /> 
       </div>
     {/if}

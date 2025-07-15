@@ -32,8 +32,8 @@
   })
 
   const handleSelection = async (selection) => {
-    await payment.setValue('currentState', convertStateToLowerCase(selection))  
-    if (await payment.getValue('currentState') != '') {
+    currentState = selection 
+    if (currentState != '') {
       global.makeButtonActive = true
     }
     else {
@@ -42,7 +42,8 @@
   }
 
   const handleNext = async () => {
-    if (doesStateHaveQuarterlyTaxes(await payment.getValue('currentState'))) {
+    await payment.setValue('currentState', convertStateToLowerCase(currentState))
+    if (doesStateHaveQuarterlyTaxes(convertStateToLowerCase(currentState))) {
       await payment.setValue('stateHasQuarterlyTaxes', true)
       await payment.setValue('stateSupported', true)
       await user.setValue('currentPage', '5')
@@ -50,9 +51,9 @@
     }
     else {
       await payment.setValue('stateHasQuarterlyTaxes', false)
-      await payment.setValue('stateSupported', false)
-      await user.setValue('currentPage', '4')
-      goto('/4')
+      await payment.setValue('stateSupported', true)
+      await user.setValue('currentPage', '6')
+      goto('/6')
     }
   }
 

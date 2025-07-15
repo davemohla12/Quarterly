@@ -14,19 +14,54 @@
   import { onMount } from 'svelte'
   import { clearLocalStorage, setLocalStorage } from '$src/utilities/utilities'
   import { safePostHog } from '$src/utilities/posthog'
+  import Referral from '$src/components/home/Referral.svelte'
+  import { page } from '$app/stores'
+  import { getReferrerEmail } from '$src/utilities/database'
+  import { user } from '$src/data/user.svelte'
+
+  let showReferralDialog = $state(false)
 
   onMount(async () => {
     clearLocalStorage()
     setLocalStorage('loginLocation', 'home')
+    const referralCode = $page.url.searchParams.get('refer') || ''
+    if (referralCode) {
+      const referrerEmail = await getReferrerEmail(referralCode)
+      if (referrerEmail) {
+        showReferralDialog = true
+        await user.setValue('referrerEmail', referrerEmail)
+      }
+    }
     safePostHog.capture('home_viewed')
   })
+
+  $effect(() => {
+    if (showReferralDialog || global.showMenu) {
+      document.body.style.overflow = 'hidden'
+    } 
+    else {
+      document.body.style.overflow = 'auto'
+    }
+  })
+
+  const dismissMenu = () => {
+    global.showMenu = false
+  }
+
+  const dismissReferral = () => {
+    showReferralDialog = false
+  }
   
 </script>
 
 <div class="page">
+  {#if showReferralDialog}
+    <Referral ondismiss={dismissReferral} />
+    <Overlay ondismiss={dismissReferral} />
+  {/if}
   {#if global.showMenu}
     <Menu />
-    <Overlay />
+    <Overlay ondismiss={dismissMenu} />
   {/if}
   <Header />
   <Stressfree />

@@ -1,17 +1,28 @@
 import { global } from '$src/data/global.svelte'
 import { stateRules } from '$src/rules/state.js'
+import { doesReferralCodeExist } from '$src/utilities/database.js'
 
 const convertStateToLowerCase = (state) => {
-  const lowerCaseState = state.toLowerCase()
-  return lowerCaseState.replace(/\s+/g, '_')
+  if (state) { 
+    const lowerCaseState = state.toLowerCase()
+    return lowerCaseState.replace(/\s+/g, '_')
+  }
+  else {
+    return ''
+  }
 }
 
 const convertStateToUpperCase = (state) => {
+  if (state) {
   const words = state.split('_')
   const capitalizedWords = words.map(word => {
     return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-  })
-  return capitalizedWords.join(' ')
+    })
+    return capitalizedWords.join(' ')
+  }
+  else {
+    return ''
+  }
 }
 
 const convertStateToAllUpperCase = (state) => {
@@ -158,11 +169,23 @@ const getLocalStorage = (key) => {
   else if (value == 'null') {
     value = null
   }
+  else if (value && (value.startsWith('{') || value.startsWith('['))) {
+    try {
+      value = JSON.parse(value)
+    } 
+    catch (error) {
+    }
+  }
   return value
 }
 
 const setLocalStorage = (key, value) => {
-  localStorage.setItem(key, value)
+  if (typeof value === 'object' && value !== null) {
+    localStorage.setItem(key, JSON.stringify(value))
+  } 
+  else {
+    localStorage.setItem(key, value)
+  }
 }
 
 const clearLocalStorage = () => {
@@ -172,6 +195,34 @@ const clearLocalStorage = () => {
       localStorage.removeItem(key)
     }
   }
+}
+
+const saveLocalStorageValues = async (values) => {
+  for (const key of Object.keys(values)) {
+    setLocalStorage(key, values[key])
+  }
+}
+
+const generateUniqueReferralCode = async () => {
+  let code
+  let isUnique = false
+  while (!isUnique) {
+    code = generateReferralCode()
+    const codeAlreadyExists = await doesReferralCodeExist(code)
+    if (!codeAlreadyExists) {
+      isUnique = true
+    }
+  }
+  return code
+}
+
+const generateReferralCode = () => {
+  const chars = '0123456789abcdefghijklmnopqrstuvwxyz'
+  let result = ''
+  for (let i = 0; i < 6; i++) {
+    result += chars[Math.floor(Math.random() * chars.length)]
+  }
+  return result
 }
 
 export { 
@@ -191,5 +242,7 @@ export {
   convertShortToLongIncomeExpectation,
   getLocalStorage,
   setLocalStorage,
-  clearLocalStorage
+  clearLocalStorage,
+  saveLocalStorageValues,
+  generateUniqueReferralCode
 } 

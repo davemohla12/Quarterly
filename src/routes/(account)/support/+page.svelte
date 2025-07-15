@@ -15,6 +15,7 @@
   const buttonText = 'SUBMIT'
   global.makeButtonActive = false
   let message = $state('')
+  let showSpinner = $state(false)
 
   onMount(() => {
     if (!global.loggedIn) {
@@ -33,6 +34,7 @@
   }
   
   const handleSubmit = async () => {
+    showSpinner = true
     await axios.post('/api/email', {
       to: 'support@zenguider.com',
       subject: `Support message from ${global.email}`,
@@ -55,5 +57,9 @@
 <Heading text={headingText} desktopwidth="450px" mobilewidth="300px" />
 <Subheading text={subheadingText} />
 <Support value={message} oninput={handleInput} />
-<Button text={buttonText} onclick={handleSubmit} />
+{#if showSpinner}
+  <Button showSpinner={true} enabled={false} dark={true} />
+{:else}
+  <Button text={buttonText} onclick={handleSubmit} />
+{/if}
 

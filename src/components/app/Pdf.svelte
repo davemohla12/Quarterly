@@ -3,13 +3,15 @@
   import Explanation from '$src/components/app/Explanation.svelte'
   import SinglePayments from '$src/components/app/SinglePayments.svelte'
   import { currentTaxYear } from '$src/settings/settings'
+  import ExampleBanner from '$src/components/app/ExampleBanner.svelte'
 
   let props = $props()
+  let showBanner = $derived(props.showBanner || false)
+  let taxYear = $derived(props.taxYear)
   let payPreference = $derived(props.payPreference)
   let federalDue = $derived(props.federalDue)
   let federalPaid = $derived(props.federalPaid)
   let federalRemaining = $derived(props.federalRemaining)
-  let stateSupported = $derived(props.stateSupported)
   let currentState = $derived(props.currentState)
   let stateDue = $derived(props.stateDue)
   let statePaid = $derived(props.statePaid)
@@ -34,23 +36,32 @@
   let q2StatePaidDate = $derived(props.q2StatePaidDate)
   let q3StatePaidDate = $derived(props.q3StatePaidDate)
   let q4StatePaidDate = $derived(props.q4StatePaidDate)
+  let livingInCurrentStateAllThisYear = $derived(props.livingInCurrentStateAllThisYear)
+  let q1State = $derived(props.q1State)
+  let q2State = $derived(props.q2State)
+  let q3State = $derived(props.q3State)
+  let q4State = $derived(props.q4State)
 
 </script>
 
 <div class="center">
   <img class="logo" src="/images/logo.png" alt="Logo"/>
   {#if payPreference == 'single' }
-    <div class="headline">Your remaining payment for {currentTaxYear}</div>
+    <div class="headline">Your remaining payment for {taxYear}</div>
   {:else}
-    <div class="headline">Your quarterly payments for {currentTaxYear}</div>
+    <div class="headline">Your quarterly payments for {taxYear}</div>
   {/if}
 </div>
+{#if showBanner}
+  <div class="banner">
+    <ExampleBanner narrow={true} />
+  </div>
+{/if}
 {#if payPreference == 'single'}
   <SinglePayments 
     federalDue={federalDue} 
     federalPaid={federalPaid} 
     federalRemaining={federalRemaining} 
-    stateSupported={stateSupported} 
     currentState={currentState} 
     stateDue={stateDue} 
     statePaid={statePaid} 
@@ -66,7 +77,6 @@
     federalPayment2={federalPayment2} 
     federalPayment3={federalPayment3} 
     federalPayment4={federalPayment4} 
-    stateSupported={stateSupported} 
     currentState={currentState} 
     statePayment1={statePayment1} 
     statePayment2={statePayment2} 
@@ -83,6 +93,11 @@
     q4StatePaidDate={q4StatePaidDate}
     hideBlankPayments={true}
     hideMoreMenu={true}
+    livingInCurrentStateAllThisYear={livingInCurrentStateAllThisYear}
+    q1State={q1State}
+    q2State={q2State}
+    q3State={q3State}
+    q4State={q4State}
   />
 {/if}
 <div class="explanation">Explanation</div>
@@ -106,6 +121,10 @@
     font-size: 24px;
     font-weight: var(--regular);
     margin-top: 20px;
+  }
+  .banner {
+    margin-top: -15px;
+    margin-bottom: 35px;
   }
   .explanation {
     font-family: 'Merriweather', serif;

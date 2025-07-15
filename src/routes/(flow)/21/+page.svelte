@@ -55,12 +55,24 @@
       await payment.setValue('federalWithholdingsThisYear', 0)
       await payment.setValue('stateWithholdingsThisYear', 0)
       if (currentTaxQuarter == 'Q1') {
-        goto('/27')
-        await user.setValue('currentPage', '27')
+        if (await payment.getValue('livingInCurrentStateAllThisYear')) {
+          goto('/27')
+          await user.setValue('currentPage', '27')
+        }
+        else {
+          goto('/28')
+          await user.setValue('currentPage', '28')
+        }
       }
       else {
-        goto('/25')
-        await user.setValue('currentPage', '25')
+        if (await payment.getValue('safeToSkipFederalPayment')) {   
+          goto('/26')
+          await user.setValue('currentPage', '26')
+        }
+        else {
+          goto('/25')
+          await user.setValue('currentPage', '25')
+        }
       }
     }
   }
@@ -74,7 +86,7 @@
     if (event.key === 'ArrowLeft') {
       history.back()
     }
-  }
+  } 
 </script>
 
 <svelte:window on:keydown={handleKeyDown} />

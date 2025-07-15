@@ -4,22 +4,39 @@
   import Clickable from '$src/components/app/Clickable.svelte'
   import { federalRules } from '$src/rules/federal'
   import { stateRules } from '$src/rules/state'
-  import { convertStateToAllUpperCase } from '$src/utilities/utilities'
+  import { convertStateToAllUpperCase, convertStateToUpperCase } from '$src/utilities/utilities'
   import { fade } from 'svelte/transition'
   import { currentTaxQuarter } from '$src/settings/settings'
   import dayjs from 'dayjs'
   import { global } from '$src/data/global.svelte'
   import { safePostHog } from '$src/utilities/posthog'
+  import { onMount } from 'svelte'
 
   let props = $props()
   let federalQuarterAmount = $derived(props.federalQuarterAmount || 0)
-  let stateSupported = $derived(props.stateSupported || false)
   let currentState = $derived(props.currentState || '')
   let stateQuarterAmount = $derived(props.stateQuarterAmount || 0)
+  let otherStatesToPay = $derived(props.otherStatesToPay || [])
 
   let quarterName = $derived(props.quarterName || '')
   let isFederalPaid = $derived(props.isFederalPaid || false)
   let isStatePaid = $derived(props.isStatePaid || false)
+  let showHelp = $state([])
+  let isOtherStatePaid = $state([])
+
+  onMount(() => {
+    isOtherStatePaid = otherStatesToPay.map(state => state.markPaid)
+    document.addEventListener('click', handleClickOutside)
+    return () => {
+      document.removeEventListener('click', handleClickOutside)
+    }
+  })
+
+  const handleClickOutside = (event) => {
+    if (!event.target.closest('.helpcontainer') && !event.target.closest('.help')) {
+      showHelp = []
+    }
+  }
 
   const handleFederalClick = () => {
     safePostHog.capture('pay_button_clicked', {
@@ -35,6 +52,15 @@
         payPreference: 'quarterly'
       })
     window.open(stateRules[currentState].payLink, '_blank')
+  }
+
+  const handleOtherStateClick = (state) => {
+    safePostHog.capture('pay_button_clicked', {
+        payee: 'state',
+        payPreference: 'quarterly',
+        otherState: state
+      })
+    window.open(stateRules[state].payLink, '_blank')
   }
 
   const handleMarkPaidFederal = async () => {
@@ -141,6 +167,25 @@
     }
   }   
 
+  const handleHelpClick = (index) => {
+    showHelp[index] = true
+  }
+
+  const handleMarkPaidOtherState = async (index) => {
+    isOtherStatePaid[index] = true
+    let otherStates = await payment.getValue('otherStatesToPay')
+    otherStates[index].markPaid = true
+    await payment.setValue('otherStatesToPay', otherStates)
+  }
+
+  const handleMarkNotPaidOtherState = async (index) => {
+    isOtherStatePaid[index] = false
+    let otherStates = await payment.getValue('otherStatesToPay')
+    otherStates[index].markPaid = false
+    await payment.setValue('otherStatesToPay', otherStates)
+  }
+
+
 </script>
 
 <div class="container">
@@ -174,7 +219,6 @@
     <div class="description">No federal payment is needed this quarter</div>
     <div class="spacer"></div>
   {/if} 
-  {#if stateSupported}
     <div class="header">{convertStateToAllUpperCase(currentState)}</div>
     {#if stateQuarterAmount > 0}
       {#if !isStatePaid}
@@ -204,6 +248,43 @@
       <div class="description">No state payment is required this quarter</div>
       <div class="spacer"></div>
     {/if}
+    {#if otherStatesToPay.length > 0}
+    {#each otherStatesToPay as state, index}
+    <div class="header">{convertStateToAllUpperCase(state.state)}</div>
+      {#if !isOtherStatePaid[index]}
+          <div in:fade={{ duration: 200 }} >
+            <div class="descriptioncontainer">
+              <div class="description">Pay {formatCurrency(state.amount)} to finish your {convertStateToUpperCase(state.state)} payments</div>
+              <Clickable onclick={() => handleHelpClick(index)}>
+                <img class="help" src="/images/help.png" alt="Help" />
+              </Clickable>
+              {#if showHelp[index]}
+                <div class="helpcontainer">
+                  <div class="helptext">You lived in {convertStateToUpperCase(state.state)} earlier this year and didn’t pay the full quarterly amounts so this finishes what you owe there</div>
+                </div>
+              {/if}
+            </div>
+            <div class="buttons">
+            <Clickable onclick={() => handleMarkPaidOtherState(index)}>
+              <div class="secondbutton">MARK PAID</div>
+            </Clickable>
+            <Clickable onclick={() => handleOtherStateClick(state.state)}>
+              <div class="primarybutton">PAY</div>
+            </Clickable>
+            </div>
+          </div>
+        {:else}
+          <div in:fade={{ duration: 200 }} >
+            <div class="completedcontainer">
+              <img class="greencheck" src="/images/greencheck.png"  alt="Completed" />
+              <div class="completedtext">Completed payment of {formatCurrency(state.amount)}</div>
+            </div>
+            <Clickable onclick={() => handleMarkNotPaidOtherState(index)}>
+              <div class="notpaid">MARK NOT PAID</div>
+            </Clickable>
+          </div>
+      {/if}
+    {/each}
   {/if}
 </div>
 
@@ -295,9 +376,31 @@
   .spacer {
     height: 20px;
   }
+  .descriptioncontainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
   .description {
     text-align: center;
     margin-top: 8px;
+  }
+  .help {
+    width: 16px;
+    height: 16px;
+    margin-left: 5px;
+    margin-bottom: -7px;
+  }
+  .helpcontainer {
+    position: absolute;
+    top: 35px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    background-color: var(--dark);
+    color: var(--white);
+    padding: 10px 15px;
   }
   @media (min-width: 768px) {
     .container {

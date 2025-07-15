@@ -23,7 +23,12 @@
   global.makeButtonActive = false
 
   onMount(async () => {
-    headingText = `What are your expected ${convertStateToUpperCase(await payment.getValue('currentState'))} W2 witholdings for this year?`
+    if (await payment.getValue('livingInCurrentStateAllThisYear')) {
+      headingText = `What are your expected ${convertStateToUpperCase(await payment.getValue('currentState'))} W2 witholdings for this year?`
+    }
+    else {
+      headingText = `What are your expected state W2 witholdings for this year?`
+    }
     if (global.loggedIn) {
       if (await payment.getValue('stateWithholdingsThisYear')) {
         const stateWithholdingsThisYear = await payment.getValue('stateWithholdingsThisYear')
@@ -50,8 +55,14 @@
       await user.setValue('currentPage', '27')
     }
     else {
-      goto('/25')
-      await user.setValue('currentPage', '25')
+      if (await payment.getValue('safeToSkipFederalPayment')) {
+        goto('/26')
+        await user.setValue('currentPage', '26')
+      }
+      else {
+        goto('/25')
+        await user.setValue('currentPage', '25')
+      }
     }
   }
 

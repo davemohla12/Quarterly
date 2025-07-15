@@ -2,6 +2,7 @@
   import Clickable from '$src/components/app/Clickable.svelte'
 
   let props = $props()
+  let hideEdit = props.hideEdit || false
   let onEditClick = props.onEditClick
   let onDownloadClick = props.onDownloadClick
   let onViewClick = props.onViewClick
@@ -21,9 +22,11 @@
 </script>
 
 <div class="options">
-  <Clickable onclick={handleEditClick}>  
-    <div class="option edit">EDIT INPUTS</div>
-  </Clickable>
+  {#if !hideEdit}
+    <Clickable onclick={handleEditClick}>  
+      <div class="option edit">EDIT INPUTS</div>
+    </Clickable>
+  {/if}
   <Clickable onclick={handleDownloadClick}>
     <div class="option download">DOWNLOAD PDF</div>
   </Clickable>

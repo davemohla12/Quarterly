@@ -8,13 +8,14 @@
   let userValues = $derived(props.userValues || {})
   let paymentValues = $derived(props.paymentValues || {})
   let onTaxYearClick = $derived(props.onTaxYearClick || (() => {}))
-  let currentTaxYear = $state(null)
-
+  let selectedTaxYear = $state()
+  
   onMount(() => {
-    currentTaxYear = userValues.latestTaxYearPaid
+    selectedTaxYear = userValues.latestTaxYearPaid
   })
 
   const handleTaxYearClick = (taxYear) => {
+    selectedTaxYear = taxYear
     onTaxYearClick(taxYear)
   }
 </script>
@@ -39,7 +40,7 @@
   <div class="field">Latest Tax Year Paid</div>
   <div class="value">{userValues.latestTaxYearPaid || 'blank'}</div>
   <div class="field">Tax Years Paid</div>
-  <div class="value">{userValues.taxYearsPaid.join(', ') || 'blank'}</div>
+  <div class="value">{userValues.taxYearsPaid?.join(', ') || 'blank'}</div>
   <div class="field">Last Payment Amount</div>
   <div class="value">{formatCurrency(userValues.lastPaymentAmount) || 'blank'}</div>
   <div class="field">Last Payment Date</div>
@@ -48,6 +49,10 @@
   <div class="value">{userValues.totalPayments || 'blank'}</div>
   <div class="field">Payments Dates</div>
   <div class="value">{userValues.paymentDates.map(date => dayjs(date).format('M/D/YY')).join(', ') || 'blank'}</div>
+  <div class="field">Refunded Tax Years</div>
+  <div class="value">{userValues.refundedTaxYears?.join(', ') || 'blank'}</div>
+  <div class="field">Last Stripe Payment ID</div>
+  <div class="value">{userValues.lastPaymentId || 'blank'}</div>
   <div class="field">Stripe Customer ID</div>
   <div class="value">{userValues.stripeCustomerId || 'blank'}</div>
   <div class="divider"></div>
@@ -56,7 +61,7 @@
   <div class="taxyears">
     {#each userValues.taxYearsPaid as taxYear}
       <Clickable onclick={() => handleTaxYearClick(taxYear)}>
-        <div class="taxyear" class:current={taxYear === currentTaxYear}>{taxYear}</div>
+        <div class="taxyear" class:selected={taxYear == selectedTaxYear}>{taxYear}</div>
       </Clickable>
     {/each}
   </div>
@@ -74,6 +79,16 @@
     <div class="value">{paymentValues.livedInCurrentStateAllLastYear === null ? 'blank' : paymentValues.livedInCurrentStateAllLastYear}</div>
     <div class="field">Living in Current State All This Year</div>
     <div class="value">{paymentValues.livingInCurrentStateAllThisYear === null ? 'blank' : paymentValues.livingInCurrentStateAllThisYear}</div>
+    {#if paymentValues.livingInCurrentStateAllThisYear == false}
+      <div class="field">Q1 State</div>
+      <div class="value">{paymentValues.q1State || 'blank'}</div>
+      <div class="field">Q2 State</div>
+      <div class="value">{paymentValues.q2State || 'blank'}</div>
+      <div class="field">Q3 State</div>
+      <div class="value">{paymentValues.q3State || 'blank'}</div>
+      <div class="field">Q4 State</div>
+      <div class="value">{paymentValues.q4State || 'blank'}</div>
+    {/if}
     <div class="divider"></div>
 
     <div class="section">FILINGS</div>
@@ -146,6 +161,17 @@
     <div class="value">{paymentValues.showPaidDates === null ? 'blank' : paymentValues.showPaidDates}</div>
     <div class="divider"></div>
 
+    <div class="section">REFERRALS</div>
+    <div class="field">Referral Code</div>
+    <div class="value">{userValues.referralCode || 'blank'}</div>
+    <div class="field">Credits</div>
+    <div class="value">{formatCurrency(userValues.credits) || 'blank'}</div>
+    <div class="field">Show Referral Banner</div>
+    <div class="value">{userValues.showReferralBanner === null ? 'blank' : userValues.showReferralBanner}</div>
+    <div class="field">Referrer Email</div>
+    <div class="value">{userValues.referrerEmail || 'blank'}</div>
+    <div class="divider"></div>
+
     <div class="section">FEDERAL CALCULATION</div>
     <div class="field">Adjusted Gross Income This Year</div>
     <div class="value">{formatCurrency(paymentValues.adjustedGrossIncomeThisYear) || 'blank'}</div>
@@ -153,23 +179,23 @@
     <div class="value">{formatCurrency(paymentValues.taxableFederalIncomeThisYear) || 'blank'}</div>
     <div class="field">Safe Harbor Federal Taxes This Year</div>
     <div class="value">{formatCurrency(paymentValues.safeHarborFederalTaxesThisYear) || 'blank'}</div>
-    <div class="field">Non Withheld Safe Harbor Federal Taxes This Year</div>
-    <div class="value">{formatCurrency(paymentValues.nonWithheldSafeHarborFederalTaxThisYear) || 'blank'}</div>
+    <div class="field">Total Federal Tax Liability</div>
+    <div class="value">{formatCurrency(paymentValues.totalFederalTaxLiability ) || 'blank'}</div>
     <div class="field">Safe To Skip Federal Payment</div>
     <div class="value">{paymentValues.safeToSkipFederalPayment === null ? 'blank' : paymentValues.safeToSkipFederalPayment}</div>
     <div class="divider"></div>
 
     {#if paymentValues.stateSupported}
       <div class="section">STATE CALCULATION</div>
-      <div class="field">Adjusted Gross Income This Year</div>
+      <div class="field">State Adjusted Gross Income This Year</div>
       <div class="value">{formatCurrency(paymentValues.stateAdjustableGrossIncomeThisYear) || 'blank'}</div>
-      <div class="field">Taxable Federal Income This Year</div>
+      <div class="field">Taxable State Income This Year</div>
       <div class="value">{formatCurrency(paymentValues.taxableStateIncomeThisYear) || 'blank'}</div>
-      <div class="field">Safe Harbor Federal Taxes This Year</div>
+      <div class="field">Safe Harbor State Taxes This Year</div>
       <div class="value">{formatCurrency(paymentValues.safeHarborStateTaxesThisYear) || 'blank'}</div>
-      <div class="field">Non Withheld Safe Harbor Federal Taxes This Year</div>
-      <div class="value">{formatCurrency(paymentValues.nonWithheldSafeHarborStateTaxThisYear) || 'blank'}</div>
-      <div class="field">Safe To Skip Federal Payment</div>
+      <div class="field">Total State Tax Liability</div>
+      <div class="value">{formatCurrency(paymentValues.totalStateTaxLiability ) || 'blank'}</div>
+      <div class="field">Safe To Skip State Payment</div>
       <div class="value">{paymentValues.safeToSkipStatePayment === null ? 'blank' : paymentValues.safeToSkipStatePayment}</div>
       <div class="divider"></div>
     {/if}
@@ -237,29 +263,53 @@
 
     {#if paymentValues.stateSupported && paymentValues.payPreference === 'quarter'}
       <div class="section">STATE QUARTERLY PAYMENTS</div>
-      <div class="field">Federal Due</div>
+      {#if !paymentValues.livingInCurrentStateAllThisYear}
+        <div class="field">Q1 State</div>
+        <div class="value">{paymentValues.q1State || 'blank'}</div>
+      {/if}
+      <div class="field">Q1 State Payment</div>
       <div class="value">{formatCurrency(paymentValues.q1StateQuarterlyPayment) || 'blank'}</div> 
-      <div class="field">Q2 Federal Payment</div>
+      {#if !paymentValues.livingInCurrentStateAllThisYear}
+        <div class="field">Q2 State</div>
+        <div class="value">{paymentValues.q2State || 'blank'}</div>
+      {/if}
+      <div class="field">Q2 State Payment</div>
       <div class="value">{formatCurrency(paymentValues.q2StateQuarterlyPayment) || 'blank'}</div>
-      <div class="field">Q3 Federal Payment</div>
+      {#if !paymentValues.livingInCurrentStateAllThisYear}
+        <div class="field">Q3 State</div>
+        <div class="value">{paymentValues.q3State || 'blank'}</div>
+      {/if}
+      <div class="field">Q3 State Payment</div>
       <div class="value">{formatCurrency(paymentValues.q3StateQuarterlyPayment) || 'blank'}</div>
-      <div class="field">Q4 Federal Payment</div>
+      {#if !paymentValues.livingInCurrentStateAllThisYear}
+        <div class="field">Q4 State</div>
+        <div class="value">{paymentValues.q4State || 'blank'}</div>
+      {/if}
+      <div class="field">Q4 State Payment</div>
       <div class="value">{formatCurrency(paymentValues.q4StateQuarterlyPayment) || 'blank'}</div>
-      <div class="field">Q1 Federal Mark Paid</div>
+      {#if paymentValues.otherStatesToPay?.length > 0}
+        <div class="field">Other States To Pay</div>
+        {#each paymentValues.otherStatesToPay as state}
+          <div class="value">{state.state}: {formatCurrency(state.amount)}</div>
+          <div class="value">Paid: {state.markPaid === null ? 'blank' : state.markPaid}</div>
+          <div class="verticalspacer"></div>
+        {/each}
+      {/if}
+      <div class="field">Q1 State Mark Paid</div>
       <div class="value">{paymentValues.q1StateMarkPaid === null ? 'blank' : paymentValues.q1StateMarkPaid}</div>
-      <div class="field">Q2 Federal Mark Paid</div>
+      <div class="field">Q2 State Mark Paid</div>
       <div class="value">{paymentValues.q2StateMarkPaid === null ? 'blank' : paymentValues.q2StateMarkPaid}</div>
-      <div class="field">Q3 Federal Mark Paid</div>
+      <div class="field">Q3 State Mark Paid</div>
       <div class="value">{paymentValues.q3StateMarkPaid === null ? 'blank' : paymentValues.q3StateMarkPaid}</div>
-      <div class="field">Q4 Federal Mark Paid</div>
+      <div class="field">Q4 State Mark Paid</div>
       <div class="value">{paymentValues.q4StateMarkPaid === null ? 'blank' : paymentValues.q4StateMarkPaid}</div>
-      <div class="field">Q1 Federal Paid Date</div>
+      <div class="field">Q1 State Paid Date</div>
       <div class="value">{paymentValues.q1StatePaidDate || 'blank'}</div>
-      <div class="field">Q2 Federal Paid Date</div>
+      <div class="field">Q2 State Paid Date</div>
       <div class="value">{paymentValues.q2StatePaidDate || 'blank'}</div>
-      <div class="field">Q3 Federal Paid Date</div>
+      <div class="field">Q3 State Paid Date</div>
       <div class="value">{paymentValues.q3StatePaidDate || 'blank'}</div>
-      <div class="field">Q4 Federal Paid Date</div>
+      <div class="field">Q4 State Paid Date</div>
       <div class="value">{paymentValues.q4StatePaidDate || 'blank'}</div>
       <div class="divider"></div>
     {/if}
@@ -324,8 +374,9 @@
     margin-left: 15px;
     margin-right: 15px;
   }
-  .current {
+  .selected {
     text-decoration: underline;
+    text-underline-offset: 4px;
   }
   .explanationcontainer {
     display: flex;
@@ -336,6 +387,10 @@
     margin-left: 30px;
     margin-right: 30px;
     text-align: center;
+    white-space: pre-wrap;
+  }
+  .verticalspacer {
+    height: 10px;
   }
   @media (min-width: 768px) { 
   .divider {

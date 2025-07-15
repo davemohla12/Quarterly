@@ -25,7 +25,6 @@
   let federalDue = $state(0)
   let federalPaid = $state(0)
   let federalRemaining = $state(0)
-  let stateSupported = $state(false)
   let currentState = $state('')
   let stateDue = $state(0)
   let statePaid = $state(0) 
@@ -39,6 +38,12 @@
   let statePayment3 = $state(0)
   let statePayment4 = $state(0)
   let explanation = $state('')
+
+  let livingInCurrentStateAllThisYear = $state()
+  let q1State = $state()
+  let q2State = $state()
+  let q3State = $state()
+  let q4State = $state()
 
   let showPaidDates = $state(false)
   let q1FederalPaidDate = $state('')
@@ -69,7 +74,6 @@
     federalDue = paymentValues?.singleFederalDue
     federalPaid = paymentValues?.singleFederalPaid
     federalRemaining = paymentValues?.singleFederalRemaining
-    stateSupported = paymentValues?.stateSupported
     currentState = paymentValues?.currentState
     stateDue = paymentValues?.singleStateDue
     statePaid = paymentValues?.singleStatePaid
@@ -84,6 +88,12 @@
     statePayment4 = paymentValues?.q4StateQuarterlyPayment
     explanation = paymentValues?.explanation
 
+    livingInCurrentStateAllThisYear = paymentValues?.livingInCurrentStateAllThisYear
+    q1State = paymentValues?.q1State
+    q2State = paymentValues?.q2State
+    q3State = paymentValues?.q3State
+    q4State = paymentValues?.q4State
+    
     showPaidDates = paymentValues?.showPaidDates
     q1FederalPaidDate = paymentValues?.q1FederalPaidDate  
     q2FederalPaidDate = paymentValues?.q2FederalPaidDate
@@ -179,7 +189,6 @@
     federalDue={federalDue} 
     federalPaid={federalPaid} 
     federalRemaining={federalRemaining} 
-    stateSupported={stateSupported} 
     currentState={currentState} 
     stateDue={stateDue} 
     statePaid={statePaid} 
@@ -215,17 +224,22 @@
     onQ3StatePaidDateChange={handleQ3StatePaidDateChange} 
     onQ4StatePaidDateChange={handleQ4StatePaidDateChange}
     onShowPaidDatesChange={handleShowPaidDatesChange}
+    livingInCurrentStateAllThisYear={livingInCurrentStateAllThisYear}
+    q1State={q1State}
+    q2State={q2State}
+    q3State={q3State}
+    q4State={q4State}
   />    
 {/if}
 
 {#if showPdf}
 <div class="pdfcontainer" bind:this={pdfContainer}>
   <Pdf 
+    taxYear={year}
     payPreference={payPreference}
     federalDue={federalDue} 
     federalPaid={federalPaid} 
     federalRemaining={federalRemaining} 
-    stateSupported={stateSupported} 
     currentState={currentState} 
     stateDue={stateDue} 
     statePaid={statePaid} 
@@ -250,6 +264,11 @@
     q4StatePaidDate={q4StatePaidDate}
     singleFederalPaidDate={singleFederalPaidDate}
     singleStatePaidDate={singleStatePaidDate}
+    livingInCurrentStateAllThisYear={livingInCurrentStateAllThisYear}
+    q1State={q1State}
+    q2State={q2State}
+    q3State={q3State}
+    q4State={q4State}
   /> 
 </div>
 {/if}

@@ -1,14 +1,11 @@
 <script>
-  import { global } from '$src/data/global.svelte'
   import Clickable from '$src/components/app/Clickable.svelte'
-  
-  const handleClick = () => {
-    global.showMenu = false
-  }
+
+  let props = $props()
+  let ondismiss = $derived(props.ondismiss)
 </script>
 
-
-<Clickable onclick={handleClick}>
+<Clickable onclick={ondismiss}>
   <div class="overlay"></div>
 </Clickable>
 

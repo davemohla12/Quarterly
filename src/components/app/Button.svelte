@@ -3,11 +3,11 @@
   import Clickable from '$src/components/app/Clickable.svelte'
 
   let props = $props()
-  let text = props.text
-  let onclick = props.onclick
-  let dark = props.dark || false
+  let text = $derived(props.text)
+  let onclick = $derived(props.onclick)
+  let dark = $derived(props.dark || false)
   let enabled = $state(false)
-  let showSpinner = props.showSpinner || false
+  let showSpinner = $derived(props.showSpinner || false)
 
   $effect(() => {
     if (global.makeButtonActive) {

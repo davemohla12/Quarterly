@@ -6,10 +6,11 @@ import { getOneDayEmail } from '$src/emails/oneday'
 import { getSupportEmail } from '$src/emails/support'
 import { getConfirmationEmail } from '$src/emails/confirmation'
 import { getRatingEmail } from '$src/emails/rating'
+import { getCreditsEmail } from '$src/emails/credits'
 import { RESEND_API_KEY } from '$env/static/private'
 
 const POST = async ({ request }) => {
-  const { to, subject, template, message, email, id } = await request.json()
+  const { to, subject, template, message, email, id, credits } = await request.json()
 
   let html = ''
 
@@ -30,6 +31,9 @@ const POST = async ({ request }) => {
   }
   else if (template == 'rating') {
     html = getRatingEmail(id)
+  }
+  else if (template == 'credits') {
+    html = getCreditsEmail(credits)
   }
 
   try { 

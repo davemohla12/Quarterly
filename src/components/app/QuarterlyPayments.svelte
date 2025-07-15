@@ -1,21 +1,18 @@
 <script>
   import { formatCurrency } from "$src/utilities/utilities"
-  import { convertStateToAllUpperCase } from "$src/utilities/utilities"
+  import { convertStateToAllUpperCase, convertStateToUpperCase } from "$src/utilities/utilities"
   import { q1DueDate, q2DueDate, q3DueDate, q4DueDate } from '$src/settings/settings'
   import { currentTaxQuarter } from '$src/settings/settings'
   import dayjs from 'dayjs'
   import { onMount } from 'svelte'
-  import flatpickr from 'flatpickr' 
-  import 'flatpickr/dist/flatpickr.min.css'
   import Clickable from '$src/components/app/Clickable.svelte'
-  import { payment } from '$src/data/payment.svelte'
+  import DatePicker from '$src/components/app/DatePicker.svelte'
 
   let props = $props()
   let federalPayment1 = $derived(props.federalPayment1 || 0)
   let federalPayment2 = $derived(props.federalPayment2 || 0)
   let federalPayment3 = $derived(props.federalPayment3 || 0)
   let federalPayment4 = $derived(props.federalPayment4 || 0)
-  let stateSupported = $derived(props.stateSupported || false)
   let currentState = $derived(props.currentState || '')
   let statePayment1 = $derived(props.statePayment1 || 0)
   let statePayment2 = $derived(props.statePayment2 || 0)
@@ -31,7 +28,13 @@
   let q2StatePaidDate = $derived(props.q2StatePaidDate || '') 
   let q3StatePaidDate = $derived(props.q3StatePaidDate || '')
   let q4StatePaidDate = $derived(props.q4StatePaidDate || '')  
-  
+
+  let livingInCurrentStateAllThisYear = $derived(props.livingInCurrentStateAllThisYear)
+  let q1State = $derived(props.q1State)
+  let q2State = $derived(props.q2State)
+  let q3State = $derived(props.q3State)
+  let q4State = $derived(props.q4State)
+
   let hideBlankPayments = $derived(props.hideBlankPayments || false)
   let hideMoreMenu = $derived(props.hideMoreMenu || false)
   
@@ -54,96 +57,15 @@
   let q2StateDateElement = $state(null)
   let q3StateDateElement = $state(null)
   let q4StateDateElement = $state(null)
-  let q1FederalDialog
-  let q2FederalDialog
-  let q3FederalDialog
-  let q4FederalDialog
-  let q1StateDialog
-  let q2StateDialog
-  let q3StateDialog
-  let q4StateDialog
 
   let showMoreDialog = $state(false)
 
-  const currentDate = dayjs().format('YYYY-MM-DD')
-
   onMount(async () => {
-    q1FederalDialog = flatpickr(q1FederalDateElement, {
-      defaultDate: q1FederalPaidDate || currentDate,
-      clickOpens: false, 
-      onChange: (selectedDates) => {
-        onQ1FederalPaidDateChange(dayjs(selectedDates[0]).format('YYYY-MM-DD'))
-      },
-    })
-
-    q2FederalDialog = flatpickr(q2FederalDateElement, {
-      defaultDate: q2FederalPaidDate || currentDate,
-      clickOpens: false, 
-      onChange: (selectedDates) => {
-        onQ2FederalPaidDateChange(dayjs(selectedDates[0]).format('YYYY-MM-DD'))
-        },
-      })
-
-    q3FederalDialog = flatpickr(q3FederalDateElement, {
-      defaultDate: q3FederalPaidDate || currentDate,
-      clickOpens: false, 
-      onChange: (selectedDates) => {
-        onQ3FederalPaidDateChange(dayjs(selectedDates[0]).format('YYYY-MM-DD'))
-      },
-    })
-
-    q4FederalDialog = flatpickr(q4FederalDateElement, {
-      defaultDate: q4FederalPaidDate || currentDate,
-      clickOpens: false, 
-      onChange: (selectedDates) => {
-        onQ4FederalPaidDateChange(dayjs(selectedDates[0]).format('YYYY-MM-DD'))
-      },
-    })
-
-    if (await payment.getValue('stateSupported')) { 
-      q1StateDialog = flatpickr(q1StateDateElement, {
-        defaultDate: q1StatePaidDate || currentDate,
-        clickOpens: false, 
-        onChange: (selectedDates) => {
-          onQ1StatePaidDateChange(dayjs(selectedDates[0]).format('YYYY-MM-DD'))
-        },
-      })
-
-      if (q2StatePaidDate) {
-        q2StateDialog = flatpickr(q2StateDateElement, {
-          defaultDate: q2StatePaidDate || currentDate,
-          clickOpens: false, 
-          onChange: (selectedDates) => {
-            onQ2StatePaidDateChange(dayjs(selectedDates[0]).format('YYYY-MM-DD'))
-          },
-        })  
-      }
-
-      if (q3StatePaidDate) {
-        q3StateDialog = flatpickr(q3StateDateElement, {
-          defaultDate: q3StatePaidDate || currentDate,
-          clickOpens: false, 
-          onChange: (selectedDates) => {
-            onQ3StatePaidDateChange(dayjs(selectedDates[0]).format('YYYY-MM-DD'))
-          },
-        })  
-      }
-
-      if (q4StatePaidDate) {
-        q4StateDialog = flatpickr(q4StateDateElement, {
-          defaultDate: q4StatePaidDate || currentDate,
-          clickOpens: false, 
-          onChange: (selectedDates) => {
-            onQ4StatePaidDateChange(dayjs(selectedDates[0]).format('YYYY-MM-DD'))
-          },
-        })
-      }
-    }
     document.addEventListener('click', handleClickOutside)
     return () => {
       document.removeEventListener('click', handleClickOutside)
     }
-  })    
+  })
 
   const handleClickOutside = (event) => {
     if (!event.target.closest('.moredialog') && !event.target.closest('.more')) {
@@ -151,29 +73,52 @@
     }
   }
 
-  const openQ1FederalDialog = () => {
-    q1FederalDialog?.open()
+  const handleQ1FederalPaidDateChange = (date) => {
+    q1FederalPaidDate = date
+    onQ1FederalPaidDateChange(date)
   }
-  const openQ2FederalDialog = () => {
-    q2FederalDialog?.open()
+
+  const handleQ2FederalPaidDateChange = (date) => {
+    q2FederalPaidDate = date
+    onQ2FederalPaidDateChange(date)
   }
-  const openQ3FederalDialog = () => { 
-    q3FederalDialog?.open()
+
+  const handleQ3FederalPaidDateChange = (date) => {
+    q3FederalPaidDate = date
+    onQ3FederalPaidDateChange(date)
   }
-  const openQ4FederalDialog = () => {
-    q4FederalDialog?.open()
+
+  const handleQ4FederalPaidDateChange = (date) => {
+    q4FederalPaidDate = date
+    onQ4FederalPaidDateChange(date)
   }
-  const openQ1StateDialog = () => {
-    q1StateDialog?.open()
+
+  const handleQ1StatePaidDateChange = (date) => {
+    q1StatePaidDate = date
+    onQ1StatePaidDateChange(date)
   }
-  const openQ2StateDialog = () => {
-    q2StateDialog?.open()
+
+  const handleQ2StatePaidDateChange = (date) => {
+    q2StatePaidDate = date
+    onQ2StatePaidDateChange(date)
   }
-  const openQ3StateDialog = () => {
-    q3StateDialog?.open()
+
+  const handleQ3StatePaidDateChange = (date) => {
+    q3StatePaidDate = date
+    onQ3StatePaidDateChange(date)
   }
-  const openQ4StateDialog = () => {
-    q4StateDialog?.open()
+
+  const handleQ4StatePaidDateChange = (date) => {
+    q4StatePaidDate = date
+    onQ4StatePaidDateChange(date)
+  }
+  
+  const isPastQuarter = (quarterNumber) => {
+    let currentQuarterNumber = parseInt(currentTaxQuarter.split('Q')[1])
+    if (quarterNumber < currentQuarterNumber) {
+      return true
+    }
+    return false
   }
 
   const isCurrentOrPastQuarter = (quarterNumber) => {
@@ -220,7 +165,7 @@
       paidDate = q4FederalPaidDate
       paymentAmount = federalPayment4
     }
-    if (!showPaidDates || !isCurrentOrPastQuarter(quarterNumber) || hideBlankPayments || paymentAmount == 0 || !paidDate) {
+    if (!showPaidDates || !isCurrentOrPastQuarter(quarterNumber) || hideBlankPayments || paymentAmount == 0 || (!paidDate && !isPastQuarter(quarterNumber))) {
       return true
     }
     return false
@@ -245,7 +190,7 @@
       paidDate = q4StatePaidDate
       paymentAmount = statePayment4
     }
-    if (!showPaidDates || !isCurrentOrPastQuarter(quarterNumber) || hideBlankPayments || paymentAmount == 0 || !paidDate) {
+    if (!showPaidDates || !isCurrentOrPastQuarter(quarterNumber) || hideBlankPayments || paymentAmount == 0 || (!paidDate && !isPastQuarter(quarterNumber))) {
       return true
     }
     return false
@@ -253,12 +198,14 @@
 
 </script>
 
-<div class="container" class:containermargin={!showPaidDates}>
+<div class="container" class:containermargin={!showPaidDates} class:containerwithstates={!livingInCurrentStateAllThisYear}>
   <div class="header">
     <div class="lefttitle">DUE</div>
     <div class="centertitle">FEDERAL</div>
-    {#if stateSupported}
-      <div class="centertitle">{convertStateToAllUpperCase(currentState)}</div>
+      {#if livingInCurrentStateAllThisYear}
+        <div class="centertitle">{convertStateToAllUpperCase(currentState)}</div>
+      {:else}
+        <div class="centertitle">STATE</div>
     {/if}
     {#if !hideMoreMenu}
       <Clickable onclick={handleMoreClick}>
@@ -280,226 +227,150 @@
     </div>
    {/if}
   </div>
-  <div class="row">
+  <div class="row" class:rowwithstates={!livingInCurrentStateAllThisYear}>
     <div class="due">{q1DueDate.format('MMM D')}</div>
     <div class="payment" class:pushpaymentdown={pushFederalPaymentDown(1)}>
       <div class="value">{formatCurrency(federalPayment1)}</div>
       {#if showPaidDates && isCurrentOrPastQuarter(1)}
         {#if q1FederalPaidDate}
-          <Clickable onclick={openQ1FederalDialog}>
-            <div class="paidcontainer">
-              <div class="paid">Paid on {dayjs(q1FederalPaidDate).format('M-D-YY')}</div>
-              <img class="edit" src="/images/edit.png" alt="Edit"  />
-            </div>
-          </Clickable>
+          <DatePicker text={`Paid on ${dayjs(q1FederalPaidDate).format('M-D-YY')}`} date={q1FederalPaidDate} onselect={handleQ1FederalPaidDateChange} />
         {:else}
           {#if isCurrentQuarter(1) || hideBlankPayments || federalPayment1 == 0}
             <div class="paid"></div>
           {:else}
-            <Clickable onclick={openQ1FederalDialog}>
-              <div class="paidcontainer">
-                <div class="paid">(Add date paid)</div>
-                <img class="edit" src="/images/edit.png" alt="Edit"  />
-              </div>
-            </Clickable>
+            <DatePicker text="(Add date paid)" date={q1FederalPaidDate} onselect={handleQ1FederalPaidDateChange} />
           {/if}
         {/if}
       {/if}
-      <input class="dialog" bind:this={q1FederalDateElement} />
+      <input class="dialog" bind:this={q1FederalDateElement} /> 
     </div>
-    {#if stateSupported}
       <div class="payment" class:pushpaymentdown={pushStatePaymentDown(1)}>
+        {#if !livingInCurrentStateAllThisYear}
+          <div class="statename">{convertStateToUpperCase(q1State)}</div>
+        {/if}
         <div class="value">{formatCurrency(statePayment1)}</div>
         {#if showPaidDates && isCurrentOrPastQuarter(1)}
           {#if q1StatePaidDate}
-            <Clickable onclick={openQ1StateDialog}>
-              <div class="paidcontainer">
-                <div class="paid">Paid on {dayjs(q1StatePaidDate).format('M-D-YY')}</div>
-                <img class="edit" src="/images/edit.png" alt="Edit"  />
-              </div>
-            </Clickable>
+            <DatePicker text={`Paid on ${dayjs(q1StatePaidDate).format('M-D-YY')}`} date={q1StatePaidDate} onselect={handleQ1StatePaidDateChange} />
           {:else}
             {#if isCurrentQuarter(1) || hideBlankPayments || statePayment1 == 0}
               <div class="paid"></div>
             {:else}   
-              <Clickable onclick={openQ1StateDialog}>
-                <div class="paidcontainer">
-                  <div class="paid">(Add date paid)</div>
-                  <img class="edit" src="/images/edit.png" alt="Edit"  />
-                </div>
-              </Clickable>
+              <DatePicker text="(Add date paid)" date={q1StatePaidDate} onselect={handleQ1StatePaidDateChange} />
             {/if}
           {/if}
         {/if} 
         <input class="dialog" bind:this={q1StateDateElement} />
       </div>
-    {/if}
   </div>
-  <div class="row">
+  <div class="row" class:rowwithstates={!livingInCurrentStateAllThisYear}>
     <div class="due">{q2DueDate.format('MMM D')}</div>
     <div class="payment" class:pushpaymentdown={pushFederalPaymentDown(2)}>
       <div class="value">{formatCurrency(federalPayment2)}</div>
       {#if showPaidDates && isCurrentOrPastQuarter(2)}
         {#if q2FederalPaidDate}
-          <Clickable onclick={openQ2FederalDialog}>
-            <div class="paidcontainer">
-              <div class="paid">Paid on {dayjs(q2FederalPaidDate).format('M-D-YY')}</div>
-              <img class="edit" src="/images/edit.png" alt="Edit"  />
-            </div>
-          </Clickable>
+          <DatePicker text={`Paid on ${dayjs(q2FederalPaidDate).format('M-D-YY')}`} date={q2FederalPaidDate} onselect={handleQ2FederalPaidDateChange} />
         {:else}
           {#if isCurrentQuarter(2) || hideBlankPayments || federalPayment2 == 0}
             <div class="paid"></div>
           {:else}   
-            <Clickable onclick={openQ2FederalDialog}>
-              <div class="paidcontainer">
-                <div class="paid">(Add date paid)</div>
-                <img class="edit" src="/images/edit.png" alt="Edit"  />
-              </div>
-            </Clickable>
+            <DatePicker text="(Add date paid)" date={q2FederalPaidDate} onselect={handleQ2FederalPaidDateChange} />
           {/if}
         {/if}
       {/if} 
       <input class="dialog" bind:this={q2FederalDateElement} />
     </div>
-    {#if stateSupported}
       <div class="payment" class:pushpaymentdown={pushStatePaymentDown(2)}>
+        {#if !livingInCurrentStateAllThisYear}
+          <div class="statename">{convertStateToUpperCase(q2State)}</div>
+        {/if}
         <div class="value">{formatCurrency(statePayment2)}</div>
         {#if showPaidDates && isCurrentOrPastQuarter(2)}
           {#if q2StatePaidDate}
-            <Clickable onclick={openQ2StateDialog}>
-              <div class="paidcontainer">
-                <div class="paid">Paid on {dayjs(q2StatePaidDate).format('M-D-YY')}</div>
-                <img class="edit" src="/images/edit.png" alt="Edit"  />
-              </div>
-            </Clickable>
+            <DatePicker text={`Paid on ${dayjs(q2StatePaidDate).format('M-D-YY')}`} date={q2StatePaidDate} onselect={handleQ2StatePaidDateChange} />
           {:else}
             {#if isCurrentQuarter(2) || hideBlankPayments || statePayment2 == 0}
               <div class="paid"></div>
             {:else} 
-              <Clickable onclick={openQ2StateDialog}>
-                <div class="paidcontainer">
-                  <div class="paid">(Add date paid)</div>
-                  <img class="edit" src="/images/edit.png" alt="Edit"  />
-                </div>
-              </Clickable>
+              <DatePicker text="(Add date paid)" date={q2StatePaidDate} onselect={handleQ2StatePaidDateChange} />
             {/if}
           {/if}
         {/if}
         <input class="dialog" bind:this={q2StateDateElement} />
       </div>
-    {/if}
   </div>  
-  <div class="row">
+  <div class="row" class:rowwithstates={!livingInCurrentStateAllThisYear}>
     <div class="due">{q3DueDate.format('MMM D')}</div>
     <div class="payment" class:pushpaymentdown={pushFederalPaymentDown(3)}>
       <div class="value">{formatCurrency(federalPayment3)}</div>  
       {#if showPaidDates && isCurrentOrPastQuarter(3)}
         {#if q3FederalPaidDate}
-          <Clickable onclick={openQ3FederalDialog}>
-            <div class="paidcontainer">
-              <div class="paid">Paid on {dayjs(q3FederalPaidDate).format('M-D-YY')}</div>
-              <img class="edit" src="/images/edit.png" alt="Edit"  />
-            </div>
-          </Clickable>
+          <DatePicker text={`Paid on ${dayjs(q3FederalPaidDate).format('M-D-YY')}`} date={q3FederalPaidDate} onselect={handleQ3FederalPaidDateChange} />
         {:else}
           {#if isCurrentQuarter(3) || hideBlankPayments || federalPayment3 == 0}
             <div class="paid"></div>
           {:else}
-            <Clickable onclick={openQ3FederalDialog}>
-              <div class="paidcontainer">
-                <div class="paid">(Add date paid)</div>
-                <img class="edit" src="/images/edit.png" alt="Edit"  />
-              </div>
-            </Clickable>
+            <DatePicker text="(Add date paid)" date={q3FederalPaidDate} onselect={handleQ3FederalPaidDateChange} />
           {/if}
         {/if}
       {/if} 
       <input class="dialog" bind:this={q3FederalDateElement} />
     </div>
-    {#if stateSupported}
       <div class="payment" class:pushpaymentdown={pushStatePaymentDown(3)}>
+        {#if !livingInCurrentStateAllThisYear}
+          <div class="statename">{convertStateToUpperCase(q3State)}</div>
+        {/if}
         <div class="value">{formatCurrency(statePayment3)}</div>
         {#if showPaidDates && isCurrentOrPastQuarter(3)}
           {#if q3StatePaidDate}
-            <Clickable onclick={openQ3StateDialog}>
-              <div class="paidcontainer">
-                <div class="paid">Paid on {dayjs(q3StatePaidDate).format('M-D-YY')}</div>
-                <img class="edit" src="/images/edit.png" alt="Edit"  />
-              </div>
-            </Clickable>
+            <DatePicker text={`Paid on ${dayjs(q3StatePaidDate).format('M-D-YY')}`} date={q3StatePaidDate} onselect={handleQ3StatePaidDateChange} />
           {:else}
             {#if isCurrentQuarter(3) || hideBlankPayments || statePayment3 == 0}
               <div class="paid"></div>
             {:else}
-              <Clickable onclick={openQ3StateDialog}>
-                <div class="paidcontainer">
-                  <div class="paid">(Add date paid)</div>
-                  <img class="edit" src="/images/edit.png" alt="Edit"  />
-                </div>
-              </Clickable>
+              <DatePicker text="(Add date paid)" date={q3StatePaidDate} onselect={handleQ3StatePaidDateChange} />
             {/if}
           {/if}
         {/if}
         <input class="dialog" bind:this={q3StateDateElement} />
       </div>
-    {/if}
   </div> 
-  <div class="row">
+  <div class="row" class:rowwithstates={!livingInCurrentStateAllThisYear}>
     <div class="due">{q4DueDate.format('MMM D')}</div>
     <div class="payment" class:pushpaymentdown={pushFederalPaymentDown(4)}>
       <div class="value">{formatCurrency(federalPayment4)}</div>
       {#if showPaidDates && isCurrentOrPastQuarter(4)}
         {#if q4FederalPaidDate}
-          <Clickable onclick={openQ4FederalDialog}>
-            <div class="paidcontainer">
-              <div class="paid">Paid on {dayjs(q4FederalPaidDate).format('M-D-YY')}</div>
-              <img class="edit" src="/images/edit.png" alt="Edit"  />
-            </div>
-          </Clickable>
+          <DatePicker text={`Paid on ${dayjs(q4FederalPaidDate).format('M-D-YY')}`} date={q4FederalPaidDate} onselect={handleQ4FederalPaidDateChange} />
         {:else}
           {#if isCurrentQuarter(4) || hideBlankPayments || federalPayment4 == 0}
             <div class="paid"></div>
           {:else}
-            <Clickable onclick={openQ4FederalDialog}>
-              <div class="paidcontainer">
-                <div class="paid">(Add date paid)</div>
-                <img class="edit" src="/images/edit.png" alt="Edit"  />
-              </div>
-            </Clickable>
+            <DatePicker text="(Add date paid)" date={q4FederalPaidDate} onselect={handleQ4FederalPaidDateChange} />
           {/if}
         {/if}
       {/if}
       <input class="dialog" bind:this={q4FederalDateElement} />
     </div>
-    {#if stateSupported}
       <div class="payment" class:pushpaymentdown={pushStatePaymentDown(4)}>
+        {#if !livingInCurrentStateAllThisYear}
+          <div class="statename">{convertStateToUpperCase(q4State)}</div>
+        {/if}
         <div class="value">{formatCurrency(statePayment4)}</div>
         {#if showPaidDates && isCurrentOrPastQuarter(4)}
           {#if q4StatePaidDate}
-            <Clickable onclick={openQ4StateDialog}>
-              <div class="paidcontainer">
-                <div class="paid">Paid on {dayjs(q4StatePaidDate).format('M-D-YY')}</div>
-                <img class="edit" src="/images/edit.png" alt="Edit"  />
-              </div>
-            </Clickable>
+            <DatePicker text={`Paid on ${dayjs(q4StatePaidDate).format('M-D-YY')}`} date={q4StatePaidDate} onselect={handleQ4StatePaidDateChange} />
           {:else}
             {#if isCurrentQuarter(4) || hideBlankPayments || statePayment4 == 0}
               <div class="paid"></div>
             {:else}
-              <Clickable onclick={openQ4StateDialog}>
-                <div class="paidcontainer">
-                  <div class="paid">(Add date paid)</div>
-                  <img class="edit" src="/images/edit.png" alt="Edit"  />
-                </div>
-              </Clickable>
+              <DatePicker text="(Add date paid)" date={q4StatePaidDate} onselect={handleQ4StatePaidDateChange} />
             {/if}
           {/if}
         {/if}
         <input class="dialog" bind:this={q4StateDateElement} />
       </div>
-    {/if}
-  </div>   
+  </div>  
 </div>
 
 <style>
@@ -514,6 +385,9 @@
   .containermargin {
     margin-bottom: -10px;
   }
+  .containerwithstates {
+    margin-bottom: -10px;
+  }
   .header {
     display: flex;
     justify-content: center;
@@ -525,6 +399,12 @@
   }
   .row {
     display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .rowwithstates {
+    margin-top: 6px;
+    margin-bottom: 4px;
   }
   .lefttitle {
     width: 80px;
@@ -569,7 +449,7 @@
     width: 80px;
     height: 50px;
     font-size: 17px;
-    margin-top: 5px;
+    margin-top: 10px;
   }
   .payment {
     width: 120px;
@@ -578,15 +458,16 @@
     position: relative;
   }
   .pushpaymentdown {
-    margin-top: 5px;
+    margin-top: 10px;
+  }
+  .statename {
+    font-size: 14px;
+    color: var(--gray4);
+    margin-bottom: 3px;
+    margin-top: -20px;
   }
   .value {
     font-size: 17px;
-  }
-  .paidcontainer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
   .paid {
     margin-top: 2px;
@@ -594,22 +475,13 @@
     font-size: 12px;
     color: var(--gray4);
   }
-  .edit {
-    width: 10px;
-    height: 10px;
-    margin-left: 4px;
-    margin-top: -1px;
-    opacity: 0;
-    transition: opacity 0.2s ease;
-  }
-  .paidcontainer:hover .edit {
-    opacity: 1;
-  }
+
   .dialog {
     position: absolute;
     visibility: hidden;
-    left: -80px;
-    margin-top: -15px;
+    left: 0px;        
+    top: 50px;        
+    margin-top: 0px;
   }
   @media (min-width: 768px) {
     .more {
@@ -619,6 +491,11 @@
     .moredialog {
       top: 30px;
       right: -50px;
+    }
+    .dialog {
+      left: -80px;     
+      top: auto;
+      margin-top: -15px;
     }
   }
 

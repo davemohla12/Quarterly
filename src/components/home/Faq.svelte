@@ -6,27 +6,27 @@
   <div class="header">Frequently Asked Questions</div>
   <div class="question"><span class="number">1.</span>What is Zenguider?</div>
   <div class="answer">
-    Zenguider is a web app that helps you calculate and pay your federal and state quarterly income tax payments. It gives you a clear breakdown by quarter and reminds you before each due date so you never miss a payment.
+    Zenguider is a web app that helps you calculate and pay your federal and state quarterly income tax payments. We break down exactly what you need to pay each quarter and remind you before each due date so you never miss a payment.
   </div>
   <div class="question"><span class="number">2.</span>Why should I use it?</div>
   <div class="answer">
-    If you're self-employed or have any income that doesn't have paycheck withholdings, you may are likely required to pay quarterly taxes. Zenguider calculates those quarterly payments, provides links to pay, and reminds you when payments are due. It saves you time, helps you avoid IRS penalties, and gives you peace of mind knowing exactly what to pay and when.
+    If you're self-employed, you likely need to pay quarterly taxes. Zenguider calculates your quarterly payments, provides links to pay, and reminds you when payments are due. We save you time, help you avoid IRS penalties, and give you peace of mind since you know exactly what to pay and when.
   </div>
   <div class="question"><span class="number">3.</span>How does it work?</div>
   <div class="answer">
-    You'll answer a few short questions about your income and state. Zenguider then calculates your payments for the full tax year, breaks them down by quarter or gives you a single amount to pay if you'd prefer to pay it all at once, and sends you email reminders before each deadline.
+    You'll answer a few short questions about your income and state. We then calculate your payments for the full tax year, break them down by quarter or give you a single amount to pay if you'd prefer to pay it all at once, and send you email reminders before each deadline.
   </div>
   <div class="question"><span class="number">4.</span>How does it calculate payments?</div>
   <div class="answer">
-    Zenguider uses the latest federal and state tax rules to determine your quarterly payments. It selects the correct ones based on your income and filing status, and follows IRS “safe harbor” guidelines to help you avoid penalties while keeping your payments as low as possible.
+    We use the latest federal and state tax rules to determine your quarterly payments. We select the correct ones based on your income and filing status, and follow IRS “safe harbor” guidelines to help you avoid penalties while keeping your payments as low as possible.
   </div>
   <div class="question"><span class="number">5.</span>What if I missed a past payment?</div>
   <div class="answer">
-    No problem. Zenguider automatically adjusts your future payments to make up for it. The most important thing is to start now — paying sooner reduces any potential penalties.
+    No problem. We automatically adjust your future payments to make up for it. The most important thing is to start now — paying sooner reduces any potential penalties.
   </div>
   <div class="question"><span class="number">6.</span>How much does it cost?</div>
   <div class="answer">
-    Zenguider is ${price} for the full tax year. You get personalized quarterly payment estimates and helpful reminders, all for a single flat fee.
+    Zenguider is ${price} for the full tax year. You get personalized quarterly payment estimates for both your federal and state taxes and helpful reminders, all for a single flat fee.
   </div>
   <div class="question"><span class="number">7.</span>How long does it take to use?</div>
   <div class="answer">
@@ -34,7 +34,7 @@
   </div>
   <div class="question"><span class="number">8.</span>How do I get started?</div>
   <div class="answer">
-    Just click "Get Started" on the homepage, answer a few questions, and Zenguider will walk you through everything step-by-step. It’s fast, easy, and designed to help you feel in control of your taxes.
+    Just click "Get Started" on the homepage and answer a few questions. We'll walk you through everything step-by-step. We're fast, easy, and ensure you are on top of your taxes.
   </div>
   <div class="question"><span class="number">9.</span>What if I'm not satisfied?</div>
   <div class="answer">

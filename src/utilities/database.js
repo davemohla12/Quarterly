@@ -1,359 +1,152 @@
-import { supabase } from '$src/utilities/supabase'
 import { global } from '$src/data/global.svelte'
 import { currentTaxYear } from '$src/settings/settings'
 import { getLocalStorage } from '$src/utilities/utilities'
 import dayjs from 'dayjs'
+import axios from 'axios'
+import { generateUniqueReferralCode } from '$src/utilities/utilities'
 
 const getFromPayments = async (field) => {
-  const response = await supabase
-    .from('Payments')
-    .select('*')
-    .eq('email', global.email)
-    .eq('taxYear', currentTaxYear)
-    .maybeSingle()
-  if (response.error) {
-    console.log(response.error)
-  }
+  const response = await axios.post('/api/database/getFromPayments', { field, email: global.email, taxYear: currentTaxYear })
   return response.data?.[field]
 }
 
 const setInPayments = async (field, value) => {
-  const response =await supabase
-    .from('Payments')
-    .update({ [field]: value })
-    .eq('email', global.email)
-    .eq('taxYear', currentTaxYear)
-  if (response.error) {
-    console.log(response.error)
-  }
+  await axios.post('/api/database/setInPayments', { field, value, email: global.email, taxYear: currentTaxYear })
 }
 
 const setInPaymentsByYear = async (year, field, value) => {
-  const response =await supabase
-    .from('Payments')
-    .update({ [field]: value })
-    .eq('email', global.email)
-    .eq('taxYear', year)
-  if (response.error) {
-    console.log(response.error)
-  }
+  await axios.post('/api/database/setInPaymentsByYear', { taxYear: year, field, value, email: global.email,  })
 }
 
 const saveToPayments = async () => {
-  let response = await supabase
-      .from('Payments')
-      .select('*')
-      .eq('email', global.email)
-      .eq('taxYear', currentTaxYear)
-      .maybeSingle()
-  if (response.error) {
-    console.log(response.error)
+  const localStorageData = {}
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i)
+    localStorageData[key] = getLocalStorage(key)
   }
-  if (!response.data) {
-    await supabase
-      .from('Payments')
-      .insert({
-        email: global.email,
-        taxYear: currentTaxYear,
-        showPaidDates: true
-      })
-    response = await supabase
-      .from('Payments')
-      .select('*')
-      .eq('email', global.email)
-      .eq('taxYear', currentTaxYear)
-      .maybeSingle()
-    if (response.error) {
-      console.log(response.error)
-    }
-  }
-  const updateData = {}
-  for (const field of Object.keys(response.data)) {
-    if (field != 'id' && field != 'created_at' && field != 'email' && field != 'taxYear' && field != 'showPaidDates') {
-      updateData[field] = getLocalStorage(field) 
-    }
-  }
-  await supabase
-    .from('Payments')
-    .update(updateData)
-    .eq('email', global.email)
-    .eq('taxYear', currentTaxYear)
-  if (response.error) {
-    console.log(response.error)
-  }
+  await axios.post('/api/database/saveToPayments', {email: global.email, taxYear: currentTaxYear, localStorageData: localStorageData })
 }
 
 const createBlankPayment = async () => {
-  const response = await supabase
-    .from('Payments')
-    .insert({
-      email: global.email,
-      taxYear: currentTaxYear,
-      showPaidDates: true
-    })
-  if (response.error) {
-    console.log(response.error)
-  }
+  await axios.post('/api/database/createBlankPayments', { email: global.email, taxYear: currentTaxYear })
 }
 
-const getAllPaymentValues = async (email, year) => {
-  const response = await supabase
-    .from('Payments')
-    .select('*')
-    .eq('email', email)
-    .eq('taxYear', year)
-    .maybeSingle()
-  if (response.error) {
-    console.log(response.error)
-  }
-  return response.data
+const getAllPaymentValues = async (email, taxYear) => {
+  const response = await axios.post('/api/database/getAllPaymentValues', { email: email, taxYear: taxYear })
+  return response.data.values
+}
+
+const savePaymentValues = async (values) => {
+  await axios.post('/api/database/savePaymentValues', { email: global.email, taxYear: currentTaxYear, values: values })
 }
 
 const getAllUserValues = async (email) => {
-  const response = await supabase
-    .from('Users')
-    .select('*')
-    .eq('email', email)
-    .maybeSingle()
-  if (response.error) {
-    console.log(response.error)
-  }
+  const response = await axios.post('/api/database/getAllUserValues', { email: email })
   return response.data
 }
 
 const getFromUsers = async (field) => {
-  const response = await supabase
-  .from('Users')
-  .select('*')
-  .eq('email', global.email)
-  .maybeSingle()
-  if (response.error) {
-    console.log(response.error)
-  }
+  const response = await axios.post('/api/database/getFromUsers', { email: global.email, field: field })
   return response.data?.[field]
 }
 
-const getFromUsersById = async (field, id) => {
-  const response = await supabase
-    .from('Users')
-    .select('*')
-    .eq('id', id)
-    .maybeSingle()
-  if (response.error) {
-    console.log(response.error)
-  }
+const getFromUsersById = async (id, field) => {
+  const response = await axios.post('/api/database/getFromUsersById', { id: id, field: field })
   return response.data?.[field]
 }
 
 const setInUsers = async (field, value) => {
-  const response =await supabase
-    .from('Users')
-    .update({ [field]: value })
-    .eq('email', global.email)
-  if (response.error) {
-    console.log(response.error)
-  }
+  await axios.post('/api/database/setInUsers', { field: field, value: value, email: global.email })
 }
 
 const setInUsersById = async (field, id, value) => {
-  const response = await supabase
-    .from('Users')
-    .update({ [field]: value })
-    .eq('id', id)
-  if (response.error) {
-    console.log(response.error)
-  }
+  await axios.post('/api/database/setInUsersById', { field: field, value: value, id: id })
 } 
 
 const saveToUsers = async () => {
-  let response = await supabase
-    .from('Users')
-    .select('*')
-    .eq('email', global.email)
-    .maybeSingle()
-  if (response.error) {
-    console.log(response.error)
+  const localStorageData = {}
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i)
+    localStorageData[key] = getLocalStorage(key)
   }
-  if (!response.data) {
-    await supabase
-      .from('Users')
-      .insert({
-        email: global.email,
-        sendReminders: true,
-        sendFiveDayReminder: true,
-        sendOneDayReminder: true,
-      })
-    response = await supabase
-      .from('Users')
-      .select('*')
-      .eq('email', global.email)
-      .maybeSingle()
-    if (response.error) {
-      console.log(response.error)
-    }
-  }
-  const updateData = {}
-  for (const field of Object.keys(response.data)) {
-    if (field != 'id' && field != 'created_at' && field != 'email') {
-      updateData[field] = getLocalStorage(field) 
-    }
-  }
-  await supabase
-    .from('Users')
-    .update(updateData)
-    .eq('email', global.email)
-  if (response.error) {
-    console.log(response.error)
-  }
+  await axios.post('/api/database/saveToUsers', { email: global.email, localStorageData: localStorageData })
 }
 
-const createUserIfNotExists = async () => {
-  let response = await supabase
-    .from('Users')
-    .select('*')
-    .eq('email', global.email)
-    .maybeSingle()
-  if (response.error) {
-    console.log(response.error)
-  }
-  if (!response.data) {
-    await supabase
-      .from('Users')
-      .insert({
-        email: global.email,
-        sendReminders: true,
-        sendFiveDayReminder: true,
-        sendOneDayReminder: true,
-      })
-    response = await supabase
-      .from('Users')
-      .select('*')
-      .eq('email', global.email)
-      .maybeSingle()    
-    if (response.error) {
-      console.log(response.error)
-    }
-  }
+const createUserIfNotExists = async ({currentPage} = {}) => {
+  const referralCode = await generateUniqueReferralCode()
+  await axios.post('/api/database/createUserIfNotExists', {email: global.email, referrerEmail: getLocalStorage('referrerEmail'), currentPage: currentPage, referralCode: referralCode})
 }
 
 const addToUsers = async (field, value) => {
-  const response = await supabase
-    .from('Users')
-    .select(field)
-    .eq('email', global.email)
-    .maybeSingle()  
-  if (response.error) {
-    console.log(response.error)
-    return
-  }
-  let currentArray = response.data?.[field] || []
-  if (!currentArray.includes(value)) {
-    currentArray.push(value)
-  }
-  const updateResponse = await supabase
-    .from('Users')
-    .update({ [field]: currentArray })
-    .eq('email', global.email)
-  if (updateResponse.error) {
-    console.log(updateResponse.error)
-  }
+  await axios.post('/api/database/addToUsers', { field: field, value: value, email: global.email })
 }
 
 const getEmails = async () => {
-  const response = await supabase
-    .from('Users')
-    .select('email')
-  if (response.error) {
-    console.log(response.error)
-  }
-  if (response.data) {
-    const emails = response.data.map(row => row.email)
-    const uniqueEmails = []
-    for (const email of emails) {
-      if (!uniqueEmails.includes(email)) {
-        uniqueEmails.push(email)
-      }
-    }
-    return uniqueEmails
-  }
-  else { 
-    return []
-  } 
+  const response = await axios.post('/api/database/getEmails')
+  return response.data.emails
 }
 
 const getPriorYears = async () => {
-  const response = await supabase
-    .from('Payments')
-    .select('taxYear')
-    .eq('email', global.email)
-    .neq('taxYear', currentTaxYear)
-    .order('taxYear', { ascending: false })
-  if (response.error) {
-    console.log(response.error)
-    return []
-  }
-  else if (response.data) {
-    return response.data.map(row => row.taxYear)
-  }
-  else {
-    return []
-  }
+  const response = await axios.post('/api/database/getPriorYears', { email: global.email, currentTaxYear: currentTaxYear })
+  return response.data.years
 }
 
-const getFromPaymentsByYear = async (field, year) => {
-  const response = await supabase
-    .from('Payments')
-    .select('*')
-    .eq('email', global.email)
-    .eq('taxYear', year)
-    .maybeSingle()
-  if (response.error) {
-    console.log(response.error)
-  }
+const getFromPaymentsByYear = async (field, taxYear) => {
+  const response = await axios.post('/api/database/getFromPaymentsByYear', { field: field, email: global.email, taxYear: taxYear })
   return response.data?.[field]
 }
 
 const getEmailFromId = async (id) => {
-  const response = await supabase
-    .from('Users')
-    .select('email')
-    .eq('id', id)
-    .maybeSingle()
-  if (response.error) {
-    console.log(response.error)
-  }
+  const response = await axios.post('/api/database/getEmailFromId', { id: id })
   return response.data?.email
 }
 
 const setRating = async (email, rating, feedback) => {
   const date = dayjs().toISOString()
-  const existingResponse = await supabase
-  .from('Ratings')
-  .select('*')
-  .eq('email', email)
-  .eq('date', date)
-  .maybeSingle()
-  if (existingResponse.error) {
-    console.log(existingResponse.error)
-  }
-  if (existingResponse.data) {
-    const updateResponse = await supabase
-      .from('Ratings')
-      .update({ rating, feedback })
-      .eq('email', email)
-      .eq('date', date)
-    if (updateResponse.error) {
-      console.log(updateResponse.error)
-    }
-  }
-  else {
-    const insertResponse = await supabase
-      .from('Ratings')
-      .insert({ email, date, rating, feedback })
-    if (insertResponse.error) {
-      console.log(insertResponse.error)
-    }
-  }
+  await axios.post('/api/database/setRating', { email: email, rating: rating, feedback: feedback, date: date })
 }
 
-export { getFromPayments, setInPayments, setInPaymentsByYear, saveToPayments, getFromUsers, getFromUsersById, setInUsers, setInUsersById, saveToUsers, addToUsers, getEmails, createBlankPayment, getPriorYears, getFromPaymentsByYear, createUserIfNotExists, getAllPaymentValues, getAllUserValues, getEmailFromId, setRating }
+const doesReferralCodeExist = async (code) => {
+  const response = await axios.post('/api/database/doesReferralCodeExist', { code: code })
+  return response.data.exists
+}
+
+const getReferrerEmail = async (code) => {
+  const response = await axios.post('/api/database/getReferrerEmail', { code: code })  
+  return response.data.email
+}
+
+const addCredits = async (email, amount) => {
+  await axios.post('/api/database/addCredits', { email: email, amount: amount })
+} 
+
+const removeCredits = async (email, amount) => {
+  await axios.post('/api/database/removeCredits', { email: email, amount: amount })
+}
+
+export { 
+  getFromPayments, 
+  setInPayments, 
+  setInPaymentsByYear, 
+  saveToPayments,  
+  savePaymentValues,
+  getFromUsers, 
+  getFromUsersById, 
+  setInUsers, 
+  setInUsersById, 
+  saveToUsers, 
+  addToUsers, 
+  getEmails, 
+  createBlankPayment, 
+  getPriorYears,
+  getFromPaymentsByYear,
+  createUserIfNotExists,
+  getAllPaymentValues, 
+  getAllUserValues, 
+  getEmailFromId, 
+  setRating,
+  doesReferralCodeExist,
+  getReferrerEmail,
+  addCredits,
+  removeCredits
+}

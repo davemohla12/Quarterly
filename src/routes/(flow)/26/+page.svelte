@@ -23,22 +23,29 @@
   let inputValue2 = $state(null)
   let inputValue3 = $state(null)
   global.makeButtonActive = false
-
+  let livingInCurrentStateAllThisYear = $state(false)
+  let q1State = $state('')
+  let q2State = $state('')
+  let q3State = $state('')
 
   onMount(async () => {
-    headingText = `What did you pay in ${convertStateToUpperCase(await payment.getValue('currentState'))} quarterly payments this year?`
-    if (currentTaxQuarter == 'Q2') {
-      placeholderText1 = 'April Payment'
+    livingInCurrentStateAllThisYear = await payment.getValue('livingInCurrentStateAllThisYear')
+    if (livingInCurrentStateAllThisYear) {
+      headingText = `What did you pay in ${convertStateToUpperCase(await payment.getValue('currentState'))} quarterly payments this year?`
+      placeholderText1 = `April Payment`
+      placeholderText2 = `June Payment`
+      placeholderText3 = `September Payment`
     }
-    else if (currentTaxQuarter == 'Q3') {
-      placeholderText1 = 'April Payment'
-      placeholderText2 = 'June Payment'
+    else {
+      headingText = `What did you pay in state quarterly payments this year?`
+      q1State = convertStateToUpperCase(await payment.getValue('q1State'))
+      q2State = convertStateToUpperCase(await payment.getValue('q2State'))
+      q3State = convertStateToUpperCase(await payment.getValue('q3State'))
+      placeholderText1 = `${q1State} April Payment`
+      placeholderText2 = `${q2State} June Payment`
+      placeholderText3 = `${q3State} September Payment`
     }
-    else if (currentTaxQuarter == 'Q4') {
-      placeholderText1 = 'April Payment'
-      placeholderText2 = 'June Payment'
-      placeholderText3 = 'September Payment'
-    }
+   
     if (global.loggedIn) {
       if (await payment.getValue('q1StatePaymentMade')) {
         const q1StatePaymentMade = await payment.getValue('q1StatePaymentMade')
@@ -95,8 +102,15 @@
     await payment.setValue('q1StatePaymentMade', convertCurrencyToNumber(inputValue1))
     await payment.setValue('q2StatePaymentMade', convertCurrencyToNumber(inputValue2))
     await payment.setValue('q3StatePaymentMade', convertCurrencyToNumber(inputValue3)) 
-    goto('/27')
-    await user.setValue('currentPage', '27')
+    if (livingInCurrentStateAllThisYear) {
+      goto('/27')
+      await user.setValue('currentPage', '27')
+    }
+    else {
+      await payment.setValue('payPreference', 'quarter')
+      goto('/28')
+      await user.setValue('currentPage', '28')
+    }
   }
 
   const handleKeyDown = (event) => {
@@ -116,13 +130,13 @@
 <Header />
 <Avatar />
 <Heading text={headingText} desktopwidth="550px" mobilewidth="300px" />
-{#if placeholderText1 != ''}
+{#if currentTaxQuarter == 'Q2' || currentTaxQuarter == 'Q3' || currentTaxQuarter == 'Q4'}
   <DollarInput placeholder={placeholderText1} value={inputValue1} onInput={handleInput1} />
 {/if}
-{#if placeholderText2 != ''}
+{#if currentTaxQuarter == 'Q3' || currentTaxQuarter == 'Q4'}
   <DollarInput placeholder={placeholderText2} value={inputValue2} onInput={handleInput2} />
 {/if}
-{#if placeholderText3 != ''}
+{#if currentTaxQuarter == 'Q4'}
   <DollarInput placeholder={placeholderText3} value={inputValue3} onInput={handleInput3} />
 {/if}
 <Button text={buttonText} onclick={handleNext} />

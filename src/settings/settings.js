@@ -22,6 +22,7 @@ const getCurrentTaxQuarter = () => {
   } else if (currentMonth == 'October' || currentMonth == 'November' || currentMonth == 'December' || currentMonth == 'January') {
     return 'Q4'
   }
+  // return 'Q1'
 }
 
 const currentTaxYear = getCurrentTaxYear()
@@ -32,7 +33,9 @@ const q3DueDate = dayjs('2025-09-15')
 const q4DueDate = dayjs('2025-01-15')
 const price = 39
 const priceId = 'price_1RdtoyPNrBqC31YHEXCpXBPw'
-const showCheckout = true
-const adminPasscode = '1234'
+const adminPasscode = '0500'
 
-export { currentTaxYear, currentTaxQuarter, q1DueDate, q2DueDate, q3DueDate, q4DueDate, price, priceId, showCheckout, adminPasscode }
+const showCheckout = true
+const showReferral = true
+
+export { currentTaxYear, currentTaxQuarter, q1DueDate, q2DueDate, q3DueDate, q4DueDate, price, priceId, showCheckout, showReferral, adminPasscode }

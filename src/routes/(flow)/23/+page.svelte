@@ -49,8 +49,14 @@
     }
     else {
       if (currentTaxQuarter == 'Q1') {
-        goto('/27')
-        await user.setValue('currentPage', '27')
+        if (await payment.getValue('livingInCurrentStateAllThisYear')) {
+          goto('/27')
+          await user.setValue('currentPage', '27')
+        }
+        else {
+          goto('/28')
+          await user.setValue('currentPage', '28')
+        }
       }
       else {
         goto('/25')

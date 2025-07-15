@@ -16,17 +16,9 @@
   const buttonText = 'NEXT'
   global.makeButtonActive = true
 
-  onMount(() => {
+  onMount(async () => {
     safePostHog.capture('flow_started')
-    window.addEventListener('popstate', handleBack)
-    return () => {
-      window.removeEventListener('popstate', handleBack)
-    }
   })
-
-  const handleBack = async () => {
-    goto('/')
-  }
 
   const handleNext = async () => {
     goto('/1')

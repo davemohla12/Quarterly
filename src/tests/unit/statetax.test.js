@@ -130,11 +130,11 @@ describe('getStateTaxes', () => {
     expect(stateQuarterlyPayments.q1StateQuarterlyPayment).toEqual(250)
     expect(stateQuarterlyPayments.q2StateQuarterlyPayment).toEqual(500)
     expect(stateQuarterlyPayments.q3StateQuarterlyPayment).toEqual(250)
-    expect(stateQuarterlyPayments.q4StateQuarterlyPayment).toEqual(941)
+    expect(stateQuarterlyPayments.q4StateQuarterlyPayment).toEqual(996)
 
-    expect(stateSinglePayment.due).toEqual(1941)
+    expect(stateSinglePayment.due).toEqual(1996)
     expect(stateSinglePayment.paid).toEqual(1000)
-    expect(stateSinglePayment.remaining).toEqual(941)
+    expect(stateSinglePayment.remaining).toEqual(996)
   })
 })
 

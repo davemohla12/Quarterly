@@ -12,7 +12,6 @@
 
   let props = $props()
   let federalSingleAmount = $derived(props.federalSingleAmount || 0)
-  let stateSupported = $derived(props.stateSupported || false)
   let currentState = $derived(props.currentState || '')
   let stateSingleAmount = $derived(props.stateSingleAmount || 0)
   let isFederalPaid = $derived(props.isFederalPaid || false)
@@ -103,7 +102,6 @@
     <div class="description">No federal payment is needed this year</div>
     <div class="spacer"></div>
   {/if} 
-  {#if stateSupported}
     <div class="header">{convertStateToAllUpperCase(currentState)}</div>
     {#if stateSingleAmount > 0}
       {#if !isStatePaid}
@@ -133,7 +131,6 @@
       <div class="description">No state payment is required this year</div>
       <div class="spacer"></div>
     {/if}
-  {/if}
 </div>
 
 <style>

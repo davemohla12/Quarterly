@@ -41,16 +41,28 @@
   const handleNext = async () => {
     if (selectedRadioButton == 'Yes') {
       await payment.setValue('hasW2', true)
-      goto('/23')
-      await user.setValue('currentPage', '23')
+      if (await payment.getValue('safeToSkipFederalPayment')) {
+        goto('/24')
+        await user.setValue('currentPage', '24')
+      }
+      else {
+        goto('/23')
+        await user.setValue('currentPage', '23')
+      }
     }
     else {
       await payment.setValue('hasW2', false)
       await payment.setValue('federalWithholdingsThisYear', 0)
       await payment.setValue('stateWithholdingsThisYear', 0)
       if (currentTaxQuarter == 'Q1') {
-        goto('/27')
-        await user.setValue('currentPage', '27')
+        if (await payment.getValue('livingInCurrentStateAllThisYear')) {
+          goto('/27')
+          await user.setValue('currentPage', '27')
+        }
+        else {
+          goto('/28')
+          await user.setValue('currentPage', '28')
+        }
       }
       else {
         goto('/25')

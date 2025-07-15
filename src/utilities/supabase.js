@@ -11,7 +11,7 @@ const supabase = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_KEY, {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     }
-  }
+  } 
 })
 
 export { supabase }

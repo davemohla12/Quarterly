@@ -22,7 +22,7 @@
 </script>
 
 <div class="container">
-  <input class="input" type="text" value={inputValue} onfocus={handleFocus} onblur={handleBlur} oninput={handleInput} />
+  <input class="input" type="password" value={inputValue} onfocus={handleFocus} onblur={handleBlur} oninput={handleInput} />
   <div class="placeholder" class:active={isFocused || inputValue} >{placeholder}</div>
   {#if error}
     <div class="error">{error}</div>

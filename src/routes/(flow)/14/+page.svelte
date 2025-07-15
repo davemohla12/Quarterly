@@ -74,8 +74,20 @@
       await user.setValue('currentPage', '15')
     }
     else {
-      goto('/17')
-      await user.setValue('currentPage', '17')
+      if (await payment.getValue('safeToSkipFederalPayment')) {
+        if ((stateRules[await payment.getValue('currentState')].thisYearIncomeCalculationType?.type == 'federalAGI')) {
+          goto('/17')
+          await user.setValue('currentPage', '17')
+        }
+        else { 
+          goto('/17.5')
+          await user.setValue('currentPage', '17.5')
+        }
+      }
+      else {
+        goto('/17')
+        await user.setValue('currentPage', '17')
+      }
     }
   }
 

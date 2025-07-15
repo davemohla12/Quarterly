@@ -6,19 +6,23 @@
   import { updateLoginState } from '$src/utilities/utilities'
   import { supabase } from '$src/utilities/supabase'
   import { user } from '$src/data/user.svelte'
+  import { showReferral } from '$src/settings/settings'
   import { clearLocalStorage } from '$src/utilities/utilities'
   import { safePostHog } from '$src/utilities/posthog'
+  import { setLocalStorage } from '$src/utilities/utilities'
 
   let props = $props()
   let hideBack = $derived(props.hideBack || false)
   let hideIcons = $derived(props.hideIcons || false)
   let hideReset = $derived(props.hideReset || false)
+  let hideLogout = $derived(props.hideLogout || false)
   let showDownload = $derived(props.showDownload || false)
   let ondownloadclick = $derived(props.ondownloadclick || (() => {}))
   let onBack = $derived(props.onBack || (() => {}))
   let showAccountIcon = $derived(props.showAccountIcon || false)
   let showAccountMenu = $state(false)
   let showAdminLogout = $derived(props.showAdminLogout || false)
+  let hideLogo = $derived(props.hideLogo || false)
 
   onMount(() => {
       document.addEventListener('click', handleClickOutside)
@@ -72,6 +76,12 @@
     showAccountMenu = false
   }
 
+  const handleRefer = () => {
+    safePostHog.capture('refer_clicked')
+    goto('/refer')
+    showAccountMenu = false
+  }
+
   const handleSupport = () => {
     safePostHog.capture('support_clicked')
     goto('/support')
@@ -91,7 +101,8 @@
 
   const handleAdminLogout = () => {
     clearLocalStorage()
-    goto('/admin/login')
+    setLocalStorage('adminPage', 'user')
+    goto('/passcode')
   }
 
 </script>
@@ -102,9 +113,11 @@
       <img class="back" src="/images/back.png" alt="Back" />
     </Clickable>
   {/if}
-  <Clickable onclick={handleLogoClick}>
-    <img class="logo" src="/images/logo.png" alt="Logo" />
-  </Clickable>
+  {#if !hideLogo}
+    <Clickable onclick={handleLogoClick}>
+      <img class="logo" src="/images/logo.png" alt="Logo" />
+    </Clickable>
+  {/if}
   {#if !hideIcons}
     <div class="right">
       {#if !hideReset && !(global.loggedIn)}
@@ -121,7 +134,7 @@
         <Clickable onclick={handleAccountClick}>
           <img class="account" src="/images/account.png" alt="Account" />
         </Clickable>
-      {:else if global.loggedIn}
+      {:else if global.loggedIn && !hideLogout}
         <Clickable onclick={handleLogout}>
           <img class="logout" src="/images/logout.png" alt="Logout" />
         </Clickable>
@@ -143,6 +156,11 @@
             <div class="item">Prior Years</div>
           </Clickable>
           <div class="divider"></div>
+          {#if showReferral}
+            <Clickable onclick={handleRefer}>
+              <div class="item">Refer a Friend</div>
+            </Clickable>
+          {/if}
           <Clickable onclick={handleSupport}>
             <div class="item">Support</div>
           </Clickable>
@@ -212,7 +230,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    width: 110px;
+    width: 120px;
     z-index: 100;
     padding-left: 17px;
   }

@@ -14,6 +14,7 @@
   let inputBox
   let selectedIndex = $state(-1)
   let isOpen = $state(false)
+  let lessTopMargin = props.lessTopMargin || false
 
   onMount(() => {
     document.addEventListener('click', handleClickOutside)
@@ -95,7 +96,7 @@
 
 <div class="container" bind:this={container}>
   <Clickable onclick={toggleDropdown}>
-    <div class="dropdown">
+    <div class="dropdown" class:lesstopmargin={lessTopMargin}>
       <input class="input" type="text" placeholder={text} value={inputValue} oninput={handleInput} bind:this={inputBox} />
       {#if isOpen}
         <Clickable onclick={handleClear}>
@@ -136,6 +137,9 @@
     width: 100%;
     max-width: 320px;
     border-radius: 5px;
+  }
+  .lesstopmargin { 
+    margin-top: 15px;
   }
   .input {
     margin-left: 20px;

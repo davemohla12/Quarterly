@@ -15,13 +15,21 @@
   onMount(async () => { 
     if (showCheckout) {
       if (await user.getValue('latestTaxYearPaid') == currentTaxYear) {
-        await user.setValue('currentPage', 'dashboard')
         goto('/dashboard')
+        await user.setValue('currentPage', 'dashboard')
       }
       else {
+        let userReferralDiscount = false
+        const referrerEmail = await user.getValue('referrerEmail')
+        if (referrerEmail && !await user.getValue('latestTaxYearPaid')) {
+          userReferralDiscount = true
+        }
+        const userCredits = await user.getValue('credits')
         const response = await axios.post('/api/checkout', {
           email: global.email,
-          priceId: priceId
+          priceId: priceId,
+          useReferralDiscount: userReferralDiscount,
+          credits: userCredits
           })
         const totalPayments = await user.getValue('totalPayments')
         await Promise.all([

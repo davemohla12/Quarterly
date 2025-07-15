@@ -9,7 +9,6 @@
   import { global } from '$src/data/global.svelte'
   import { payment } from '$src/data/payment.svelte'
   import { goto } from '$app/navigation'
-  import { stateRules } from '$src/rules/state'
   import { onMount } from 'svelte'
   import { user } from '$src/data/user.svelte'
   

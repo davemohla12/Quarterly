@@ -8,7 +8,6 @@
   let federalDue = $derived(props.federalDue)
   let federalPaid = $derived(props.federalPaid)
   let federalRemaining = $derived(props.federalRemaining)
-  let stateSupported = $derived(props.stateSupported)
   let currentState = $derived(props.currentState) 
   let stateDue = $derived(props.stateDue)
   let statePaid = $derived(props.statePaid)
@@ -22,6 +21,12 @@
   let statePayment3 = $derived(props.statePayment3)
   let statePayment4 = $derived(props.statePayment4)
   let explanation = $derived(props.explanation)
+
+  let livingInCurrentStateAllThisYear = $derived(props.livingInCurrentStateAllThisYear)
+  let q1State = $derived(props.q1State)
+  let q2State = $derived(props.q2State)
+  let q3State = $derived(props.q3State)
+  let q4State = $derived(props.q4State)
 
   let showPaidDates = $derived(props.showPaidDates)
   let q1FederalPaidDate = $derived(props.q1FederalPaidDate)  
@@ -56,7 +61,6 @@
     federalDue={federalDue} 
     federalPaid={federalPaid} 
     federalRemaining={federalRemaining} 
-    stateSupported={stateSupported} 
     currentState={currentState} 
     stateDue={stateDue} 
     statePaid={statePaid} 
@@ -74,7 +78,6 @@
     federalPayment2={federalPayment2} 
     federalPayment3={federalPayment3} 
     federalPayment4={federalPayment4} 
-    stateSupported={stateSupported} 
     currentState={currentState} 
     statePayment1={statePayment1} 
     statePayment2={statePayment2} 
@@ -98,6 +101,11 @@
     onQ3StatePaidDateChange={onQ3StatePaidDateChange}
     onQ4StatePaidDateChange={onQ4StatePaidDateChange}
     onShowPaidDatesChange={onShowPaidDatesChange}
+    livingInCurrentStateAllThisYear={livingInCurrentStateAllThisYear}
+    q1State={q1State}
+    q2State={q2State}
+    q3State={q3State}
+    q4State={q4State}
   />
 {/if}
 <div class="explanation">Explanation</div>

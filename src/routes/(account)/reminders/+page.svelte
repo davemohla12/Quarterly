@@ -24,7 +24,7 @@
 
   onMount(async () => {
     loading = true
-    if (global.loggedIn) {
+    if(global.loggedIn) {
       hideBack = false
       sendReminders = await user.getValue('sendReminders')
       sendFiveDayReminder = await user.getValue('sendFiveDayReminder')

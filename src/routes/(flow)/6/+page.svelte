@@ -42,20 +42,26 @@
   const handleNext = async () => {
     if (selectedRadioButton == 'Yes') {
       await payment.setValue('livingInCurrentStateAllThisYear', true)
-      if (stateRules[await payment.getValue('currentState')].lastYearSafeHarborRule && await payment.getValue('livedInCurrentStateAllLastYear')) {
-        goto('/8')
-        await user.setValue('currentPage', '8')
+      if (!await payment.getValue('stateHasQuarterlyTaxes')) {
+        goto('/6.25')
+        await user.setValue('currentPage', '6.25')
+        await payment.setValue('stateSupported', false)
       }
       else {
-        goto('/9')
-        await user.setValue('currentPage', '9')
+        if (stateRules[await payment.getValue('currentState')].lastYearSafeHarborRule && await payment.getValue('livedInCurrentStateAllLastYear')) {
+          goto('/8')
+          await user.setValue('currentPage', '8')
+        }
+        else {
+          goto('/9')
+          await user.setValue('currentPage', '9')
+        }
       }
     }
     else {
       await payment.setValue('livingInCurrentStateAllThisYear', false)
-      await payment.setValue('stateSupported', false)
-      goto('/7')
-      await user.setValue('currentPage', '7')
+      goto('/6.5')
+      await user.setValue('currentPage', '6.5')
     }
   }
 

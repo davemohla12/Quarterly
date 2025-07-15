@@ -36,9 +36,11 @@
 
   const handleNext = async () => {
     await payment.setValue('incomeExpectationThisYear', convertLongToShortIncomeExpectation(selectedRadioButton))
-    if (await payment.getValue('incomeExpectationThisYear') == 'decrease' 
-        || (stateRules[await payment.getValue('currentState')].stateHasQuarterlyTaxes && !stateRules[await payment.getValue('currentState')].lastYearSafeHarborRule) 
-        || (stateRules[await payment.getValue('currentState')].stateHasQuarterlyTaxes && await payment.getValue('livedInCurrentStateAllLastYear') == false)) {  
+    if     (await payment.getValue('incomeExpectationThisYear') == 'decrease' 
+        || (await payment.getValue('stateSupported') && !stateRules[await payment.getValue('currentState')].lastYearSafeHarborRule) 
+        || (await payment.getValue('stateSupported') && !await payment.getValue('livedInCurrentStateAllLastYear'))
+        || (await payment.getValue('stateSupported') && !await payment.getValue('livingInCurrentStateAllThisYear'))
+      ) {  
       goto('/19')
       await user.setValue('currentPage', '19')
     }

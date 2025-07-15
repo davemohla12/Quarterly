@@ -2,17 +2,14 @@
   import { formatCurrency } from "$src/utilities/utilities"
   import { convertStateToAllUpperCase } from "$src/utilities/utilities"
   import dayjs from 'dayjs'
-  import flatpickr from 'flatpickr'
-  import 'flatpickr/dist/flatpickr.min.css'
   import { onMount } from 'svelte'
   import Clickable from '$src/components/app/Clickable.svelte'
-  import { payment } from '$src/data/payment.svelte'
+  import DatePicker from '$src/components/app/DatePicker.svelte'
 
   let props = $props()
   let federalDue = $derived(props.federalDue || 0)
   let federalPaid = $derived(props.federalPaid || 0)
   let federalRemaining = $derived(props.federalRemaining || 0)
-  let stateSupported = $derived(props.stateSupported || false)
   let currentState = $derived(props.currentState || '')
   let stateDue = $derived(props.stateDue || 0)
   let statePaid = $derived(props.statePaid || 0)
@@ -31,28 +28,10 @@
 
   let federalDateElement = $state(null)
   let stateDateElement = $state(null)
-  let federalDateDialog
-  let stateDateDialog
 
   let showMoreDialog = $state(false)
 
   onMount(async () => {
-    federalDateDialog = flatpickr(federalDateElement, {
-      defaultDate: singleFederalPaidDate,
-      clickOpens: false, 
-      onChange: ([date]) => {
-        onFederalPaidDateChange(dayjs(date).format('YYYY-MM-DD'))
-      },
-    })
-    if (await payment.getValue('stateSupported')) { 
-      stateDateDialog = flatpickr(stateDateElement, {
-        defaultDate: singleStatePaidDate,
-        clickOpens: false, 
-        onChange: ([date]) => {
-          onStatePaidDateChange(dayjs(date).format('YYYY-MM-DD'))
-        },
-      })
-    }
     document.addEventListener('click', handleClickOutside)
     return () => {
       document.removeEventListener('click', handleClickOutside)
@@ -65,12 +44,12 @@
     }
   }
 
-  const openFederalDialog = () => {
-    federalDateDialog?.open()
+  const handleFederalPaidDateChange = (date) => {
+    onFederalPaidDateChange(dayjs(date).format('YYYY-MM-DD'))
   }
 
-  const openStateDialog = () => {
-    stateDateDialog?.open()
+  const handleStatePaidDateChange = (date) => {
+    onStatePaidDateChange(dayjs(date).format('YYYY-MM-DD'))
   }
 
   const handleMoreClick = () => {
@@ -84,13 +63,11 @@
 
 </script>
 
-<div class="container" class:containermargin={!showPaidDates}>
+<div class="container">
   <div class="header">
     <div class="lefttitle"></div>
     <div class="centertitle">FEDERAL</div>
-    {#if stateSupported}
-      <div class="centertitle">{convertStateToAllUpperCase(currentState)}</div>
-    {/if}
+    <div class="centertitle">{convertStateToAllUpperCase(currentState)}</div>
     {#if !hideMoreMenu}
       <Clickable onclick={handleMoreClick}>
         <img class="more" src="/images/more.png" alt="More" />
@@ -116,50 +93,40 @@
     <div class="payment">
       <div class="value">{formatCurrency(federalDue)}</div>
     </div>
-    {#if stateSupported}
-      <div class="payment">
-        <div class="value">{formatCurrency(stateDue)}</div>
-      </div>
-    {/if}
+    <div class="payment">
+      <div class="value">{formatCurrency(stateDue)}</div>
+    </div>
   </div>
   <div class="row">
     <div class="due">Paid</div>
     <div class="payment">
       <div class="value">{formatCurrency(federalPaid)}</div>  
     </div>
-    {#if stateSupported}
-      <div class="payment">
-        <div class="value">{formatCurrency(statePaid)}</div>    
-      </div>
-    {/if}
+    <div class="payment">
+      <div class="value">{formatCurrency(statePaid)}</div>    
+    </div>
   </div>  
-  <div class="divider" class:narrow={!stateSupported}></div>
+  <div class="divider"></div>
   <div class="row">
     <div class="due">Remaining</div>
     <div class="payment">
       <div class="value">{formatCurrency(federalRemaining)}</div>
       {#if showPaidDates}
         {#if singleFederalPaidDate}
-          <Clickable onclick={openFederalDialog}>
-            <div class="paid">Paid on {dayjs(singleFederalPaidDate).format('M-D-YY')}</div>
-          </Clickable>
+          <DatePicker text={`Paid on ${dayjs(singleFederalPaidDate).format('M-D-YY')}`} date={singleFederalPaidDate} onselect={handleFederalPaidDateChange} />
         {/if}
       {/if}
       <input class="federaldialog" bind:this={federalDateElement} />
       </div>
-    {#if stateSupported}
       <div class="payment">
         <div class="value">{formatCurrency(stateRemaining)}</div>
         {#if showPaidDates}
           {#if singleStatePaidDate}
-            <Clickable onclick={openStateDialog}>
-              <div class="paid">Paid on {dayjs(singleStatePaidDate).format('M-D-YY')}</div>
-            </Clickable>
+            <DatePicker text={`Paid on ${dayjs(singleStatePaidDate).format('M-D-YY')}`} date={singleStatePaidDate} onselect={handleStatePaidDateChange} />
           {/if}
         {/if} 
         <input class="statedialog" bind:this={stateDateElement} />
       </div>
-    {/if}
   </div>  
 </div>
 
@@ -170,9 +137,7 @@
     align-items: center;
     margin-left: 20px;
     margin-top: 20px;
-  }
-  .containermargin {
-    margin-bottom: -10px;
+    margin-bottom: -5px;
   }
   .header {
     display: flex;
@@ -239,12 +204,6 @@
   .value {
     font-size: 17px;
   }
-  .paid {
-    font-size: 12px;
-    font-weight: var(--regular);
-    color: var(--gray4);
-    margin-top: 5px;
-  }
   .federaldialog {
     position: absolute;
     visibility: hidden;
@@ -264,9 +223,6 @@
     background-color: var(--gray4);
     margin-top: -15px;
     margin-bottom: 15px;
-  }
-  .narrow {
-    width: 100px;
   }
   @media (min-width: 768px) { 
     .lefttitle {

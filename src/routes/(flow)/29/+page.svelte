@@ -11,7 +11,6 @@
   import { user } from '$src/data/user.svelte'
   import { setLocalStorage } from '$src/utilities/utilities'
   import { safePostHog } from '$src/utilities/posthog'
-  import { currentTaxYear } from '$src/settings/settings'
   import { onMount } from 'svelte'
 
   const headingText = `View your quarterly taxes for FREE for a limited time`
@@ -19,9 +18,7 @@
   global.makeButtonActive = true
 
   onMount(async () => {
-    if (await user.getValue('latestTaxYearPaid') != currentTaxYear) {
-      safePostHog.capture('flow_price_page_viewed')
-    }
+    safePostHog.capture('flow_price_page_viewed')
   })
 
   const handleNext = async () => {
