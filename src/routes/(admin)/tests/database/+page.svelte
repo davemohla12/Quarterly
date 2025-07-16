@@ -183,7 +183,7 @@
   }
 
   const handleGetAllPaymentValues = async () => {
-    const email = 'dmgreen10@gmail.com' 
+    const email = 'davemohla@gmail.com' 
     const year = 2025
     const values = await getAllPaymentValues(email, year)
     const valuesString = JSON.stringify(values)

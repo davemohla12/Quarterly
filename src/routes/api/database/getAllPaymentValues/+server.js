@@ -7,6 +7,21 @@ const supabaseAdmin = createClient(PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KE
   auth: { autoRefreshToken: false, persistSession: false }
 })
 
+const parseJsonFields = (data) => {
+  if (!data) return data
+  const jsonFields = ['otherStatesToPay']
+  const parsedData = { ...data }
+  jsonFields.forEach(field => {
+    if (parsedData[field] && typeof parsedData[field] === 'string') {
+      parsedData[field] = JSON.parse(parsedData[field])
+    }
+    if (!parsedData[field]) {
+      parsedData[field] = []
+    }
+  })
+  return parsedData
+}
+
 export async function POST({ request }) {
   const { email, taxYear } = await request.json()
   
@@ -17,5 +32,7 @@ export async function POST({ request }) {
     .eq('taxYear', taxYear)
     .maybeSingle()
 
-  return json({ values: response.data })
+  const parsedData = parseJsonFields(response.data)
+
+  return json({ values: parsedData })
 }

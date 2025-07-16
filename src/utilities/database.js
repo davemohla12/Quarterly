@@ -1,7 +1,6 @@
 import { global } from '$src/data/global.svelte'
 import { currentTaxYear } from '$src/settings/settings'
 import { getLocalStorage } from '$src/utilities/utilities'
-import dayjs from 'dayjs'
 import axios from 'axios'
 import { generateUniqueReferralCode } from '$src/utilities/utilities'
 
