@@ -17,6 +17,8 @@
   let id = $state('')
   let email = $state('')
 
+  const today = dayjs().toISOString()
+
   $effect(async () => {
     id = $page.url.searchParams.get('id') || ''
     rating = $page.url.searchParams.get('rating') || ''
@@ -28,7 +30,7 @@
     }
     if (rating == 'bad' || rating == 'good') {
       if (email) {
-        await setRating(email, rating, feedback)
+        await setRating(email, today, rating, feedback)
       }
     }
   })
@@ -41,7 +43,7 @@
     rating = newRating
     showFeedback = true
     if (email) {
-      await setRating(email, newRating, feedback)
+      await setRating(email, today, newRating, feedback)
     }
   }
 
@@ -52,7 +54,7 @@
   const handleSubmit = async () => {
     goto('/rating/confirmation')
     if (email) {
-      await setRating(email, rating, feedback)
+      await setRating(email, today, rating, feedback)
     }
   }
 

@@ -96,9 +96,8 @@ const getEmailFromId = async (id) => {
   return response.data?.email
 }
 
-const setRating = async (email, rating, feedback) => {
-  const date = dayjs().toISOString()
-  await axios.post('/api/database/setRating', { email: email, rating: rating, feedback: feedback, date: date })
+const setRating = async (email, date, rating, feedback) => {
+  await axios.post('/api/database/setRating', { email: email, date: date, rating: rating, feedback: feedback })
 }
 
 const doesReferralCodeExist = async (code) => {

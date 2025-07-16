@@ -1,5 +1,6 @@
 <script>
   import { setLocalStorage } from '$src/utilities/utilities'
+  import dayjs from 'dayjs'
 
   import  { 
     //Credits
@@ -59,7 +60,7 @@
   }
   
   const handleSetRating = async () => {
-    await setRating('dmgreen10@gmail.com', 5, 'This is a test rating')
+    await setRating('dmgreen10@gmail.com', dayjs().toISOString(), 5, 'This is a great rating')
     console.log(`Set rating for dmgreen10@gmail.com`)
   }
 

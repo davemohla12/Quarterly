@@ -8,7 +8,7 @@ const supabaseAdmin = createClient(PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KE
 })
 
 export async function POST({ request }) {
-  const { email, rating, feedback, date } = await request.json()
+  const { email, date, rating, feedback } = await request.json()
   
   const existingResponse = await supabaseAdmin
     .from('Ratings')
@@ -16,6 +16,8 @@ export async function POST({ request }) {
     .eq('email', email)
     .eq('date', date)
     .maybeSingle()
+
+  console.log(existingResponse)
 
   if (existingResponse.data) {
     await supabaseAdmin
