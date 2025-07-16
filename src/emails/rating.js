@@ -29,18 +29,18 @@ const getRatingEmail = (id) => {
                   How was your experience?
                 </td>
               </tr>
-              <tr>
+               <tr>
                 <td align="center" style="padding-top: 30px; padding-bottom: 20px;">
                   <table cellpadding="0" cellspacing="0" border="0">
                     <tr>
-                      <td style="background-color: #F7F7F7; width: 100px; height: 100px; border-radius: 5px;  text-align: center; vertical-align: middle;"">
-                        <a href="${PUBLIC_DOMAIN}/rating?id=${id}&rating=bad" style="text-decoration: none;">
+                      <td style="padding: 0;">
+                        <a href="${PUBLIC_DOMAIN}/rating?id=${id}&rating=bad" style="text-decoration: none; display: block; background-color: #F7F7F7; width: 100px; height: 100px; border-radius: 5px; text-align: center; padding-top: 26.5px; box-sizing: border-box;">
                           <img src="${PUBLIC_EMAIL_DOMAIN}/images/sadgray.png" alt="Sad" style="width: 47px; height: 47px;" />
                         </a>
                       </td>
-                       <td style="width: 24px;"></td>
-                      <td style="background-color: #F7F7F7; width: 100px; height: 100px; border-radius: 5px; text-align: center; vertical-align: middle;">
-                        <a href="${PUBLIC_DOMAIN}/rating?id=${id}&rating=good" style="text-decoration: none;">
+                      <td style="width: 24px;"></td>
+                      <td style="padding: 0;">
+                        <a href="${PUBLIC_DOMAIN}/rating?id=${id}&rating=good" style="text-decoration: none; display: block; background-color: #F7F7F7; width: 100px; height: 100px; border-radius: 5px; text-align: center; padding-top: 26.5px; box-sizing: border-box;">
                           <img src="${PUBLIC_EMAIL_DOMAIN}/images/happygray.png" alt="Happy" style="width: 47px; height: 47px;" />
                         </a>
                       </td>

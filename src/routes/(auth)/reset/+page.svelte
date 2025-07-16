@@ -15,7 +15,6 @@
   const placeholderText = 'EMAIL'
 
   let disableButton = $state(false)
-  let inputValue = $state(null)
   let errorMessage = $state('') 
   let email = $state(null)
   let validEmail = $state(false)

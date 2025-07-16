@@ -1,6 +1,5 @@
 import { json } from '@sveltejs/kit'
 import axios from 'axios'
-import { supabase } from '$src/utilities/supabase'
 import { CRON_KEY } from '$env/static/private'
 import dayjs from 'dayjs' 
 import { PUBLIC_DOMAIN } from '$env/static/public'
@@ -13,12 +12,14 @@ const supabaseAdmin = createClient(PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KE
 })
 
 const getValueFromUsers = async (email, field) => {
-    const response = await supabase
+    const response = await supabaseAdmin
       .from('Users')
       .select('*')
       .eq('email', email)
       .single()
+
     return response.data?.[field]
+
   }
 
 const getEmails = async () => {
@@ -33,10 +34,10 @@ const getEmails = async () => {
         uniqueEmails.push(email)
       }
     }
-    return json({ emails: uniqueEmails })
+    return uniqueEmails
   }
   else { 
-    return json({emails:[]})
+    return []
   } 
 }
 
@@ -49,7 +50,7 @@ const GET = async ({ url }) => {
       const message = []
       for (const email of emails) {
         const sendRatingsEmailOn = await getValueFromUsers( email, 'sendRatingsEmailOn')
-        if (dayjs().isSame(sendRatingsEmailOn, 'day')) {
+        if (sendRatingsEmailOn && dayjs().isSame(sendRatingsEmailOn, 'day')) {
           const id = await getValueFromUsers(email, 'id')
           await axios.post(`${PUBLIC_DOMAIN}/api/email`, {
             to: email,
@@ -61,7 +62,6 @@ const GET = async ({ url }) => {
         }
       }
       if (message.length > 0) {
-        console.log(message.join('\n'))
         return json({ message: message.join('\n') })
       }
       else {
@@ -73,7 +73,6 @@ const GET = async ({ url }) => {
     }
   }
   catch (error) {
-    console.log(error)
     return json({ message: 'Error sending rating emails' }, { status: 500 })
   }
 }
