@@ -18,7 +18,7 @@
   </div>
   <div class="question"><span class="number">4.</span>How does it calculate payments?</div>
   <div class="answer">
-    We use the latest federal and state tax rules to determine your quarterly payments. We select the correct ones based on your income and filing status, and follow IRS “safe harbor” guidelines to help you avoid penalties while keeping your payments as low as possible.
+    We use the latest federal and state tax rules to determine your quarterly payments. We select the correct ones based on your income and filing status and follow IRS “safe harbor” guidelines to help you avoid penalties while keeping your payments as low as possible.
   </div>
   <div class="question"><span class="number">5.</span>What if I missed a past payment?</div>
   <div class="answer">
