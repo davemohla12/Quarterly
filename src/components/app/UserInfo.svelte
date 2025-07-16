@@ -48,7 +48,7 @@
   <div class="field">Total Payments</div>
   <div class="value">{userValues.totalPayments || 'blank'}</div>
   <div class="field">Payments Dates</div>
-  <div class="value">{userValues.paymentDates.map(date => dayjs(date).format('M/D/YY')).join(', ') || 'blank'}</div>
+  <div class="value">{userValues.paymentDates?.map(date => dayjs(date).format('M/D/YY')).join(', ') || 'blank'}</div>
   <div class="field">Refunded Tax Years</div>
   <div class="value">{userValues.refundedTaxYears?.join(', ') || 'blank'}</div>
   <div class="field">Last Stripe Payment ID</div>

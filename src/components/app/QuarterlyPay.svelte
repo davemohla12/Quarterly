@@ -25,7 +25,7 @@
   let isOtherStatePaid = $state([])
 
   onMount(() => {
-    isOtherStatePaid = otherStatesToPay.map(state => state.markPaid)
+    isOtherStatePaid = otherStatesToPay?.map(state => state.markPaid) || []
     document.addEventListener('click', handleClickOutside)
     return () => {
       document.removeEventListener('click', handleClickOutside)
