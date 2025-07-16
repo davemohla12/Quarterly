@@ -15,6 +15,7 @@
   import { convertCurrencyToNumber } from '$src/utilities/utilities'
   import { user } from '$src/data/user.svelte'
   import { getBelowMinimumTaxText } from '$src/utilities/federaltax'
+  import { getLocalStorage } from '$src/utilities/utilities'
   
   let headingText = $state('')
   const buttonText = 'NEXT'
@@ -25,11 +26,11 @@
   global.makeButtonActive = false
 
   onMount(async () => {
-    headingText = `How much did you pay in ${convertStateToUpperCase(await payment.getValue('currentState'))} income tax last year?`
+    headingText = `How much did you pay in ${convertStateToUpperCase(getLocalStorage('currentState'))} income tax last year?`
     subheadingText = await determineSubheadingText()
     if (global.loggedIn) {
-      if (await payment.getValue('stateTaxPaidLastYear')) { 
-        const stateTaxPaidLastYear = await payment.getValue('stateTaxPaidLastYear')
+      if (getLocalStorage('stateTaxPaidLastYear')) { 
+        const stateTaxPaidLastYear = getLocalStorage('stateTaxPaidLastYear')
         inputValue = stateTaxPaidLastYear.toString()
         global.makeButtonActive = true
       }
@@ -37,14 +38,14 @@
   })
 
   const determineSubheadingText = async () => {
-    if (stateRules[await payment.getValue('currentState')].incomeTaxPaidForm != null && stateRules[await payment.getValue('currentState')].incomeTaxPaidLine != null) {
-      return `You can find this on ${convertStateToUpperCase(await payment.getValue('currentState'))} form ${stateRules[await payment.getValue('currentState')].incomeTaxPaidForm} line ${stateRules[await payment.getValue('currentState')].incomeTaxPaidLine}`
+    if (stateRules[getLocalStorage('currentState')].incomeTaxPaidForm != null && stateRules[getLocalStorage('currentState')].incomeTaxPaidLine != null) {
+      return `You can find this on ${convertStateToUpperCase(getLocalStorage('currentState'))} form ${stateRules[getLocalStorage('currentState')].incomeTaxPaidForm} line ${stateRules[getLocalStorage('currentState')].incomeTaxPaidLine}`
     }
-    else if (stateRules[await payment.getValue('currentState')].incomeTaxPaidForm != null) {
-      return `You can find this on ${convertStateToUpperCase(await payment.getValue('currentState'))} form ${stateRules[await payment.getValue('currentState')].incomeTaxPaidForm}`
+    else if (stateRules[getLocalStorage('currentState')].incomeTaxPaidForm != null) {
+      return `You can find this on ${convertStateToUpperCase(getLocalStorage('currentState'))} form ${stateRules[getLocalStorage('currentState')].incomeTaxPaidForm}`
     }
     else {
-      return `You can find this on your ${convertStateToUpperCase(await payment.getValue('currentState'))} tax return`
+      return `You can find this on your ${convertStateToUpperCase(getLocalStorage('currentState'))} tax return`
     }      
   }
 
@@ -92,11 +93,6 @@
   }
 
   const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
-      if (global.makeButtonActive == true) {
-        handleNext()
-      }
-    }
     if (event.key === 'ArrowLeft') {
       history.back()
     }

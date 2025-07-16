@@ -13,6 +13,7 @@
   import { user } from '$src/data/user.svelte'
   import { safePostHog } from '$src/utilities/posthog'
   import { currentTaxYear } from '$src/settings/settings'
+  import { getLocalStorage } from '$src/utilities/utilities'
 
   const headingText = `What state do you reside in?`
   const buttonText = 'NEXT'
@@ -24,8 +25,8 @@
       safePostHog.capture('flow_state_viewed')
     }
     if (global.loggedIn) {
-      if (await payment.getValue('currentState')) {
-        currentState = convertStateToUpperCase(await payment.getValue('currentState'))
+      if (getLocalStorage('currentState')) {
+        currentState = convertStateToUpperCase(getLocalStorage('currentState'))
         global.makeButtonActive = true
       }
     }
@@ -58,11 +59,6 @@
   }
 
   const handleKeyDown = async (event) => {
-    if (event.key === 'Enter') {
-      if (global.makeButtonActive == true) {
-        handleNext()
-      }
-    }
     if (event.key === 'ArrowLeft') {
       history.back()
     }

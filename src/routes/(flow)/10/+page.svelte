@@ -12,7 +12,8 @@
   import { onMount } from 'svelte'  
   import { payment } from '$src/data/payment.svelte'
   import { user } from '$src/data/user.svelte'
-
+  import { getLocalStorage } from '$src/utilities/utilities'
+  
   const headingText = `How do you plan to file your taxes this year?`
   const radioButtons = ['Single', 'Married Filing Jointly', 'Married Filing Separately', 'Head of Household', 'Qualifying Widow(er)']
   const radioHelpText = {
@@ -25,8 +26,8 @@
 
   onMount(async () => {
     if (global.loggedIn) {
-      if (await payment.getValue('filingStatus')) {
-        selectedRadioButton = convertShortToLongFilingStatus(await payment.getValue('filingStatus'))
+      if (getLocalStorage('filingStatus')) {
+        selectedRadioButton = convertShortToLongFilingStatus(getLocalStorage('filingStatus'))
         global.makeButtonActive = true
       }
     }
@@ -50,11 +51,6 @@
   }
 
   const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
-      if (global.makeButtonActive == true) {
-        handleNext()
-      }
-    }
     if (event.key === 'ArrowLeft') {
       history.back()
     }

@@ -12,6 +12,7 @@
   import { stateRules } from '$src/rules/state' 
   import { onMount } from 'svelte'
   import { user } from '$src/data/user.svelte'
+  import { getLocalStorage } from '$src/utilities/utilities'
 
   let headingText = $state('')
   const radioButtons = ['Yes', 'No']
@@ -21,13 +22,13 @@
   global.makeButtonActive = false
 
   onMount(async () => {
-    headingText = `Do you plan to live in ${convertStateToUpperCase(await payment.getValue('currentState'))} all of this year?`
+    headingText = `Do you plan to live in ${convertStateToUpperCase(getLocalStorage('currentState'))} all of this year?`
     if (global.loggedIn) {
-      if (await payment.getValue('livingInCurrentStateAllThisYear') == true) {
+      if (getLocalStorage('livingInCurrentStateAllThisYear') == true) {
         selectedRadioButton = 'Yes'
         global.makeButtonActive = true
       }
-      else if (await payment.getValue('livingInCurrentStateAllThisYear') == false) {
+      else if (getLocalStorage('livingInCurrentStateAllThisYear') == false) {
         selectedRadioButton = 'No'
         global.makeButtonActive = true
       }
@@ -66,11 +67,6 @@
   }
 
   const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
-      if (global.makeButtonActive == true) {
-        handleNext()
-      }
-    }
     if (event.key === 'ArrowLeft') {
       history.back()
     }

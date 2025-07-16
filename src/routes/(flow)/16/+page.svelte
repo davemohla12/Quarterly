@@ -13,6 +13,7 @@
   import { onMount } from 'svelte'
   import { safePostHog } from '$src/utilities/posthog'
   import { currentTaxYear } from '$src/settings/settings'
+  import { getLocalStorage } from '$src/utilities/utilities'
 
   let headingText = $state('')
   let subheadingText = $state('')
@@ -69,11 +70,6 @@
   }
 
   const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
-      if (global.makeButtonActive == true) {
-        handleDone()
-      }
-    }
     if (event.key === 'ArrowLeft') {
       history.back()
     }

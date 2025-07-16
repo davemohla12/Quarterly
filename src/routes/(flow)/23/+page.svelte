@@ -13,6 +13,7 @@
   import { onMount } from 'svelte'
   import { currentTaxQuarter } from '$src/settings/settings'
   import { user } from '$src/data/user.svelte'
+  import { getLocalStorage } from '$src/utilities/utilities'
   
   const headingText = `What are your expected federal W2 witholdings for this year?`
   const subheadingText = `To determine this, find the number in box 2 of each W2 paycheck and then multiply by the number of W2s you plan to get this year`
@@ -23,8 +24,8 @@
 
   onMount(async () => {
     if (global.loggedIn) {
-      if (await payment.getValue('federalWithholdingsThisYear')) {
-        const federalWithholdingsThisYear = await payment.getValue('federalWithholdingsThisYear')
+      if (getLocalStorage('federalWithholdingsThisYear')) {
+        const federalWithholdingsThisYear = getLocalStorage('federalWithholdingsThisYear')
         inputValue = federalWithholdingsThisYear.toString()
         global.makeButtonActive = true
       }
@@ -66,11 +67,6 @@
   }
 
   const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
-      if (global.makeButtonActive == true) {
-        handleNext()
-      }
-    }
     if (event.key === 'ArrowLeft') {
       history.back()
     }

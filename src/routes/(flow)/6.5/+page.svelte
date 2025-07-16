@@ -13,6 +13,7 @@
   import { stateRules } from '$src/rules/state'
   import { goto } from '$app/navigation'
   import { user } from '$src/data/user.svelte'
+  import { getLocalStorage } from '$src/utilities/utilities'
 
   const headingText = `What state will you be living in on these dates?`
   const buttonText = 'NEXT'
@@ -25,10 +26,10 @@
   onMount(async () => {
     global.makeButtonActive = false
     if (global.loggedIn) {
-      if (await payment.getValue('currentState')) {
-        q1State = convertStateToUpperCase(await payment.getValue('q1State'))
-        q2State = convertStateToUpperCase(await payment.getValue('q2State'))
-        q3State = convertStateToUpperCase(await payment.getValue('q3State'))
+      if (getLocalStorage('currentState')) {
+        q1State = convertStateToUpperCase(getLocalStorage('q1State'))
+        q2State = convertStateToUpperCase(getLocalStorage('q2State'))
+        q3State = convertStateToUpperCase(getLocalStorage('q3State'))
         q4State = convertStateToUpperCase(await payment.getValue('q4State'))
         global.makeButtonActive = true
       }
@@ -79,11 +80,6 @@
   }
 
   const handleKeyDown = async (event) => {
-    if (event.key === 'Enter') {
-      if (global.makeButtonActive == true) {
-        handleNext()
-      }
-    }
     if (event.key === 'ArrowLeft') {
       history.back()
     }

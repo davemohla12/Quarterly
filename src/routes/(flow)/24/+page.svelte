@@ -14,6 +14,7 @@
   import { onMount } from 'svelte'
   import { currentTaxQuarter } from '$src/settings/settings'
   import { user } from '$src/data/user.svelte'
+  import { getLocalStorage } from '$src/utilities/utilities'
   
   let headingText = $state('')
   const subheadingText = `To determine this, find the number in box 17 of each W2 paycheck and then multiply by the number of W2s you plan to get this year`
@@ -23,15 +24,15 @@
   global.makeButtonActive = false
 
   onMount(async () => {
-    if (await payment.getValue('livingInCurrentStateAllThisYear')) {
-      headingText = `What are your expected ${convertStateToUpperCase(await payment.getValue('currentState'))} W2 witholdings for this year?`
+    if (getLocalStorage('livingInCurrentStateAllThisYear')) {
+      headingText = `What are your expected ${convertStateToUpperCase(getLocalStorage('currentState'))} W2 witholdings for this year?`
     }
     else {
       headingText = `What are your expected state W2 witholdings for this year?`
     }
     if (global.loggedIn) {
-      if (await payment.getValue('stateWithholdingsThisYear')) {
-        const stateWithholdingsThisYear = await payment.getValue('stateWithholdingsThisYear')
+      if (getLocalStorage('stateWithholdingsThisYear')) {
+        const stateWithholdingsThisYear = getLocalStorage('stateWithholdingsThisYear')
         inputValue = stateWithholdingsThisYear.toString()
         global.makeButtonActive = true
       }
@@ -67,11 +68,6 @@
   }
 
   const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
-      if (global.makeButtonActive == true) {
-        handleNext()
-      }
-    }
     if (event.key === 'ArrowLeft') {
       history.back()
     }

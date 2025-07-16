@@ -2,7 +2,7 @@
   import Header from '$src/components/app/Header.svelte'
   import Avatar from '$src/components/app/Avatar.svelte'
   import Heading from '$src/components/app/Heading.svelte'
-  import Button from '$src/components/app/Button.svelte'
+  import ControlledButton from '$src/components/app/ControlledButton.svelte'
   import { goto } from '$app/navigation'
   import { global } from '$src/data/global.svelte'
   import PasswordInput from '$src/components/app/PasswordInput.svelte'
@@ -107,9 +107,9 @@
   <Heading text={headingText} desktopwidth="500px" mobilelarge={true}  />
   <PasswordInput placeholder={placeholderText} onInput={handleInput} error={errorMessage}/>
   {#if disableButton}
-    <Button showSpinner={true} enabled={false} dark={true} />
+    <ControlledButton showSpinner={true} enabled={false} dark={true} />
   {:else}
-    <Button text={buttonText} onclick={handleSave} />
+    <ControlledButton text={buttonText} onclick={handleSave} />
   {/if}
 {/if}
 

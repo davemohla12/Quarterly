@@ -2,7 +2,7 @@
   import Header from '$src/components/app/Header.svelte'
   import Avatar from '$src/components/app/Avatar.svelte'
   import Heading from '$src/components/app/Heading.svelte'  
-  import Button from '$src/components/app/Button.svelte'
+  import ControlledButton from '$src/components/app/ControlledButton.svelte'
   import { global } from '$src/data/global.svelte'  
   import Subheading from '$src/components/app/Subheading.svelte'
   import Support from '$src/components/app/Support.svelte'
@@ -58,8 +58,8 @@
 <Subheading text={subheadingText} />
 <Support value={message} oninput={handleInput} />
 {#if showSpinner}
-  <Button showSpinner={true} enabled={false} dark={true} />
+  <ControlledButton showSpinner={true} enabled={false} dark={true} />
 {:else}
-  <Button text={buttonText} onclick={handleSubmit} />
+  <ControlledButton text={buttonText} onclick={handleSubmit} />
 {/if}
 

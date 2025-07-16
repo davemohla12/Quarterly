@@ -11,6 +11,7 @@
   import { onMount } from 'svelte'  
   import { payment } from '$src/data/payment.svelte'
   import { user } from '$src/data/user.svelte'
+  import { getLocalStorage } from '$src/utilities/utilities'
 
   const headingText = `How many exemptions do you have?`
   const subheadingText = `This usually includes you, your spouse, and any dependents`
@@ -21,8 +22,8 @@
 
   onMount(async () => {
     if (global.loggedIn) {
-      if (await payment.getValue('exemptions')) {
-        inputValue = await payment.getValue('exemptions')
+      if (getLocalStorage('exemptions')) {
+        inputValue = getLocalStorage('exemptions')
         global.makeButtonActive = true
       }
     }
@@ -45,11 +46,6 @@
   }
 
   const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
-      if (global.makeButtonActive == true) {
-        handleNext()
-      }
-    }
     if (event.key === 'ArrowLeft') {
       history.back()
     }

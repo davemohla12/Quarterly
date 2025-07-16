@@ -15,7 +15,8 @@
   import { payment } from '$src/data/payment.svelte'
   import { user } from '$src/data/user.svelte'
   import { getBelowMinimumTaxText } from '$src/utilities/federaltax'
-
+  import { getLocalStorage } from '$src/utilities/utilities'
+  
   const headingText = `How much did you pay in federal income tax last year?`
   const subheadingText = `You can find this on form ${federalRules.incomeTaxPaidForm  } line ${federalRules.incomeTaxPaidLine}`
   const buttonText = 'NEXT'
@@ -25,8 +26,8 @@
 
   onMount(async () => {
     if (global.loggedIn) {
-      if (await payment.getValue('federalTaxPaidLastYear')) {
-        const federalTaxPaidLastYear = await payment.getValue('federalTaxPaidLastYear')
+      if (getLocalStorage('federalTaxPaidLastYear')) {
+        const federalTaxPaidLastYear = getLocalStorage('federalTaxPaidLastYear')
         inputValue = federalTaxPaidLastYear.toString()
         global.makeButtonActive = true
       }
@@ -70,11 +71,6 @@
   }
 
   const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
-      if (global.makeButtonActive == true) {
-        handleNext()
-      }
-    }
     if (event.key === 'ArrowLeft') {
       history.back()
     }

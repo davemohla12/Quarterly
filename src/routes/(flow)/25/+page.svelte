@@ -12,6 +12,7 @@
   import { onMount } from 'svelte'
   import { currentTaxQuarter } from '$src/settings/settings'
   import { user } from '$src/data/user.svelte'
+  import { getLocalStorage } from '$src/utilities/utilities'
 
   const headingText = `What did you pay in federal quarterly payments this year?`
   const buttonText = 'NEXT'
@@ -28,18 +29,18 @@
     placeholderText2 = 'June Payment'
     placeholderText3 = 'September Payment'
     if (global.loggedIn) {
-      if (await payment.getValue('q1FederalPaymentMade')) { 
-        const q1FederalPaymentMade = await payment.getValue('q1FederalPaymentMade')
+      if (getLocalStorage('q1FederalPaymentMade')) { 
+        const q1FederalPaymentMade = getLocalStorage('q1FederalPaymentMade')
         inputValue1 = q1FederalPaymentMade.toString()
         global.makeButtonActive = true
       }
-      if (await payment.getValue('q2FederalPaymentMade')) {
-        const q2FederalPaymentMade = await payment.getValue('q2FederalPaymentMade')
+      if (getLocalStorage('q2FederalPaymentMade')) {
+        const q2FederalPaymentMade = getLocalStorage('q2FederalPaymentMade')
         inputValue2 = q2FederalPaymentMade.toString()
         global.makeButtonActive = true
       }
-      if (await payment.getValue('q3FederalPaymentMade')) {
-        const q3FederalPaymentMade = await payment.getValue('q3FederalPaymentMade')
+      if (getLocalStorage('q3FederalPaymentMade')) {
+        const q3FederalPaymentMade = getLocalStorage('q3FederalPaymentMade')
         inputValue3 = q3FederalPaymentMade.toString()
         global.makeButtonActive = true
       }
@@ -100,11 +101,6 @@
   }
 
   const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
-      if (global.makeButtonActive == true) {
-        handleNext()
-      }
-    }
     if (event.key === 'ArrowLeft') {
       history.back()
     }

@@ -15,16 +15,11 @@
   global.makeButtonActive = true
 
   const handleNext = async () => {
-    goto('/1')
+    goto('/0.6')
     await user.setValue('currentPage', '1')
   }
 
   const handleKeyDown = async (event) => {
-    if (event.key === 'Enter') {
-      if (global.makeButtonActive == true) {
-        handleNext()
-      }
-    }
     if (event.key === 'ArrowLeft') {
       goto('/dashboard')
       await user.setValue('currentPage', 'dashboard')

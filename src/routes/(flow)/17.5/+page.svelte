@@ -13,6 +13,7 @@
   import { stateRules } from '$src/rules/state'
   import { onMount } from 'svelte'  
   import { user } from '$src/data/user.svelte'
+  import { getLocalStorage } from '$src/utilities/utilities'
 
   let headingText = $state('')
   let subheadingText = $state('')
@@ -22,11 +23,11 @@
   global.makeButtonActive = false
 
   onMount(async () => {
-    headingText = `What was your taxable income in ${convertStateToUpperCase(await payment.getValue('currentState'))} last year?`
-    subheadingText = `You can find this on form ${stateRules[await payment.getValue('currentState')].thisYearIncomeCalculationType.stateIncomeForm} line ${stateRules[await payment.getValue('currentState')].thisYearIncomeCalculationType.stateIncomeLine}`
+    headingText = `What was your taxable income in ${convertStateToUpperCase(getLocalStorage('currentState'))} last year?`
+    subheadingText = `You can find this on form ${stateRules[getLocalStorage('currentState')].thisYearIncomeCalculationType.stateIncomeForm} line ${stateRules[getLocalStorage('currentState')].thisYearIncomeCalculationType.stateIncomeLine}`
     if (global.loggedIn) {
-      if (await payment.getValue('stateIncomeLastYear')) {
-        const stateIncomeLastYear = await payment.getValue('stateIncomeLastYear')
+      if (getLocalStorage('stateIncomeLastYear')) {
+        const stateIncomeLastYear = getLocalStorage('stateIncomeLastYear')
         inputValue = stateIncomeLastYear.toString()
         global.makeButtonActive = true
       }
@@ -50,11 +51,6 @@
   }
 
   const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
-      if (global.makeButtonActive == true) {
-        handleNext()
-      }
-    }
     if (event.key === 'ArrowLeft') {
       history.back()
     }

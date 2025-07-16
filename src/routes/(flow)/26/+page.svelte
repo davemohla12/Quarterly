@@ -13,6 +13,7 @@
   import { onMount } from 'svelte'
   import { currentTaxQuarter } from '$src/settings/settings'
   import { user } from '$src/data/user.svelte'
+  import { getLocalStorage } from '$src/utilities/utilities'
 
   let headingText = $state('')
   const buttonText = 'NEXT'
@@ -29,36 +30,36 @@
   let q3State = $state('')
 
   onMount(async () => {
-    livingInCurrentStateAllThisYear = await payment.getValue('livingInCurrentStateAllThisYear')
+    livingInCurrentStateAllThisYear = getLocalStorage('livingInCurrentStateAllThisYear')
     if (livingInCurrentStateAllThisYear) {
-      headingText = `What did you pay in ${convertStateToUpperCase(await payment.getValue('currentState'))} quarterly payments this year?`
+      headingText = `What did you pay in ${convertStateToUpperCase(getLocalStorage('currentState'))} quarterly payments this year?`
       placeholderText1 = `April Payment`
       placeholderText2 = `June Payment`
       placeholderText3 = `September Payment`
     }
     else {
       headingText = `What did you pay in state quarterly payments this year?`
-      q1State = convertStateToUpperCase(await payment.getValue('q1State'))
-      q2State = convertStateToUpperCase(await payment.getValue('q2State'))
-      q3State = convertStateToUpperCase(await payment.getValue('q3State'))
+      q1State = convertStateToUpperCase(getLocalStorage('q1State'))
+      q2State = convertStateToUpperCase(getLocalStorage('q2State'))
+      q3State = convertStateToUpperCase(getLocalStorage('q3State'))
       placeholderText1 = `${q1State} April Payment`
       placeholderText2 = `${q2State} June Payment`
       placeholderText3 = `${q3State} September Payment`
     }
    
     if (global.loggedIn) {
-      if (await payment.getValue('q1StatePaymentMade')) {
-        const q1StatePaymentMade = await payment.getValue('q1StatePaymentMade')
+      if (getLocalStorage('q1StatePaymentMade')) {
+        const q1StatePaymentMade = getLocalStorage('q1StatePaymentMade')
         inputValue1 = q1StatePaymentMade.toString()
         global.makeButtonActive = true
       }
-      if (await payment.getValue('q2StatePaymentMade')) {
-        const q2StatePaymentMade = await payment.getValue('q2StatePaymentMade')
+      if (getLocalStorage('q2StatePaymentMade')) {
+        const q2StatePaymentMade = getLocalStorage('q2StatePaymentMade')
         inputValue2 = q2StatePaymentMade.toString()
         global.makeButtonActive = true
       }
-      if (await payment.getValue('q3StatePaymentMade')) {
-        const q3StatePaymentMade = await payment.getValue('q3StatePaymentMade')
+      if (getLocalStorage('q3StatePaymentMade')) {
+        const q3StatePaymentMade = getLocalStorage('q3StatePaymentMade')
         inputValue3 = q3StatePaymentMade.toString()
         global.makeButtonActive = true
       }
@@ -114,11 +115,6 @@
   }
 
   const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
-      if (global.makeButtonActive == true) {
-        handleNext()
-      }
-    }
     if (event.key === 'ArrowLeft') {
       history.back()
     }

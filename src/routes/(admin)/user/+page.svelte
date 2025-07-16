@@ -7,7 +7,7 @@
   import { goto } from "$app/navigation"
   import { global } from "$src/data/global.svelte"
   import EmailInput from "$src/components/app/EmailInput.svelte"
-  import Button from "$src/components/app/Button.svelte"
+  import ControlledButton from "$src/components/app/ControlledButton.svelte"
   import { getAllUserValues, getAllPaymentValues } from "$src/utilities/database"
   import NotFound from "$src/components/app/NotFound.svelte"
   import UserInfo from "$src/components/app/UserInfo.svelte"
@@ -87,9 +87,9 @@
 <Heading text="User Info" desktopwidth="450px" mobilewidth="300px" /> 
 <EmailInput placeholder="Email" onInput={handleEmailInput} value={email} showClear={true} onclear={handleClear} hideError={true} />
 {#if showSpinner}
-  <Button showSpinner={true} enabled={false} dark={true} />
+  <ControlledButton showSpinner={true} enabled={false} dark={true} />
 {:else}
-  <Button text="GET INFO" onclick={handleGetInfo}/>
+  <ControlledButton text="GET INFO" onclick={handleGetInfo}/>
 {/if}
 {#if !userFound}
   <NotFound />

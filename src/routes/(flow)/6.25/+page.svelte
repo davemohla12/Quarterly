@@ -13,6 +13,7 @@
   import { payment } from '$src/data/payment.svelte'
   import { user } from '$src/data/user.svelte'
   import { onMount } from 'svelte'
+  import { getLocalStorage } from '$src/utilities/utilities'
 
   const headingText = `You'll just pay federal quarterly taxes`
   let subheadingText = $state('')
@@ -21,7 +22,7 @@
   global.makeButtonActive = true
 
   onMount(async () => {
-    const currentState = await payment.getValue('currentState')
+    const currentState = getLocalStorage('currentState')
     subheadingText = `${convertStateToUpperCase(currentState)} doesn't require quarterly taxes`
     showNote = stateRules[currentState]?.note
   })
@@ -33,11 +34,6 @@
   }
 
   const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
-      if (global.makeButtonActive == true) {
-        handleNext()
-      }
-    }
     if (event.key === 'ArrowLeft') {
       history.back()
     }

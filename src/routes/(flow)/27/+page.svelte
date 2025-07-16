@@ -10,6 +10,7 @@
   import { goto } from '$app/navigation'
   import { onMount } from 'svelte'
   import { user } from '$src/data/user.svelte'
+  import { getLocalStorage } from '$src/utilities/utilities'
 
   const headingText = `Would you like to pay your taxes each quarter or in one single payment?`
   const radioButtons = ['Pay each quarter', 'Pay in single payment']
@@ -19,11 +20,11 @@
 
   onMount(async () => {
     if (global.loggedIn) {
-      if (await payment.getValue('payPreference') == 'quarter') {
+      if (getLocalStorage('payPreference') == 'quarter') {
         selectedRadioButton = radioButtons[0]
         global.makeButtonActive = true
       }
-      else if (await payment.getValue('payPreference') == 'single') {
+      else if (getLocalStorage('payPreference') == 'single') {
         selectedRadioButton = radioButtons[1]
         global.makeButtonActive = true
       }
@@ -47,11 +48,6 @@
   }
 
   const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
-      if (global.makeButtonActive == true) {
-        handleNext()
-      }
-    }
     if (event.key === 'ArrowLeft') {
       history.back()
     }

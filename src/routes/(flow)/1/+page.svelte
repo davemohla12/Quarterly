@@ -11,6 +11,7 @@
   import { payment } from '$src/data/payment.svelte'
   import { user } from '$src/data/user.svelte'
   import { onMount } from 'svelte'
+  import { getLocalStorage } from '$src/utilities/utilities'
 
   const headingText = `Will you earn any income this year that isn't from a regular paycheck?`
   const subheadingText = `This includes freelance income, self-employment income, investment income, rental income, retirement withdrawals, alimony, or anything that doesn't have taxes withheld automatically`
@@ -22,11 +23,11 @@
 
   onMount(async () => {
     if (global.loggedIn) {
-      if (await payment.getValue('earnNonPaycheckIncomeThisYear') == true) {
+      if (getLocalStorage('earnNonPaycheckIncomeThisYear') == true) {
         selectedRadioButton = 'Yes'
         global.makeButtonActive = true
       }
-      else if (await payment.getValue('earnNonPaycheckIncomeThisYear') == false) {
+      else if (getLocalStorage('earnNonPaycheckIncomeThisYear') == false) {
         selectedRadioButton = 'No'
         global.makeButtonActive = true
       }
@@ -52,11 +53,6 @@
   }
 
   const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
-      if (global.makeButtonActive == true) {
-        handleNext()
-      }
-    }
     if (event.key === 'ArrowLeft') {
       history.back()
     }

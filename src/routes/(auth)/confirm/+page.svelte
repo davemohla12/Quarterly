@@ -3,7 +3,7 @@
   import Avatar from '$src/components/app/Avatar.svelte'
   import Heading from '$src/components/app/Heading.svelte'
   import Subheading from '$src/components/app/Subheading.svelte'
-  import Button from '$src/components/app/Button.svelte'
+  import ControlledButton from '$src/components/app/ControlledButton.svelte'
   import { goto } from '$app/navigation'
   import { global } from '$src/data/global.svelte'
 
@@ -34,4 +34,4 @@
 <Avatar />
 <Heading text={headingText} desktopwidth="500px"  mobilelarge={true} />
 <Subheading text={subheadingText} desktopwidth="500px" />
-<Button text={buttonText} dark={true} onclick={handleClick} />
+<ControlledButton text={buttonText} dark={true} onclick={handleClick} />

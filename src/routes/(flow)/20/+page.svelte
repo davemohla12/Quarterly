@@ -11,6 +11,7 @@
   import { payment } from '$src/data/payment.svelte'
   import { onMount } from 'svelte'
   import { user } from '$src/data/user.svelte'
+  import { getLocalStorage } from '$src/utilities/utilities'
   
   const headingText = `What are your expected deductible expenses this year?`
   const buttonText = 'NEXT'
@@ -35,28 +36,28 @@
 
   onMount(async () => {
     if (global.loggedIn) {
-      if (await payment.getValue('businessExpensesThisYear')) {
-        const businessExpensesThisYear = await payment.getValue('businessExpensesThisYear')
+      if (getLocalStorage('businessExpensesThisYear')) {
+        const businessExpensesThisYear = getLocalStorage('businessExpensesThisYear')
         inputValue1 = businessExpensesThisYear.toString()
         global.makeButtonActive = true
       }
-      if (await payment.getValue('retirementContributionsThisYear')) {
-        const retirementContributionsThisYear = await payment.getValue('retirementContributionsThisYear')
+      if (getLocalStorage('retirementContributionsThisYear')) {
+        const retirementContributionsThisYear = getLocalStorage('retirementContributionsThisYear')
         inputValue2 = retirementContributionsThisYear.toString()
         global.makeButtonActive = true
       }
-      if (await payment.getValue('studentLoanInterestThisYear')) {
-        const studentLoanInterestThisYear = await payment.getValue('studentLoanInterestThisYear')
+      if (getLocalStorage('studentLoanInterestThisYear')) {
+        const studentLoanInterestThisYear = getLocalStorage('studentLoanInterestThisYear')
         inputValue3 = studentLoanInterestThisYear.toString()
         global.makeButtonActive = true
       }
-      if (await payment.getValue('healthInsuranceThisYear')) {
-        const healthInsuranceThisYear = await payment.getValue('healthInsuranceThisYear')
+      if (getLocalStorage('healthInsuranceThisYear')) {
+        const healthInsuranceThisYear = getLocalStorage('healthInsuranceThisYear')
         inputValue4 = healthInsuranceThisYear.toString()
         global.makeButtonActive = true
         }
-      if (await payment.getValue('otherDeductionsThisYear')) {  
-        const otherDeductionsThisYear = await payment.getValue('otherDeductionsThisYear')
+      if (getLocalStorage('otherDeductionsThisYear')) {  
+        const otherDeductionsThisYear = getLocalStorage('otherDeductionsThisYear')
         inputValue5 = otherDeductionsThisYear.toString()
         global.makeButtonActive = true
       }
@@ -117,11 +118,6 @@
   }
 
   const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
-      if (global.makeButtonActive == true) {
-        handleNext()
-      }
-    }
     if (event.key === 'ArrowLeft') {
       history.back()
     }

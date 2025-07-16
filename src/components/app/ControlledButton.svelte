@@ -5,9 +5,10 @@
   let props = $props()
   let text = $derived(props.text)
   let onclick = $derived(props.onclick)
-  
-  let enabled = $state()
-  let showSpinner = $state(false)
+  let dark = $derived(props.dark || false)
+  let showSpinner = $derived(props.showSpinner || false)
+
+  let enabled = $state(false)
 
   $effect(() => {
     if (global.makeButtonActive) {
@@ -20,34 +21,21 @@
 
   const handleClick = () => {
     if (enabled) {
-      showSpinner = true
       onclick()
-    }
-  }
-
-  const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
-      if (enabled) {
-        handleClick()
-      }
     }
   }
 </script>
 
-<svelte:window on:keydown={handleKeyDown} />
 
-
-{#if showSpinner }
-  <div class="button disabled spinner">
-    <div class="circle"></div>
-  </div>
-{:else}
-  <Clickable onclick={handleClick} disabled={!enabled}>
-    <div class="button enabled" class:enabled={enabled}>  
+<Clickable onclick={handleClick} disabled={!enabled}>
+  <div class="button" class:enabled={enabled} class:dark={dark} class:spinner={showSpinner}>
+    {#if showSpinner}
+      <div class="circle"></div>
+    {:else}
       {text}
-    </div>
-  </Clickable>
-{/if}
+    {/if}
+  </div>
+</Clickable>
 
 <style>
   .button {
@@ -65,12 +53,15 @@
     font-family: 'Lato', sans-serif;
     font-size: 16px;  
     font-weight: var(--bold);
-    cursor: default;
   }
   .enabled {
     background-color: var(--green);
     box-shadow: 0 4px 12px 0 rgba(0,0,0,0.15);
     cursor: pointer;
+  }
+  .dark {
+    background-color: var(--dark);
+    color: var(--white);
   }
   .spinner {
     background-color: var(--gray4);

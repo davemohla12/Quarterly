@@ -15,6 +15,7 @@ const payment = $state({
 
   async setValue(field, value) {
     if (global.loggedIn) {
+      setLocalStorage(field, value)
       await setInPayments(field, value)
     }
     else {

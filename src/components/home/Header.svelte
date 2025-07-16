@@ -37,13 +37,17 @@
   }
 
   const handleButtonClick = async () => {
-    const currentPage = await user.getValue('currentPage')
+    showSpinner = true
     if (buttonText == 'GET STARTED') {
       goto('/0')
       await user.setValue('currentPage', '0')
     }
-    else {
-      goto(`/${currentPage}`)
+    else if (buttonText == 'RESUME') {
+      goto('/0.6')
+    }
+    else if (buttonText == 'DASHBOARD') {
+      goto(`/dashboard`)     
+      await user.setValue('currentPage', 'dashboard')
     }
   }
 

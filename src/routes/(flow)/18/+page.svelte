@@ -12,6 +12,7 @@
   import { convertLongToShortIncomeExpectation, convertShortToLongIncomeExpectation } from '$src/utilities/utilities'
   import { onMount } from 'svelte'  
   import { user } from '$src/data/user.svelte'
+  import { getLocalStorage } from '$src/utilities/utilities'
   
   const headingText = `What do you expect your income to do this year relative to last year?`
   const radioButtons = ['Increase', 'Stay about the same', 'Decrease']
@@ -22,8 +23,8 @@
   
   onMount(async () => {
     if (global.loggedIn) {
-      if (await payment.getValue('incomeExpectationThisYear')) {
-        selectedRadioButton = convertShortToLongIncomeExpectation(await payment.getValue('incomeExpectationThisYear'))
+      if (getLocalStorage('incomeExpectationThisYear')) {
+        selectedRadioButton = convertShortToLongIncomeExpectation(getLocalStorage('incomeExpectationThisYear'))
         global.makeButtonActive = true
       }
     }
@@ -51,11 +52,6 @@
   }
 
   const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
-      if (global.makeButtonActive == true) {
-        handleNext()
-      }
-    }
     if (event.key === 'ArrowLeft') {
       history.back()
     }

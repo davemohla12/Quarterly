@@ -3,7 +3,7 @@
   import Avatar from '$src/components/app/Avatar.svelte'
   import Heading from '$src/components/app/Heading.svelte'
   import Subheading from '$src/components/app/Subheading.svelte'
-  import Button from '$src/components/app/Button.svelte'
+  import ControlledButton from '$src/components/app/ControlledButton.svelte'
   import GoogleButton from '$src/components/app/GoogleButton.svelte'
   import Or from '$src/components/app/Or.svelte'
   import BottomText from '$src/components/app/BottomText.svelte'
@@ -203,9 +203,9 @@
   </Clickable >
 {/if}
 {#if disableButton}
-  <Button showSpinner={true} enabled={false} dark={true} />
+  <ControlledButton showSpinner={true} enabled={false} dark={true} />
 {:else}
-  <Button text={buttonText} onclick={handleNext}/>
+  <ControlledButton text={buttonText} onclick={handleNext}/>
 {/if}
 <ErrorText errorMessage={errorMessage} />
 <BottomText text={bottomText} />

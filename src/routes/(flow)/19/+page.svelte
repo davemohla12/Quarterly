@@ -12,6 +12,7 @@
   import { convertCurrencyToNumber } from '$src/utilities/utilities'
   import { onMount } from 'svelte'
   import { user } from '$src/data/user.svelte'
+  import { getLocalStorage } from '$src/utilities/utilities'
 
   const headingText = `What is your expected total income this year?`
   const subheadingText = `Total income includes income from freelance work, your own business, wages & salaries, investments, rentals, retirement withdrawals, and alimony`
@@ -22,8 +23,8 @@
 
   onMount(async () => {
     if (global.loggedIn) {
-      if (await payment.getValue('expectedTotalIncomeThisYear')) {
-        const expectedTotalIncomeThisYear = await payment.getValue('expectedTotalIncomeThisYear')
+      if (getLocalStorage('expectedTotalIncomeThisYear')) {
+        const expectedTotalIncomeThisYear = getLocalStorage('expectedTotalIncomeThisYear')
         inputValue = expectedTotalIncomeThisYear.toString()
         global.makeButtonActive = true
       }
@@ -53,11 +54,6 @@
   }
 
   const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
-      if (global.makeButtonActive == true) {
-        handleNext()
-      }
-    }
     if (event.key === 'ArrowLeft') {
       history.back()
     }

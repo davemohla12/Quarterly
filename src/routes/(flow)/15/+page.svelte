@@ -12,6 +12,7 @@
   import { goto } from '$app/navigation'
   import { user } from '$src/data/user.svelte'
   import { onMount } from 'svelte'
+  import { getLocalStorage } from '$src/utilities/utilities'
 
   let headingText = $state('')
   let subheadingText = $state('')
@@ -20,8 +21,8 @@
   global.makeButtonActive = true
 
   onMount(async () => {
-    headingText = `You don't need to pay any ${convertStateToUpperCase(await payment.getValue('currentState'))} quarterly taxes this year `
-    subheadingText = `Because you owed less than $${stateRules[await payment.getValue('currentState')].minimumTaxForQuarterlyPayments} in ${convertStateToUpperCase(await payment.getValue('currentState'))} tax last year, you are not required to make estimated payments there this year`
+    headingText = `You don't need to pay any ${convertStateToUpperCase(getLocalStorage('currentState'))} quarterly taxes this year `
+    subheadingText = `Because you owed less than $${stateRules[getLocalStorage('currentState')].minimumTaxForQuarterlyPayments} in ${convertStateToUpperCase(getLocalStorage('currentState'))} tax last year, you are not required to make estimated payments there this year`
   })
 
   const handleNext = async () => {
@@ -36,7 +37,15 @@
       await user.setValue('currentPage', '17')
     }
   }
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'ArrowLeft') {
+      history.back()
+    }
+  }
 </script>
+
+<svelte:window on:keydown={handleKeyDown} />
 
 <Header />
 <Avatar />

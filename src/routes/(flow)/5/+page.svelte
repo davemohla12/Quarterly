@@ -11,7 +11,8 @@
   import { goto } from '$app/navigation'
   import { onMount } from 'svelte'
   import { user } from '$src/data/user.svelte'
-  
+  import { getLocalStorage } from '$src/utilities/utilities'
+
   let headingText = $state('')
   const radioButtons = ['Yes', 'No']
   const buttonText = 'NEXT'
@@ -21,11 +22,11 @@
   onMount(async () => {
     headingText = `Did you live in ${convertStateToUpperCase(await payment.getValue('currentState'))} all of last year?`
     if (global.loggedIn) {
-      if (await payment.getValue('livedInCurrentStateAllLastYear') == true) {
+      if (getLocalStorage('livedInCurrentStateAllLastYear') == true) {
         selectedRadioButton = 'Yes'
         global.makeButtonActive = true
       }
-      else if (await payment.getValue('livedInCurrentStateAllLastYear') == false) {
+      else if (getLocalStorage('livedInCurrentStateAllLastYear') == false) {
         selectedRadioButton = 'No'
         global.makeButtonActive = true
       }
@@ -49,11 +50,6 @@
   }
 
   const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
-      if (global.makeButtonActive == true) {
-        handleNext()
-      }
-    }
     if (event.key === 'ArrowLeft') {
       history.back()
     }

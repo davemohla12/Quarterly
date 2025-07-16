@@ -12,6 +12,7 @@
   import { onMount } from 'svelte'
   import { currentTaxQuarter } from '$src/settings/settings'
   import { user } from '$src/data/user.svelte'
+  import { getLocalStorage } from '$src/utilities/utilities'
   
   const headingText = `Do you have W2 paychecks for your salaries and wages?`
   const subheadingText = `If so, we can lower your quarterly payment. If not, we'll keep your payments higher and you'll get refunded when you file your annual taxes`
@@ -22,11 +23,11 @@
 
   onMount(async () => {
     if (global.loggedIn) {
-      if (await payment.getValue('hasW2') == true) {
+      if (getLocalStorage('hasW2') == true) {
         selectedRadioButton = 'Yes'
         global.makeButtonActive = true
       }
-      else if (await payment.getValue('hasW2') == false) {
+      else if (getLocalStorage('hasW2') == false) {
         selectedRadioButton = 'No'
         global.makeButtonActive = true
       }
@@ -72,11 +73,6 @@
   }
 
   const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
-      if (global.makeButtonActive == true) {
-        handleNext()
-      }
-    }
     if (event.key === 'ArrowLeft') {
       history.back()
     }

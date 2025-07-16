@@ -69,11 +69,6 @@
   }
 
   const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
-      if (global.makeButtonActive == true) {
-        handleDone()
-      }
-    }
     if (event.key === 'ArrowLeft') {
       history.back()
     }
