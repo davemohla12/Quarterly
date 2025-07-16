@@ -48,7 +48,7 @@ const POST = async ({ request }) => {
       mode: 'payment',
       customer: customer.id,
       line_items: lineItems,
-      success_url: `${PUBLIC_DOMAIN}/paid?session_id={CHECKOUT_SESSION_ID}&credits=${creditsToApply}`,
+      success_url: `${PUBLIC_DOMAIN}/paid?session_id={CHECKOUT_SESSION_ID}&credits=${creditsToApply}&price=${price.unit_amount / 100}&stripeCustomerId=${customer.id}`,
       cancel_url: `${PUBLIC_DOMAIN}/29`,
       automatic_tax: { enabled: true },
       billing_address_collection: 'auto',

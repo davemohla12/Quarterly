@@ -10,30 +10,42 @@
   import { page } from '$app/stores'
   import { global } from '$src/data/global.svelte'  
   import axios from 'axios'
+  import dayjs from 'dayjs'
 
   onMount(async () => {
     const creditsUsed = $page.url.searchParams.get('credits') || 0
     const sessionId = $page.url.searchParams.get('session_id')
-    await user.setValue('latestTaxYearPaid', currentTaxYear)
-    await user.addValue('taxYearsPaid', currentTaxYear)
+    const price = $page.url.searchParams.get('price')
+    const stripeCustomerId = $page.url.searchParams.get('stripeCustomerId')
     let paymentId = null
     if (sessionId) {
       const response = await axios.post('/api/payment', { sessionId: sessionId })
       paymentId = response.data.paymentId
     }
     if (paymentId) {
-      await user.setValue('lastPaymentId', paymentId)
+      const totalPayments = await user.getValue('totalPayments')
+      await Promise.all([
+        user.setValue('latestTaxYearPaid', currentTaxYear),
+        user.addValue('taxYearsPaid', currentTaxYear),
+        user.setValue('stripeCustomerId', stripeCustomerId),
+        user.setValue('lastPaymentAmount', price),
+        user.setValue('lastPaymentDate', new Date().toISOString()),
+        user.addValue('paymentDates', new Date().toISOString()),
+        user.setValue('totalPayments', totalPayments + 1),
+        user.setValue('sendRatingsEmailOn', dayjs().add(3, 'day').toISOString()),
+        user.setValue('lastPaymentId', paymentId)
+      ])
+      if (creditsUsed > 0) {
+        await removeCredits(global.email, creditsUsed)
+      }
+      const referrerEmail = await user.getValue('referrerEmail')
+      const taxYearsPaid = await user.getValue('taxYearsPaid')
+      if (referrerEmail && taxYearsPaid.length == 1) {
+        await addReferralCredits(referrerEmail)
+      }
+      await user.setValue('currentPage', 'dashboard')
+      goto('/dashboard')
     }
-    if (creditsUsed > 0) {
-      await removeCredits(global.email, creditsUsed)
-    }
-    const referrerEmail = await user.getValue('referrerEmail')
-    const taxYearsPaid = await user.getValue('taxYearsPaid')
-    if (referrerEmail && taxYearsPaid.length == 1) {
-      await addReferralCredits(referrerEmail)
-    }
-    await user.setValue('currentPage', 'dashboard')
-    goto('/dashboard')
   })
 
   const addReferralCredits = async (referrerEmail) => {

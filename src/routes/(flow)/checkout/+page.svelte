@@ -10,7 +10,6 @@
   import { currentTaxYear } from '$src/settings/settings'
   import { goto } from '$app/navigation'
   import { showCheckout } from '$src/settings/settings'
-  import dayjs from 'dayjs'
 
   onMount(async () => { 
     if (showCheckout) {
@@ -31,17 +30,6 @@
           useReferralDiscount: userReferralDiscount,
           credits: userCredits
           })
-        const totalPayments = await user.getValue('totalPayments')
-        await Promise.all([
-          user.setValue('latestTaxYearPaid', currentTaxYear),
-          user.addValue('taxYearsPaid', currentTaxYear),
-          user.setValue('stripeCustomerId', response.data.customer_id),
-          user.setValue('lastPaymentAmount', response.data.price),
-          user.setValue('lastPaymentDate', new Date().toISOString()),
-          user.addValue('paymentDates', new Date().toISOString()),
-          user.setValue('totalPayments', totalPayments + 1),
-          user.setValue('sendRatingsEmailOn', dayjs().add(3, 'day').toISOString())
-        ])
         window.location.href = response.data.url
       }
     }

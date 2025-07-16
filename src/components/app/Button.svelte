@@ -25,6 +25,7 @@
   }
 </script>
 
+
 <Clickable onclick={handleClick} disabled={!enabled}>
   <div class="button" class:enabled={enabled} class:dark={dark} class:spinner={showSpinner}>
     {#if showSpinner}
