@@ -30,6 +30,7 @@
   import { payment } from '$src/data/payment.svelte'
   import { safePostHog } from '$src/utilities/posthog'
   import ReferralBanner from '$src/components/app/ReferralBanner.svelte'
+  import { clearLocalStorage } from '$src/utilities/utilities'
 
   let headingText = $state()  
   let showExplanation = $state(false)
@@ -230,6 +231,7 @@
   }
 
   const handleStart = async () => {
+    clearLocalStorage()
     await createBlankPayment()
     goto('/1')
     await user.setValue('currentPage', '1')
