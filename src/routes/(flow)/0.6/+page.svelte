@@ -13,6 +13,7 @@
   onMount(async () => {
     if (global.loggedIn) {
       const paymentValues = await getAllPaymentValues(global.email, currentTaxYear)
+      setLocalStorage('earnNonPaycheckIncomeThisYear', paymentValues?.earnNonPaycheckIncomeThisYear)
       setLocalStorage('payPreference', paymentValues?.payPreference)
       setLocalStorage('currentState', paymentValues?.currentState)
       setLocalStorage('stateSupported', paymentValues?.stateSupported)
