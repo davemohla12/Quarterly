@@ -248,8 +248,8 @@
       <div class="description">No state payment is required this quarter</div>
       <div class="spacer"></div>
     {/if}
-    {#if otherStatesToPay.length > 0}
-    {#each otherStatesToPay as state, index}
+    {#if otherStatesToPay?.length > 0}
+    {#each otherStatesToPay || [] as state, index}
     <div class="header">{convertStateToAllUpperCase(state.state)}</div>
       {#if !isOtherStatePaid[index]}
           <div in:fade={{ duration: 200 }} >
