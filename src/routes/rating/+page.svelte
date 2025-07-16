@@ -10,6 +10,7 @@
   import { page } from '$app/stores'  
   import { getEmailFromId, setRating } from '$src/utilities/database'
   import { goto } from '$app/navigation'
+  import dayjs from 'dayjs'
 
   let rating = $state(null)
   let showFeedback = $state(false)
