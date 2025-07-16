@@ -226,25 +226,30 @@
     top: 35px;
     background: var(--dark);
     color: var(--white);
-    padding-top: 15px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    width: 120px;
+    width: 140px;
     z-index: 100;
-    padding-left: 17px;
+    padding-top: 5px;
+    padding-bottom: 5px;
   }
   .item {
     color: var(--white);
     font-size: 16px;
     font-family: 'Lato', sans-serif;
     font-weight: var(--regular);
-    margin-bottom: 20px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-left: 18px;
+    width: calc(100% - 18px);
+    text-align: left;
   }
   .divider {
     width: calc(100% - 10px);
     border-bottom: 1px solid var(--white);  
-    margin-bottom: 20px;
+    margin-top: 5px;
+    margin-bottom: 5px;
   }
   @media (min-width: 768px) { 
     .container {
