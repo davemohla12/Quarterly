@@ -81,11 +81,6 @@ const addToUsers = async (field, value) => {
   await axios.post('/api/database/addToUsers', { field: field, value: value, email: global.email })
 }
 
-const getEmails = async () => {
-  const response = await axios.post('/api/database/getEmails')
-  return response.data.emails
-}
-
 const getPriorYears = async () => {
   const response = await axios.post('/api/database/getPriorYears', { email: global.email, currentTaxYear: currentTaxYear })
   return response.data.years
@@ -136,7 +131,6 @@ export {
   setInUsersById, 
   saveToUsers, 
   addToUsers, 
-  getEmails, 
   createBlankPayment, 
   getPriorYears,
   getFromPaymentsByYear,

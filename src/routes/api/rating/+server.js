@@ -2,9 +2,15 @@ import { json } from '@sveltejs/kit'
 import axios from 'axios'
 import { supabase } from '$src/utilities/supabase'
 import { CRON_KEY } from '$env/static/private'
-import { getEmails } from '$src/utilities/database'   
 import dayjs from 'dayjs' 
 import { PUBLIC_DOMAIN } from '$env/static/public'
+import { SUPABASE_SERVICE_ROLE_KEY } from '$env/static/private'
+import { PUBLIC_SUPABASE_URL } from '$env/static/public'
+import { createClient } from '@supabase/supabase-js'
+
+const supabaseAdmin = createClient(PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
+  auth: { autoRefreshToken: false, persistSession: false }
+})
 
 const getValueFromUsers = async (email, field) => {
     const response = await supabase
@@ -14,6 +20,25 @@ const getValueFromUsers = async (email, field) => {
       .single()
     return response.data?.[field]
   }
+
+const getEmails = async () => {
+  const response = await supabaseAdmin
+  .from('Users')
+  .select('email')
+  if (response.data) {
+    const emails = response.data.map(row => row.email)
+    const uniqueEmails = []
+    for (const email of emails) {
+      if (!uniqueEmails.includes(email)) {
+        uniqueEmails.push(email)
+      }
+    }
+    return json({ emails: uniqueEmails })
+  }
+  else { 
+    return json({emails:[]})
+  } 
+}
 
 const GET = async ({ url }) => {
   try {
@@ -54,3 +79,4 @@ const GET = async ({ url }) => {
 }
 
 export { GET }
+

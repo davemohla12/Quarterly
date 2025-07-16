@@ -8,7 +8,6 @@
     doesReferralCodeExist,
     getReferrerEmail,
     setRating,
-    getEmails,
     getEmailFromId, 
 
     //Users
@@ -62,11 +61,6 @@
   const handleSetRating = async () => {
     await setRating('dmgreen10@gmail.com', 5, 'This is a test rating')
     console.log(`Set rating for dmgreen10@gmail.com`)
-  }
-
-  const handleGetEmails = async () => {
-    const emails = await getEmails()
-    console.log(`emails: ${emails}`)
   }
 
   const handleGetEmailFromId = async () => {
@@ -204,7 +198,6 @@
 <button onclick={handleDoesReferralCodeExist}>Does Referral Code Exist</button>
 <button onclick={handleGetReferrerEmail}>Get Referrer Email</button>
 <button onclick={handleSetRating}>Set Rating</button>
-<button onclick={handleGetEmails}>Get Emails</button>
 <button onclick={handleGetEmailFromId}>Get Email From Id</button>
 
 <div class="section">USERS</div>
