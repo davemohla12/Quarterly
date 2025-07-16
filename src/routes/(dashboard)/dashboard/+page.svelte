@@ -108,7 +108,7 @@
       q2State = paymentValues?.q2State
       q3State = paymentValues?.q3State
       q4State = paymentValues?.q4State
-      otherStatesToPay = paymentValues?.otherStatesToPay
+      otherStatesToPay = paymentValues?.otherStatesToPay || []
       if (!livingInCurrentStateAllThisYear) {
         if (currentTaxQuarter == 'Q1') {
           currentState = q1State

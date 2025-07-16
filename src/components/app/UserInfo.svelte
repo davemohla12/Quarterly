@@ -59,7 +59,7 @@
 
   <div class="section">TAX YEARS</div>
   <div class="taxyears">
-    {#each userValues.taxYearsPaid as taxYear}
+    {#each userValues.taxYearsPaid || [] as taxYear}
       <Clickable onclick={() => handleTaxYearClick(taxYear)}>
         <div class="taxyear" class:selected={taxYear == selectedTaxYear}>{taxYear}</div>
       </Clickable>
@@ -289,7 +289,7 @@
       <div class="value">{formatCurrency(paymentValues.q4StateQuarterlyPayment) || 'blank'}</div>
       {#if paymentValues.otherStatesToPay?.length > 0}
         <div class="field">Other States To Pay</div>
-        {#each paymentValues.otherStatesToPay as state}
+        {#each paymentValues.otherStatesToPay || [] as state}
           <div class="value">{state.state}: {formatCurrency(state.amount)}</div>
           <div class="value">Paid: {state.markPaid === null ? 'blank' : state.markPaid}</div>
           <div class="verticalspacer"></div>
