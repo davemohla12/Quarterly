@@ -231,22 +231,22 @@
     align-items: flex-start;
     width: 140px;
     z-index: 100;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
   }
   .item {
     color: var(--white);
     font-size: 16px;
     font-family: 'Lato', sans-serif;
     font-weight: var(--regular);
-    padding-top: 12px;
-    padding-bottom: 12px;
+    padding-top: 14px;
+    padding-bottom: 14px;
     padding-left: 18px;
     width: calc(100% - 18px);
     text-align: left;
   }
   .divider {
-    width: calc(100% - 10px);
+    width: 100%;
     border-bottom: 1px solid var(--white);  
     margin-top: 5px;
     margin-bottom: 5px;
