@@ -23,6 +23,11 @@
     global.showMenu = false
   }
 
+  const handleHome = () => {
+    global.showMenu = false
+    goto('/')
+  }
+
   const handleGetStarted = () => {
     global.showMenu = false
     goto('/0')
@@ -53,6 +58,9 @@
     <img class="close" src="/images/close.png" alt="Close" />
   </Clickable>
   <div class="items">
+    <Clickable onclick={handleHome}>
+      <div class="item">Home</div>
+    </Clickable>
     <Clickable onclick={handleGetStarted}>
       <div class="item">Get Started</div>
     </Clickable>
