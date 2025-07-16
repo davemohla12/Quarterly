@@ -31,17 +31,32 @@
     if (global.loggedIn) {
       if (getLocalStorage('q1FederalPaymentMade')) { 
         const q1FederalPaymentMade = getLocalStorage('q1FederalPaymentMade')
-        inputValue1 = q1FederalPaymentMade.toString()
+        if (q1FederalPaymentMade == 0) {
+          inputValue1 = ''
+        }
+        else {
+          inputValue1 = q1FederalPaymentMade.toString()
+        }
         global.makeButtonActive = true
       }
       if (getLocalStorage('q2FederalPaymentMade')) {
         const q2FederalPaymentMade = getLocalStorage('q2FederalPaymentMade')
-        inputValue2 = q2FederalPaymentMade.toString()
+        if (q2FederalPaymentMade == 0) {
+          inputValue2 = ''
+        }
+        else {
+          inputValue2 = q2FederalPaymentMade.toString()
+        }
         global.makeButtonActive = true
       }
       if (getLocalStorage('q3FederalPaymentMade')) {
         const q3FederalPaymentMade = getLocalStorage('q3FederalPaymentMade')
-        inputValue3 = q3FederalPaymentMade.toString()
+        if (q3FederalPaymentMade == 0) {
+          inputValue3 = ''
+        }
+        else {
+          inputValue3 = q3FederalPaymentMade.toString()
+        }
         global.makeButtonActive = true
       }
     }

@@ -50,17 +50,32 @@
     if (global.loggedIn) {
       if (getLocalStorage('q1StatePaymentMade')) {
         const q1StatePaymentMade = getLocalStorage('q1StatePaymentMade')
-        inputValue1 = q1StatePaymentMade.toString()
+        if (q1StatePaymentMade == 0) {
+          inputValue1 = ''
+        }
+        else {
+          inputValue1 = q1StatePaymentMade.toString()
+        }
         global.makeButtonActive = true
       }
       if (getLocalStorage('q2StatePaymentMade')) {
         const q2StatePaymentMade = getLocalStorage('q2StatePaymentMade')
-        inputValue2 = q2StatePaymentMade.toString()
+        if (q2StatePaymentMade == 0) {
+          inputValue2 = ''
+        }
+        else {
+          inputValue2 = q2StatePaymentMade.toString()
+        }
         global.makeButtonActive = true
       }
       if (getLocalStorage('q3StatePaymentMade')) {
         const q3StatePaymentMade = getLocalStorage('q3StatePaymentMade')
-        inputValue3 = q3StatePaymentMade.toString()
+        if (q3StatePaymentMade == 0) {
+          inputValue3 = ''
+        }
+        else {
+          inputValue3 = q3StatePaymentMade.toString()
+        }
         global.makeButtonActive = true
       }
     }

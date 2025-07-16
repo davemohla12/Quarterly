@@ -33,7 +33,12 @@
     if (global.loggedIn) {
       if (getLocalStorage('stateWithholdingsThisYear')) {
         const stateWithholdingsThisYear = getLocalStorage('stateWithholdingsThisYear')
-        inputValue = stateWithholdingsThisYear.toString()
+        if (stateWithholdingsThisYear == 0) {
+          inputValue = ''
+        }
+        else {
+          inputValue = stateWithholdingsThisYear.toString()
+        }
         global.makeButtonActive = true
       }
     }

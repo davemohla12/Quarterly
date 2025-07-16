@@ -30,6 +30,8 @@
       setLocalStorage('healthInsuranceThisYear', paymentValues?.healthInsuranceThisYear)
       setLocalStorage('otherDeductionsThisYear', paymentValues?.otherDeductionsThisYear)
       setLocalStorage('exemptions', paymentValues?.exemptions)
+      setLocalStorage('salaryOrWagesThisYear', paymentValues?.salaryOrWagesThisYear)
+      setLocalStorage('hasW2', paymentValues?.hasW2)
       setLocalStorage('federalWithholdingsThisYear', paymentValues?.federalWithholdingsThisYear)
       setLocalStorage('q1FederalPaymentMade', paymentValues?.q1FederalPaymentMade)
       setLocalStorage('q2FederalPaymentMade', paymentValues?.q2FederalPaymentMade)
