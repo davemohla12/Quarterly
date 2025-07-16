@@ -62,7 +62,7 @@ const sendFiveDayEmail = async (id) => {
   })
 }
 
-const sendOneDayEmail = async () => {
+const sendOneDayEmail = async (id) => {
   await axios.post(`${PUBLIC_DOMAIN}/api/email`, {
     to: 'davemohla@gmail.com',
     subject: 'Your quarterly payment is due',
@@ -79,6 +79,7 @@ const GET = async ({ url }) => {
       const emails = await getEmails()
       const message = []
       for (const email of emails) {
+
         const payPreference = await getValueFromDatabase('Payments', email, 'payPreference')
         const sendReminders = await getValueFromDatabase('Users', email, 'sendReminders')
         const sendFiveDayReminder = await getValueFromDatabase('Users', email, 'sendFiveDayReminder')

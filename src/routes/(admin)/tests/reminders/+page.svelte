@@ -4,7 +4,7 @@
   const cronKey = 'N1X5XMej7ievRFDLNEBh2Qt6u8azajjp'
 
   const sendReminder = async () => {
-    const response = await axios.get(`/api/reminder?cron_secret=${cronKey}`)
+    const response = await axios.get(`/api/reminder?cron_key=${cronKey}`)
     if (response.data) {
       console.log(response.data.message)
     }
