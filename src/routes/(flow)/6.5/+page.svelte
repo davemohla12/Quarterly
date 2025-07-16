@@ -79,14 +79,7 @@
     }
   }
 
-  const handleKeyDown = async (event) => {
-    if (event.key === 'ArrowLeft') {
-      history.back()
-    }
-  }
 </script>
-
-<svelte:window on:keydown={handleKeyDown} />
 
 <Header />
 <Avatar />

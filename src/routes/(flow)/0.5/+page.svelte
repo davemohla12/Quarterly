@@ -19,21 +19,12 @@
     await user.setValue('currentPage', '1')
   }
 
-  const handleKeyDown = async (event) => {
-    if (event.key === 'ArrowLeft') {
-      goto('/dashboard')
-      await user.setValue('currentPage', 'dashboard')
-    }
-  }
-
   const goToDashboard = async () => {
     goto('/dashboard')
     await user.setValue('currentPage', 'dashboard')
   }
 
 </script>
-
-<svelte:window on:keydown={handleKeyDown} />
 
 <Header />
 <Avatar />

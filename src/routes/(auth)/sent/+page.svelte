@@ -22,9 +22,6 @@
         handleClick()
       }
     }
-    if (event.key === 'ArrowLeft') {
-      history.back()
-    }
   }
 </script>
 

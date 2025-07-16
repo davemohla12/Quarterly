@@ -86,9 +86,6 @@
         handleSave()
       }
     }
-    if (event.key === 'ArrowLeft') {
-      history.back()
-    }
   }
 
   const handleResetButton = () => {
@@ -102,7 +99,7 @@
 <Avatar />
 {#if pageExpired}
   <Heading text={expiredText} desktopwidth="500px" mobilelarge={true}  />
-  <Button text={expiredButtonText} dark={true} onclick={handleResetButton} />
+  <ControlledButton text={expiredButtonText} dark={true} onclick={handleResetButton} />
 {:else}
   <Heading text={headingText} desktopwidth="500px" mobilelarge={true}  />
   <PasswordInput placeholder={placeholderText} onInput={handleInput} error={errorMessage}/>

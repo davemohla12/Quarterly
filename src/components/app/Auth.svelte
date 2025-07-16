@@ -102,9 +102,6 @@
         handleNext()
       }
     }
-    if (event.key === 'ArrowLeft') {
-      history.back()
-    }
   }
 
   const signUpUser = async () => {

@@ -53,9 +53,6 @@
         handleReset()
       }
     }
-    if (event.key === 'ArrowLeft') {
-      history.back()
-    }
   }
 
 </script>

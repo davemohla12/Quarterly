@@ -19,14 +19,8 @@
     await user.setValue('currentPage', '9')
   }
 
-  const handleKeyDown = (event) => {
-    if (event.key === 'ArrowLeft') {
-      history.back()
-    }
-  }
-</script>
 
-<svelte:window on:keydown={handleKeyDown} />
+</script>
 
 <Header />
 <Avatar />
