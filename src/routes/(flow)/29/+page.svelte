@@ -13,7 +13,7 @@
   import { safePostHog } from '$src/utilities/posthog'
   import { onMount } from 'svelte'
 
-  const headingText = `View your quarterly taxes for FREE for a limited time`
+  const headingText = `View your quarterly taxes for one simple fee`
   const buttonText = 'NEXT'
   global.makeButtonActive = true
 
@@ -36,7 +36,7 @@
 
 <Header hideReset={true} />
 <Avatar />
-<Heading text={headingText} desktopwidth="550px" mobilewidth="320px" />
+<Heading text={headingText} desktopwidth="450px" mobilewidth="320px" />
 <Price />
 <Bullets />
 <Button text={buttonText} onclick={handleNext} />

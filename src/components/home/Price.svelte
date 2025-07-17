@@ -4,13 +4,13 @@
 
 <div class="container">
   <div class="heading">
-    Free for a limited time
+     Simple pricing
   </div>
   <div class="subheading">
-    Participate in our beta and we'll waive our fee
+    A one-time price and no hidden fees
   </div>
-  <div class="price">$0</div>
-  <div class="strikethrough">${price} for full tax year</div>
+  <div class="price">${price}</div>
+  <div class="subprice">for full tax year</div>
 </div>
 
 <style>
@@ -18,7 +18,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: var(--gray1);
+    background-color: var(--white);
   }
   .heading {
     margin-top: 40px;
@@ -38,17 +38,15 @@
   }
   .price {
     font-family: 'Lato', sans-serif;
-    font-size: 90px;
+    font-size: 80px;
     font-weight: var(--regular);
     text-align: center;
     margin-top: 20px;
   }
-  .strikethrough {
+  .subprice {
     font-family: 'Lato', sans-serif;
-    font-size: 24px;
+    font-size: 20px;
     font-weight: var(--regular);
-    text-decoration: line-through;
-    color: var(--gray4);
     text-align: center;
     margin-top: 10px;
     margin-bottom: 50px;
@@ -64,11 +62,10 @@
       width: 250px;
     }
     .price {
-      font-size: 120px;
+      font-size: 108px;
     }
-    .strikethrough {
-      font-size: 30px;
-      margin-bottom: 60px;
+    .subprice {
+      font-size: 22px;
     }
   }
   

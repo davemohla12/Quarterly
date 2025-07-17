@@ -69,9 +69,7 @@
   <Penalties />
   <Reminders />
   <Both />
-  {#if false}
-    <Guarantee />
-  {/if}
+  <Guarantee />
   <Price />
   <Footer />
 </div>

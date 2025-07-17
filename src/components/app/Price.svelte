@@ -3,13 +3,14 @@
 </script>
 
 <div class="container">
-  <div class="price">$0</div>
-  <div class="strikeprice">${price} for a full tax year</div>
+  <div class="price">${price}</div>
+  <div class="subprice">for full tax year</div>
 </div>
 
 <style>
   .container {
-    margin-top: 20px;
+    margin-top: 8px;
+    margin-bottom: 6px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -20,11 +21,9 @@
     font-weight: var(--regular);
     color: var(--dark);
   }
-  .strikeprice {
+  .subprice {
     font-family: 'Lato', sans-serif;
     font-size: 18px;
     font-weight: var(--regular);
-    color: var(--gray4);
-    text-decoration: line-through;
   }
 </style>
