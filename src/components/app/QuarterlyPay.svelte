@@ -174,15 +174,25 @@
   const handleMarkPaidOtherState = async (index) => {
     isOtherStatePaid[index] = true
     let otherStates = await payment.getValue('otherStatesToPay')
-    otherStates[index].markPaid = true
-    await payment.setValue('otherStatesToPay', otherStates)
+    if (!Array.isArray(otherStates)) {
+      otherStates = []
+    }
+    if (otherStates[index]) {
+      otherStates[index].markPaid = true
+      await payment.setValue('otherStatesToPay', otherStates)
+    }
   }
 
   const handleMarkNotPaidOtherState = async (index) => {
     isOtherStatePaid[index] = false
     let otherStates = await payment.getValue('otherStatesToPay')
-    otherStates[index].markPaid = false
-    await payment.setValue('otherStatesToPay', otherStates)
+    if (!Array.isArray(otherStates)) {
+      otherStates = []
+    }
+    if (otherStates[index]) {
+      otherStates[index].markPaid = false
+      await payment.setValue('otherStatesToPay', otherStates)
+    }
   }
 
 

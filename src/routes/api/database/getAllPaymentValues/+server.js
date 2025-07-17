@@ -13,7 +13,15 @@ const parseJsonFields = (data) => {
   const parsedData = { ...data }
   jsonFields.forEach(field => {
     if (parsedData[field] && typeof parsedData[field] === 'string') {
-      parsedData[field] = JSON.parse(parsedData[field])
+      if (parsedData[field] === 'undefined' || parsedData[field] === 'null') {
+        parsedData[field] = []
+        return
+      }
+      try {
+        parsedData[field] = JSON.parse(parsedData[field])
+      } catch (error) {
+        parsedData[field] = []
+      }
     }
     if (!parsedData[field]) {
       parsedData[field] = []
