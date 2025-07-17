@@ -18,10 +18,8 @@
 
   onMount(() => {
     document.addEventListener('click', handleClickOutside)
-    document.addEventListener('keydown', handleKeydown)
     return () => {
       document.removeEventListener('click', handleClickOutside)
-      document.removeEventListener('keydown', handleKeydown)
     }
   })
 
@@ -97,7 +95,7 @@
 <div class="container" bind:this={container}>
   <Clickable onclick={toggleDropdown}>
     <div class="dropdown" class:lesstopmargin={lessTopMargin}>
-      <input class="input" type="text" placeholder={text} value={inputValue} oninput={handleInput} bind:this={inputBox} />
+      <input class="input" type="text" placeholder={text} value={inputValue} oninput={handleInput} onkeydown={handleKeydown} bind:this={inputBox} />
       {#if isOpen}
         <Clickable onclick={handleClear}>
           <img class="clear" src="images/clear.png" alt="Clear" />
