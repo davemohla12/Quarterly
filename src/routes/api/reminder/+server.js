@@ -71,6 +71,15 @@ const sendOneDayEmail = async (id) => {
   })
 }
 
+const sendRemindersSentEmail = async (message) => {
+  await axios.post(`${PUBLIC_DOMAIN}/api/email`, {
+    to: 'davemohla@gmail.com',
+    subject: 'Reminders sent',
+    template: 'reminderssent',
+    message: message
+  })
+}
+
 const GET = async ({ url }) => {
   try {
     const token = url.searchParams.get('cron_key')
@@ -93,14 +102,21 @@ const GET = async ({ url }) => {
         const q3StateMarkPaid = await getValueFromDatabase('Payments', email, 'q3StateMarkPaid')
         const q4FederalMarkPaid = await getValueFromDatabase('Payments', email, 'q4FederalMarkPaid')
         const q4StateMarkPaid = await getValueFromDatabase('Payments', email, 'q4StateMarkPaid')
-        const stateSupported = await getValueFromDatabase('Payments', email, 'stateSupported')
+        const q1federalQuarterlyPayment = await getValueFromDatabase('Payments', email, 'q1federalQuarterlyPayment')
+        const q2federalQuarterlyPayment = await getValueFromDatabase('Payments', email, 'q2federalQuarterlyPayment')
+        const q3federalQuarterlyPayment = await getValueFromDatabase('Payments', email, 'q3federalQuarterlyPayment')
+        const q4federalQuarterlyPayment = await getValueFromDatabase('Payments', email, 'q4federalQuarterlyPayment')
+        const q1StateQuarterlyPayment = await getValueFromDatabase('Payments', email, 'q1StateQuarterlyPayment')
+        const q2StateQuarterlyPayment = await getValueFromDatabase('Payments', email, 'q2StateQuarterlyPayment')
+        const q3StateQuarterlyPayment = await getValueFromDatabase('Payments', email, 'q3StateQuarterlyPayment')
+        const q4StateQuarterlyPayment = await getValueFromDatabase('Payments', email, 'q4StateQuarterlyPayment')
 
         if (payPreference == 'quarter') {
           if (sendReminders) {
             if (sendFiveDayReminder) {
               if (currentTaxQuarter == 'Q1') {
                 if (q1DueDate && dayjs().isSame(q1DueDate.subtract(5, 'days'), 'day')) {
-                  if (!(q1FederalMarkPaid && (q1StateMarkPaid || !stateSupported))) {
+                  if (!(q1FederalMarkPaid && q1StateMarkPaid && (q1federalQuarterlyPayment == 0) && (q1StateQuarterlyPayment == 0))) {
                     await sendFiveDayEmail(id)
                     message.push(`Sent 5 day reminder email to ${email}`)
                   }
@@ -108,7 +124,7 @@ const GET = async ({ url }) => {
               }
               else if (currentTaxQuarter == 'Q2') {
                 if (q2DueDate && dayjs().isSame(q2DueDate.subtract(5, 'days'), 'day')) {
-                  if (!(q2FederalMarkPaid && (q2StateMarkPaid || !stateSupported))) {
+                  if (!(q2FederalMarkPaid && q2StateMarkPaid && (q2federalQuarterlyPayment == 0) && (q2StateQuarterlyPayment == 0))) {
                     await sendFiveDayEmail(id)
                     message.push(`Sent 5 day reminder email to ${email}`)
                   }
@@ -116,7 +132,7 @@ const GET = async ({ url }) => {
               }
               else if (currentTaxQuarter == 'Q3') {
                 if (q3DueDate && dayjs().isSame(q3DueDate.subtract(5, 'days'), 'day')) {
-                  if (!(q3FederalMarkPaid && (q3StateMarkPaid || !stateSupported))) {
+                  if (!(q3FederalMarkPaid && q3StateMarkPaid && (q3federalQuarterlyPayment == 0) && (q3StateQuarterlyPayment == 0))) {
                     await sendFiveDayEmail(id)  
                     message.push(`Sent 5 day reminder email to ${email}`)
                   }
@@ -124,7 +140,7 @@ const GET = async ({ url }) => {
               } 
               else if (currentTaxQuarter == 'Q4') {
                 if (q4DueDate && dayjs().isSame(q4DueDate.subtract(5, 'days'), 'day')) {
-                  if (!(q4FederalMarkPaid && (q4StateMarkPaid || !stateSupported))) {
+                  if (!(q4FederalMarkPaid && q4StateMarkPaid && (q4federalQuarterlyPayment == 0) && (q4StateQuarterlyPayment == 0))) {
                     await sendFiveDayEmail(id)  
                     message.push(`Sent 5 day reminder email to ${email}`)
                   }
@@ -134,7 +150,7 @@ const GET = async ({ url }) => {
             if (sendOneDayReminder) {
               if (currentTaxQuarter == 'Q1') {
                 if (q1DueDate && dayjs().isSame(q1DueDate.subtract(1, 'day'), 'day')) {
-                  if (!(q1FederalMarkPaid && (q1StateMarkPaid || !stateSupported))) {
+                  if (!(q1FederalMarkPaid && q1StateMarkPaid && (q1federalQuarterlyPayment == 0) && (q1StateQuarterlyPayment == 0))) {
                     await sendOneDayEmail(id)     
                     message.push(`Sent 1 day reminder email to ${email}`)
                   }
@@ -142,7 +158,7 @@ const GET = async ({ url }) => {
               }
               else if (currentTaxQuarter == 'Q2') {
                 if (q2DueDate && dayjs().isSame(q2DueDate.subtract(1, 'day'), 'day')) {
-                  if (!(q2FederalMarkPaid && (q2StateMarkPaid || !stateSupported))) {
+                  if (!(q2FederalMarkPaid && q2StateMarkPaid && (q2federalQuarterlyPayment == 0) && (q2StateQuarterlyPayment == 0))) {
                     await sendOneDayEmail(id)   
                     message.push(`Sent 1 day reminder email to ${email}`)
                   }
@@ -150,7 +166,7 @@ const GET = async ({ url }) => {
               }
               else if (currentTaxQuarter == 'Q3') {
                 if (q3DueDate && dayjs().isSame(q3DueDate.subtract(1, 'day'), 'day')) {
-                  if (!(q3FederalMarkPaid && (q3StateMarkPaid || !stateSupported))) {
+                  if (!(q3FederalMarkPaid && q3StateMarkPaid && (q3federalQuarterlyPayment == 0) && (q3StateQuarterlyPayment == 0))) {
                     await sendOneDayEmail(id)   
                     message.push(`Sent 1 day reminder email to ${email}`)
                   }
@@ -158,7 +174,7 @@ const GET = async ({ url }) => {
               }
               else if (currentTaxQuarter == 'Q4') {
                 if (q4DueDate && dayjs().isSame(q4DueDate.subtract(1, 'day'), 'day')) {
-                  if (!(q4FederalMarkPaid && (q4StateMarkPaid || !stateSupported))) {
+                  if (!(q4FederalMarkPaid && q4StateMarkPaid && (q4federalQuarterlyPayment == 0) && (q4StateQuarterlyPayment == 0))) {
                     await sendOneDayEmail(id)
                     message.push(`Sent 1 day reminder email to ${email}`)
                   }
@@ -169,6 +185,7 @@ const GET = async ({ url }) => {
         }
       }
       if (message.length > 0) {
+        await sendRemindersSentEmail(message.join('\n'))
         return json({ message: message.join('\n') })
       }
       else {

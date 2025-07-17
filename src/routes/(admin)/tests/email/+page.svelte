@@ -95,6 +95,21 @@
       console.log(response.data)
     }
   }
+
+  const sendRemindersSentEmail = async () => {
+    const response = await axios.post('/api/email', {
+      to: 'davemohla@gmail.com',
+      subject: 'Reminders sent',
+      template: 'reminderssent',
+      message: 'Reminders sent successfully'
+    })
+    if (response.data.success) {
+      console.log('Email sent successfully:', response.data)
+    }
+    else {
+      console.log(response.data)
+    }
+  }
   </script>
 
 <button onclick={sendDashboardEmail}>
@@ -117,4 +132,7 @@
 </button>
 <button onclick={sendCreditsEmail}>
   Send Credits Email
+</button>   
+<button onclick={sendRemindersSentEmail}>
+  Send Reminders Sent Email
 </button>

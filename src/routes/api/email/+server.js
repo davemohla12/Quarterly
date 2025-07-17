@@ -7,6 +7,7 @@ import { getSupportEmail } from '$src/emails/support'
 import { getConfirmationEmail } from '$src/emails/confirmation'
 import { getRatingEmail } from '$src/emails/rating'
 import { getCreditsEmail } from '$src/emails/credits'
+import { getRemindersSentEmail } from '$src/emails/reminderssent'
 import { RESEND_API_KEY } from '$env/static/private'
 
 const POST = async ({ request }) => {
@@ -34,6 +35,9 @@ const POST = async ({ request }) => {
   }
   else if (template == 'credits') {
     html = getCreditsEmail(credits)
+  }
+  else if (template == 'reminderssent') {
+    html = getRemindersSentEmail(message)
   }
 
   try { 
