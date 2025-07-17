@@ -164,6 +164,13 @@
     background-color: var(--gray2);
   }
   @media (min-width: 768px) {
+    .logo {
+      margin-top: 22px;
+      width: 138px;
+      height: 34px;
+    }
+  }
+  @media (min-width: 950px) {
     .menu {
       display: none;
     }
@@ -208,4 +215,5 @@
       cursor: pointer;
     }
   }
+  
 </style>
