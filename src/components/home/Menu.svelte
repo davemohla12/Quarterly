@@ -78,7 +78,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: calc(100vw - 80px);
+    width: 250px;
     height: 100vh;
     background-color: var(--dark);
     z-index: 100;
@@ -106,4 +106,5 @@
     margin-top: 15px;
     margin-bottom: 15px;
   }
+
 </style>
