@@ -62,7 +62,7 @@
       width: 250px;
     }
     .price {
-      font-size: 108px;
+      font-size: 106px;
     }
     .subprice {
       font-size: 22px;
