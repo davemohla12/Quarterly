@@ -1,14 +1,13 @@
-import fs from 'fs/promises'
-import path from 'path'
 import { marked } from 'marked'
 import { posts } from '$src/blog/posts'
- 
- const load = async ({ params }) => {
+
+const markdownFiles = import.meta.glob('$src/blog/posts/*.md', { query: '?raw', import: 'default', eager: true })
+
+const load = async ({ params }) => {
   const slug = params.slug
-  const filePath = path.join('src', 'blog', 'posts', `${slug}.md`)
-  const fileContent = await fs.readFile(filePath, 'utf-8')
+  const filePath = `/src/blog/posts/${slug}.md`
+  const fileContent = markdownFiles[filePath]
   const htmlContent = marked(fileContent)
- 
   const post = posts.find(post => post.slug === slug)
 
   return {  
