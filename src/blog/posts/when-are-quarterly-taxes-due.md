@@ -3,7 +3,7 @@
 
 **Not sure when to pay your quarterly taxes? Here’s your clear, up-to-date guide to the IRS deadlines for 2025 and 2026 — so you never miss a payment.**
 
-<img src="/images/blog/when-are-quarterly-taxes-due.png" alt="When Are Quarterly Taxes Due?" />
+<img src="/images/blog/when-are-quarterly-taxes-due.webp" alt="When Are Quarterly Taxes Due?" />
 
 ## What Are Quarterly Taxes?
 

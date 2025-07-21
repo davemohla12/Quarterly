@@ -3,7 +3,7 @@
 
 **Not sure how much to set aside for quarterly taxes? Here’s a clear, step-by-step guide to estimate your payments accurately — without the stress or confusion.**
 
-<img src="/images/blog/how-much-should-you-pay.png" alt="How Much Should You Pay in Quarterly Taxes" />
+<img src="/images/blog/how-much-should-you-pay.webp" alt="How Much Should You Pay in Quarterly Taxes" />
 
 ## Why Do You Need to Estimate Quarterly Taxes?
 

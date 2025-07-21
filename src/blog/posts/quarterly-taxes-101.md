@@ -3,7 +3,7 @@
 
 **Understanding your quarterly tax payments shouldn’t be overwhelming. Here’s a clear, no-jargon guide to help you stay compliant, avoid IRS penalties, and keep more of what you earn.**
 
-<img src="/images/blog/quarterly-taxes-101.png" alt="Quarterly Taxes 101" />
+<img src="/images/blog/quarterly-taxes-101.webp" alt="Quarterly Taxes 101" />
 
 ## What Are Quarterly Taxes?
 

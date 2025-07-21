@@ -13,7 +13,7 @@
   {#each posts as post}
   <Clickable onclick={() => handleClick(post)}>
     <div class="post">
-      <img class="image" src={`/images/blog/${post.slug}.png`} alt={post.slug}/>
+      <img class="image" src={`/images/blog/${post.slug}.webp`} alt={post.slug}/>
       <div class="datecontainer">
         <img class="calendar" src="/images/calendar.png" alt="calendar" />
         <div class="date">{post.date.format("MMMM D, YYYY")}</div>

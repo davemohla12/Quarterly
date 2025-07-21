@@ -3,7 +3,7 @@
 
 **Missed a quarterly tax payment or worried you might? Here’s what actually happens, how much it can cost you, and what you can do to avoid IRS penalties.**
 
-<img src="/images/blog/avoiding-irs-penalties.png" alt="Avoiding IRS Penalties" />
+<img src="/images/blog/avoiding-irs-penalties.webp" alt="Avoiding IRS Penalties" />
 
 ## Why the IRS Requires Quarterly Taxes
 

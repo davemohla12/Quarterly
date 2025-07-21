@@ -3,7 +3,7 @@
 
 **Think you need an accountant to handle quarterly taxes? Think again. Here’s how freelancers and solo entrepreneurs can easily calculate and pay estimated taxes on their own.**
 
-<img src="/images/blog/the-easiest-way-to-calculate-and-pay.png" alt="The Easiest Way to Calculate and Pay Quarterly Taxes" />
+<img src="/images/blog/the-easiest-way-to-calculate-and-pay.webp" alt="The Easiest Way to Calculate and Pay Quarterly Taxes" />
 
 ## Why Quarterly Taxes Feel Overwhelming
 

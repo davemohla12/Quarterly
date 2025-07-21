@@ -3,7 +3,7 @@
 
 **Want to save money on taxes? Here’s a simple guide to the most valuable deductions freelancers and small business owners can use to lower their tax bill.**
 
-<img src="/images/blog/top-tax-deductions.png" alt="Top Tax Deductions" />
+<img src="/images/blog/top-tax-deductions.webp" alt="Top Tax Deductions" />
 
 ## Why Tax Deductions Matter
 

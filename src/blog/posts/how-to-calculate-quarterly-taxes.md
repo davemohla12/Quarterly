@@ -3,7 +3,7 @@
 
 **Do you earn income from clients in different states or have multiple income streams? Here’s a simple guide to calculating your quarterly taxes accurately — without the headache.**
 
-<img src="/images/blog/how-to-calculate-quarterly-taxes.png" alt="How to Calculate Quarterly Taxes If You Earn from Multiple States or Sources" />
+<img src="/images/blog/how-to-calculate-quarterly-taxes.webp" alt="How to Calculate Quarterly Taxes If You Earn from Multiple States or Sources" />
 
 ## Why Multi-State or Multi-Source Income Matters
 

@@ -3,7 +3,7 @@
 
 **Many freelancers and solo entrepreneurs know about federal quarterly taxes — but what about state taxes? Here’s what you need to know, state by state.**
 
-<img src="/images/blog/do-you-need-to-pay-quarterly-taxes.png" alt="Do You Need to Pay State Quarterly Taxes" />
+<img src="/images/blog/do-you-need-to-pay-quarterly-taxes.webp" alt="Do You Need to Pay State Quarterly Taxes" />
 
 ## Why State Taxes Matter
 
