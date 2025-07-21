@@ -17,18 +17,18 @@
   <Clickable onclick={handleBadClick}>
     <div class="ratingcontainer">
       {#if rating === 'bad'}
-        <img class="rating" src="images/sadgreen.png" alt="Bad" />
+        <img class="rating" src="/images/sadgreen.png" alt="Bad" />
       {:else}
-        <img class="rating" src="images/sadgray.png" alt="Bad" />
+        <img class="rating" src="/images/sadgray.png" alt="Bad" />
       {/if}
     </div>
   </Clickable>
   <Clickable onclick={handleGoodClick}>
     <div class="ratingcontainer">
       {#if rating === 'good'}
-        <img class="rating" src="images/happygreen.png" alt="Good" />
+        <img class="rating" src="/images/happygreen.png" alt="Good" />
       {:else}
-        <img class="rating" src="images/happygray.png" alt="Good" />
+        <img class="rating" src="/images/happygray.png" alt="Good" />
       {/if}
     </div>
   </Clickable>

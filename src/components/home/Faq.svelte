@@ -54,7 +54,6 @@
     font-family: 'Lato', sans-serif;
   }
   .header {
-    font-weight: section;
     align-self: center;
     font-family: 'Merriweather', serif;
     font-size: 24px;

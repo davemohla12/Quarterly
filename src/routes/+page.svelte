@@ -12,7 +12,7 @@
   import Overlay from '$src/components/home/Overlay.svelte'
   import { global } from '$src/data/global.svelte'
   import { onMount } from 'svelte'
-  import { clearLocalStorage, setLocalStorage } from '$src/utilities/utilities'
+  import { clearLocalStorage, setLocalStorage, getLocalStorage } from '$src/utilities/utilities'
   import { safePostHog } from '$src/utilities/posthog'
   import Referral from '$src/components/home/Referral.svelte'
   import { page } from '$app/stores'
@@ -32,7 +32,12 @@
         await user.setValue('referrerEmail', referrerEmail)
       }
     }
-    safePostHog.capture('home_viewed')
+    let source = getLocalStorage('source') || null
+    if (!source || source == 'direct') {
+      source = $page.url.searchParams.get('source') || 'direct'
+    }
+    await user.setValue('source', source) 
+    safePostHog.capture('home_viewed', { source })
   })
 
   $effect(() => {
@@ -53,6 +58,22 @@
   }
   
 </script>
+
+<svelte:head>
+  <title>Zenguider | Quarterly Taxes Made Simple </title>
+  <meta name="description" content="The stress-free way for freelancers and solo business owners to calculate and pay quarterly taxes." />
+
+  <meta property="og:title" content="Zenguider | Quarterly Taxes Made Simple" />
+  <meta property="og:description" content="The stress-free way for freelancers and solo business owners to calculate and pay quarterly taxes." />
+  <meta property="og:image" content="https://zenguider.com/images/og/home.png" />
+  <meta property="og:url" content="https://zenguider.com/" />
+  <meta property="og:type" content="website" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Zenguider | Quarterly Taxes Made Simple" />
+  <meta name="twitter:description" content="The stress-free way for freelancers and solo business owners to calculate and pay quarterly taxes." />
+  <meta name="twitter:image" content="https://zenguider.com/images/og/home.png" />
+</svelte:head>
 
 <div class="page">
   {#if showReferralDialog}

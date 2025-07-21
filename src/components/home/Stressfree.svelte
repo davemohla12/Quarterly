@@ -84,7 +84,7 @@
     </Clickable>
   </div>
   <div class="right">
-    <img class="stressfree" src="images/stressfree.png" alt="Stress-free" />
+    <img class="stressfree" src="/images/stressfree.png" alt="Stress-free" />
   </div>
 </div>
 <style>

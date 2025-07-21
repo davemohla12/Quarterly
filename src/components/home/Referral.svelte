@@ -12,14 +12,14 @@
 
 <div class="dialog">
   <div class="header">You'll get $5 off</div>
-  <img class="refer" src="images/refer.png" alt="Referral" />
+  <img class="refer" src="/images/refer.png" alt="Referral" />
   <div class="text">You were referred by another user</div>
   <div class="subtext">Only valid for new users</div>
   <div class="button">
     <Button text={buttonText} onclick={ondismiss} />
   </div>
   <Clickable onclick={ondismiss}>
-    <img class="dismiss" src="images/dismiss.png" alt="Dismiss" />
+    <img class="dismiss" src="/images/dismiss.png" alt="Dismiss" />
   </Clickable>
 </div>
 

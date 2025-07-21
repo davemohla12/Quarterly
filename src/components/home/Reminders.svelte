@@ -5,7 +5,7 @@
   <div class="subheading">
     Receive gentle nudges so you never miss a quarterly payment
   </div>
-  <img class="reminders" src="images/reminders.png" alt="Reminders" />
+  <img class="reminders" src="/images/reminders.png" alt="Reminders" />
 </div>
 
 <style>

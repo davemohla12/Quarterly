@@ -70,17 +70,24 @@
     clearLocalStorage()
     goto('/')
   }
+
+  const handleBlog = () => {
+    goto('/blog')
+  }
   
 </script>
 
 <div class="header">
   <Clickable onclick={handleMenuClick}>
-    <img class="menu" src="images/menu.png" alt="Menu" />
+    <img class="menu" src="/images/menu.png" alt="Menu" />
   </Clickable>
   <Clickable onclick={handleLogoClick}>
-    <img class="logo" src="images/logo.png" alt="Logo" />
+    <img class="logo" src="/images/logo.png" alt="Logo" />
   </Clickable>
   <div class="buttons">
+    <Clickable onclick={handleBlog}>
+      <div class="blog">BLOG</div>
+    </Clickable>
     <Clickable onclick={handleFaq}>
       <div class="faq">FAQ</div>
     </Clickable>
@@ -136,6 +143,9 @@
     top: 15px;
     right: 20px;
   }
+  .blog {
+    display: none;
+  }
   .faq {
     display: none;
   }
@@ -170,7 +180,7 @@
       height: 34px;
     }
   }
-  @media (min-width: 950px) {
+  @media (min-width: 1150px) {
     .menu {
       display: none;
     }
@@ -181,6 +191,13 @@
     }
     .buttons {
       right: 30px;
+    }
+    .blog {
+      display: block;
+      margin-right: 50px;
+      font-family: 'Lato', sans-serif;
+      font-size: 16px;
+      cursor: pointer;
     }
     .faq {
       display: block;

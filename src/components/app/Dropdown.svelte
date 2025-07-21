@@ -98,10 +98,10 @@
       <input class="input" type="text" placeholder={text} value={inputValue} oninput={handleInput} onkeydown={handleKeydown} bind:this={inputBox} />
       {#if isOpen}
         <Clickable onclick={handleClear}>
-          <img class="clear" src="images/clear.png" alt="Clear" />
+          <img class="clear" src="/images/clear.png" alt="Clear" />
         </Clickable>
       {:else}
-        <img class="down" src="images/down.png" alt="Dropdown" />
+        <img class="down" src="/images/down.png" alt="Dropdown" />
       {/if}
     </div>
   </Clickable>

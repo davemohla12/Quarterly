@@ -38,6 +38,11 @@
     goto('/faq')
   }
 
+  const handleBlog = () => {
+    global.showMenu = false
+    goto('/blog')
+  }
+
   const handleLogin = async () => {
     if (logInText == 'Login') {
       global.showMenu = false
@@ -66,6 +71,9 @@
     </Clickable>
     <Clickable onclick={handleFaq}>
       <div class="item">FAQ</div>
+    </Clickable>
+    <Clickable onclick={handleBlog}>
+      <div class="item">Blog</div>
     </Clickable>
     <Clickable onclick={handleLogin}>
       <div class="item">{logInText}</div>
@@ -96,7 +104,7 @@
     align-items: flex-start;
     justify-content: flex-start;
     margin-top: 25px;
-    margin-left: 35px;
+    margin-left: 30px;
   }
   .item {
     font-family: 'Lato', sans-serif;

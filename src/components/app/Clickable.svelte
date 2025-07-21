@@ -15,7 +15,18 @@
     background: none;   
     border: none;
     padding: 0;
+    margin: 0;
     display: contents;
+    font: inherit;
+    color: inherit;
+    text-align: inherit;
+    text-decoration: inherit;
+    line-height: inherit;
+    letter-spacing: inherit;
+    word-spacing: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
   }
   .noHighlight {
     -webkit-tap-highlight-color: transparent;

@@ -5,7 +5,7 @@
   <div class="subheading">
     Know exactly what to do at each step with no confusion and no overwhelm
   </div>
-  <img class="flow" src="images/flow.png" alt="Flow" />
+  <img class="flow" src="/images/flow.png" alt="Flow" />
 </div>
 
 <style>

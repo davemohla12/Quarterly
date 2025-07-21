@@ -8,25 +8,25 @@
 
 <div class="container">
   <div class="row">
-    <img class="check" src="images/check.png" alt="Checkmark" />
+    <img class="check" src="/images/check.png" alt="Checkmark" />
     <div class="text">Avoid costly IRS penalties</div>
   </div>
   <div class="row">
-    <img class="check" src="images/check.png" alt="Checkmark" />
+    <img class="check" src="/images/check.png" alt="Checkmark" />
     <div class="text">Receive payment reminders</div>
   </div>
   <div class="row">
-    <img class="check" src="images/check.png" alt="Checkmark" />
+    <img class="check" src="/images/check.png" alt="Checkmark" />
     <div class="text">Pay once — no subscription</div>
   </div>
   <div class="row">
-    <img class="check" src="images/check.png" alt="Checkmark" />
+    <img class="check" src="/images/check.png" alt="Checkmark" />
     <div class="text">60 day money-back guarantee</div>
   </div>
   <Clickable onclick={handleSeeClick}>
     <div class="see">
       <div class="seetext">See what you'll get</div>
-      <img class="newtab" src="images/newtab.png" alt="New Tab" />
+      <img class="newtab" src="/images/newtab.png" alt="New Tab" />
     </div>
 </Clickable>
 </div>

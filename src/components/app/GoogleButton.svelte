@@ -11,7 +11,7 @@
 
 <Clickable onclick={handleClick}>
   <div class="button" >
-    <img class="google" src="images/google.png" alt="Google" />
+    <img class="google" src="/images/google.png" alt="Google" />
     <div class="text">CONTINUE WITH GOOGLE</div>
   </div>
 </Clickable>

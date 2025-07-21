@@ -16,6 +16,7 @@ const user = $state({
 
   async setValue(field, value) {
     if (global.loggedIn) {
+      setLocalStorage(field, value)
       await setInUsers(field, value)
     }
     else {

@@ -5,7 +5,7 @@
   <div class="subheading">
     Pay the right amount at the right time with no surprises at tax time
   </div>
-  <img class="penalties" src="images/penalties.png" alt="Penalties" />
+  <img class="penalties" src="/images/penalties.png" alt="Penalties" />
 </div>
 
 <style>

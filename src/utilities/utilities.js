@@ -191,7 +191,7 @@ const setLocalStorage = (key, value) => {
 const clearLocalStorage = () => {
   const allKeys = Object.keys(localStorage)
   for (const key of allKeys) {
-    if (!key.startsWith('sb-') || !key.includes('auth-token')) {
+    if (!key.startsWith('sb-') && !key.includes('auth-token') && key != 'source') {
       localStorage.removeItem(key)
     }
   }

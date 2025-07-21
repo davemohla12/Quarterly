@@ -50,7 +50,7 @@
   <div class="placeholder" class:active={isFocused || inputValue} class:errorplaceholder={error !== ''}>{placeholder}</div>
   {#if showClear && inputValue}
     <Clickable onclick={onclear}>
-      <img class="clear" src="images/clear.png" alt="Clear" />
+      <img class="clear" src="/images/clear.png" alt="Clear" />
     </Clickable>
   {/if}
   <div class="error">{error}</div>
