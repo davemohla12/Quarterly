@@ -84,7 +84,7 @@
     </Clickable>
   </div>
   <div class="right">
-    <img class="stressfree" src="/images/stressfree.png" alt="Stress-free" />
+    <img class="stressfree" src="/images/stressfree.png" alt="Stress-free quarterly tax calculation" loading="lazy" width="377" height="409" />
   </div>
 </div>
 <style>

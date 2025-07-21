@@ -5,7 +5,7 @@
   <div class="subheading">
     Get a full refund if you're not completely satisfied — no questions asked
   </div>
-  <img class="guarantee" src="/images/guarantee.png" alt="Guarantee" />
+  <img class="guarantee" src="/images/guarantee.png" alt=" 60 day guarantee" loading="lazy" width="270" height="273" />
 </div>
 
 <style>

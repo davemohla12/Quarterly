@@ -14,9 +14,9 @@ if (browser) {
       mask_all_text: false,
       opt_out_capturing_by_default: false,
       session_recording: {
-        recordCanvas: true,
+        recordCanvas: false,
         sampling: {
-          sessionSampleRate: 1.0
+          sessionSampleRate: 0.1
         }
       } 
     }

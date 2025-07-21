@@ -5,7 +5,7 @@
   <div class="subheading">
     Stay compliant with both - no extra apps or tools needed
   </div>
-  <img class="both" src="/images/federalstate.png" alt="Federal and State" />
+  <img class="both" src="/images/federalstate.webp" alt="Pay both federal and state taxes" loading="lazy" width="353" height="280" />
 </div>
 
 <style>
