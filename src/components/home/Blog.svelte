@@ -1,17 +1,12 @@
 <script>  
   import { posts } from '$src/blog/posts'
-  import { goto } from '$app/navigation'
-  import Clickable from '$src/components/app/Clickable.svelte'
 
-  const handleClick = (post) => {
-    goto(`/blog/${post.slug}`)
-  }
 </script>
 
 <div class="header">Blog</div>
 <div class="posts">
   {#each posts as post}
-  <Clickable onclick={() => handleClick(post)}>
+  <a href="/blog/{post.slug}" class="link">
     <div class="post">
       <img class="image" src={`/images/blog/${post.slug}.webp`} alt={post.slug}/>
       <div class="datecontainer">
@@ -25,7 +20,7 @@
         <img class="arrow" src="/images/arrow.png" alt="arrow" />
       </div>
     </div>
-  </Clickable>
+  </a>
   {/each}
 </div>
 
@@ -40,6 +35,14 @@
     margin-bottom: 15px;
     display: flex;
     justify-content: center;
+  }
+  .link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    }
+  .link:hover {
+    cursor: pointer;
   }
   .posts {
     display: flex;
