@@ -340,7 +340,7 @@
     <ReferralBanner onclose={handleCloseReferralBanner} />
   {/if}
   {#if taxYear == currentTaxYear}
-    <Heading text={headingText} desktopwidth="550px" mobilewidth="275px" />
+    <Heading text={headingText} desktopwidth="600px" mobilewidth="275px" />
     {#if payPreference == 'single'}
       <SinglePayments 
         federalDue={federalDue} 

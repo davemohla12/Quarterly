@@ -311,8 +311,8 @@
     font-family: 'Merriweather', serif;
     font-size: 24px;
     font-weight: var(--regular);
-    margin-left: 10px;
-    margin-right: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
     margin-top: 7px;
     text-align: center;
   }
@@ -418,6 +418,8 @@
     }
     .title {
       font-size: 34px;
+      margin-left: 0px;
+      margin-right: 0px;
     }
   }
 </style>
