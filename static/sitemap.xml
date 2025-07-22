@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <url>
+    <loc>https://zenguider.com/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <url>
+    <loc>https://zenguider.com/faq</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://zenguider.com/blog</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://zenguider.com/blog/quarterly-taxes-101</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://zenguider.com/blog/how-much-should-you-pay</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://zenguider.com/blog/avoiding-irs-penalties</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://zenguider.com/blog/do-you-need-to-pay-quarterly-taxes</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>     
+
+  <url>
+    <loc>https://zenguider.com/blog/top-tax-deductions</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>      
+
+  <url>
+    <loc>https://zenguider.com/blog/how-to-calculate-quarterly-taxes</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>  
+
+  <url>
+    <loc>https://zenguider.com/blog/when-are-quarterly-taxes-due</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>  
+
+  <url>
+    <loc>https://zenguider.com/blog/the-easiest-way-to-calculate-and-pay</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+</urlset>

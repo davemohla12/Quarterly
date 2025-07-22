@@ -43,6 +43,8 @@
       if (referrerEmail && taxYearsPaid.length == 1) {
         await addReferralCredits(referrerEmail)
       }
+      const source = await user.getValue('source')
+      safePostHog.capture('paid', { source })
       await user.setValue('currentPage', 'dashboard')
       goto('/dashboard')
     }

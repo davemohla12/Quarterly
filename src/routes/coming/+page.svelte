@@ -1,7 +1,19 @@
+<script>
+  import { showComingSoon } from '$src/settings/settings'
+</script>
+
 <div class="container">
   <img class="logo" src="/images/logo.png" alt="logo" />
   <div class="coming">Coming soon...</div>
 </div>
+
+<svelte:head>
+  <title>ZenGuider | Coming Soon</title>
+  {#if showComingSoon}
+    <meta name="robots" content="noindex, nofollow" />
+  {/if}
+</svelte:head>
+
 
 <style>
   .container {
