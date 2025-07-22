@@ -11,6 +11,7 @@
   import { global } from '$src/data/global.svelte'  
   import axios from 'axios'
   import dayjs from 'dayjs'
+  import { safePostHog } from '$src/utilities/posthog'
 
   onMount(async () => {
     const creditsUsed = $page.url.searchParams.get('credits') || 0
