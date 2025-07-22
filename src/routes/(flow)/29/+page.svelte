@@ -19,6 +19,14 @@
 
   onMount(async () => {
     safePostHog.capture('flow_price_page_viewed')
+
+    if (typeof gtag !== 'undefined') {
+      gtag('event', 'conversion', {
+        'send_to': 'AW-1040756020/3nAmCP_Sy_UaELTaovAD',
+        'value': 1.0,
+        'currency': 'USD'
+      })
+    }
   })
 
   const handleNext = async () => {
@@ -34,15 +42,6 @@
 
 </script>
 
-<svelte:head>
-  <script>
-    gtag('event', 'conversion', {
-        'send_to': 'AW-1040756020/3nAmCP_Sy_UaELTaovAD',
-        'value': 1.0,
-        'currency': 'USD'
-    });
-  </script>
-</svelte:head>
 
 <Header hideReset={true} />
 <Avatar />
