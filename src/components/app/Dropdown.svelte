@@ -1,6 +1,6 @@
 <script>
   import Clickable from '$src/components/app/Clickable.svelte'
-  import { onMount } from 'svelte'
+  import { onMount, tick } from 'svelte'
   import { global } from '$src/data/global.svelte'
 
   let props = $props()
@@ -42,10 +42,11 @@
     selectedIndex = -1
   }
 
-  const toggleDropdown = () => {
-    if (!isOpen) {
-      inputValue = ''
+  const toggleDropdown = async (event) => {
+    if (event && event.stopPropagation) {
+      event.stopPropagation()
     }
+    inputValue = ""
     onselection(inputValue)
     isOpen = !isOpen
     inputBox.focus()
@@ -67,20 +68,15 @@
       event.preventDefault()
       selectedIndex = Math.max(selectedIndex - 1, 0)
     }
-    else if (event.key === 'Enter' && selectedIndex >= 0) {
+    else if (event.key === 'Enter' && selectedIndex >= 0 && isOpen) {
+      event.preventDefault()
+      event.stopPropagation()
       inputValue = filteredValues[selectedIndex]
       onselection(inputValue)
       isOpen = false
       selectedIndex = -1
+      inputBox.blur()
     }
-  }
-
-  const handleClear = (event) => {
-    event.stopPropagation()
-    inputValue = ""
-    onselection(inputValue)
-    isOpen = true
-    inputBox.focus()
   }
 
   const handleClickOutside = (event) => {
@@ -93,18 +89,10 @@
 </script>
 
 <div class="container" bind:this={container}>
-  <Clickable onclick={toggleDropdown}>
-    <div class="dropdown" class:lesstopmargin={lessTopMargin}>
-      <input class="input" type="text" placeholder={text} value={inputValue} oninput={handleInput} onkeydown={handleKeydown} bind:this={inputBox} />
-      {#if isOpen}
-        <Clickable onclick={handleClear}>
-          <img class="clear" src="/images/clear.png" alt="Clear" />
-        </Clickable>
-      {:else}
-        <img class="down" src="/images/down.png" alt="Dropdown" />
-      {/if}
-    </div>
-  </Clickable>
+  <div class="dropdown" class:lesstopmargin={lessTopMargin} onclick={(event) => toggleDropdown(event)} onkeydown={()=>{}} tabindex="0" role="button" aria-label="Open dropdown">
+    <input class="input" type="text" placeholder={text} value={inputValue} oninput={handleInput} onkeydown={handleKeydown} bind:this={inputBox} />
+      <img class="down" src="/images/down.png" alt="Dropdown" />
+  </div>
   {#if isOpen && filteredValues.length > 0}
     <div class="menu">
       {#each filteredValues as value}
@@ -157,12 +145,6 @@
   .down {
     width: 12px;
     height: 7.5px;
-    position: absolute;
-    right: 20px;
-  }
-  .clear {
-    width: 14px;
-    height: 14px;
     position: absolute;
     right: 20px;
   }
