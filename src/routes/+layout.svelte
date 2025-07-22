@@ -44,17 +44,6 @@
     })
   }
   </script>
-
-<svelte:head>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-1040756020"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    window.gtag = gtag;  
-    gtag('js', new Date());
-    gtag('config', 'AW-1040756020');
-  </script>
-</svelte:head>
   
   {#if loading}
     <div></div>
