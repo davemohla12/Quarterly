@@ -22,7 +22,7 @@
 
     if (typeof gtag !== 'undefined') {
       gtag('event', 'conversion', {
-        'send_to': 'AW-1040756020/3nAmCP_Sy_UaELTaovAD',
+        'send_to': 'AW-1040756020/3nAmCP_Sy_UaEt1TevAD',
         'value': 1.0,
         'currency': 'USD'
       })
