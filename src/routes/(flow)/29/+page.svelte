@@ -20,13 +20,19 @@
   onMount(async () => {
     safePostHog.capture('flow_price_page_viewed')
 
-    if (typeof gtag !== 'undefined') {
-      gtag('event', 'conversion', {
-        'send_to': 'AW-1040756020/3nAmCP_Sy_UaEt1TevAD',
-        'value': 1.0,
-        'currency': 'USD'
-      })
-    }
+    setTimeout(() => {
+      if (window.gtag) {
+        window.gtag('event', 'conversion', {
+          'send_to': 'AW-1040756020/3nAmCP_Sy_UaEt1TevAD',
+          'value': 1.0,
+          'currency': 'USD'
+        })
+        console.log('Conversion fired!')
+      } 
+      else {
+        console.error('gtag not available')
+      }
+    }, 1000)
   })
 
   const handleNext = async () => {
