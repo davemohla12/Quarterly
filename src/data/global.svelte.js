@@ -2,7 +2,7 @@ const global = $state( {
   email: null,
   loggedIn: false,
   showMenu: false,
-  dropdownisOpen: false,
+  openDropdownQuarter: '',
   makeButtonActive: false,
   showResumeBanner: false,
   showConfirmationBanner: false,

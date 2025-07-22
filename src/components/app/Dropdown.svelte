@@ -1,6 +1,6 @@
 <script>
   import Clickable from '$src/components/app/Clickable.svelte'
-  import { onMount, tick } from 'svelte'
+  import { onMount,  } from 'svelte'
   import { global } from '$src/data/global.svelte'
 
   let props = $props()
@@ -8,6 +8,7 @@
   let values = props.values
   let onselection = props.onselection
   let selected = $derived(props.selected || null)
+  let quarter = $derived(props.quarter || '')
   let inputValue = $state('')
   let filteredValues = $derived(values.filter(value => value.toLowerCase().includes(inputValue.toLowerCase())))
   let container
@@ -26,6 +27,9 @@
   $effect(() => {
     if (selected) { 
       inputValue = selected
+    }
+    if (global.openDropdownQuarter != quarter && global.openDropdownQuarter != '') {
+      isOpen = false
     }
   })
 
@@ -49,12 +53,14 @@
     inputValue = ""
     onselection(inputValue)
     isOpen = !isOpen
+    if (isOpen) {
+      global.openDropdownQuarter = quarter
+    }
     inputBox.focus()
   }
   
   const handleKeydown = async (event) => {
     if (event.key === 'Escape') {
-      global.dropdownisOpen = false
       selectedIndex = -1
     }
     else if (event.key === 'ArrowDown') {

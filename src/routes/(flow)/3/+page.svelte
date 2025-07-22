@@ -21,6 +21,7 @@
   let currentState = $state()
 
   onMount(async () => {
+    global.openDropdownQuarter = ''
     if (await user.getValue('latestTaxYearPaid') != currentTaxYear) {
       safePostHog.capture('flow_state_viewed')
     }

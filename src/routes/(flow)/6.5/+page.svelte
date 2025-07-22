@@ -84,9 +84,9 @@
 <Header />
 <Avatar />
 <Heading text={headingText} desktopwidth="500px" mobilewidth="350px" />
-<Dropdown text={`State on ${q1DueDate.format('MMM D, YYYY')}`} values={global.states} selected={convertStateToUpperCase(q1State)} onselection={handleSelection1} lessTopMargin={true}/>
-<Dropdown text={`State on ${q2DueDate.format('MMM D, YYYY')}`} values={global.states} selected={convertStateToUpperCase(q2State)} onselection={handleSelection2} lessTopMargin={true}/>
-<Dropdown text={`State on ${q3DueDate.format('MMM D, YYYY')}`} values={global.states} selected={convertStateToUpperCase(q3State)} onselection={handleSelection3} lessTopMargin={true}/>
-<Dropdown text={`State on ${q4DueDate.format('MMM D, YYYY')}`} values={global.states} selected={convertStateToUpperCase(q4State)} onselection={handleSelection4} lessTopMargin={true}/>
+<Dropdown text={`State on ${q1DueDate.format('MMM D, YYYY')}`} values={global.states} selected={convertStateToUpperCase(q1State)} onselection={handleSelection1} lessTopMargin={true} quarter="q1"/>
+<Dropdown text={`State on ${q2DueDate.format('MMM D, YYYY')}`} values={global.states} selected={convertStateToUpperCase(q2State)} onselection={handleSelection2} lessTopMargin={true} quarter="q2"/>
+<Dropdown text={`State on ${q3DueDate.format('MMM D, YYYY')}`} values={global.states} selected={convertStateToUpperCase(q3State)} onselection={handleSelection3} lessTopMargin={true} quarter="q3"/>
+<Dropdown text={`State on ${q4DueDate.format('MMM D, YYYY')}`} values={global.states} selected={convertStateToUpperCase(q4State)} onselection={handleSelection4} lessTopMargin={true} quarter="q4"/>
 <Button text={buttonText} onclick={handleNext} />
 <Later />
