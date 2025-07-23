@@ -198,7 +198,7 @@
 
 </script>
 
-<div class="container" class:containermargin={!showPaidDates} class:containerwithstates={!livingInCurrentStateAllThisYear}>
+<div class="container" class:containermargin={!showPaidDates} class:containerwithstates={!livingInCurrentStateAllThisYear} class:containerwithq4dates={currentTaxQuarter == 'Q4' && showPaidDates && (q4StatePaidDate || q4FederalPaidDate)}>
   <div class="header">
     <div class="lefttitle">DUE</div>
     <div class="centertitle">FEDERAL</div>
@@ -380,7 +380,10 @@
     align-items: center;
     margin-left: 20px;
     margin-top: 20px;
-    margin-bottom: -5px
+    margin-bottom: -15px
+  }
+  .containerwithq4dates {
+    margin-bottom: -10px
   }
   .containermargin {
     margin-bottom: -10px;

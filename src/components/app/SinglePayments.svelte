@@ -63,7 +63,7 @@
 
 </script>
 
-<div class="container">
+<div class="container" class:containerwithpaiddates={showPaidDates && (singleFederalPaidDate || singleStatePaidDate)}>
   <div class="header">
     <div class="lefttitle"></div>
     <div class="centertitle">FEDERAL</div>
@@ -137,7 +137,10 @@
     align-items: center;
     margin-left: 20px;
     margin-top: 20px;
-    margin-bottom: -5px;
+    margin-bottom: -10px;
+  }
+  .containerwithpaiddates {
+    margin-bottom: -5px
   }
   .header {
     display: flex;

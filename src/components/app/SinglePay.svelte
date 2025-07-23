@@ -217,6 +217,7 @@
     color: var(--gray4);
     font-size: 16px;
     margin-bottom: 10px;
+    text-align: center;
   }
   .spacer {
     height: 20px;
