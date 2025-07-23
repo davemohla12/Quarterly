@@ -12,17 +12,17 @@ const getCurrentTaxYear = () => {
 }
 
 const getCurrentTaxQuarter = () => {
-  // const currentMonth = dayjs().format('MMMM')
-  // if (currentMonth == 'February' || currentMonth == 'March' || currentMonth == 'April') {
-  //   return 'Q1'
-  // } else if (currentMonth == 'May' || currentMonth == 'June') {
-  //   return 'Q2'
-  // } else if (currentMonth == 'July' || currentMonth == 'August' || currentMonth == 'September') {
-  //   return 'Q3'
-  // } else if (currentMonth == 'October' || currentMonth == 'November' || currentMonth == 'December' || currentMonth == 'January') {
-  //   return 'Q4'
-  // }
-  return 'Q4'
+  const currentMonth = dayjs().format('MMMM')
+  if (currentMonth == 'February' || currentMonth == 'March' || currentMonth == 'April') {
+    return 'Q1'
+  } else if (currentMonth == 'May' || currentMonth == 'June') {
+    return 'Q2'
+  } else if (currentMonth == 'July' || currentMonth == 'August' || currentMonth == 'September') {
+    return 'Q3'
+  } else if (currentMonth == 'October' || currentMonth == 'November' || currentMonth == 'December' || currentMonth == 'January') {
+    return 'Q4'
+  }
+  // return 'Q4'
 }
 
 const currentTaxYear = getCurrentTaxYear()
@@ -35,7 +35,7 @@ const price = 39
 const priceId = 'price_1RdtoyPNrBqC31YHEXCpXBPw'
 const adminPasscode = '0500'
 
-const showCheckout = true
+const showCheckout = false
 const showReferral = false
 const showComingSoon = true
 
