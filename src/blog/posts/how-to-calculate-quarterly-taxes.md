@@ -1,5 +1,5 @@
 # How to Calculate Quarterly Taxes If You Earn from Multiple States or Sources
-<div style="margin-top: 5px; margin-bottom: 20px;">March 5, 2026</div>
+<div style="margin-top: 5px; margin-bottom: 20px;">{{DATE}}</div>
 
 **Do you earn income from clients in different states or have multiple income streams? Here’s a simple guide to calculating your quarterly taxes accurately — without the headache.**
 

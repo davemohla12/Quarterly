@@ -1,5 +1,5 @@
 # Quarterly Taxes 101: A Simple Guide for Freelancers and Solo Entrepreneurs
-<div style="margin-top: 5px; margin-bottom: 20px;">March 20, 2026</div>
+<div style="margin-top: 5px; margin-bottom: 20px;">{{DATE}}</div>
 
 **Understanding your quarterly tax payments shouldn’t be overwhelming. Here’s a clear, no-jargon guide to help you stay compliant, avoid IRS penalties, and keep more of what you earn.**
 

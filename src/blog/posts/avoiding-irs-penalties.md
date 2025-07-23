@@ -1,5 +1,5 @@
 # Avoiding IRS Penalties: What Happens If You Miss a Quarterly Tax Payment?
-<div style="margin-top: 5px; margin-bottom: 20px;">March 15, 2026</div>
+<div style="margin-top: 5px; margin-bottom: 20px;">{{DATE}}</div>
 
 **Missed a quarterly tax payment or worried you might? Here’s what actually happens, how much it can cost you, and what you can do to avoid IRS penalties.**
 

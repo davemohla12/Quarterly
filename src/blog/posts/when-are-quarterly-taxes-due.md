@@ -1,5 +1,5 @@
 # When Are Quarterly Taxes Due? 2025–2026 IRS Quarterly Tax Deadlines
-<div style="margin-top: 5px; margin-bottom: 20px;">March 4, 2026</div>
+<div style="margin-top: 5px; margin-bottom: 20px;">{{DATE}}</div>
 
 **Not sure when to pay your quarterly taxes? Here’s your clear, up-to-date guide to the IRS deadlines for 2025 and 2026 — so you never miss a payment.**
 

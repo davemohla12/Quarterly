@@ -1,11 +1,17 @@
 <script>  
   import { posts } from '$src/blog/posts'
+  import dayjs from 'dayjs'
+  import { today } from '$src/settings/settings'
+
+  const publishedPosts = posts.filter(post => {
+    return dayjs(post.date) <= today
+  })
 
 </script>
 
 <div class="header">Blog</div>
 <div class="posts">
-  {#each posts as post}
+  {#each publishedPosts as post}
   <a href="/blog/{post.slug}" class="link">
     <div class="post">
       <img class="image" src={`/images/blog/${post.slug}.webp`} alt={post.slug}/>
@@ -115,7 +121,7 @@
       margin-left: auto;
       margin-right: auto;
       margin-bottom: 10px;
-      width: 768px;
+      width: 680px;
       flex-wrap: wrap;
       margin-bottom: 40px;
       justify-content: center;

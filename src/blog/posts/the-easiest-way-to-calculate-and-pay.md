@@ -1,5 +1,5 @@
 # The Easiest Way to Calculate and Pay Quarterly Taxes (Without Hiring an Accountant)
-<div style="margin-top: 5px; margin-bottom: 20px;">March 1, 2026</div>
+<div style="margin-top: 5px; margin-bottom: 20px;">{{DATE}}</div>
 
 **Think you need an accountant to handle quarterly taxes? Think again. Here’s how freelancers and solo entrepreneurs can easily calculate and pay estimated taxes on their own.**
 

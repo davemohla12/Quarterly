@@ -1,6 +1,7 @@
 import { global } from '$src/data/global.svelte'
 import { stateRules } from '$src/rules/state.js'
 import { doesReferralCodeExist } from '$src/utilities/database.js'
+import dayjs from 'dayjs'
 
 const convertStateToLowerCase = (state) => {
   if (state) { 
@@ -224,6 +225,8 @@ const generateReferralCode = () => {
   }
   return result
 }
+
+
 
 export { 
   convertStateToLowerCase, 

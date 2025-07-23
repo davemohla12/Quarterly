@@ -1,5 +1,5 @@
 # Do You Need to Pay State Quarterly Taxes? A State-by-State Breakdown
-<div style="margin-top: 5px; margin-bottom: 20px;">March 12, 2026</div>
+<div style="margin-top: 5px; margin-bottom: 20px;">{{DATE}}</div>
 
 **Many freelancers and solo entrepreneurs know about federal quarterly taxes — but what about state taxes? Here’s what you need to know, state by state.**
 

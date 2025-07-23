@@ -1,5 +1,5 @@
 # How Much Should You Pay in Quarterly Taxes? A Step-by-Step Calculator Walkthrough
-<div style="margin-top: 5px; margin-bottom: 20px;">March 18, 2026</div>
+<div style="margin-top: 5px; margin-bottom: 20px;">{{DATE}}</div>
 
 **Not sure how much to set aside for quarterly taxes? Here’s a clear, step-by-step guide to estimate your payments accurately — without the stress or confusion.**
 

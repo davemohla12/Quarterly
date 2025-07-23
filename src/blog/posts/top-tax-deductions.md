@@ -1,5 +1,5 @@
 # Top Tax Deductions for Freelancers and Small Business Owners
-<div style="margin-top: 5px; margin-bottom: 20px;">March 8, 2026</div>
+<div style="margin-top: 5px; margin-bottom: 20px;">{{DATE}}</div>
 
 **Want to save money on taxes? Here’s a simple guide to the most valuable deductions freelancers and small business owners can use to lower their tax bill.**
 
