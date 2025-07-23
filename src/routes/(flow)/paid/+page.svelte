@@ -6,7 +6,7 @@
   import { onMount } from 'svelte'
   import { user } from '$src/data/user.svelte'
   import { currentTaxYear } from '$src/settings/settings'
-  import { addCredits, removeCredits } from '$src/utilities/database'
+  import { addCredits, removeCredits, getAllUserValues, setMultipleUserValues, addMultipleUserValues } from '$src/utilities/database'
   import { page } from '$app/stores'
   import { global } from '$src/data/global.svelte'  
   import axios from 'axios'
@@ -24,30 +24,35 @@
       paymentId = response.data.paymentId
     }
     if (paymentId) {
-      const totalPayments = await user.getValue('totalPayments')
-      await Promise.all([
-        user.setValue('latestTaxYearPaid', currentTaxYear),
-        user.addValue('taxYearsPaid', currentTaxYear),
-        user.setValue('stripeCustomerId', stripeCustomerId),
-        user.setValue('lastPaymentAmount', price),
-        user.setValue('lastPaymentDate', new Date().toISOString()),
-        user.addValue('paymentDates', new Date().toISOString()),
-        user.setValue('totalPayments', totalPayments + 1),
-        user.setValue('sendRatingsEmailOn', dayjs().add(3, 'day').toISOString()),
-        user.setValue('lastPaymentId', paymentId)
-      ])
+      const userValues = await getAllUserValues(global.email)
+      const totalPayments = userValues.totalPayments
+      const referrerEmail = userValues.referrerEmail
+      const taxYearsPaid = userValues.taxYearsPaid
+      const source = userValues.source
+      const setFieldValues = {
+        latestTaxYearPaid: currentTaxYear,
+        stripeCustomerId: stripeCustomerId,
+        lastPaymentAmount: price,
+        lastPaymentDate: new Date().toISOString(),
+        totalPayments: totalPayments + 1,
+        sendRatingsEmailOn: dayjs().add(3, 'day').toISOString(),
+        lastPaymentId: paymentId
+      }
+      const addFieldValues = {
+        taxYearsPaid: currentTaxYear,
+        paymentDates: new Date().toISOString()
+      }
+      await setMultipleUserValues(setFieldValues)
+      await addMultipleUserValues(addFieldValues)
       if (creditsUsed > 0) {
         await removeCredits(global.email, creditsUsed)
       }
-      const referrerEmail = await user.getValue('referrerEmail')
-      const taxYearsPaid = await user.getValue('taxYearsPaid')
       if (referrerEmail && taxYearsPaid.length == 1) {
         await addReferralCredits(referrerEmail)
       }
-      const source = await user.getValue('source')
       safePostHog.capture('paid', { source })
-      await user.setValue('currentPage', 'dashboard')
       goto('/dashboard')
+      await user.setValue('currentPage', 'dashboard')
     }
   })
 

@@ -20,7 +20,8 @@
     saveToUsers, 
     addToUsers,
     getAllUserValues, 
-
+    setMultipleUserValues,
+    addMultipleUserValues,
 
     //Payments
     createBlankPayment, 
@@ -126,6 +127,24 @@
     console.log(`email: ${email}`)
   }
 
+  const handleSetMultipleUserValues = async () => { 
+    const fieldValuePairs = {
+      latestTaxYearPaid: 2025,
+      lastPaymentAmount: 39,
+    }
+    await setMultipleUserValues(fieldValuePairs)
+    console.log(fieldValuePairs)
+  } 
+
+  const handleAddMultipleUserValues = async () => {
+    const fieldValuePairs = {
+      taxYearsPaid: 2026,
+      paymentDates: '2026-01-01'
+    }
+    await addMultipleUserValues(fieldValuePairs)
+    console.log(fieldValuePairs)
+  }
+
   // Payments
 
   const handleCreateBlankPayment = async () => {
@@ -210,6 +229,8 @@
 <button onclick={handleSaveToUsers}>Save to Users</button>
 <button onclick={handleAddToUsers}>Add New Paid Tax Year</button>
 <button onclick={handleGetAllUserValues}>Get All User Values</button>
+<button onclick={handleSetMultipleUserValues}>Set Multiple User Values</button>
+<button onclick={handleAddMultipleUserValues}>Add Multiple User Values</button>
 
 <div class="section">PAYMENTS</div>
 <button onclick={handleCreateBlankPayment}>Create Blank Payment</button>

@@ -35,7 +35,7 @@ const price = 39
 const priceId = 'price_1RdtoyPNrBqC31YHEXCpXBPw'
 const adminPasscode = '0500'
 
-const showCheckout = false
+const showCheckout = true
 const showReferral = false
 const showComingSoon = true
 

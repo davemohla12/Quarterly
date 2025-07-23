@@ -4,7 +4,6 @@
   import { supabase } from '$src/utilities/supabase'
   import { global } from '$src/data/global.svelte'
   import { saveToPayments, createUserIfNotExists } from '$src/utilities/database'
-  import { updateLoginState } from '$src/utilities/utilities'
   import Header from '$src/components/app/Header.svelte'
   import Avatar from '$src/components/app/Avatar.svelte'
   import Heading from '$src/components/app/Heading.svelte'

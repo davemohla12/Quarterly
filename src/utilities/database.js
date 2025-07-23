@@ -44,6 +44,14 @@ const getAllUserValues = async (email) => {
   return response.data
 }
 
+const setMultipleUserValues = async (fieldValuePairs) => {
+  await axios.post('/api/database/setMultipleUserValues', { fieldValuePairs: fieldValuePairs, email: global.email })
+}
+
+const addMultipleUserValues = async (fieldValuePairs) => {
+  await axios.post('/api/database/addMultipleUserValues', { fieldValuePairs: fieldValuePairs, email: global.email })
+}
+
 const getFromUsers = async (field) => {
   const response = await axios.post('/api/database/getFromUsers', { email: global.email, field: field })
   return response.data?.[field]
@@ -140,5 +148,7 @@ export {
   doesReferralCodeExist,
   getReferrerEmail,
   addCredits,
-  removeCredits
+  removeCredits,
+  setMultipleUserValues,
+  addMultipleUserValues
 }

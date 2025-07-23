@@ -10,39 +10,42 @@
   import { currentTaxYear } from '$src/settings/settings'
   import { goto } from '$app/navigation'
   import { showCheckout } from '$src/settings/settings'
+  import { getAllUserValues } from '$src/utilities/database'
 
   onMount(async () => { 
+    const userValues = await getAllUserValues(global.email)
+    const latestTaxYearPaid = userValues.latestTaxYearPaid
+    const referralEmail = userValues.referrerEmail
+    const userCredits = userValues.credits
     if (showCheckout) {
-      if (await user.getValue('latestTaxYearPaid') == currentTaxYear) {
+      if (latestTaxYearPaid == currentTaxYear) {
         goto('/dashboard')
         await user.setValue('currentPage', 'dashboard')
       }
       else {
-        let userReferralDiscount = false
-        const referrerEmail = await user.getValue('referrerEmail')
-        if (referrerEmail && !await user.getValue('latestTaxYearPaid')) {
-          userReferralDiscount = true
+        let useReferralDiscount = false
+        if (referralEmail && !latestTaxYearPaid) {
+          useReferralDiscount = true
         }
-        const userCredits = await user.getValue('credits')
         const response = await axios.post('/api/checkout', {
           email: global.email,
           priceId: priceId,
-          useReferralDiscount: userReferralDiscount,
+          useReferralDiscount: useReferralDiscount,
           credits: userCredits
-          })
+        })
         window.location.href = response.data.url
       }
     }
     else {
-      if (await user.getValue('latestTaxYearPaid') == currentTaxYear) {
-        await user.setValue('currentPage', 'dashboard')
+      if (latestTaxYearPaid == currentTaxYear) {
         goto('/dashboard')
+        await user.setValue('currentPage', 'dashboard')
       }
       else {
         await user.setValue('latestTaxYearPaid', currentTaxYear)
         await user.addValue('taxYearsPaid', currentTaxYear)
-        await user.setValue('currentPage', 'dashboard')
         goto('/dashboard')
+        await user.setValue('currentPage', 'dashboard')
       }
     }
   })
