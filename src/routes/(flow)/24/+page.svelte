@@ -78,6 +78,6 @@
 <Avatar />
 <Heading text={headingText} desktopwidth="550px" mobilewidth="300px" />
 <Subheading text={subheadingText} desktopwidth="500px" mobilewidth="300px" />
-<DollarInput placeholder={placeholderText} value={inputValue} onInput={handleInput} />
+<DollarInput placeholder={placeholderText} value={inputValue} onInput={handleInput} shouldFocus={true}/>
 <Button text={buttonText} onclick={handleNext} />
 <Later />

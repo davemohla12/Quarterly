@@ -1,22 +1,30 @@
 <script>
   import Clickable from '$src/components/app/Clickable.svelte'
-  import { onMount } from 'svelte'
+  import { onMount, tick } from 'svelte'
 
   let props = $props()
   let onInput = props.onInput
   let placeholder = $derived(props.placeholder || '')
   let value = $derived(props.value || '')
-  let helpText = props.helpText || ''
-  let isFocused = $state(false)
+  let helpText = $derived(props.helpText || '')
   let inputValue = $derived(formatCurrency(value))
-  let showHelp = $state(false)
   let showReset = $derived(props.showReset || false)
-  let onreset = props.onreset
+  let onreset = $derived(props.onreset || null)
+  let shouldFocus = $derived(props.shouldFocus || false)
+  let isFocused = $state(false)
+  let showHelp = $state(false)
+  let inputElement
 
-  onMount(() => {
+  onMount(async () => {
     document.addEventListener('click', handleClickOutside)
     return () => {
       document.removeEventListener('click', handleClickOutside)
+    }
+  })
+
+  $effect(() => {
+    if (inputElement && shouldFocus) {
+      inputElement.focus()
     }
   })
 
@@ -88,7 +96,7 @@
 </script>
 
 <div class="container">
-  <input class="input" type="text" inputmode="decimal" class:shorter={helpText != ''} value={inputValue} onfocus={handleFocus} onblur={handleBlur} oninput={handleInput} />
+  <input class="input" type="text" inputmode="decimal" class:shorter={helpText != ''} value={inputValue} onfocus={handleFocus} onblur={handleBlur} oninput={handleInput} bind:this={inputElement} />
   {#if helpText != ''}
     <Clickable onclick={toggleHelp}>
       <img class="help" src="/images/help.png" alt="Help" />

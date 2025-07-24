@@ -122,7 +122,7 @@
 <Header />
 <Avatar />
 <Heading text={headingText} desktopwidth="500px"  mobilewidth="280px"/>
-<DollarInput placeholder={placholderText1} value={inputValue1} onInput={handleInput1} helpText={helpText1} />
+<DollarInput placeholder={placholderText1} value={inputValue1} onInput={handleInput1} helpText={helpText1} shouldFocus={true}/>
 <DollarInput placeholder={placholderText2} value={inputValue2} onInput={handleInput2} helpText={helpText2} />
 <DollarInput placeholder={placholderText3} value={inputValue3} onInput={handleInput3} helpText={helpText3} />
 <DollarInput placeholder={placholderText4} value={inputValue4} onInput={handleInput4} helpText={helpText4} />
