@@ -46,6 +46,17 @@
   </script>
   
   <svelte:head>
+  <!-- Google Tag Manager -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-1040756020"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'AW-1040756020');
+    </script>
+    <!-- End of Google Tag Manager -->
+
     <!-- Meta Pixel Code -->
     <script>
       !function(f,b,e,v,n,t,s)
