@@ -35,11 +35,11 @@ const price = 39
 const priceId = 'price_1RdtoyPNrBqC31YHEXCpXBPw'
 const adminPasscode = '0500'
 
-const today = dayjs('2026-3-1')
+const today = dayjs('2026-12-31')
 // const today = dayjs()
 
 const showCheckout = false
 const showReferral = false
-const showComingSoon = false
+const showComingSoon = true
 
 export { currentTaxYear, currentTaxQuarter, q1DueDate, q2DueDate, q3DueDate, q4DueDate, price, priceId, showCheckout, showReferral, adminPasscode, showComingSoon, today }
