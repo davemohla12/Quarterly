@@ -11,6 +11,10 @@ const dismissMenu = () => {
 }
 </script>
 
+<svelte:head>
+  <title>Zenguider | Blog </title>
+</svelte:head>
+
 {#if global.showMenu}
   <Menu />
   <Overlay ondismiss={dismissMenu} />
