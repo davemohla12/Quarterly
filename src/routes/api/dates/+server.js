@@ -17,7 +17,7 @@ const generateBlogPostDates = (posts, startDate, averageDays, spread) => {
       currentDate = currentDate.add(randomDays, 'day')
     }
   }
-  return dates.reverse()
+  return dates
 }
 
 const generatePostsFileContent = (posts) => {

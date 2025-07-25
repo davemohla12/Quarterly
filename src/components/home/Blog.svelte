@@ -2,10 +2,17 @@
   import { posts } from '$src/blog/posts'
   import dayjs from 'dayjs'
   import { today } from '$src/settings/settings'
+  import { onMount } from 'svelte'
 
-  const publishedPosts = posts.filter(post => {
-    return dayjs(post.date) <= today
+  let publishedPosts = $state([])
+
+  onMount(() => {
+    let reversedPosts = [...posts].reverse()
+    publishedPosts = reversedPosts.filter(post => {
+      return dayjs(post.date) <= today
+    })
   })
+
 
 </script>
 
@@ -14,7 +21,7 @@
   {#each publishedPosts as post}
   <a href="/blog/{post.slug}" class="link">
     <div class="post">
-      <img class="image" src={`/images/blog/${post.slug}.webp`} alt={post.slug}/>
+      <img class="image" src={`/images/blog/${post.slug}.webp`} alt={post.slug} loading="lazy" />
       <div class="datecontainer">
         <img class="calendar" src="/images/calendar.png" alt="calendar" />
         <div class="date">{post.date.format("MMMM D, YYYY")}</div>
