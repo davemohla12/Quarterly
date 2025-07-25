@@ -3,6 +3,7 @@
   import dayjs from 'dayjs'
   import { today } from '$src/settings/settings'
   import { onMount } from 'svelte'
+  import { browser } from '$app/environment'
 
   let publishedPosts = $state([])
 
@@ -13,13 +14,18 @@
     })
   })
 
+  const handlePostClick = () => {
+    if (browser) {
+      sessionStorage.setItem('cameFromBlog', 'true')
+    }
+  }
 
 </script>
 
 <div class="header">Blog</div>
 <div class="posts">
   {#each publishedPosts as post}
-  <a href="/blog/{post.slug}" class="link">
+  <a href="/blog/{post.slug}" onclick={handlePostClick} class="link">
     <div class="post">
       <img class="image" src={`/images/blog/${post.slug}.webp`} alt={post.slug} loading="lazy" />
       <div class="datecontainer">

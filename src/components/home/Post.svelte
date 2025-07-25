@@ -1,18 +1,27 @@
 <script>
   import Clickable from '$src/components/app/Clickable.svelte'
   import { goto } from '$app/navigation'
+  import { browser } from '$app/environment'
 
   const props = $props()
   const content = $derived(props.content)
 
-  const handleAllPosts = () => {
-    goto('/blog')
+  const handleAllPostsClick = () => {
+    if (browser) {
+      const cameFromBlog = sessionStorage.getItem('cameFromBlog')
+      if (cameFromBlog && window.history.length > 1) {
+        window.history.back()
+      } 
+      else {
+        goto('/blog')
+      }
+    }
   }
 </script>
 
 <div class="container"> 
   <div class="post"> 
-    <Clickable onclick={handleAllPosts}>
+    <Clickable onclick={handleAllPostsClick}>
       <div class="allpostscontainer">
         <img class="leftarrow" src="/images/leftarrow.png" alt="Left Arrow" />
         <div class="allposts">All Posts</div>
