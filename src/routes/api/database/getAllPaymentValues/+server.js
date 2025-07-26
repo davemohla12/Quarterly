@@ -30,7 +30,7 @@ const parseJsonFields = (data) => {
   return parsedData
 }
 
-export async function POST({ request }) {
+const POST = async ({ request }) => {
   const { email, taxYear } = await request.json()
   
   const response = await supabaseAdmin
@@ -44,3 +44,5 @@ export async function POST({ request }) {
 
   return json({ values: parsedData })
 }
+
+export { POST}

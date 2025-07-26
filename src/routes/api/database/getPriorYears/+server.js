@@ -7,7 +7,7 @@ const supabaseAdmin = createClient(PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KE
   auth: { autoRefreshToken: false, persistSession: false }
 })
 
-export async function POST({ request }) {
+const POST = async ({ request }) => {
 
   const { email, currentTaxYear } = await request.json()
   
@@ -20,3 +20,5 @@ export async function POST({ request }) {
 
   return json({ years: response.data.map(row => row.taxYear) })
 }
+
+export { POST}

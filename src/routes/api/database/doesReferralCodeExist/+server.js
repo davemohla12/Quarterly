@@ -7,7 +7,7 @@ const supabaseAdmin = createClient(PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KE
   auth: { autoRefreshToken: false, persistSession: false }
 })
 
-export async function POST({ request }) {
+const POST = async ({ request }) => {
   const { code } = await request.json()
   
   const response = await supabaseAdmin
@@ -18,3 +18,5 @@ export async function POST({ request }) {
 
   return json({ exists: response.data ? true : false })
 }
+
+export { POST}

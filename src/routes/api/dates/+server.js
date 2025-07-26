@@ -37,7 +37,7 @@ const generatePostsFileContent = (posts) => {
 }
 
 
-export const POST = async ({ request }) => {
+const POST = async ({ request }) => {
     const { startDate, averageDays, spread } = await request.json()
     
     const dates = generateBlogPostDates(posts, startDate, averageDays, spread)
@@ -55,5 +55,6 @@ export const POST = async ({ request }) => {
       posts: posts,
       message: 'Updated successfully' 
     })
-
 }
+
+export { POST}

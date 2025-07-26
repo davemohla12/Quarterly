@@ -3,16 +3,23 @@
 
   let props = $props()
   let onclick = props.onclick
+  let showSpinner = $derived(props.showSpinner || false)
 
   const handleClick = () => {
-    onclick()
+    if (!showSpinner) {
+      onclick()
+    }
   }
 </script>
 
 <Clickable onclick={handleClick}>
   <div class="button" >
-    <img class="google" src="/images/google.png" alt="Google" />
-    <div class="text">CONTINUE WITH GOOGLE</div>
+    {#if showSpinner}
+      <div class="circle"></div>
+    {:else}
+      <img class="google" src="/images/google.png" alt="Google" />
+      <div class="text">CONTINUE WITH GOOGLE</div>
+    {/if}
   </div>
 </Clickable>
 
@@ -44,5 +51,18 @@
     font-size: 16px;
     font-weight: var(--bold);
     color: var(--white);
+  }
+  .circle {
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--white);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: circle 0.8s linear infinite;
+  }
+  @keyframes circle {
+    to {
+      transform: rotate(360deg);
+    }
   }
 </style>

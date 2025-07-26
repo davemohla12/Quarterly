@@ -7,13 +7,15 @@ const supabaseAdmin = createClient(PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KE
   auth: { autoRefreshToken: false, persistSession: false }
 })
 
-export async function POST({ request }) {
+const POST = async ({ request }) => {
   const { field, value, email } = await request.json()
   
-  const response = await supabaseAdmin
+   await supabaseAdmin
     .from('Users')
     .update({ [field]: value })
     .eq('email', email)
 
   return json({ success: true})
 }
+
+export { POST}

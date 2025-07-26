@@ -27,6 +27,7 @@
   const placeholderText1 = 'EMAIL'
   const placeholderText2 = 'PASSWORD'
   let bottomText = $state()
+  let disableGoogleButton = $state(false)
   let disableButton = $state(false)
   let headingText = $state()
   let showForgotPassword = $state(false)
@@ -76,6 +77,7 @@
   }
 
   const handleGoogle = async () => {
+    disableGoogleButton = true
      await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
@@ -190,7 +192,11 @@
 <Avatar />
 <Heading text={headingText} desktopwidth="550px" mobilelarge={true} />
 <Subheading text={subheadingText} desktopwidth="550px" mobilewidth="220px" />
-<GoogleButton onclick={handleGoogle} />
+{#if disableGoogleButton}
+  <GoogleButton showSpinner={true} />
+{:else}
+  <GoogleButton onclick={handleGoogle} />
+{/if}
 <Or />
 <EmailInput placeholder={placeholderText1} onInput={handleInput1} value={email} error={emailError}/>
 <PasswordInput placeholder={placeholderText2} onInput={handleInput2} value={password} error={passwordError}/>
