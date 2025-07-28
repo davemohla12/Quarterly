@@ -18,7 +18,7 @@ const POST = async ({ request }) => {
 
     const userResponse = await supabaseAdmin
     .from('Users')
-    .select('lastPaymentId','refundedTaxYears')
+    .select('*')
     .eq('email', email)
     .single()
 
@@ -38,9 +38,28 @@ const POST = async ({ request }) => {
       refundedTaxYears.push(taxYear)
     }
 
+    let taxYearsPaid = userResponse.data.taxYearsPaid || []
+    let paymentDates = userResponse.data.paymentDates || []
+    let totalPayments = userResponse.data.totalPayments || 0
+    taxYearsPaid = taxYearsPaid.filter(year => year !== taxYear)
+    paymentDates.pop()
+    totalPayments -= 1
+
+    let lastTaxYearPaid = null
+    let lastPaymentAmount = null
+    let lastPaymentDate = null
+    let lastPaymentId = null
+
     await supabaseAdmin
     .from('Users')
     .update({ 
+      latestTaxYearPaid: lastTaxYearPaid,
+      taxYearsPaid: taxYearsPaid,
+      paymentDates: paymentDates,
+      totalPayments: totalPayments,
+      lastPaymentAmount: lastPaymentAmount,
+      lastPaymentDate: lastPaymentDate,
+      lastPaymentId: lastPaymentId,
       refundedTaxYears: refundedTaxYears 
     })
     .eq('email', email)
@@ -50,13 +69,6 @@ const POST = async ({ request }) => {
     .delete()
     .eq('email', email)
     .eq('taxYear', taxYear)
-
-    await supabaseAdmin
-    .from('Users')
-    .update({
-      latestTaxYearPaid: null
-    })
-    .eq('email', email)
 
     await supabaseAdmin
     .from('Refunds')

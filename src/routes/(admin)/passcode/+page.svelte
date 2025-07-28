@@ -7,12 +7,13 @@
   import { adminPasscode } from "$src/settings/settings"
   import { goto } from "$app/navigation"
   import { setLocalStorage, getLocalStorage } from "$src/utilities/utilities"
-  import Button from "$src/components/app/Button.svelte"
+  import ControlledButton from "$src/components/app/ControlledButton.svelte"
   import { onMount } from "svelte"
 
   const headingText = "Admin login"
   let passcode = $state(null)
   let error = $state(null)
+  let showSpinner = $state(false)
 
   onMount(() => {
     global.makeButtonActive = false
@@ -30,6 +31,7 @@
   }
 
   const handleLogin = () => {
+    showSpinner = true
     if (passcode == adminPasscode) {
       setLocalStorage('adminLoggedIn', 'true')
       const adminPage = getLocalStorage('adminPage')
@@ -37,6 +39,7 @@
     }
     else {
       error = 'Invalid passcode'
+      showSpinner = false
     }
   }
 
@@ -56,4 +59,4 @@
 <Avatar />
 <Heading text={headingText} desktopwidth="450px" mobilewidth="300px" />
 <PasscodeInput placeholder="Passcode" onInput={handleInput} error={error} />
-<Button text="LOGIN" onclick={handleLogin}/>
+<ControlledButton text="LOGIN" onclick={handleLogin} showSpinner={showSpinner}/>

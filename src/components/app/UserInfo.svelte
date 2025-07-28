@@ -55,6 +55,9 @@
   <div class="value">{userValues.lastPaymentId || 'blank'}</div>
   <div class="field">Stripe Customer ID</div>
   <div class="value">{userValues.stripeCustomerId || 'blank'}</div>
+  <div class="divider"></div>
+  
+  <div class="section">SOURCE</div>
   <div class="field">Source</div>
   <div class="value">{userValues.source || 'blank'}</div>
   <div class="divider"></div>
