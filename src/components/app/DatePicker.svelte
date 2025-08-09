@@ -7,7 +7,6 @@
   let date = $derived(props.date)
   let onselect = $derived(props.onselect)
 
-  let showEdit = $state(false)
   let input
   let picker
   let wrapper
@@ -76,33 +75,32 @@
     display: none;
   }
 
-:global(.container .datepicker) {
-  position: absolute !important;
-  top: calc(100% + 8px) !important;
-  left: calc(50% - 25px) !important;
-  transform: translateX(calc(-50% - 25px)) !important;
-  z-index: 1000 !important;
-  font-family: 'Lato', sans-serif;
-}
+  :global(.container .datepicker) {
+    position: absolute !important;
+    top: calc(100% + 8px) !important;
+    left: calc(50% - 25px) !important;
+    transform: translateX(calc(-50% - 25px)) !important;
+    z-index: 1000 !important;
+    font-family: 'Lato', sans-serif;
+  }
 
-:global(.datepicker-picker) {
-  background: #ffffff;
-  font-family: 'Lato', sans-serif;
-}
+  :global(.datepicker-picker) {
+    background: #ffffff;
+    font-family: 'Lato', sans-serif;
+  }
 
-:global(.datepicker .datepicker-cell:hover) {
-  background: var(--green) !important;
-  color: white !important;
-}
+  :global(.datepicker .datepicker-cell:hover) {
+    background: var(--green) !important;
+    color: white !important;
+  }
 
-:global(.datepicker .datepicker-cell.selected) {
-  background: var(--green) !important;
-  color: white !important;
-}
+  :global(.datepicker .datepicker-cell.selected) {
+    background: var(--green) !important;
+    color: white !important;
+  }
 
-:global(.datepicker .datepicker-cell.today) {
-  background: var(--green) !important;
-  color: white !important;
-}
-
+  :global(.datepicker .datepicker-cell.today) {
+    background: var(--green) !important;
+    color: white !important;
+  }
 </style>

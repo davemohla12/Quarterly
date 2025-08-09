@@ -5,14 +5,19 @@
   let onInput = props.onInput
   let placeholder = props.placeholder || ''
   let value = $derived(props.value || '')
+  let showReset = $derived(props.showReset || false)
+  let shouldFocus = $derived(props.shouldFocus || false)
   let isFocused = $state(false)
   let inputValue = $state('')
-  let showReset = $derived(props.showReset || false)
   let onreset = props.onreset
+  let inputElement
 
   $effect(() => {
     if (value) {
       inputValue = value
+    }
+    if (inputElement && shouldFocus) {
+      inputElement.focus()
     }
   })
 
@@ -64,7 +69,7 @@
 </script>
 
 <div class="container">
-  <input class="input" type="number" inputmode="numeric" pattern="[1-9][0-9]*" value={inputValue} onfocus={handleFocus} onblur={handleBlur} oninput={handleInput} />
+  <input class="input" type="number" inputmode="numeric" pattern="[1-9][0-9]*" value={inputValue} onfocus={handleFocus} onblur={handleBlur} oninput={handleInput} bind:this={inputElement} />
   <div class="placeholder" class:active={isFocused || inputValue} >{placeholder}</div>
   {#if showReset}
     <Clickable onclick={() => handleReset()}>   

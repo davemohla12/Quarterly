@@ -51,6 +51,6 @@
 <Avatar />
 <Heading text={headingText} desktopwidth="600px" mobilewidth="275px" />
 <Subheading text={subheadingText} desktopwidth="500px" mobilewidth="275px" />
-<NumberInput placeholder={placeholderText} value={inputValue} onInput={handleInput} />
+<NumberInput placeholder={placeholderText} value={inputValue} onInput={handleInput} shouldFocus={true} />
 <Button text={buttonText} onclick={handleNext} />
 <Later />
