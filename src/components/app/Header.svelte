@@ -100,7 +100,7 @@
   }
 
   const handleAdminLogout = () => {
-    clearLocalStorage()
+    setLocalStorage('adminLoggedIn', 'false')
     setLocalStorage('adminPage', 'user')
     goto('/passcode')
   }
