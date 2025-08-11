@@ -33,7 +33,7 @@ const q3DueDate = dayjs('2025-09-15')
 const q4DueDate = dayjs('2025-01-15')
 const price = 39
 const priceId = 'price_1RdtoyPNrBqC31YHEXCpXBPw'
-const adminPasscode = '0500'
+const adminPasscode = 'pyaPHHtK@g6t-gD'
 
 const today = dayjs('2026-12-31')
 // const today = dayjs()
