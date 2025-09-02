@@ -129,7 +129,7 @@
     height: 10px;
     position: absolute;
     top: 30px;
-    left: 20px;
+    left: 25px;
   }
   .logo {
     margin-top: 25px;
