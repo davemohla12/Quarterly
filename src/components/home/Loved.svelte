@@ -63,7 +63,7 @@
 <div class="container">
   <div class="title">Loved by users</div>
   <img class="stars" src="images/stars.png" alt="Five star rating">
-  <div class="subtitle">5.0 star rating across all users</div>
+  <div class="subtitle">4.8 star rating across all users</div>
   <div class="reviews" ontouchstart={handleTouchStart} ontouchend={handleTouchEnd}>
     {#if currentReview == 0}
       <div class="review" transition:fade={{ duration: 300 }}>
