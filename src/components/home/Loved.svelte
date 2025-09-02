@@ -67,32 +67,32 @@
   <div class="reviews" ontouchstart={handleTouchStart} ontouchend={handleTouchEnd}>
     {#if currentReview == 0}
       <div class="review" transition:fade={{ duration: 300 }}>
-        <div class="reviewtitle">Zenavaya is awesome!</div>
-        <div class="reviewtext">"Zenavaya is fast and easy-to-use. I was done in less than 5 minutes and just received my birth certificate today. Highly recommended!"</div>
-        <div class="reviewauthor">Sally</div>
-        <div class="reviewstate">California</div>
+        <div class="reviewtitle">Zenguider is a lifesaver!</div>
+        <div class="reviewtext">"Quarterly taxes used to stress me out, but Zenguider made it simple and fast. It told me exactly what to pay and I’m confident I won’t get penalized."</div>
+        <div class="reviewauthor">Alex</div>
+        <div class="reviewstate">Florida</div>
       </div>
     {/if}
     {#if currentReview == 1}
       <div class="review" transition:fade={{ duration: 300 }}>
-        <div class="reviewtitle">Zenavaya made it simple</div>
-        <div class="reviewtext">"I didn’t know where to start, but Zenavaya walked me through the whole thing step-by-step. It was way easier than dealing with the state website."</div>
-        <div class="reviewauthor">Jason</div>
-        <div class="reviewstate">Texas</div>
+        <div class="reviewtitle">Step-by-step and clear</div>
+        <div class="reviewtext">"I always felt lost with quarterly taxes, but Zenguider guided me through each step. It was easy to follow and only took a few minutes."</div>
+        <div class="reviewauthor">Priya</div>
+        <div class="reviewstate">Illinois</div>
       </div>
     {/if} 
     {#if currentReview == 2}
       <div class="review" transition:fade={{ duration: 300 }}>
-        <div class="reviewtitle">Way easier than the state site</div>
-        <div class="reviewtext">"I tried using my state’s website but got stuck. Zenavaya was clear, quick, and just worked. My birth certificate arrived without any hassle."</div>
-        <div class="reviewauthor">Maria</div>
-        <div class="reviewstate">New York</div>
+        <div class="reviewtitle">No more IRS confusion</div>
+        <div class="reviewtext">"I tried figuring it out on my own and gave up. Zenguider was straightforward, quick, and gave me the exact numbers I needed."</div>
+        <div class="reviewauthor">Daniel</div>
+        <div class="reviewstate">Colorado</div>
       </div>
     {/if}
   </div>
   <div class="controls">
     <Clickable onclick={handleLeftClick}>
-      <img class="leftarrow" src="images/leftarrow.png" alt="Left arrow">
+      <img class="leftarrow" src="images/leftarrowtestimonial.png" alt="Left arrow">
     </Clickable>
     <Clickable onclick={handleDot1Click}>
       {#if currentReview == 0}
@@ -116,7 +116,7 @@
       {/if}
     </Clickable>
     <Clickable onclick={handleRightClick}>
-      <img class="rightarrow" src="images/rightarrow.png" alt="Right arrow">
+      <img class="rightarrow" src="images/rightarrowtestimonial.png" alt="Right arrow">
     </Clickable>
   </div>
 </div>
@@ -149,7 +149,7 @@
     width: 200px;
     text-align: center;
     margin-bottom: 20px;
-    color: var(--white);
+    color: var(--dark);
     }
   .reviews { 
     display: flex;

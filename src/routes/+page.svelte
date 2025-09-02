@@ -10,6 +10,7 @@
   import Footer from '$src/components/home/Footer.svelte'
   import Menu from '$src/components/home/Menu.svelte'
   import Overlay from '$src/components/home/Overlay.svelte'
+  import Loved from '$src/components/home/Loved.svelte'
   import { global } from '$src/data/global.svelte'
   import { onMount } from 'svelte'
   import { clearLocalStorage, setLocalStorage, getLocalStorage } from '$src/utilities/utilities'
@@ -91,6 +92,7 @@
   <Reminders />
   <Both />
   <Guarantee />
+  <Loved />
   <Price />
   <Footer />
 </div>
