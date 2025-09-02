@@ -2,23 +2,24 @@
   import { getFederalTaxes, getFederalQuarterlyPayment, getFederalSinglePayment } from '$src/utilities/federaltax'
   import { formatCurrency } from '$src/utilities/utilities'
 
-  let currentTaxQuarter = 'Q4'
-  let filingStatus = 'joint'
-  let federalTaxPaidLastYear = 25000
-  let adjustedGrossIncomeLastYear = 190000
+  let currentTaxQuarter = 'Q3'
+  let filingStatus = 'head'
+  let federalTaxPaidLastYear = 10000
+  let adjustedGrossIncomeLastYear = 85000
   let incomeExpectationThisYear = 'increase'
-  let expectedTotalIncomeThisYear = 200000
-  let businessExpensesThisYear = 0
-  let retirementContributionsThisYear = 8000
-  let studentLoanInterestThisYear = 0
-  let healthInsuranceThisYear = 6000
-  let otherDeductionsThisYear = 0
-  let withholdings = 5000
-  let q1PaymentMade = 2000
-  let q2PaymentMade = 2000
+  let expectedTotalIncomeThisYear = 100000
+  let expectedSelfEmploymentIncomeThisYear = 50000
+  let businessExpensesThisYear = 15000
+  let retirementContributionsThisYear = 6000
+  let studentLoanInterestThisYear = 500
+  let healthInsuranceThisYear = 4000
+  let otherDeductionsThisYear = 1500
+  let withholdings = 3000
+  let q1PaymentMade = 1000
+  let q2PaymentMade = 0
   let q3PaymentMade = 0
 
-  let taxes = getFederalTaxes(incomeExpectationThisYear, federalTaxPaidLastYear, adjustedGrossIncomeLastYear, filingStatus, expectedTotalIncomeThisYear, businessExpensesThisYear, retirementContributionsThisYear, studentLoanInterestThisYear, healthInsuranceThisYear, otherDeductionsThisYear)
+  let taxes = getFederalTaxes(incomeExpectationThisYear, federalTaxPaidLastYear, adjustedGrossIncomeLastYear, filingStatus, expectedTotalIncomeThisYear, expectedSelfEmploymentIncomeThisYear, businessExpensesThisYear, retirementContributionsThisYear, studentLoanInterestThisYear, healthInsuranceThisYear, otherDeductionsThisYear)
   let payment = getFederalQuarterlyPayment(currentTaxQuarter, taxes.safeHarborFederalTaxesThisYear, withholdings, q1PaymentMade, q2PaymentMade, q3PaymentMade, taxes.initialExplanation)
   let singlePayment = getFederalSinglePayment(taxes.safeHarborFederalTaxesThisYear, withholdings, q1PaymentMade, q2PaymentMade, q3PaymentMade, taxes.initialExplanation)
 
@@ -33,6 +34,7 @@
     <div>adjustedGrossIncomeLastYear = {adjustedGrossIncomeLastYear}</div>  
     <div>incomeExpectationThisYear = {incomeExpectationThisYear}</div>
     <div>expectedTotalIncomeThisYear = {expectedTotalIncomeThisYear}</div>
+    <div>expectedSelfEmploymentIncomeThisYear = {expectedSelfEmploymentIncomeThisYear}</div>
     <div>businessExpensesThisYear = {businessExpensesThisYear}</div>
     <div>retirementContributionsThisYear = {retirementContributionsThisYear}</div>
     <div>studentLoanInterestThisYear = {studentLoanInterestThisYear}</div>

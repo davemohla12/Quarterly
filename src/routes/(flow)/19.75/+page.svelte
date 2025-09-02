@@ -12,23 +12,18 @@
   import { convertCurrencyToNumber } from '$src/utilities/utilities'
   import { onMount } from 'svelte'
   import { user } from '$src/data/user.svelte'
-  import { getLocalStorage } from '$src/utilities/utilities'
+  import { getLocalStorage, convertNumberToRoundedCurrency } from '$src/utilities/utilities'
 
-  const headingText = `What is your expected total income this year?`
-  const subheadingText = `Total income includes income from freelance work, your own business, wages & salaries, investments, rentals, retirement withdrawals, and alimony`
+  const headingText = `What is your expected income from self-employment this year?`
+  let subheadingText = $state()
   const buttonText = 'NEXT'
-  const placholderText = 'Total Income'
+  const placholderText = 'Self-employment income'
   let inputValue = $state(null) 
   global.makeButtonActive = false
 
   onMount(async () => {
-    if (global.loggedIn) {
-      if (getLocalStorage('expectedTotalIncomeThisYear')) {
-        const expectedTotalIncomeThisYear = getLocalStorage('expectedTotalIncomeThisYear')
-        inputValue = expectedTotalIncomeThisYear.toString()
-        global.makeButtonActive = true
-      }
-    }
+    const expectedTotalIncomeThisYear = getLocalStorage('expectedTotalIncomeThisYear')
+    subheadingText = `Of the ${convertNumberToRoundedCurrency(expectedTotalIncomeThisYear)} in total income you expect this year, how much of will come from self-employment such as freelancing, consulting, or a solo business?`
   })
 
   const handleInput = (value) => {
@@ -42,23 +37,17 @@
   }
 
   const handleNext = async () => {
-    await payment.setValue('expectedTotalIncomeThisYear', convertCurrencyToNumber(inputValue))
-    if (await payment.getValue('expectedTotalIncomeThisYear') == 0) {
-      goto('/19.5')
-      await user.setValue('currentPage', '19.5')
-    }
-    else {
-      goto('/19.75')
-      await user.setValue('currentPage', '19.75')
-    }
+    await payment.setValue('expectedSelfEmploymentIncomeThisYear', convertCurrencyToNumber(inputValue))
+    goto('/20')
+    await user.setValue('currentPage', '20')
   }
 
 </script>
 
 <Header />
 <Avatar />
-<Heading text={headingText} desktopwidth="500px"  />
-<Subheading text={subheadingText} desktopwidth="450px" mobilewidth="300px" />
+<Heading text={headingText} desktopwidth="550px" mobilewidth="300px" />
+<Subheading text={subheadingText} desktopwidth="550px" mobilewidth="350px" />
 <DollarInput placeholder={placholderText} value={inputValue} onInput={handleInput} shouldFocus={true}/>
 <Button text={buttonText} onclick={handleNext} />
 <Later />

@@ -11,6 +11,8 @@ const federalRules = {
   incomeTaxPaidLine: "24",
   adjustedGrossIncomeForm: "1040",
   adjustedGrossIncomeLine: "11",
+  selfEmploymenTaxRate: 0.153,
+  selfEmploymentIncomePercentage: 0.9235,
   standardDeduction: {
     single: 15000,
     separate: 15000,

@@ -121,6 +121,8 @@
     <div class="value">{paymentValues.incomeExpectationThisYear || 'blank'}</div>
     <div class="field">Expected Total Income This Year</div>
     <div class="value">{formatCurrency(paymentValues.expectedTotalIncomeThisYear) || 'blank'}</div>
+    <div class="field">Expected Self Employment Income This Year</div>
+    <div class="value">{formatCurrency(paymentValues.expectedSelfEmploymentIncomeThisYear) || 'blank'}</div>
     <div class="field">Business Expenses This Year</div>
     <div class="value">{formatCurrency(paymentValues.businessExpensesThisYear) || 'blank'}</div>
     <div class="field">Retirement Contributions This Year</div>

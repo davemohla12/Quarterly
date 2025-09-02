@@ -37,6 +37,7 @@
     color: var(--gray4);
     font-size: 15px;
     margin-bottom: -5px;
+    text-align: center;
   }
   .spacer {
     height: 40px;

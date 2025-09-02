@@ -65,11 +65,14 @@ const getBelowFederalMinimumTaxText = () => {
   return explanation
 }
 
-const getFederalTaxes = (incomeExpectationThisYear, federalTaxPaidLastYear, adjustedGrossIncomeLastYear, filingStatus, expectedTotalIncomeThisYear, businessExpensesThisYear, retirementContributionsThisYear, studentLoanInterestThisYear, healthInsuranceThisYear, otherDeductionsThisYear) => {
+const getFederalTaxes = (incomeExpectationThisYear, federalTaxPaidLastYear, adjustedGrossIncomeLastYear, filingStatus, expectedTotalIncomeThisYear, expectedSelfEmploymentIncomeThisYear, businessExpensesThisYear, retirementContributionsThisYear, studentLoanInterestThisYear, healthInsuranceThisYear, otherDeductionsThisYear) => {
   let safeHarborFederalTaxesThisYear 
   let adjustedGrossIncomeThisYear 
   let taxableFederalIncomeThisYear
   let initialExplanation = ``
+  let selfEmploymentTaxesThisYear 
+  let estimatedIncomeTax
+  let totalFederalTaxThisYear
   if (incomeExpectationThisYear == 'increase' || incomeExpectationThisYear == 'same') {
     let safeHarborHighIncome 
     let safeHarborPercentage
@@ -92,15 +95,32 @@ const getFederalTaxes = (incomeExpectationThisYear, federalTaxPaidLastYear, adju
     initialExplanation += `Per federal tax rules, given your income, you can pay ${convertNumberToRoundedCurrency(safeHarborFederalTaxesThisYear)} in total quarterly payments with no penalty, which is ${Math.round(safeHarborPercentage * 100)}% of ${convertNumberToRoundedCurrency(federalTaxPaidLastYear)}, which is what you paid last year in taxes. `
   } 
   else {
-    adjustedGrossIncomeThisYear = expectedTotalIncomeThisYear - businessExpensesThisYear - retirementContributionsThisYear - studentLoanInterestThisYear - healthInsuranceThisYear - otherDeductionsThisYear
+    selfEmploymentTaxesThisYear = expectedSelfEmploymentIncomeThisYear * federalRules.selfEmploymenTaxRate * federalRules.selfEmploymentIncomePercentage
+    adjustedGrossIncomeThisYear = expectedTotalIncomeThisYear - businessExpensesThisYear - retirementContributionsThisYear - studentLoanInterestThisYear - healthInsuranceThisYear - otherDeductionsThisYear - (selfEmploymentTaxesThisYear / 2)
     taxableFederalIncomeThisYear = Math.max(0, adjustedGrossIncomeThisYear - getStandardDeduction(filingStatus))
-    safeHarborFederalTaxesThisYear = calculateTax(taxableFederalIncomeThisYear, filingStatus)
-    safeHarborFederalTaxesThisYear = federalRules.thisYearSafeHarborUsedPercentage * safeHarborFederalTaxesThisYear
+    estimatedIncomeTax = calculateTax(taxableFederalIncomeThisYear, filingStatus)
+    totalFederalTaxThisYear = estimatedIncomeTax + selfEmploymentTaxesThisYear
+    safeHarborFederalTaxesThisYear = federalRules.thisYearSafeHarborUsedPercentage * totalFederalTaxThisYear
     initialExplanation = `For your federal payments, we can use federal safe harbor rules to minimize the quarterly taxes you pay while preventing penalties. `
     initialExplanation += `Since your income is expected to ${getIncomeExpectationText(incomeExpectationThisYear)} this year, we need to estimate your annual taxes this year and then use that to determine your quarterly payments. `
-    initialExplanation += `To estimate your annual federal taxes this year, we take your expected total income this year of ${convertNumberToRoundedCurrency(expectedTotalIncomeThisYear)} and subtract out your business deductions including your busines expenses, retirement contributions, student loan interest, health insurance, and other qualified deductions to get an adjusted gross income of ${convertNumberToRoundedCurrency(adjustedGrossIncomeThisYear)}. `
-    initialExplanation += `We then subtract out your standard deduction of ${convertNumberToRoundedCurrency(getStandardDeduction(filingStatus))} to get a taxable federal income of ${convertNumberToRoundedCurrency(taxableFederalIncomeThisYear)}. `
-    initialExplanation += `We use that to calculate an annual federal tax of ${convertNumberToRoundedCurrency(safeHarborFederalTaxesThisYear)} this year which is what you need to pay in total this year through quarterly payments. `
+    initialExplanation += `We first calculate your self-employment taxes this year to be ${convertNumberToRoundedCurrency(selfEmploymentTaxesThisYear)}. We get this by multiplying your ${convertNumberToRoundedCurrency(expectedSelfEmploymentIncomeThisYear)} in self-employment income by ${federalRules.selfEmploymentIncomePercentage * 100}%, which is the portion considered taxable, and then multiplying that by ${(federalRules.selfEmploymenTaxRate * 100).toFixed(1)}%, the self-employment tax rate. `
+    initialExplanation += `Next, we estimate your adjusted gross income. We start with your expected total income of ${convertNumberToRoundedCurrency(expectedTotalIncomeThisYear)} and subtract your qualified deductions including your business expenses, retirement contributions, student loan interest, health insurance, and other deductions along with half of your self-employment tax, to get an adjusted gross income of ${convertNumberToRoundedCurrency(adjustedGrossIncomeThisYear)}. `
+    initialExplanation += `We then subtract your standard deduction of ${convertNumberToRoundedCurrency(getStandardDeduction(filingStatus))} to get your taxable federal income of ${convertNumberToRoundedCurrency(taxableFederalIncomeThisYear)}. `
+    initialExplanation += `We apply the federal tax brackets to estimate your federal income tax of ${convertNumberToRoundedCurrency(estimatedIncomeTax)} and then add your self-employment taxes of ${convertNumberToRoundedCurrency(selfEmploymentTaxesThisYear)} to get a total estimated annual federal tax of ${convertNumberToRoundedCurrency(totalFederalTaxThisYear)}. `
+    initialExplanation += `We then apply the federal safe harbor percentage of ${federalRules.thisYearSafeHarborUsedPercentage * 100}% to get a safe harbor value of ${convertNumberToRoundedCurrency(safeHarborFederalTaxesThisYear)} for this year which is what you need to pay in total this year through quarterly payments. `
+    // console.log(`selfEmploymentTaxesThisYear: ${selfEmploymentTaxesThisYear}`)
+    // console.log(`expectedSelfEmploymentIncomeThisYear: ${expectedSelfEmploymentIncomeThisYear}`)
+    // console.log(`expectedTotalIncomeThisYear: ${expectedTotalIncomeThisYear}`)
+    // console.log(`businessExpensesThisYear: ${businessExpensesThisYear}`)
+    // console.log(`retirementContributionsThisYear: ${retirementContributionsThisYear}`)
+    // console.log(`studentLoanInterestThisYear: ${studentLoanInterestThisYear}`)
+    // console.log(`healthInsuranceThisYear: ${healthInsuranceThisYear}`)
+    // console.log(`otherDeductionsThisYear: ${otherDeductionsThisYear}`)
+    // console.log(`adjustedGrossIncomeThisYear: ${adjustedGrossIncomeThisYear}`)
+    // console.log(`taxableFederalIncomeThisYear: ${taxableFederalIncomeThisYear}`)
+    // console.log(`estimatedIncomeTax: ${estimatedIncomeTax}`)
+    // console.log(`totalFederalTaxThisYear: ${totalFederalTaxThisYear}`)
+    // console.log(`initialExplanation: ${initialExplanation}`)
   }
   const taxes = {
     adjustedGrossIncomeThisYear: Math.round(adjustedGrossIncomeThisYear),

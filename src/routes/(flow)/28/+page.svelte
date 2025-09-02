@@ -32,6 +32,7 @@
   let adjustedGrossIncomeLastYear = $state()
   let filingStatus = $state()
   let expectedTotalIncomeThisYear = $state()
+  let expectedSelfEmploymentIncomeThisYear = $state()
   let businessExpensesThisYear = $state()
   let retirementContributionsThisYear = $state()
   let studentLoanInterestThisYear = $state()
@@ -89,24 +90,25 @@
       federalTaxPaidLastYear = paymentValues?.federalTaxPaidLastYear
       adjustedGrossIncomeLastYear = paymentValues?.adjustedGrossIncomeLastYear
       filingStatus = paymentValues?.filingStatus
-      expectedTotalIncomeThisYear = paymentValues?.expectedTotalIncomeThisYear
-      businessExpensesThisYear = paymentValues?.businessExpensesThisYear
-      retirementContributionsThisYear = paymentValues?.retirementContributionsThisYear
-      studentLoanInterestThisYear = paymentValues?.studentLoanInterestThisYear
-      healthInsuranceThisYear = paymentValues?.healthInsuranceThisYear
-      otherDeductionsThisYear = paymentValues?.otherDeductionsThisYear
+      expectedTotalIncomeThisYear = paymentValues?.expectedTotalIncomeThisYear 
+      expectedSelfEmploymentIncomeThisYear = paymentValues?.expectedSelfEmploymentIncomeThisYear 
+      businessExpensesThisYear = paymentValues?.businessExpensesThisYear 
+      retirementContributionsThisYear = paymentValues?.retirementContributionsThisYear 
+      studentLoanInterestThisYear = paymentValues?.studentLoanInterestThisYear 
+      healthInsuranceThisYear = paymentValues?.healthInsuranceThisYear 
+      otherDeductionsThisYear = paymentValues?.otherDeductionsThisYear 
       exemptions = paymentValues?.exemptions
-      federalWithholdingsThisYear = paymentValues?.federalWithholdingsThisYear
-      q1FederalPaymentMade = paymentValues?.q1FederalPaymentMade
-      q2FederalPaymentMade = paymentValues?.q2FederalPaymentMade
-      q3FederalPaymentMade = paymentValues?.q3FederalPaymentMade
+      federalWithholdingsThisYear = paymentValues?.federalWithholdingsThisYear 
+      q1FederalPaymentMade = paymentValues?.q1FederalPaymentMade 
+      q2FederalPaymentMade = paymentValues?.q2FederalPaymentMade 
+      q3FederalPaymentMade = paymentValues?.q3FederalPaymentMade 
       livingInCurrentStateAllThisYear = paymentValues?.livingInCurrentStateAllThisYear
       stateTaxPaidLastYear = paymentValues?.stateTaxPaidLastYear
-      stateIncomeLastYear = paymentValues?.stateIncomeLastYear
+      stateIncomeLastYear = paymentValues?.stateIncomeLastYear 
       stateWithholdingsThisYear = paymentValues?.stateWithholdingsThisYear
-      q1StatePaymentMade = paymentValues?.q1StatePaymentMade
-      q2StatePaymentMade = paymentValues?.q2StatePaymentMade
-      q3StatePaymentMade = paymentValues?.q3StatePaymentMade
+      q1StatePaymentMade = paymentValues?.q1StatePaymentMade 
+      q2StatePaymentMade = paymentValues?.q2StatePaymentMade 
+      q3StatePaymentMade = paymentValues?.q3StatePaymentMade 
       safeToSkipStatePayment = paymentValues?.safeToSkipStatePayment
       q1State = paymentValues?.q1State
       q2State = paymentValues?.q2State
@@ -124,24 +126,25 @@
       federalTaxPaidLastYear = await payment.getValue('federalTaxPaidLastYear')
       adjustedGrossIncomeLastYear = await payment.getValue('adjustedGrossIncomeLastYear')
       filingStatus = await payment.getValue('filingStatus')
-      expectedTotalIncomeThisYear = await payment.getValue('expectedTotalIncomeThisYear')
-      businessExpensesThisYear = await payment.getValue('businessExpensesThisYear')
-      retirementContributionsThisYear = await payment.getValue('retirementContributionsThisYear')
-      studentLoanInterestThisYear = await payment.getValue('studentLoanInterestThisYear')
-      healthInsuranceThisYear = await payment.getValue('healthInsuranceThisYear')
-      otherDeductionsThisYear = await payment.getValue('otherDeductionsThisYear')
+      expectedTotalIncomeThisYear = await payment.getValue('expectedTotalIncomeThisYear') 
+      expectedSelfEmploymentIncomeThisYear = await payment.getValue('expectedSelfEmploymentIncomeThisYear') 
+      businessExpensesThisYear = await payment.getValue('businessExpensesThisYear') 
+      retirementContributionsThisYear = await payment.getValue('retirementContributionsThisYear') 
+      studentLoanInterestThisYear = await payment.getValue('studentLoanInterestThisYear') 
+      healthInsuranceThisYear = await payment.getValue('healthInsuranceThisYear') 
+      otherDeductionsThisYear = await payment.getValue('otherDeductionsThisYear') 
       exemptions = await payment.getValue('exemptions')
       federalWithholdingsThisYear = await payment.getValue('federalWithholdingsThisYear')
-      q1FederalPaymentMade = await payment.getValue('q1FederalPaymentMade')
-      q2FederalPaymentMade = await payment.getValue('q2FederalPaymentMade')
-      q3FederalPaymentMade = await payment.getValue('q3FederalPaymentMade')
+      q1FederalPaymentMade = await payment.getValue('q1FederalPaymentMade') 
+      q2FederalPaymentMade = await payment.getValue('q2FederalPaymentMade') 
+      q3FederalPaymentMade = await payment.getValue('q3FederalPaymentMade') 
       livingInCurrentStateAllThisYear = await payment.getValue('livingInCurrentStateAllThisYear')
-      stateTaxPaidLastYear = await payment.getValue('stateTaxPaidLastYear')
-      stateIncomeLastYear = await payment.getValue('stateIncomeLastYear')
-      stateWithholdingsThisYear = await payment.getValue('stateWithholdingsThisYear')
-      q1StatePaymentMade = await payment.getValue('q1StatePaymentMade')
+      stateTaxPaidLastYear = await payment.getValue('stateTaxPaidLastYear') 
+      stateIncomeLastYear = await payment.getValue('stateIncomeLastYear') 
+      stateWithholdingsThisYear = await payment.getValue('stateWithholdingsThisYear') 
+      q1StatePaymentMade = await payment.getValue('q1StatePaymentMade')  
       q2StatePaymentMade = await payment.getValue('q2StatePaymentMade')
-      q3StatePaymentMade = await payment.getValue('q3StatePaymentMade')
+      q3StatePaymentMade = await payment.getValue('q3StatePaymentMade') 
       safeToSkipStatePayment = await payment.getValue('safeToSkipStatePayment')
       q1State = await payment.getValue('q1State')
       q2State = await payment.getValue('q2State')
@@ -163,7 +166,7 @@
         }
       }
       else { 
-        let federalTaxes = getFederalTaxes(incomeExpectationThisYear, federalTaxPaidLastYear, adjustedGrossIncomeLastYear, filingStatus, expectedTotalIncomeThisYear, businessExpensesThisYear, retirementContributionsThisYear, studentLoanInterestThisYear, healthInsuranceThisYear, otherDeductionsThisYear)
+        let federalTaxes = getFederalTaxes(incomeExpectationThisYear, federalTaxPaidLastYear, adjustedGrossIncomeLastYear, filingStatus, expectedTotalIncomeThisYear, expectedSelfEmploymentIncomeThisYear, businessExpensesThisYear, retirementContributionsThisYear, studentLoanInterestThisYear, healthInsuranceThisYear, otherDeductionsThisYear)
         let federalSinglePayment = getFederalSinglePayment(federalTaxes.safeHarborFederalTaxesThisYear, federalWithholdingsThisYear, q1FederalPaymentMade, q2FederalPaymentMade, q3FederalPaymentMade, federalTaxes.initialExplanation)
 
         adjustedGrossIncomeThisYear = federalTaxes.adjustedGrossIncomeThisYear
@@ -218,7 +221,7 @@
         }
       }
       else { 
-        let federalTaxes = getFederalTaxes(incomeExpectationThisYear, federalTaxPaidLastYear, adjustedGrossIncomeLastYear, filingStatus, expectedTotalIncomeThisYear, businessExpensesThisYear, retirementContributionsThisYear, studentLoanInterestThisYear, healthInsuranceThisYear, otherDeductionsThisYear)
+        let federalTaxes = getFederalTaxes(incomeExpectationThisYear, federalTaxPaidLastYear, adjustedGrossIncomeLastYear, filingStatus, expectedTotalIncomeThisYear, expectedSelfEmploymentIncomeThisYear, businessExpensesThisYear, retirementContributionsThisYear, studentLoanInterestThisYear, healthInsuranceThisYear, otherDeductionsThisYear)
         let federalQuarterlyPayments = getFederalQuarterlyPayment(currentTaxQuarter, federalTaxes.safeHarborFederalTaxesThisYear, federalWithholdingsThisYear, q1FederalPaymentMade, q2FederalPaymentMade, q3FederalPaymentMade, federalTaxes.initialExplanation)
 
         adjustedGrossIncomeThisYear = federalTaxes.adjustedGrossIncomeThisYear
