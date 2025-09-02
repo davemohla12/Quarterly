@@ -5,6 +5,7 @@
   let props = $props()
   let text = $derived(props.text)
   let onclick = $derived(props.onclick)
+  let dark = $derived(props.dark || false)
   
   let enabled = $state()
   let showSpinner = $state(false)
@@ -38,12 +39,12 @@
 
 
 {#if showSpinner }
-  <div class="button disabled spinner">
+  <div class="button disabled spinner" class:dark={dark}>
     <div class="circle"></div>
   </div>
 {:else}
   <Clickable onclick={handleClick} disabled={!enabled}>
-    <div class="button enabled" class:enabled={enabled}>  
+    <div class="button enabled" class:enabled={enabled} class:dark={dark}>  
       {text}
     </div>
   </Clickable>
@@ -71,6 +72,10 @@
     background-color: var(--green);
     box-shadow: 0 4px 12px 0 rgba(0,0,0,0.15);
     cursor: pointer;
+  }
+  .dark {
+    background-color: var(--dark);
+    color: var(--white);
   }
   .spinner {
     background-color: var(--gray4);

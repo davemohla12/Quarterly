@@ -11,9 +11,11 @@
   import Loading from '$src/components/app/Loading.svelte'
   import { user } from '$src/data/user.svelte'
   import { getLocalStorage } from '$src/utilities/utilities'
+  import Subheading from '$src/components/app/Subheading.svelte'
 
-  const expiredText = `This link has expired`
-  const expiredButtonText = 'BACK TO HOME'
+  const expiredText = `Email Confirmed`
+  const expiredButtonText = 'GO TO LOGIN'
+  const subheadingText = `You can now log in`
 
   let pageExpired = $state(false) 
 
@@ -58,7 +60,7 @@
   })
 
   const handleClick = async () => {
-    goto('/')
+    goto('/login')
     await user.setValue('currentPage', '0')
   }
 
@@ -68,6 +70,7 @@
   <Header hideIcons={true} hideBack={true} />
   <Avatar />
   <Heading text={expiredText} desktopwidth="500px" mobilelarge={true}  />
+  <Subheading text={subheadingText} desktopwidth="500px" />
   <Button text={expiredButtonText} dark={true} onclick={handleClick} />
 {:else}
   <Header hideIcons={true} hideBack={true}  />
