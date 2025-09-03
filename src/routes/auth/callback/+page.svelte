@@ -13,9 +13,9 @@
   import { getLocalStorage } from '$src/utilities/utilities'
   import Subheading from '$src/components/app/Subheading.svelte'
 
-  const expiredText = `Email Confirmed`
-  const expiredButtonText = 'GO TO LOGIN'
-  const subheadingText = `You can now log in`
+  let expiredText = $state(``)
+  let expiredButtonText = $state('')
+  let subheadingText = $state(``)
 
   let pageExpired = $state(false) 
 
@@ -23,10 +23,22 @@
     const hashParams = new URLSearchParams(window.location.hash.substring(1))
     const error = hashParams.get('error')
     if (error) {
+      const pendingEmail = getLocalStorage('pendingEmailConfirmation')
       pageExpired = true
       global.makeButtonActive = true
+      if (pendingEmail) {
+        expiredText = 'Confirmation Link Expired'
+        subheadingText = 'Log in again to confirm your email'
+        expiredButtonText = 'GO TO LOG IN'
+      }
+      else {
+        expiredText = 'Email Confirmed'
+        subheadingText = 'You can log in now'
+        expiredButtonText = 'GO TO LOGIN'
+      }
     }
     else {
+      localStorage.removeItem('pendingEmailConfirmation')
       const response = await supabase.auth.getSession()
       const session = response.data.session
       if (session) {

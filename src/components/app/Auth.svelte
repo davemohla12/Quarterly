@@ -150,6 +150,7 @@
           }
         }
       })    
+      localStorage.setItem('pendingEmailConfirmation', email)
       const loginResult2 = await supabase.auth.signInWithPassword({ email, password })
       loginUser = loginResult2.data?.user
       loginError = loginResult2.error?.message?.toLowerCase()  
