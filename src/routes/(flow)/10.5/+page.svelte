@@ -48,7 +48,7 @@
 </script>
 
 <Header />
-<Avatar />
+<Avatar screen={12} />
 <Heading text={headingText} desktopwidth="600px" mobilewidth="275px" />
 <Subheading text={subheadingText} desktopwidth="500px" mobilewidth="275px" />
 <NumberInput placeholder={placeholderText} value={inputValue} onInput={handleInput} shouldFocus={true} />

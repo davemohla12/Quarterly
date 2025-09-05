@@ -74,7 +74,7 @@
 </script>
 
 <Header />
-<Avatar />
+<Avatar screen={25} />
 <Heading text={headingText} desktopwidth="500px" mobilewidth="300px" />
 <Subheading text={subheadingText} desktopwidth="500px" mobilewidth="300px" />
 <DollarInput placeholder={placeholderText} value={inputValue} onInput={handleInput} shouldFocus={true}/>

@@ -32,7 +32,7 @@
 </script>
 
 <Header />
-<Avatar />
+<Avatar screen={9} />
 <Heading text={headingText} desktopwidth="550px" mobilewidth="300px" />
 <Image src="/images/federalstate.png" alt="Federal and State Tax Returns" width="290px" height="230px" />
 <Button text={buttonText} onclick={handleNext} />

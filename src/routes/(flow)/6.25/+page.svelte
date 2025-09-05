@@ -36,7 +36,7 @@
 </script>
 
 <Header />
-<Avatar />
+<Avatar screen={6} />
 <Heading text={headingText} desktopwidth="450px" mobilewidth="300px" />
 {#if showNote}
   <Note text={showNote} desktopwidth="450px" mobilewidth="300px" />

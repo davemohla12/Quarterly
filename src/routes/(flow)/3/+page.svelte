@@ -62,7 +62,7 @@
 </script>
 
 <Header />
-<Avatar />
+<Avatar screen={3} />
 <Heading text={headingText} />
 <Dropdown text="State" values={global.states} selected={currentState} onselection={handleSelection}/>
 <Button text={buttonText} onclick={handleNext} />

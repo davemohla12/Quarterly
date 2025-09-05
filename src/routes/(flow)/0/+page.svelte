@@ -28,7 +28,7 @@
 </script>
 
 <Header />
-<Avatar />
+<Avatar screen={1} />
 <Heading text={headingText} desktopwidth="450px" mobilewidth="300px" />
 <Subheading text={subheadingText} />
 <Button text={buttonText} onclick={handleNext} />

@@ -39,7 +39,7 @@
 </script>
 
 <Header />
-<Avatar />
+<Avatar screen={14} />
 <Heading text={headingText} mobilewidth="300px" />
 <Subheading text={subheadingText} desktopwidth="500px" mobilewidth="300px" />
 <Button text={buttonText} onclick={handleNext} />

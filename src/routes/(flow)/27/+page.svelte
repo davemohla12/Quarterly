@@ -50,7 +50,7 @@
 </script>
 
 <Header />
-<Avatar />
+<Avatar screen={29} />
 <Heading text={headingText} desktopwidth="650px" mobilewidth="300px;"  />
 <RadioButtons buttons={radioButtons} selected={selectedRadioButton} onselect={handleSelect}/>
 <Button text={buttonText} onclick={handleNext} />

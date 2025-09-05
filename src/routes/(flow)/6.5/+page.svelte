@@ -82,7 +82,7 @@
 </script>
 
 <Header />
-<Avatar />
+<Avatar screen={7} />
 <Heading text={headingText} desktopwidth="500px" mobilewidth="350px" />
 <Dropdown text={`State on ${q1DueDate.format('MMM D, YYYY')}`} values={global.states} selected={convertStateToUpperCase(q1State)} onselection={handleSelection1} lessTopMargin={true} quarter="q1"/>
 <Dropdown text={`State on ${q2DueDate.format('MMM D, YYYY')}`} values={global.states} selected={convertStateToUpperCase(q2State)} onselection={handleSelection2} lessTopMargin={true} quarter="q2"/>
