@@ -8,7 +8,7 @@
 </div>
 
 <svelte:head>
-  <title>ZenGuider | Coming Soon</title>
+  <title>Zenguider | Coming Soon</title>
   {#if showComingSoon}
     <meta name="robots" content="noindex, nofollow" />
   {/if}
