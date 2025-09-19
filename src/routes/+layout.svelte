@@ -6,6 +6,7 @@
   import { PUBLIC_ENVIRONMENT } from '$env/static/public' 
   import { global } from '$src/data/global.svelte'
   import { safePostHog } from '$src/utilities/posthog'
+  import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit'
   
   let props = $props()
   let children = props.children
@@ -34,6 +35,7 @@
         safePostHog.reset() 
       }
     })
+    injectSpeedInsights()
     loading = false
   })
 
