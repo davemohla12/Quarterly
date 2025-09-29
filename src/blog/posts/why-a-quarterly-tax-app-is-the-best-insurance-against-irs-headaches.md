@@ -1,7 +1,7 @@
 # Why a Quarterly Tax App Is the Best Insurance Against IRS Headaches  
 <div style="margin-top: 5px; margin-bottom: 20px;">{{DATE}}</div>
 
-**IRS penalties are expensive. Here’s why $39/year for Zenguider is a smart investment.**
+**IRS penalties are expensive. Here’s why Zenguider is a smart investment.**
 
 <img src="/images/blog/why-a-quarterly-tax-app-is-the-best-insurance-against-irs-headaches.webp" alt="Why a Quarterly Tax App Is the Best Insurance Against IRS Headaches" />
 
@@ -28,7 +28,7 @@ Quarterly taxes are confusing. You have to:
 
 If you’re self-employed, it’s all on you — and it’s easy to overlook something critical.
 
-## Zenguider = Peace of Mind for Just $39/Year
+## Zenguider = Peace of Mind 
 
 For the price of a dinner out, Zenguider gives you:
 
@@ -60,6 +60,6 @@ Zenguider is one of the cheapest investments you can make to protect your financ
 
 ## Want to Stay Safe and Stress-Free?
 
-Zenguider is just $39/year — and could save you **hundreds** in penalties.
+Zenguider could save you **hundreds** in penalties.
 
 👉 [Get Started](https://zenguider.com?source=blog)

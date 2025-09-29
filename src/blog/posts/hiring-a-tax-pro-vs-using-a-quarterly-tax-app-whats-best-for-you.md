@@ -41,7 +41,7 @@ High-income earners, people with complex business setups, or anyone who prefers 
 
 **Pros:**  
 - Super easy to use  
-- Much cheaper than a tax pro (Zenguider is just $39/year)  
+- Much cheaper than a tax pro  
 - Built-in logic to help avoid penalties  
 - Great for first-timers and busy entrepreneurs
 
@@ -62,7 +62,7 @@ Solo workers with straightforward income who want a simple way to stay compliant
 | Sends deadline reminders        | ❌ No               | ✅ Yes                         |
 | Avoids underpayment penalties   | ✅ Yes (if accurate) | ✅ Yes                         |
 | Year-round help                 | ⚠️ Sometimes       | ✅ Yes                         |
-| Cost                            | $300–$1,000/year   | $39/year                       |
+| Cost                            | ❌ Expensive       | ✅ Affordable                 |
 
 ## What to Ask Yourself
 

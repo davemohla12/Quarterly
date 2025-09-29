@@ -64,8 +64,6 @@ It:
 - Updates if your income changes  
 - Helps you avoid penalties — without stress
 
-All for just $39/year.
-
 ## Let’s Fix This Together
 
 Quarterly taxes aren’t going away — but the frustration can.

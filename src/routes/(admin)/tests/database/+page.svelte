@@ -1,6 +1,7 @@
 <script>
   import { setLocalStorage } from '$src/utilities/utilities'
   import dayjs from 'dayjs'
+  import { price } from '$src/settings/settings'
 
   import  { 
     //Credits
@@ -130,7 +131,7 @@
   const handleSetMultipleUserValues = async () => { 
     const fieldValuePairs = {
       latestTaxYearPaid: 2025,
-      lastPaymentAmount: 39,
+      lastPaymentAmount: price,
     }
     await setMultipleUserValues(fieldValuePairs)
     console.log(fieldValuePairs)

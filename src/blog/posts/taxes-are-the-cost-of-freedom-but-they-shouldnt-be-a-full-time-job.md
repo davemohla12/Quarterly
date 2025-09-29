@@ -65,8 +65,6 @@ Zenguider handles the heavy lifting so you don’t have to:
 - Works whether your income is steady or fluctuates  
 - Helps you avoid penalties without overpaying
 
-And it only costs $39/year.
-
 ## Buy Back Your Time (and Peace of Mind)
 
 You don’t need to do it all yourself.  

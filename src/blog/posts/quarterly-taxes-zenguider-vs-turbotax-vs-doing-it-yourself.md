@@ -86,7 +86,7 @@ Experienced filers who love spreadsheets and want full control.
 | Federal + state support          | ✅ Yes             | ✅ Limited          | ❌ State varies        |
 | Reminders for deadlines          | ✅ Yes             | ❌ No               | ❌ No                  |
 | Avoids underpayment penalties    | ✅ Yes             | ❌ No               | ❌ No                  |
-| Cost                             | $39/year          | $130+ (self-employed) | Free (but risky)    |
+| Cost                             | ✅ Affordable      | ❌ Expensive        | Free (but risky)      |
 
 ## Final Thoughts
 

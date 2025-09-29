@@ -202,7 +202,7 @@ const posts = [
   {
     slug: "why-a-quarterly-tax-app-is-the-best-insurance-against-irs-headaches",
     title: "Why a Quarterly Tax App Is the Best Insurance Against IRS Headaches",
-    description: "IRS penalties are expensive. Here’s why $39/year for Zenguider is a smart investment.",
+    description: "IRS penalties are expensive. Here’s why Zenguider is a smart investment.",
     date: dayjs("2026-11-05")
   },
   {
