@@ -9,8 +9,9 @@
   import { global } from '$src/data/global.svelte'
   import { goto } from '$app/navigation'
   import { setLocalStorage } from '$src/utilities/utilities'
+  import { referralAmount } from '$src/settings/settings'
 
-  let headingText = 'Refer a friend and you both get $5'
+  let headingText = `Refer a friend and you both get $${referralAmount}`
 
   let referralCode = $state()
   let credits = $state()
@@ -29,8 +30,6 @@
 
 <Header showAccountIcon={true} />
 <Avatar />
-<Heading text={headingText} desktopwidth="550px" mobilewidth="300px" />
+<Heading text={headingText} desktopwidth="575px" mobilewidth="300px" />
 <Refer referralCode={referralCode} credits={credits} />
-
-
 

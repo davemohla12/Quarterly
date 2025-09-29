@@ -31,7 +31,8 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 575px;
+    width: calc(100% - 40px);
+    max-width: 575px;
     background-color: var(--white);
     display: flex;
     flex-direction: column;
@@ -45,7 +46,7 @@
   }
   .header {
     font-family: 'Merriweather', serif;
-    font-size: 36px;
+    font-size: 30px;
     margin-top: 40px;
     margin-bottom: 20px;
   }
@@ -66,6 +67,10 @@
     position: absolute;
     top: 20px;
     right: 20px;
-
+  }
+  @media (min-width: 768px) {
+    .header {
+      font-size: 36px;
+    }
   }
 </style>

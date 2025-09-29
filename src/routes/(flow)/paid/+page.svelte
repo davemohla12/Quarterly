@@ -48,7 +48,7 @@
       if (creditsUsed > 0) {
         await removeCredits(global.email, creditsUsed)
       }
-      if (referrerEmail && taxYearsPaid.length == 1) {
+      if (referrerEmail && !taxYearsPaid) {
         await addReferralCredits(referrerEmail)
       }
       safePostHog.capture('paid', { source })
@@ -61,7 +61,7 @@
     await addCredits(referrerEmail, referralAmount)
     await axios.post('/api/email', {
       to: referrerEmail,
-      subject: 'You earned ${referralAmount} in credits',
+      subject: `You earned $${referralAmount} in credits`,
       template: 'credits',
       credits: referralAmount
     })

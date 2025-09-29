@@ -58,7 +58,7 @@
   .text {
     margin-top: 20px;
     text-align: center;
-    width: 275px;
+    width: 300px;
   }
   .linkcontainer {
     display: flex;
