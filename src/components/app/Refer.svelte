@@ -1,5 +1,6 @@
 <script>
     import Clickable from '$src/components/app/Clickable.svelte'
+    import { referralAmount } from '$src/settings/settings'
 
     let props = $props()
     let referralCode = $derived(props.referralCode)
@@ -15,10 +16,9 @@
   }
 </script>
 
-
 <div class="container">
   <img src="/images/refer.png" class="refer" alt="Refer a friend"/>
-  <div class="text">For every user that signs up, you get $5 in credit to use for the next tax year</div>
+  <div class="text">For every user that signs up, you get ${referralAmount} in credit to use for the next tax year</div>
   <div class="linkcontainer">
     <div class="linktext">Share this link:</div>
     {#if !copied}

@@ -12,6 +12,7 @@
   import axios from 'axios'
   import dayjs from 'dayjs'
   import { safePostHog } from '$src/utilities/posthog'
+  import { referralAmount } from '$src/settings/settings'
 
   onMount(async () => {
     const creditsUsed = $page.url.searchParams.get('credits') || 0
@@ -57,12 +58,12 @@
   })
 
   const addReferralCredits = async (referrerEmail) => {
-    await addCredits(referrerEmail, 5)
+    await addCredits(referrerEmail, referralAmount)
     await axios.post('/api/email', {
       to: referrerEmail,
-      subject: 'You earned $5 in credits',
+      subject: 'You earned ${referralAmount} in credits',
       template: 'credits',
-      credits: 5
+      credits: referralAmount
     })
   }
 

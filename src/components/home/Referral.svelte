@@ -2,6 +2,7 @@
   import Clickable from '$src/components/app/Clickable.svelte'
   import Button from '$src/components/app/Button.svelte'
   import { global } from '$src/data/global.svelte'
+  import { referralAmount } from '$src/settings/settings'
 
   let props = $props()
   let ondismiss = $derived(props.ondismiss)
@@ -11,7 +12,7 @@
 </script>
 
 <div class="dialog">
-  <div class="header">You'll get $5 off</div>
+  <div class="header">You'll get ${referralAmount} off</div>
   <img class="refer" src="/images/refer.png" alt="Referral" />
   <div class="text">You were referred by another user</div>
   <div class="subtext">Only valid for new users</div>

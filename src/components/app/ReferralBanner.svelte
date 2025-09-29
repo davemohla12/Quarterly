@@ -1,7 +1,7 @@
 <script>  
-  import { global } from '$src/data/global.svelte'
   import Clickable from '$src/components/app/Clickable.svelte'
   import { fade } from 'svelte/transition'
+  import { referralAmount } from '$src/settings/settings'
 
   let props = $props()
   let onclose = $derived(props.onclose)
@@ -13,7 +13,7 @@
 </script>
 
 <div class="container" transition:fade={{ duration: 300 }}>
-  <div class="text">You can now refer a friend and you both get $5 if they sign up.<a href="/refer" class="learn">Learn more</a></div>
+  <div class="text">You can now refer a friend and you both get ${referralAmount} if they sign up.<a href="/refer" class="learn">Learn more</a></div>
   <Clickable onclick={handleClose}> 
     <img class="close" src="/images/close.png" alt="Close" />
   </Clickable>
