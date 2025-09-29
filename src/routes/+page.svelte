@@ -19,11 +19,21 @@
   import { page } from '$app/stores'
   import { getReferrerEmail } from '$src/utilities/database'
   import { user } from '$src/data/user.svelte'
+  import CreditsApplied from '$src/components/home/CreditsApplied.svelte'
+  import NewUsers from '$src/components/home/NewUsers.svelte'
 
   let showReferralDialog = $state(false)
+  let showCreditsAppliedDialog = $state(false)
+  let showNewUsersDialog = $state(false)
 
   onMount(async () => {
+    showCreditsAppliedDialog = getLocalStorage('showCreditsAppliedDialog')
+    showNewUsersDialog = getLocalStorage('showNewUsersDialog') 
+    const showReferralCredits = getLocalStorage('showReferralCredits')
     clearLocalStorage()
+    setLocalStorage('showCreditsAppliedDialog', showCreditsAppliedDialog)
+    setLocalStorage('showNewUsersDialog', showNewUsersDialog)
+    setLocalStorage('showReferralCredits', showReferralCredits)
     setLocalStorage('loginLocation', 'home')
     const referralCode = $page.url.searchParams.get('refer') || ''
     if (referralCode) {
@@ -57,6 +67,16 @@
   const dismissReferral = () => {
     showReferralDialog = false
   }
+
+  const dismissCreditsApplied = () => {
+    showCreditsAppliedDialog = false
+    setLocalStorage('showCreditsAppliedDialog', false)
+  }
+
+  const dismissNewUsersDialog = () => {
+    showNewUsersDialog = false
+    setLocalStorage('showNewUsersDialog', false)
+  }
   
 </script>
 
@@ -80,6 +100,14 @@
   {#if showReferralDialog}
     <Referral ondismiss={dismissReferral} />
     <Overlay ondismiss={dismissReferral} />
+  {/if}
+  {#if showCreditsAppliedDialog}
+    <CreditsApplied ondismiss={dismissCreditsApplied} />
+    <Overlay ondismiss={dismissCreditsApplied} />
+  {/if}
+  {#if showNewUsersDialog}
+    <NewUsers ondismiss={dismissNewUsersDialog} />
+    <Overlay ondismiss={dismissNewUsersDialog} />
   {/if}
   {#if global.showMenu}
     <Menu />

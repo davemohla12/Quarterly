@@ -16,8 +16,11 @@
   import Clickable from '$src/components/app/Clickable.svelte'
   import { saveToPayments, createUserIfNotExists } from '$src/utilities/database'
   import { user } from '$src/data/user.svelte'
-  import { getLocalStorage } from '$src/utilities/utilities'
+  import { getLocalStorage, setLocalStorage } from '$src/utilities/utilities'
   import { onMount } from 'svelte'
+  import { getFromUsers, addCredits, removeCredits} from '$src/utilities/database'
+  import { referralAmount } from '$src/settings/settings'
+
 
   let props = $props()
   let page = $derived(props.page)
@@ -40,16 +43,24 @@
   let passwordError = $state('')
   global.makeButtonActive = false
   let errorMessage = $state('')
+  let refer = $state(false)
+
 
   onMount(() => {
+    refer = getLocalStorage('showReferralCredits')
     if (page == 'signup') {
+      if (refer) { 
+        headingText = "Let's create your account so you can reedeem your credits"
+      } 
+      else { 
+        headingText="Let's create your account"
+      }
       bottomText = `Already have an account?&nbsp;&nbsp;<a href="/login">Log In</a>`
-      headingText="Let's create your account"
       showForgotPassword=false
     }
     else if (page == 'login') {
-      bottomText = `Don't have an account?&nbsp;&nbsp;<a href="/signup">Sign Up</a>`
       headingText="Welcome back"
+      bottomText = `Don't have an account?&nbsp;&nbsp;<a href="/signup">Sign Up</a>`
       showForgotPassword=true
     }
   })
@@ -78,10 +89,10 @@
 
   const handleGoogle = async () => {
     disableGoogleButton = true
-     await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: `${window.location.origin}/auth/callback`
+    await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: `${window.location.origin}/auth/callback`
       }
     })
   }
@@ -106,6 +117,24 @@
     }
   }
 
+  const addReferralCredits = async () => {
+    if (refer) {
+      const latestTaxYearPaid = await getFromUsers('latestTaxYearPaid')
+      const currentCredits = await getFromUsers('credits')
+      if (!latestTaxYearPaid) { 
+        if (currentCredits > 0) { 
+          await removeCredits(global.email, currentCredits)
+        }
+        await addCredits(global.email, referralAmount)
+        setLocalStorage('showCreditsAppliedDialog', true)
+      }
+      else {
+        setLocalStorage('showNewUsersDialog', true)
+      }
+      setLocalStorage('showReferralCredits', false)
+    }
+  }
+
   const signUpUser = async () => {
     disableButton = true
     errorMessage = ''
@@ -115,10 +144,13 @@
     let loginError = loginResult.error?.message?.toLowerCase()
     if (loginUser) {
       if (getLocalStorage('loginLocation') == 'home') {
+        await createUserIfNotExists()
+        await saveToPayments()
+        await addReferralCredits()
         goto('/')
       }
       else if (getLocalStorage('loginLocation') == 'later') {
-        await createUserIfNotExists()
+        await createUserIfNotExists('home')
         await user.setValue('currentPage', getLocalStorage('currentPage'))
         await saveToPayments()
         goto('/')
@@ -191,7 +223,7 @@
 
 <Header hideIcons={true} />
 <Avatar />
-<Heading text={headingText} desktopwidth="550px" mobilelarge={true} />
+<Heading text={headingText} desktopwidth="550px" mobilewidth="300px" mobilelarge={true} />
 <Subheading text={subheadingText} desktopwidth="550px" mobilewidth="220px" />
 {#if disableGoogleButton}
   <GoogleButton showSpinner={true} />

@@ -3,27 +3,18 @@
   import Button from '$src/components/app/Button.svelte'
   import { global } from '$src/data/global.svelte'
   import { referralAmount } from '$src/settings/settings'
-  import { setLocalStorage } from '$src/utilities/utilities'
-  import { goto } from '$app/navigation'
 
   let props = $props()
   let ondismiss = $derived(props.ondismiss)
   global.makeButtonActive = true
 
-  const handleRedeemCredits = () => {
-    ondismiss()
-    setLocalStorage('showReferralCredits', true)
-    goto('/signup')
-  }
-
 </script>
 
 <div class="dialog">
-  <div class="header">You'll get ${referralAmount} off</div>
-  <img class="refer" src="/images/refer.png" alt="Referral" />
-  <div class="text">You were referred by another user</div>
+  <div class="header">Credits applied</div>
+  <div class="text">We've applied ${referralAmount} in credits to your account</div>
   <div class="button">
-    <Button text="REDEEM CREDITS" onclick={handleRedeemCredits} />
+    <Button text="OK" onclick={ondismiss} />
   </div>
   <Clickable onclick={ondismiss}>
     <img class="dismiss" src="/images/dismiss.png" alt="Dismiss" />
@@ -46,21 +37,17 @@
     justify-content: center;
     z-index: 100;
   }
-  .refer {
-    width: 149px;
-    height: 164px;
-  }
   .header {
     font-family: 'Merriweather', serif;
     font-size: 30px;
     margin-top: 40px;
-    margin-bottom: 20px;
   }
   .text {
     margin-top: 20px;
   }
   .button {
     width: 100%;
+    margin-top: 10px;
     margin-bottom: 30px;
   }
   .dismiss {

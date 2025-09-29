@@ -10,14 +10,16 @@
   import Button from '$src/components/app/Button.svelte'  
   import Loading from '$src/components/app/Loading.svelte'
   import { user } from '$src/data/user.svelte'
-  import { getLocalStorage } from '$src/utilities/utilities'
+  import { getLocalStorage, setLocalStorage} from '$src/utilities/utilities'
   import Subheading from '$src/components/app/Subheading.svelte'
+  import { getFromUsers, addCredits, removeCredits } from '$src/utilities/database'
+  import { referralAmount } from '$src/settings/settings'
 
   let expiredText = $state(``)
   let expiredButtonText = $state('')
   let subheadingText = $state(``)
-
   let pageExpired = $state(false) 
+  let refer = $state(false)
 
   onMount(async () => {
     const hashParams = new URLSearchParams(window.location.hash.substring(1))
@@ -44,6 +46,9 @@
       if (session) {
         const loginLocation = getLocalStorage('loginLocation')
         if (loginLocation == 'home') {
+          await createUserIfNotExists()
+          await saveToPayments()
+          await addReferralCredits()
           goto('/')
         }
         else if (loginLocation == 'later') {
@@ -70,6 +75,25 @@
       }
     }
   })
+
+  const addReferralCredits = async () => {
+    refer = getLocalStorage('showReferralCredits')
+    if (refer) {
+      const latestTaxYearPaid = await getFromUsers('latestTaxYearPaid')
+      const currentCredits = await getFromUsers('credits')
+      if (!latestTaxYearPaid) { 
+        if (currentCredits > 0) { 
+          await removeCredits(global.email, currentCredits)
+        }
+        await addCredits(global.email, referralAmount)
+        setLocalStorage('showCreditsAppliedDialog', true)
+      }
+      else {
+        setLocalStorage('showNewUsersDialog', true)
+      }
+      setLocalStorage('showReferralCredits', false)
+    }
+  }
 
   const handleClick = async () => {
     goto('/login')

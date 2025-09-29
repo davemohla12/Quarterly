@@ -23,14 +23,9 @@
         await user.setValue('currentPage', 'dashboard')
       }
       else {
-        let useReferralDiscount = false
-        if (referralEmail && !latestTaxYearPaid) {
-          useReferralDiscount = true
-        }
         const response = await axios.post('/api/checkout', {
           email: global.email,
           priceId: priceId,
-          useReferralDiscount: useReferralDiscount,
           credits: userCredits
         })
         window.location.href = response.data.url

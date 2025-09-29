@@ -7,7 +7,7 @@ const stripe = new Stripe(STRIPE_KEY)
 
 const POST = async ({ request }) => {
   try {
-    const { email, priceId, useReferralDiscount, credits } = await request.json()
+    const { email, priceId, credits } = await request.json()
 
     let customer
     const existingCustomers = await stripe.customers.list({
@@ -68,15 +68,6 @@ const POST = async ({ request }) => {
       sessionConfig.discounts = [{  
         coupon: coupon.id
       }]
-    }
-
-    if (useReferralDiscount) {
-      if (!sessionConfig.discounts) {
-        sessionConfig.discounts = []
-      }
-      sessionConfig.discounts.push({
-        coupon: 'referral-discount'
-      })
     }
 
     const session = await stripe.checkout.sessions.create(sessionConfig)
