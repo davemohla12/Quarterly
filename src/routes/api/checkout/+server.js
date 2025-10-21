@@ -55,7 +55,10 @@ const POST = async ({ request }) => {
       customer_update: {
         address: 'auto',
       },
-      payment_method_types: ['card', 'link']
+      payment_method_types: ['card', 'link'],
+      payment_intent_data: {
+        receipt_email: email  
+      }
     }
 
     if (creditsToApply > 0) {
