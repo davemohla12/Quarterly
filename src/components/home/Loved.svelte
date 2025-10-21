@@ -60,7 +60,7 @@
 
 </script>
 
-<div class="container">
+<div class="container" id="testimonials">
   <div class="title">Loved by users</div>
   <img class="stars" src="images/stars.png" alt="Five star rating">
   <div class="subtitle">4.8 star rating across all users</div>
@@ -128,7 +128,18 @@
     align-items: center;
     justify-content: center;
     background-color: var(--white);
+    position: relative;
    }
+   .container::before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: -30px;
+    left: 0;
+    width: 100%;
+    height: 30px;
+    pointer-events: none;
+  }
   .title {
     margin-top: 30px;
     font-family: 'Merriweather', serif;

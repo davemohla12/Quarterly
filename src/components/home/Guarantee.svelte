@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" id="guarantee">
   <div class="heading">
     60 day guarantee
   </div>
@@ -14,6 +14,17 @@
     flex-direction: column;
     align-items: center;
     background-color: var(--gray1);
+    position: relative;
+  }
+  .container::before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: -35px;
+    left: 0;
+    width: 100%;
+    height: 35px;
+    pointer-events: none;
   }
   .heading {
     margin-top: 35px;

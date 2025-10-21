@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" id="stepbystep">
   <div class="heading">
     Go step-by-step
   </div>
@@ -15,6 +15,17 @@
     align-items: center;
     background-color: var(--gray1);
     margin-top: 40px;
+    position: relative;
+  }
+  .container::before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: -40px;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    pointer-events: none;
   }
   .heading {
     margin-top: 35px;
@@ -43,6 +54,10 @@
   @media (min-width: 768px) {
     .container {
       margin-top: 50px;
+    }
+    .container::before {
+      top: -50px;
+      height: 50px;
     }
     .heading {
       font-size: 34px;

@@ -36,8 +36,7 @@ const price = 79
 const priceId = PUBLIC_STRIPE_PRICE_ID
 const adminPasscode = 'pyaPHHtK@g6t-gD'
 
-const today = dayjs('2026-12-31')
-// const today = dayjs()
+const today = dayjs()
 
 const totalScreens = 30
 
