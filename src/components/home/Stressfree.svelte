@@ -175,7 +175,15 @@
     justify-content: center;
     align-items: center;
   }
-  @media (min-width: 1000px) {
+  @media (min-width: 1000px) 
+  {
+    .heading {
+      font-size: 34px;
+      width: 550px;
+    }
+  }
+
+  @media (min-width: 1100px) {
     .container {
       display: flex;
       align-items: center;
@@ -209,7 +217,6 @@
       width: 377px;
       height: 409px;
       margin-top: 50px;
-      margin-left: 50px;
     }
   }
 </style>
