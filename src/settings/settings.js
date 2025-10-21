@@ -43,7 +43,7 @@ const totalScreens = 30
 const showReferral = false
 const referralAmount = 10
 
-const showCheckout = true
+const showCheckout = false
 const showComingSoon = true
 
 export { currentTaxYear, currentTaxQuarter, q1DueDate, q2DueDate, q3DueDate, q4DueDate, price, priceId, showCheckout, showReferral, adminPasscode, showComingSoon, today, totalScreens, referralAmount }
