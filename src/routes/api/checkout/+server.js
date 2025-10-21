@@ -57,7 +57,7 @@ const POST = async ({ request }) => {
       },
       payment_method_types: ['card', 'link'],
       payment_intent_data: {
-        receipt_email: email  
+        receipt_email: email 
       }
     }
 
