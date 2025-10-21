@@ -1,4 +1,5 @@
 import dayjs from 'dayjs'
+import { STRIPE_PRICE_ID } from '$env/static/private'
 
 const getCurrentTaxYear = () => {
   const currentMonth = dayjs().format('MMMM')
@@ -32,7 +33,7 @@ const q2DueDate = dayjs('2025-06-15')
 const q3DueDate = dayjs('2025-09-15')
 const q4DueDate = dayjs('2025-01-15')
 const price = 79
-const priceId = 'price_1SChTePNrBqC31YHZNa8npso'
+const priceId = STRIPE_PRICE_ID 
 const adminPasscode = 'pyaPHHtK@g6t-gD'
 
 const today = dayjs('2026-12-31')
