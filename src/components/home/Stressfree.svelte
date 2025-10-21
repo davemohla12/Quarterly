@@ -192,7 +192,8 @@
     .heading {
       text-align: left;
       font-size: 34px;
-      width: 500px;
+      width: 550px;
+      padding-top: 75px;
     }
     .subheading {
       text-align: left;
