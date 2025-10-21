@@ -71,7 +71,7 @@
       The stress-free way to estimate and pay your quarterly taxes
     </div>
     <div class="subheading">
-      For freelancers, creators, small business owners who want taxes to be simple
+      For freelancers, creators, and small business owners who want taxes to be simple
     </div>
     <Clickable onclick={handleButtonClick}>
       <div class="button">    
@@ -129,7 +129,7 @@
     font-weight: var(--regular);
     margin-left: auto;
     margin-right: auto;
-    width: 350px;
+    width: 300px;
     text-align: center;
     margin-top: 15px;
   }
