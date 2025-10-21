@@ -13,12 +13,7 @@ if (browser) {
       person_profiles: 'identified_only',
       mask_all_text: false,
       opt_out_capturing_by_default: false,
-      session_recording: {
-        recordCanvas: false,
-        sampling: {
-          sessionSampleRate: 0.1
-        }
-      } 
+      disable_session_recording: false
     }
   )
 }

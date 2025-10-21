@@ -7,9 +7,16 @@
   import Footer from '$src/components/home/Footer.svelte' 
   import { safePostHog } from '$src/utilities/posthog'
   import { onMount } from 'svelte'
+  import { page } from '$app/stores'
 
   onMount(() => {
-    safePostHog.capture('faq_viewed')
+    const campaign = $page.url.searchParams.get('campaign')
+    const keyword = $page.url.searchParams.get('utm_term')
+    safePostHog.capture('home_viewed', {
+      anchor: 'faq',
+      campaign: campaign,
+      keyword: keyword
+    })
   })
 </script>
 

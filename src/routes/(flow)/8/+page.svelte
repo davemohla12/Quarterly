@@ -10,18 +10,21 @@
   import { user } from '$src/data/user.svelte'
   import { onMount } from 'svelte'
   import { safePostHog } from '$src/utilities/posthog'
-  import { currentTaxYear } from '$src/settings/settings'
+  import { getLocalStorage } from '$src/utilities/utilities'
+
   
   const headingText = `You'll need your federal and state tax returns from last year`
   const buttonText = 'NEXT'
   global.makeButtonActive = true
 
   onMount(async () => {
-    if (await user.getValue('latestTaxYearPaid') != currentTaxYear) {
-      safePostHog.capture('flow_returns_viewed', {
-        returns: 'federal_and_state'
-      })
-    }
+    const campaign = getLocalStorage('campaign')
+    const keyword = getLocalStorage('utm_term')
+    safePostHog.capture('returns_viewed', {
+      campaign: campaign,
+      keyword: keyword,
+      returns: 'federal_and_state'
+    })
   })
   
   const handleNext = () => {

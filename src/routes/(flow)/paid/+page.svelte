@@ -13,6 +13,7 @@
   import dayjs from 'dayjs'
   import { safePostHog } from '$src/utilities/posthog'
   import { referralAmount } from '$src/settings/settings'
+  import { getLocalStorage } from '$src/utilities/utilities'
 
   onMount(async () => {
     const creditsUsed = $page.url.searchParams.get('credits') || 0
@@ -29,7 +30,6 @@
       const totalPayments = userValues.totalPayments
       const referrerEmail = userValues.referrerEmail
       const taxYearsPaid = userValues.taxYearsPaid
-      const source = userValues.source
       const setFieldValues = {
         latestTaxYearPaid: currentTaxYear,
         stripeCustomerId: stripeCustomerId,
@@ -51,7 +51,12 @@
       if (referrerEmail && !taxYearsPaid) {
         await addReferralCredits(referrerEmail)
       }
-      safePostHog.capture('paid', { source })
+      const campaign = getLocalStorage('campaign')
+      const keyword = getLocalStorage('utm_term')
+      safePostHog.capture('paid_viewed', {
+        campaign: campaign,
+        keyword: keyword
+      })
       goto('/dashboard')
       await user.setValue('currentPage', 'dashboard')
     }

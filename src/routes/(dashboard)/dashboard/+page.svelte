@@ -178,8 +178,12 @@
         await sendDashboardEmail()
         setLocalStorage('sendDashboardEmail', false)
       }
-      safePostHog.capture('flow_dashboard_viewed', {
-        pay_preference: payPreference,
+      const campaign = getLocalStorage('campaign')
+      const keyword = getLocalStorage('utm_term')
+      safePostHog.capture('dashboard_viewed', {
+        campaign: campaign,
+        keyword: keyword,
+        pay_preference: payPreference
       })
     }
   })

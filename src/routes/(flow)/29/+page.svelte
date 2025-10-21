@@ -12,13 +12,19 @@
   import { setLocalStorage } from '$src/utilities/utilities'
   import { safePostHog } from '$src/utilities/posthog'
   import { onMount } from 'svelte'
+  import { getLocalStorage } from '$src/utilities/utilities'
 
   const headingText = `View your quarterly taxes for one simple fee`
   const buttonText = 'NEXT'
   global.makeButtonActive = true
 
   onMount(async () => {
-    safePostHog.capture('flow_price_page_viewed')
+    const campaign = getLocalStorage('campaign')
+    const keyword = getLocalStorage('utm_term')
+    safePostHog.capture('price_viewed', {
+      campaign: campaign,
+      keyword: keyword
+    })
   })
 
   const handleNext = async () => {

@@ -43,12 +43,19 @@
         await user.setValue('referrerEmail', referrerEmail)
       }
     }
-    let source = getLocalStorage('source') || null
-    if (!source || source == 'direct') {
-      source = $page.url.searchParams.get('source') || 'direct'
-    }
-    await user.setValue('source', source) 
-    safePostHog.capture('home_viewed', { source })
+    setTimeout(() => {
+      const anchor = $page.url.hash.replace('#', '')
+      const campaign = $page.url.searchParams.get('campaign')
+      const keyword = $page.url.searchParams.get('utm_term')
+      console.log(anchor)
+      setLocalStorage('keyword', keyword)
+      setLocalStorage('campaign', campaign)
+      safePostHog.capture('home_viewed', {
+        anchor: anchor,
+        campaign: campaign,
+        keyword: keyword
+      })
+    }, 100)
   })
 
   $effect(() => {

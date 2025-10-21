@@ -12,7 +12,6 @@
   import { onMount } from 'svelte'
   import { user } from '$src/data/user.svelte'
   import { safePostHog } from '$src/utilities/posthog'
-  import { currentTaxYear } from '$src/settings/settings'
   import { getLocalStorage } from '$src/utilities/utilities'
 
   const headingText = `What state do you reside in?`
@@ -22,15 +21,18 @@
 
   onMount(async () => {
     global.openDropdownQuarter = ''
-    if (await user.getValue('latestTaxYearPaid') != currentTaxYear) {
-      safePostHog.capture('flow_state_viewed')
-    }
     if (global.loggedIn) {
       if (getLocalStorage('currentState')) {
         currentState = convertStateToUpperCase(getLocalStorage('currentState'))
         global.makeButtonActive = true
       }
     }
+    const campaign = getLocalStorage('campaign')
+    const keyword = getLocalStorage('utm_term')
+    safePostHog.capture('state_viewed', {
+      campaign: campaign,
+      keyword: keyword
+    })
   })
 
   const handleSelection = async (selection) => {

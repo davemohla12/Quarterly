@@ -12,7 +12,8 @@
   import { user } from '$src/data/user.svelte'
   import { onMount } from 'svelte'
   import { getLocalStorage } from '$src/utilities/utilities'
-
+  import { safePostHog } from '$src/utilities/posthog'
+  
   const headingText = `Will you earn any income this year that isn't from a regular paycheck?`
   const subheadingText = `This includes freelance income, self-employment income, investment income, rental income, retirement withdrawals, alimony, or anything that doesn't have taxes withheld automatically`
   const radioButtons = ['Yes', 'No']
@@ -32,6 +33,12 @@
         global.makeButtonActive = true
       }
     }
+    const campaign = getLocalStorage('campaign')
+    const keyword = getLocalStorage('utm_term')
+    safePostHog.capture('eligibility_viewed', {
+      campaign: campaign,
+      keyword: keyword
+    })
   })
 
   const handleSelect = (button) => {

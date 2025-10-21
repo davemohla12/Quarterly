@@ -11,8 +11,8 @@
   import { stateRules } from '$src/rules/state'
   import { getNoExpectedIncomeText } from '$src/utilities/federaltax'
   import { safePostHog } from '$src/utilities/posthog'
-  import { currentTaxYear } from '$src/settings/settings'
   import { onMount } from 'svelte'
+  import { getLocalStorage } from '$src/utilities/utilities'
 
   const headingText = `You don't need to pay any quarterly taxes this year`
   const subheadingText = `Since you don't expect to have any income this year you don't need to worry about quarterly taxes`
@@ -20,11 +20,13 @@
   global.makeButtonActive = true
 
   onMount(async () => {
-    if (await user.getValue('latestTaxYearPaid') != currentTaxYear) {
-      safePostHog.capture('flow_no_payments_viewed', {
-        reason: 'no_expected_income'
-      })
-    }
+    const campaign = getLocalStorage('campaign')
+    const keyword = getLocalStorage('utm_term')
+    safePostHog.capture('no_payments_viewed', {
+      campaign: campaign,
+      keyword: keyword,
+      reason: 'no_expected_income'
+    })
   })
 
   const handleDone = async () => {

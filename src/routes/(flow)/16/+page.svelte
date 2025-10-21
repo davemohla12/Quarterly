@@ -12,7 +12,6 @@
   import { user } from '$src/data/user.svelte'
   import { onMount } from 'svelte'
   import { safePostHog } from '$src/utilities/posthog'
-  import { currentTaxYear } from '$src/settings/settings'
   import { getLocalStorage } from '$src/utilities/utilities'
 
   let headingText = $state('')
@@ -23,11 +22,13 @@
   onMount(async () => {
     headingText = `You don't need to pay any quarterly taxes this year`
     subheadingText = `You may still pay income tax at the end of the year but you don't need to worry about quarterly taxes`
-    if (await user.getValue('latestTaxYearPaid') != currentTaxYear) {
-      safePostHog.capture('flow_no_payments_viewed', {
-        reason: 'below_minimum_threshold'
-      })
-    }
+    const campaign = getLocalStorage('campaign')
+    const keyword = getLocalStorage('utm_term')
+    safePostHog.capture('no_payments_viewed', {
+      campaign: campaign,
+      keyword: keyword,
+      reason: 'below_minimum_threshold'
+    })
   })
 
   const handleDone = async () => {

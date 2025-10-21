@@ -12,18 +12,21 @@
   import { safePostHog } from '$src/utilities/posthog'
   import { currentTaxYear } from '$src/settings/settings'
   import { onMount } from 'svelte'
-  
+  import { getLocalStorage } from '$src/utilities/utilities'
+
   const headingText = `You don't need to pay any quarterly taxes this year`
   const subheadingText = `Since all your income has taxes automatically withheld, the IRS doesn't require you to make separate quarterly payments.`
   const buttonText = 'DONE' 
   global.makeButtonActive = true
 
   onMount(async () => {
-    if (await user.getValue('latestTaxYearPaid') != currentTaxYear) {
-      safePostHog.capture('flow_no_payments_viewed', {
-        reason: 'all_income_withheld'
-      })
-    }
+    const campaign = getLocalStorage('campaign')
+    const keyword = getLocalStorage('utm_term')
+    safePostHog.capture('no_payments_viewed', {
+      campaign: campaign,
+      keyword: keyword,
+      reason: 'all_income_withheld'
+    })
   })
 
   const handleDone = async () => {

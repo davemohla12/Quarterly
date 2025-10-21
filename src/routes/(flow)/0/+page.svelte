@@ -10,6 +10,7 @@
   import { user } from '$src/data/user.svelte'
   import { onMount } from 'svelte'
   import { safePostHog } from '$src/utilities/posthog'
+  import { page } from '$app/stores'
 
   const headingText = `Hi! I'm Zenguider`
   const subheadingText = `I'll help you estimate and pay your quarterly taxes`
@@ -17,7 +18,12 @@
   global.makeButtonActive = true
 
   onMount(async () => {
-    safePostHog.capture('flow_started')
+    const campaign = $page.url.searchParams.get('campaign')
+    const keyword = $page.url.searchParams.get('utm_term')
+    safePostHog.capture('landing_viewed', {
+      campaign: campaign,
+      keyword: keyword
+    })
   })
 
   const handleNext = async () => {
