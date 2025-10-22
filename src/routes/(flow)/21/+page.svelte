@@ -81,7 +81,7 @@
 </script>
 
 <Header />
-<Avatar screen={23} />
+<Avatar screen={24} />
 <Heading text={headingText} mobilewidth="280px" />
 <Subheading text={subheadingText} desktopwidth="450px" mobilewidth="300px" />
 <RadioButtons buttons={radioButtons} selected={selectedRadioButton} onselect={handleSelect}/>

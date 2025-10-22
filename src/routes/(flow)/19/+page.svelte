@@ -48,8 +48,8 @@
       await user.setValue('currentPage', '19.5')
     }
     else {
-      goto('/19.75')
-      await user.setValue('currentPage', '19.75')
+      goto('/19.6')
+      await user.setValue('currentPage', '19.6')
     }
   }
 

@@ -38,7 +38,7 @@ const adminPasscode = 'pyaPHHtK@g6t-gD'
 
 const today = dayjs()
 
-const totalScreens = 30
+const totalScreens = 31
 
 const showReferral = false
 const referralAmount = 10

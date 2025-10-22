@@ -23,7 +23,7 @@
 
   onMount(async () => {
     const expectedTotalIncomeThisYear = getLocalStorage('expectedTotalIncomeThisYear')
-    subheadingText = `Of the ${convertNumberToRoundedCurrency(expectedTotalIncomeThisYear)} in total income you expect this year, how much of will come from self-employment such as freelancing, consulting, or a solo business?`
+    subheadingText = `Of the ${convertNumberToRoundedCurrency(expectedTotalIncomeThisYear)} in total income you expect this year, how much of will come from self-employment?`
   })
 
   const handleInput = (value) => {
@@ -45,9 +45,9 @@
 </script>
 
 <Header />
-<Avatar screen={21} />
+<Avatar screen={22} />
 <Heading text={headingText} desktopwidth="550px" mobilewidth="300px" />
-<Subheading text={subheadingText} desktopwidth="550px" mobilewidth="350px" />
+<Subheading text={subheadingText} desktopwidth="400px" mobilewidth="350px" />
 <DollarInput placeholder={placholderText} value={inputValue} onInput={handleInput} shouldFocus={true}/>
 <Button text={buttonText} onclick={handleNext} />
 <Later />

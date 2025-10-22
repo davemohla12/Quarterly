@@ -118,7 +118,7 @@
 </script>
 
 <Header />
-<Avatar screen={27} />
+<Avatar screen={28} />
 <Heading text={headingText} desktopwidth="550px" mobilewidth="320px" />
 {#if currentTaxQuarter == 'Q2' || currentTaxQuarter == 'Q3' || currentTaxQuarter == 'Q4'}
   <DollarInput placeholder={placeholderText1} value={inputValue1} onInput={handleInput1} shouldFocus={true} />
