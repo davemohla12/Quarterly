@@ -37,7 +37,7 @@
 
   const handleNext = async () => {
     await payment.setValue('incomeExpectationThisYear', convertLongToShortIncomeExpectation(selectedRadioButton))
-    if     (await payment.getValue('incomeExpectationThisYear') == 'decrease' 
+    if  (await payment.getValue('incomeExpectationThisYear') == 'decrease' 
         || (await payment.getValue('stateSupported') && !stateRules[await payment.getValue('currentState')].lastYearSafeHarborRule) 
         || (await payment.getValue('stateSupported') && !await payment.getValue('livedInCurrentStateAllLastYear'))
         || (await payment.getValue('stateSupported') && !await payment.getValue('livingInCurrentStateAllThisYear'))

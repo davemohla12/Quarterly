@@ -15,7 +15,7 @@
   
   const headingText = `How much of your income this year will be from self-employment?`
   const subheadingText = `Self-employment includes freelancing, consulting, contracting, and a solo business`
-  const radioButtons = ['All of it', 'Some of it']
+  const radioButtons = ['All of it', 'Some of it', 'None of it']
   const buttonText = 'NEXT'
   
   let selectedRadioButton = $state(null)
@@ -37,9 +37,15 @@
 
   const handleNext = async () => {
     await payment.setValue('selfEmploymentIncomeExpectationThisYear', selectedRadioButton)
-    if (await payment.getValue('selfEmploymentIncomeExpectationThisYear') == 'All of it' ) {  
+    const selfEmploymentIncomeExpectationThisYear = selectedRadioButton
+    if (selfEmploymentIncomeExpectationThisYear == 'All of it' ) {  
       const expectedTotalIncomeThisYear = getLocalStorage('expectedTotalIncomeThisYear')
       await payment.setValue('expectedSelfEmploymentIncomeThisYear', expectedTotalIncomeThisYear)
+      goto('/20')
+      await user.setValue('currentPage', '20')
+    }
+    else if (selfEmploymentIncomeExpectationThisYear == 'None of it') {
+      await payment.setValue('expectedSelfEmploymentIncomeThisYear', 0)
       goto('/20')
       await user.setValue('currentPage', '20')
     }
