@@ -5,13 +5,14 @@
   import ControlledButton from '$src/components/app/ControlledButton.svelte'
   import { global } from '$src/data/global.svelte'  
   import Subheading from '$src/components/app/Subheading.svelte'
-  import Support from '$src/components/app/Support.svelte'
+  import TextBlockInput from '$src/components/app/TextBlockInput.svelte'
   import axios from 'axios'
   import { goto } from '$app/navigation'  
   import { onMount } from 'svelte'
 
   const headingText = `We're here to help`
   const subheadingText = `We'll get back to you right away`
+  const placeholderText = `What do you need help with?`
   const buttonText = 'SUBMIT'
   global.makeButtonActive = false
   let message = $state('')
@@ -56,7 +57,7 @@
 <Avatar />
 <Heading text={headingText} desktopwidth="450px" mobilewidth="300px" />
 <Subheading text={subheadingText} />
-<Support value={message} oninput={handleInput} />
+<TextBlockInput placeholder={placeholderText} value={message} oninput={handleInput} />
 {#if showSpinner}
   <ControlledButton showSpinner={true} enabled={false} dark={true} />
 {:else}

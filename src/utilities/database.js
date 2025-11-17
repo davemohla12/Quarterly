@@ -125,6 +125,14 @@ const removeCredits = async (email, amount) => {
   await axios.post('/api/database/removeCredits', { email: email, amount: amount })
 }
 
+const setInDisappointed = async (answer) => {
+  await axios.post('/api/database/setInDisappointed', { answer })
+}
+
+const setInImprove = async (feedback) => {
+  await axios.post('/api/database/setInImprove', { feedback })
+}
+
 export { 
   getFromPayments, 
   setInPayments, 
@@ -150,5 +158,7 @@ export {
   addCredits,
   removeCredits,
   setMultipleUserValues,
-  addMultipleUserValues
+  addMultipleUserValues,
+  setInDisappointed,
+  setInImprove
 }

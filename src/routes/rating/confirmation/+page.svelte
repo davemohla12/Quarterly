@@ -11,7 +11,7 @@
     Thanks so much!
     <br />
     <br />
-    We read all feedback and use it to improve the app.
+    We read everything you share and use it to improve Zenguider for you.
   </div>
 </div>
 
@@ -29,7 +29,12 @@
     font-family: 'Merriweather', serif;
     font-size: 24px;
     font-weight: var(--regular);
-    width: 400px;
+    width: 300px;
     margin-top: 100px;
+  }
+  @media (min-width: 768px) { 
+    .text {
+      width: 500px; 
+    }
   }
 </style>

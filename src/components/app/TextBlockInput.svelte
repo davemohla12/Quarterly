@@ -2,6 +2,8 @@
   const props = $props()
   let value = $derived(props.value || '')
   let oninput = props.oninput || (() => {})
+  let placeholder = props.placeholder || ''
+  let height = props.height || '300px'
 
   const handleInput = (event) => {
     oninput(event.target.innerHTML)
@@ -10,7 +12,7 @@
 </script>
 
 <div class="container">
-  <div class="message" contenteditable="true" innerHTML={value} oninput={handleInput} data-placeholder="What do you need help with?"></div>
+  <div class="message" contenteditable="true" innerHTML={value} oninput={handleInput} data-placeholder={placeholder} style:height={height}></div>
 </div>
 
 <style>
@@ -27,7 +29,6 @@
     width: 100%;
     margin-left:25px;
     margin-right:25px;
-    height: 300px;
     border: 1px solid var(--gray2);
     padding: 20px;
     margin-bottom: 10px;
@@ -44,7 +45,6 @@
       font-size: 16px;
       font-weight: var(--regular);
       width: 600px;
-      height: 400px;
       border: 1px solid var(--gray2);
       padding: 20px;
       margin-bottom: 10px;

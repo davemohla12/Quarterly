@@ -32,4 +32,4 @@ const payment = $state({
   }
 })
 
-export { payment}
+export { payment }
