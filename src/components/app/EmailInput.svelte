@@ -46,7 +46,7 @@
 </script>
 
 <div class="container">
-  <input class="input" class:errorinput={error !== ''} type="email" value={inputValue} onfocus={handleFocus} onblur={handleBlur} oninput={handleInput} />
+  <input class="input" class:errorinput={error !== ''} type="email" value={inputValue} onfocus={handleFocus} onblur={handleBlur} oninput={handleInput} autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-1p-ignore="true"/>
   <div class="placeholder" class:active={isFocused || inputValue} class:errorplaceholder={error !== ''}>{placeholder}</div>
   {#if showClear && inputValue}
     <Clickable onclick={onclear}>
