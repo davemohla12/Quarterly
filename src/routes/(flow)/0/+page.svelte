@@ -13,7 +13,7 @@
   import { page } from '$app/stores'
 
   const headingText = `Hi! I'm Zenguider`
-  const subheadingText = `I'll help you estimate and pay your quarterly taxes`
+  const subheadingText = `I’m a tax expert with over 30 years of experience helping people estimate their quarterly payments while avoiding penalties and overpayment. <br /><br />I'll help you estimate and pay your quarterly taxes. <br /><br /> Your information stays private and is never shared with anyone.`
   const buttonText = 'NEXT'
   global.makeButtonActive = true
 
@@ -36,6 +36,6 @@
 <Header />
 <Avatar screen={1} />
 <Heading text={headingText} desktopwidth="450px" mobilewidth="300px" />
-<Subheading text={subheadingText} />
+<Subheading text={subheadingText} desktopwidth="600px" mobilewidth="350px" />
 <Button text={buttonText} onclick={handleNext} />
 <Later />
