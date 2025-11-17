@@ -40,7 +40,7 @@
 </script>
 
 
-<Header hideIcons={true} />
+<Header hideIcons={true} hideBack={true} />
 <Avatar />
 <Heading text={headingText} />
 <RadioButtons buttons={radioButtons} selected={selectedRadioButton} onselect={handleSelect}/>

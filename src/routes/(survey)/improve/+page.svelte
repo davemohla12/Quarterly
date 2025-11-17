@@ -35,7 +35,7 @@
 </script>
 
 
-<Header hideIcons={true} />
+<Header hideIcons={true} hideBack={true} />
 <Avatar />
 <Heading text={headingText} desktopwidth="700px" mobilewidth="350px" />
 <TextBlockInput height="250px" placeholder={placeholderText} value={feedback} oninput={handleInput} />
