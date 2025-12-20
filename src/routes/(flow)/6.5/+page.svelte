@@ -37,11 +37,15 @@
   })
 
   $effect(() => {
-    if ((q1State == null || q1State == '') || (q2State == null || q2State == '') || (q3State == null || q3State == '') || (q4State == null || q4State == '')) {
-      global.makeButtonActive = false
+    const q1Valid = q1State != null && q1State != '' && global.states.includes(convertStateToUpperCase(q1State))
+    const q2Valid = q2State != null && q2State != '' && global.states.includes(convertStateToUpperCase(q2State))
+    const q3Valid = q3State != null && q3State != '' && global.states.includes(convertStateToUpperCase(q3State))
+    const q4Valid = q4State != null && q4State != '' && global.states.includes(convertStateToUpperCase(q4State))
+    if (q1Valid && q2Valid && q3Valid && q4Valid) {
+      global.makeButtonActive = true
     }
     else {
-      global.makeButtonActive = true
+      global.makeButtonActive = false
     }
   })
 
