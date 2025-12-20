@@ -37,7 +37,7 @@
 
   const handleSelection = async (selection) => {
     currentState = selection 
-    if (currentState != '') {
+    if (currentState != '' && global.states.includes(currentState)) {
       global.makeButtonActive = true
     }
     else {
