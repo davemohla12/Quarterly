@@ -14,7 +14,7 @@
   import { getLocalStorage } from '$src/utilities/utilities'
   
   const headingText = `How much of your income this year will be from self-employment?`
-  const subheadingText = `Self-employment includes freelancing, consulting, contracting, and a solo business`
+  const subheadingText = `Self-employment includes freelancing, consulting, contracting, or a solo business`
   const radioButtons = ['All of it', 'Some of it', 'None of it']
   const buttonText = 'NEXT'
   
