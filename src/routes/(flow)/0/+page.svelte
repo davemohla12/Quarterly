@@ -11,6 +11,7 @@
   import { onMount } from 'svelte'
   import { safePostHog } from '$src/utilities/posthog'
   import { page } from '$app/stores'
+  import { setLocalStorage } from '$src/utilities/utilities'
 
   const headingText = `Hi! I'm Zenguider`
   const subheadingText = `I’m a tax expert with 30+ years of experience helping people avoid penalties and pay the right amount.<br /><br />I'll help you estimate and pay your quarterly taxes.<br /><br />It takes about 10 minutes and you can save and return anytime.<br /><br />Your information stays private and is never shared with anyone.`
@@ -24,6 +25,8 @@
       campaign: campaign,
       keyword: keyword
     })
+    setLocalStorage('campaign', campaign)
+    setLocalStorage('keyword', keyword)
   })
 
   const handleNext = async () => {

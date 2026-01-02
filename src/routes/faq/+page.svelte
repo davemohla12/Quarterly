@@ -11,7 +11,7 @@
 
   onMount(() => {
     const campaign = $page.url.searchParams.get('campaign')
-    const keyword = $page.url.searchParams.get('utm_term')
+    const keyword = $page.url.searchParams.get('keyword')
     safePostHog.capture('home_viewed', {
       anchor: 'faq',
       campaign: campaign,

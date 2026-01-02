@@ -179,7 +179,7 @@
         setLocalStorage('sendDashboardEmail', false)
       }
       const campaign = getLocalStorage('campaign')
-      const keyword = getLocalStorage('utm_term')
+      const keyword = getLocalStorage('keyword')
       safePostHog.capture('dashboard_viewed', {
         campaign: campaign,
         keyword: keyword,

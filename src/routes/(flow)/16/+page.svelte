@@ -23,7 +23,7 @@
     headingText = `You don't need to pay any quarterly taxes this year`
     subheadingText = `You may still pay income tax at the end of the year but you don't need to worry about quarterly taxes`
     const campaign = getLocalStorage('campaign')
-    const keyword = getLocalStorage('utm_term')
+    const keyword = getLocalStorage('keyword')
     safePostHog.capture('no_payments_viewed', {
       campaign: campaign,
       keyword: keyword,

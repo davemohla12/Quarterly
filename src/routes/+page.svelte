@@ -46,7 +46,7 @@
     setTimeout(() => {
       const anchor = $page.url.hash.replace('#', '')
       const campaign = $page.url.searchParams.get('campaign')
-      const keyword = $page.url.searchParams.get('utm_term')
+      const keyword = $page.url.searchParams.get('keyword')
       console.log(anchor)
       setLocalStorage('keyword', keyword)
       setLocalStorage('campaign', campaign)

@@ -34,7 +34,7 @@
       }
     }
     const campaign = getLocalStorage('campaign')
-    const keyword = getLocalStorage('utm_term')
+    const keyword = getLocalStorage('keyword')
     safePostHog.capture('eligibility_viewed', {
       campaign: campaign,
       keyword: keyword

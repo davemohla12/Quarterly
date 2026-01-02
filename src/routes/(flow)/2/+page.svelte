@@ -21,7 +21,7 @@
 
   onMount(async () => {
     const campaign = getLocalStorage('campaign')
-    const keyword = getLocalStorage('utm_term')
+    const keyword = getLocalStorage('keyword')
     safePostHog.capture('no_payments_viewed', {
       campaign: campaign,
       keyword: keyword,

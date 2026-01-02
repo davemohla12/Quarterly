@@ -52,7 +52,7 @@
         await addReferralCredits(referrerEmail)
       }
       const campaign = getLocalStorage('campaign')
-      const keyword = getLocalStorage('utm_term')
+      const keyword = getLocalStorage('keyword')
       safePostHog.capture('paid_viewed', {
         campaign: campaign,
         keyword: keyword
