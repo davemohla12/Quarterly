@@ -50,10 +50,10 @@
     refer = getLocalStorage('showReferralCredits')
     if (page == 'signup') {
       if (refer) { 
-        headingText = "Let's create your account so you can reedeem your credits"
+        headingText = "Create an account to reedeem your credits"
       } 
       else { 
-        headingText="Let's create your account"
+        headingText="Create an account to save your information"
       }
       bottomText = `Already have an account?&nbsp;&nbsp;<a href="/login">Log In</a>`
       showForgotPassword=false
@@ -223,7 +223,7 @@
 
 <Header hideIcons={true} />
 <Avatar />
-<Heading text={headingText} desktopwidth="550px" mobilewidth="300px" mobilelarge={true} />
+<Heading text={headingText} desktopwidth="450px" mobilewidth="300px" mobilelarge={true} />
 <Subheading text={subheadingText} desktopwidth="550px" mobilewidth="220px" />
 {#if disableGoogleButton}
   <GoogleButton showSpinner={true} />
