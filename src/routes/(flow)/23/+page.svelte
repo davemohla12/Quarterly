@@ -16,7 +16,7 @@
   import { getLocalStorage } from '$src/utilities/utilities'
   
   const headingText = `What are your expected federal W2 witholdings for this year?`
-  const subheadingText = `To determine this, find the number in box 2 of each W2 paycheck and then multiply by the number of W2s you plan to get this year`
+  const subheadingText = `Add together the amounts in Box 2 from each W-2 paycheck you expect to receive this year`
   const buttonText = 'NEXT'
   const placeholderText = 'Withholdings'
   global.makeButtonActive = false
@@ -76,7 +76,7 @@
 <Header />
 <Avatar screen={26} />
 <Heading text={headingText} desktopwidth="500px" mobilewidth="300px" />
-<Subheading text={subheadingText} desktopwidth="500px" mobilewidth="300px" />
+<Subheading text={subheadingText} desktopwidth="400px" mobilewidth="300px" />
 <DollarInput placeholder={placeholderText} value={inputValue} onInput={handleInput} shouldFocus={true}/>
 <Button text={buttonText} onclick={handleNext} />
 <Later />

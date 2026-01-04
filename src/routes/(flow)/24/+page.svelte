@@ -17,7 +17,7 @@
   import { getLocalStorage } from '$src/utilities/utilities'
   
   let headingText = $state('')
-  const subheadingText = `To determine this, find the number in box 17 of each W2 paycheck and then multiply by the number of W2s you plan to get this year`
+  const subheadingText = `Add together the amounts in Box 17 from each W-2 paycheck you expect to receive this year`
   const buttonText = 'NEXT'
   const placeholderText = 'Withholdings'
   let inputValue = $state(null)
@@ -77,7 +77,7 @@
 <Header />
 <Avatar screen={27} />
 <Heading text={headingText} desktopwidth="550px" mobilewidth="300px" />
-<Subheading text={subheadingText} desktopwidth="500px" mobilewidth="300px" />
+<Subheading text={subheadingText} desktopwidth="400px" mobilewidth="325px" />
 <DollarInput placeholder={placeholderText} value={inputValue} onInput={handleInput} shouldFocus={true}/>
 <Button text={buttonText} onclick={handleNext} />
 <Later />
